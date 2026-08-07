@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expediente 0726 · Banco de Test CNP (Completo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#161c27;
+  --ink-2:#1f2733;
+  --paper:#ece4d2;
+  --paper-2:#e2d8c1;
+  --brass:#ab8a4e;
+  --brass-light:#cdae74;
+  --stamp-red:#9c3530;
+  --stamp-green:#3c6e47;
+  --text-dark:#2a241c;
+  --text-muted:#6b6256;
+  --line:rgba(42,36,28,0.18);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:
+    radial-gradient(ellipse at 20% -10%, #232c3c 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 110%, #1c2330 0%, transparent 50%),
+    var(--ink);
+  min-height:100vh;
+  font-family:'Source Serif 4', serif;
+  color:var(--text-dark);
+  padding:28px 16px 60px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{ max-width:840px; margin:0 auto; }
+
+.header{
+  display:flex; align-items:flex-end; justify-content:space-between;
+  padding:0 6px 14px;
+  border-bottom:1px solid rgba(205,174,116,0.35);
+  margin-bottom:0;
+}
+.header-left{display:flex; align-items:center; gap:14px;}
+.seal{
+  width:46px;height:46px;border-radius:50%;
+  border:2px solid var(--brass-light);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:11px;
+  color:var(--brass-light);letter-spacing:0.5px;
+  flex-shrink:0;
+}
+.header-titles .eyebrow{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--brass-light); margin-bottom:4px;
+}
+.header-titles h1{
+  font-family:'Spectral',serif; font-weight:700; font-size:24px;
+  color:#f3ede0; letter-spacing:0.2px;
+}
+.header-right{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:#8a93a3;
+  text-align:right; line-height:1.5;
+}
+.header-right .n{color:var(--brass-light); font-weight:600;}
+
+.tabs{
+  display:flex; gap:6px; margin-top:18px; padding:0 6px;
+}
+.tab{
+  flex:1; cursor:pointer; user-select:none;
+  background:var(--ink-2); color:#9aa3b3;
+  font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+  letter-spacing:0.8px; text-transform:uppercase;
+  padding:12px 10px 11px; text-align:center;
+  border:1px solid rgba(205,174,116,0.22); border-bottom:none;
+  border-radius:8px 8px 0 0;
+  transition:background .2s,color .2s;
+  position:relative; top:1px;
+}
+.tab .sub{display:block; font-family:'Source Serif 4',serif; text-transform:none; letter-spacing:0; font-size:10.5px; color:#69728a; margin-top:3px;}
+.tab.active{
+  background:var(--paper); color:var(--text-dark);
+  border-color:var(--brass);
+}
+.tab.active .sub{color:var(--text-muted);}
+
+.folio{
+  background:
+    repeating-linear-gradient(transparent, transparent 27px, rgba(42,36,28,0.05) 28px),
+    var(--paper);
+  border:1px solid var(--brass);
+  border-radius:0 6px 10px 10px;
+  padding:30px 30px 26px;
+  position:relative;
+  box-shadow:0 30px 60px -25px rgba(0,0,0,0.6), 0 2px 0 rgba(205,174,116,0.15) inset;
+  overflow:hidden;
+}
+.folio::before{
+  content:"";
+  position:absolute; left:0; top:0; bottom:0; width:46px;
+  background:linear-gradient(90deg, rgba(42,36,28,0.06), transparent);
+  border-right:1px dashed var(--line);
+}
+.folio-inner{ position:relative; margin-left:24px; }
+
+.folio-top{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:18px; flex-wrap:wrap; gap:8px;
+}
+.contador{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+  color:var(--text-muted); letter-spacing:0.5px;
+}
+.tema-tag{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:0.6px; text-transform:uppercase;
+  color:#fff; background:var(--ink);
+  padding:5px 11px; border-radius:3px;
+  border:1px solid var(--brass);
+}
+
+.pregunta{
+  font-family:'Spectral',serif; font-size:21px; font-weight:600;
+  line-height:1.42; color:var(--text-dark); margin-bottom:22px;
+}
+.pregunta::before{
+  content:"P.";
+  color:var(--brass); font-style:italic; margin-right:6px;
+}
+
+.opciones{ display:flex; flex-direction:column; gap:10px; margin-bottom:6px;}
+.opcion{
+  display:flex; gap:12px; align-items:flex-start;
+  background:rgba(255,255,255,0.35);
+  border:1px solid var(--line);
+  border-radius:5px; padding:13px 16px;
+  cursor:pointer; transition:background .15s,border-color .15s,transform .1s;
+  font-size:15px; line-height:1.45;
+}
+.opcion:hover:not(.disabled){ background:rgba(255,255,255,0.65); border-color:var(--brass); }
+.opcion:active:not(.disabled){ transform:scale(0.995); }
+.letra{
+  font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:13px;
+  color:var(--brass); border:1px solid var(--brass); border-radius:50%;
+  width:22px;height:22px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  margin-top:1px;
+}
+.opcion.disabled{ cursor:default; }
+.opcion.correcta{ background:rgba(60,110,71,0.14); border-color:var(--stamp-green); }
+.opcion.correcta .letra{ background:var(--stamp-green); border-color:var(--stamp-green); color:#fff; }
+.opcion.incorrecta{ background:rgba(156,53,48,0.13); border-color:var(--stamp-red); }
+.opcion.incorrecta .letra{ background:var(--stamp-red); border-color:var(--stamp-red); color:#fff; }
+
+.feedback{
+  display:none; margin-top:18px; padding:12px 16px;
+  border-left:3px solid var(--text-muted);
+  font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.6;
+}
+.feedback.acierto{ border-color:var(--stamp-green); color:#2e5238; }
+.feedback.fallo{ border-color:var(--stamp-red); color:#7a2b27; }
+.correcta-text{ font-weight:700; }
+
+.stamp{
+  position:absolute; top:36%; right:28px; pointer-events:none;
+  font-family:'IBM Plex Mono',monospace; font-weight:700;
+  font-size:15px; letter-spacing:2px; text-transform:uppercase;
+  border:3px solid currentColor; border-radius:6px;
+  padding:6px 14px; transform:rotate(-9deg) scale(0.5);
+  opacity:0; transition:transform .35s cubic-bezier(.3,1.6,.4,1), opacity .25s;
+}
+.stamp.show{ opacity:0.88; transform:rotate(-9deg) scale(1); }
+.stamp.acierto{ color:var(--stamp-green); }
+.stamp.fallo{ color:var(--stamp-red); }
+
+.resultados{ display:none; text-align:center; padding:16px 0 6px; }
+.resultados.visible{ display:block; }
+.resultados h2{
+  font-family:'Spectral',serif; font-size:20px; font-weight:700; margin-bottom:18px;
+}
+.res-grid{ display:flex; justify-content:center; gap:28px; margin-bottom:8px; flex-wrap:wrap;}
+.res-item{ text-align:center; }
+.res-item .num{ font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:700; }
+.res-item .lbl{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin-top:2px;}
+.res-item.ok .num{ color:var(--stamp-green); }
+.res-item.bad .num{ color:var(--stamp-red); }
+.res-item.pct .num{ color:var(--ink); }
+
+.acciones{
+  display:flex; gap:10px; margin-top:22px; flex-wrap:wrap;
+}
+.btn{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+  letter-spacing:0.6px; text-transform:uppercase;
+  padding:11px 18px; border-radius:5px; cursor:pointer;
+  border:1px solid var(--brass); background:transparent; color:var(--ink);
+  transition:background .15s, color .15s;
+}
+.btn:hover{ background:var(--ink); color:#f3ede0; }
+.btn.primary{ background:var(--ink); color:#f3ede0; }
+.btn.primary:hover{ background:var(--brass); color:var(--ink); border-color:var(--brass); }
+.btn.ghost{ border-color:var(--line); color:var(--text-muted); }
+.btn.ghost:hover{ background:rgba(156,53,48,0.08); color:var(--stamp-red); border-color:var(--stamp-red);}
+
+.footer-bar{
+  margin-top:16px; padding:14px 18px;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+  color:#8a93a3; border-top:1px dashed rgba(205,174,116,0.25);
+}
+.footer-bar .progress-track{
+  flex:1; min-width:120px; height:4px; background:rgba(255,255,255,0.08);
+  border-radius:2px; overflow:hidden; margin:0 14px;
+}
+.footer-bar .progress-fill{ height:100%; background:var(--brass-light); border-radius:2px; transition:width .4s; }
+
+@media (max-width:560px){
+  .pregunta{ font-size:18px; }
+  .header-titles h1{ font-size:19px; }
+  .folio{ padding:22px 16px 20px; }
+  .folio-inner{ margin-left:10px; }
+  .stamp{ right:14px; font-size:12px; padding:5px 10px; }
+  .header-right{ display:none; }
+}
+@media (prefers-reduced-motion: reduce){
+  .stamp{ transition:none; }
+  .opcion{ transition:none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="seal">CNP</div>
+      <div class="header-titles">
+        <div class="eyebrow">Expediente de estudio · oposición</div>
+        <h1>Banco de Test</h1>
+      </div>
+    </div>
+    <div class="header-right">
+      Ref. <span class="n" id="totalPreguntasInfo">—</span><br>
+      Jerez de la Frontera
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="tabAleatorio" data-modo="aleatorio">
+      Aleatorio real
+      <span class="sub">Sin repetir hasta agotar el banco</span>
+    </div>
+    <div class="tab" id="tabOlvidadas" data-modo="olvidadas">
+      Más olvidadas
+      <span class="sub">Lo que aún falla o no has tocado</span>
+    </div>
+  </div>
+
+  <div class="folio">
+    <div class="folio-inner">
+
+      <div class="folio-top">
+        <span class="contador" id="contador">Pregunta 1 / 20</span>
+        <span class="tema-tag" id="temaTag">—</span>
+      </div>
+
+      <div class="pregunta" id="preguntaTexto">Cargando expediente…</div>
+
+      <div class="opciones" id="opcionesContainer"></div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="resultados" id="resultados">
+        <h2>Test completado</h2>
+        <div class="res-grid">
+          <div class="res-item ok"><div class="num" id="resAciertos">0</div><div class="lbl">Aciertos</div></div>
+          <div class="res-item bad"><div class="num" id="resFallos">0</div><div class="lbl">Fallos</div></div>
+          <div class="res-item pct"><div class="num" id="resPorcentaje">0%</div><div class="lbl">Precisión</div></div>
+        </div>
+      </div>
+
+      <div class="acciones">
+        <button class="btn primary" id="btnSiguienteTest">Siguiente test (20)</button>
+        <button class="btn" id="btnNuevoTest">Reiniciar este test</button>
+        <button class="btn ghost" id="btnResetStats">Borrar progreso</button>
+      </div>
+
+      <div class="stamp" id="stamp"></div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span id="statsMiniLeft">Preguntas tocadas: 0/0</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span id="statsMiniRight">Aciertos: 0%</span>
+  </div>
+
+</div>
+
+<select id="modoSelect" style="display:none">
+  <option value="aleatorio">aleatorio</option>
+  <option value="olvidadas">olvidadas</option>
+</select>
+
+<script>
+    // ============================================================
+    // 1. BASE DE PREGUNTAS UNIFICADA (TEMAS 1 al 12) · 345 PREGUNTAS
+    //    TODOS LOS DISTRACTORES ESCRITOS MANUALMENTE
+    // ============================================================
+    const preguntas = [
+      // --- TEMA 1 (34 preguntas) ---
+      {texto:"¿Cuánto tiempo se conservan las grabaciones de videovigilancia policial en funciones de prevención (LO 7/2021)?", respuesta:"3 meses", tema:1, distractores:["1 mes", "6 meses", "1 año"]},
+      {texto:"¿Quién autoriza los dispositivos móviles de videovigilancia policial en situación normal?", respuesta:"Delegado o Subdelegado del Gobierno", tema:1, distractores:["el Juez de Instrucción", "el Secretario de Estado de Seguridad", "el Director General de la Policía"]},
+      {texto:"En caso de urgencia, ¿quién puede autorizar dispositivos móviles de videovigilancia policial?", respuesta:"el responsable operativo", tema:1, distractores:["el Delegado del Gobierno", "el Ministerio Fiscal", "el Juez de Guardia"]},
+      {texto:"¿En qué plazo debe comunicarse la urgencia de un dispositivo móvil de videovigilancia policial?", respuesta:"24 horas", tema:1, distractores:["48 horas", "72 horas", "12 horas"]},
+      {texto:"¿Plazo máximo de conservación de grabaciones de seguridad privada (LO 3/2018)?", respuesta:"1 mes", tema:1, distractores:["3 meses", "6 meses", "1 año"]},
+      {texto:"¿Plazo para poner a disposición judicial grabaciones policiales con hechos delictivos?", respuesta:"72 horas", tema:1, distractores:["24 horas", "48 horas", "7 días"]},
+      {texto:"¿Plazo para poner a disposición judicial grabaciones de seguridad privada con delitos?", respuesta:"72 horas tras conocimiento de la grabación", tema:1, distractores:["inmediato", "24 horas desde la grabación", "72 horas desde la grabación"]},
+      {texto:"¿En qué plazo debe el Juez confirmar o revocar la urgencia de una medida de GPS?", respuesta:"24 horas", tema:1, distractores:["72 horas", "48 horas", "12 horas"]},
+      {texto:"¿Plazo general de confirmación judicial para el resto de medidas urgentes (cartas, teléfonos, PC)?", respuesta:"72 horas", tema:1, distractores:["24 horas", "48 horas", "5 días"]},
+      {texto:"¿Plazo inicial de la intervención de comunicaciones (teléfono/Internet)?", respuesta:"3 meses", tema:1, distractores:["1 mes", "6 meses", "18 meses"]},
+      {texto:"¿Prórroga máxima de la intervención de comunicaciones?", respuesta:"18 meses", tema:1, distractores:["3 meses", "6 meses", "24 meses"]},
+      {texto:"¿Plazo inicial de los registros remotos (troyanos/hacking)?", respuesta:"1 mes", tema:1, distractores:["3 meses", "15 días", "2 meses"]},
+      {texto:"¿Prórroga máxima total de los registros remotos?", respuesta:"3 meses en total", tema:1, distractores:["1 mes", "6 meses", "18 meses"]},
+      {texto:"¿Durante cuánto tiempo puede la Policía Judicial captar imágenes en lugares públicos sin autorización judicial?", respuesta:"3 meses", tema:1, distractores:["1 mes", "6 meses", "1 año"]},
+      {texto:"¿Qué ley regula el tratamiento de datos por las FCS en el ámbito penal?", respuesta:"LO 7/2021", tema:1, distractores:["LO 3/2018", "LO 4/2015", "LECrim"]},
+      {texto:"¿Qué normativa regula el uso de cámaras por seguridad ciudadana y prevención sin investigación judicial abierta?", respuesta:"LO 7/2021 (bloque preventivo)", tema:1, distractores:["LO 3/2018", "LO 4/2015", "LECrim"]},
+      {texto:"¿Requieren permiso de entidades locales las instalaciones fijas de videovigilancia policial?", respuesta:"No, no requieren permiso de entidades locales", tema:1, distractores:["Sí, requieren permiso", "Depende del tipo", "Lo autoriza el ayuntamiento"]},
+      {texto:"Además de la evaluación de impacto, ¿qué exigen las instalaciones fijas de videovigilancia policial?", respuesta:"análisis de proporcionalidad (idoneidad e intervención mínima)", tema:1, distractores:["evaluación de impacto", "informe del CNPIC", "autorización judicial"]},
+      {texto:"¿Se debe informar a la ciudadanía del emplazamiento exacto de las cámaras fijas?", respuesta:"No, solo de forma clara y permanente, sin precisar el emplazamiento exacto", tema:1, distractores:["Sí se precisa", "Se publica en BOE", "Se notifica al afectado"]},
+      {texto:"¿En qué plazo se destruyen las grabaciones de videovigilancia policial preventiva si no hay delito?", respuesta:"3 meses", tema:1, distractores:["1 mes", "6 meses", "1 año"]},
+      {texto:"¿Pueden las empresas de seguridad privada grabar vías públicas?", respuesta:"Sí, solo si es imprescindible para la seguridad de sus instalaciones", tema:1, distractores:["No, nunca", "Sí, siempre", "Sí, con autorización judicial"]},
+      {texto:"¿Está permitido a la seguridad privada grabar el interior de domicilios?", respuesta:"No, está prohibido", tema:1, distractores:["Sí, con consentimiento", "Sí, si es indispensable", "Sí, con autorización del dueño"]},
+      {texto:"¿Bajo el control de qué órgano se aplican las medidas de investigación tecnológica de la LECrim?", respuesta:"el Juez de Instrucción", tema:1, distractores:["el Ministerio Fiscal", "el Secretario de Estado", "el Delegado del Gobierno"]},
+      {texto:"¿Qué medidas comparten un plazo inicial común de 3 meses y prórroga máxima de 18 meses?", respuesta:"intervención de correspondencia, interceptación de comunicaciones y dispositivos de seguimiento/localización (GPS)", tema:1, distractores:["registros remotos", "videovigilancia", "cámaras fijas"]},
+      {texto:"¿Qué medida tiene plazo inicial de 1 mes y prórrogas sucesivas de 1 mes hasta un máximo total de 3 meses?", respuesta:"registros remotos (troyanos/hacking)", tema:1, distractores:["intervención de comunicaciones", "GPS", "videovigilancia"]},
+      {texto:"¿Cómo se autorizan las grabaciones orales directas (micrófonos) respecto al cómputo de plazos?", respuesta:"no se computan por meses; se autorizan para uno o varios encuentros concretos previstos del investigado", tema:1, distractores:["1 mes", "3 meses", "15 días"]},
+      {texto:"¿Legitima la incautación física de un dispositivo de almacenamiento masivo el acceso a su contenido?", respuesta:"No, requiere auto judicial específico y motivado", tema:1, distractores:["Sí, con consentimiento", "Sí, si es urgente", "No, si es flagrante"]},
+      {texto:"En caso de urgencia sobre el registro de dispositivos de almacenamiento, ¿quién puede acceder y en qué plazo debe informar?", respuesta:"Policía Judicial o Ministerio Fiscal, informando en 24 horas", tema:1, distractores:["el Juez, informando en 72h", "el Delegado, informando en 24h", "Solo Policía, sin informar"]},
+      {texto:"¿Cuánto tiempo tiene el Juez para resolver sobre la confirmación o revocación de un registro urgente de dispositivos de almacenamiento?", respuesta:"72 horas", tema:1, distractores:["24 horas", "48 horas", "5 días"]},
+      {texto:"Excepto en el caso del GPS (24 horas), ¿en qué plazo debe el Juez confirmar o revocar la urgencia del resto de medidas tecnológicas?", respuesta:"72 horas", tema:1, distractores:["24 horas", "48 horas", "12 horas"]},
+      {texto:"¿En qué plazo máximo se comunica siempre el aviso policial de una medida tecnológica urgente?", respuesta:"24 horas", tema:1, distractores:["12 horas", "48 horas", "72 horas"]},
+      {texto:"¿Cuánto tiempo se conservan las copias de registros de medidas tecnológicas de la LECrim y desde cuándo se cuenta?", respuesta:"5 años, tras la ejecución de la pena o la prescripción del delito", tema:1, distractores:["3 años", "10 años", "2 años"]},
+      {texto:"¿Quién autoriza casi todas las medidas de investigación tecnológica reguladas en la LECrim?", respuesta:"el Juez de Instrucción", tema:1, distractores:["el Ministerio Fiscal", "el Delegado del Gobierno", "el Secretario de Estado"]},
+      // --- TEMA 2 (27 preguntas) ---
+      {texto:"¿Qué capas de OSI equivalen a la capa de Aplicación en TCP/IP?", respuesta:"Capas 7, 6 y 5", tema:2, distractores:["Capas 7 y 6", "Capas 5, 6 y 4", "Capas 7 y 6 (sin sesión)"]},
+      {texto:"¿Qué capa de OSI equivale a la capa de Transporte en TCP/IP?", respuesta:"Capa 4 de Transporte", tema:2, distractores:["Capa 3 de Red", "Capa 5 de Sesión", "Capa 4 de Transporte (en OSI)"]},
+      {texto:"¿Qué capa de OSI equivale a la capa de Internet en TCP/IP?", respuesta:"Capa 3 de Red", tema:2, distractores:["Capa 2 de Enlace", "Capa 4 de Transporte", "Capa 3 de Red (OSI)"]},
+      {texto:"¿Qué capas de OSI equivalen a la capa de Acceso a Red en TCP/IP?", respuesta:"Capas 2 y 1", tema:2, distractores:["Capas 3 y 2", "Capa 2", "Capa 1"]},
+      {texto:"¿En qué capa OSI se encuentra el protocolo TCP?", respuesta:"Capa 4 Transporte", tema:2, distractores:["Capa 3 de Red", "Capa 5 de Sesión", "Capa 4 de Transporte (TCP/IP)"]},
+      {texto:"¿En qué capa OSI se encuentra el protocolo UDP?", respuesta:"Capa 4 Transporte", tema:2, distractores:["Capa 3 de Red", "Capa 7 de Aplicación", "Capa 5 de Sesión"]},
+      {texto:"¿Qué dispositivo trabaja en la capa de Red (OSI)?", respuesta:"Router", tema:2, distractores:["Switch", "Hub", "Firewall"]},
+      {texto:"¿Qué dispositivo trabaja en la capa de Enlace (OSI)?", respuesta:"Switch", tema:2, distractores:["Router", "Hub", "Bridge"]},
+      {texto:"¿Qué dispositivo trabaja en la capa Física (OSI)?", respuesta:"Hub", tema:2, distractores:["Router", "Switch", "Repetidor"]},
+      {texto:"¿Qué PDU se usa en la capa de Transporte para TCP?", respuesta:"Segmento", tema:2, distractores:["Datagrama", "Paquete", "Trama"]},
+      {texto:"¿Qué PDU se usa en la capa de Transporte para UDP?", respuesta:"Datagrama", tema:2, distractores:["Segmento", "Paquete", "Trama"]},
+      {texto:"¿Qué PDU se usa en la capa de Red?", respuesta:"Paquete", tema:2, distractores:["Trama", "Bits", "Segmento"]},
+      {texto:"¿Qué PDU se usa en la capa de Enlace?", respuesta:"Trama", tema:2, distractores:["Bits", "Paquete", "Segmento"]},
+      {texto:"¿Qué PDU se usa en la capa Física?", respuesta:"Bits", tema:2, distractores:["Trama", "Paquete", "Segmento"]},
+      {texto:"¿Qué capa OSI se encarga del enrutamiento y direccionamiento lógico?", respuesta:"Capa 3 Red", tema:2, distractores:["Capa 2 de Enlace", "Capa 4 de Transporte", "Capa 7 de Aplicación"]},
+      {texto:"¿Qué capa OSI se encarga de la segmentación y reensamblaje de paquetes?", respuesta:"Capa 4 Transporte", tema:2, distractores:["Capa 3 de Red", "Capa 5 de Sesión", "Capa 6 de Presentación"]},
+      {texto:"¿Qué capa OSI está más cerca del usuario?", respuesta:"Capa 7 Aplicación", tema:2, distractores:["Capa 6 de Presentación", "Capa 5 de Sesión", "Capa 4 de Transporte"]},
+      {texto:"¿Qué capa OSI se encarga de cifrar, comprimir datos y traducir formatos entre sistemas?", respuesta:"Capa 6 Presentación", tema:2, distractores:["Capa 7 de Aplicación", "Capa 5 de Sesión", "Capa 4 de Transporte"]},
+      {texto:"¿Qué capa OSI establece y finaliza la comunicación entre dos hosts y sincroniza el diálogo?", respuesta:"Capa 5 Sesión", tema:2, distractores:["Capa 6 de Presentación", "Capa 4 de Transporte", "Capa 7 de Aplicación"]},
+      {texto:"¿Qué protocolo es de la capa de Aplicación (OSI)?", respuesta:"HTTP", tema:2, distractores:["FTP", "TCP", "IP"]},
+      {texto:"¿Qué protocolo es de la capa de Red (OSI)?", respuesta:"IP", tema:2, distractores:["TCP", "HTTP", "ICMP"]},
+      {texto:"Según la tabla de equivalencias OSI/TCP-IP, ¿en qué capa de equivalencia TCP/IP se incluye el protocolo ARP?", respuesta:"Capa 2 - Internet (junto a IPv4, IPv6, ICMP, IGMP, NAT)", tema:2, distractores:["Capa 1 - Acceso", "Capa 3 - Transporte", "Capa 4 - Aplicación"]},
+      {texto:"¿Cuántas capas tiene el modelo TCP/IP?", respuesta:"4 capas", tema:2, distractores:["7 capas", "5 capas", "3 capas"]},
+      {texto:"¿Qué protocolos/tecnologías utiliza la capa de Enlace (OSI)?", respuesta:"PING, Ethernet, HDLC, PPP, Frame Relay, ATM, MAC/LLC", tema:2, distractores:["HTTP, FTP, TCP", "IP, ICMP, IGMP", "ADSL, VDSL"]},
+      {texto:"¿Qué tecnologías se usan en la capa Física (OSI)?", respuesta:"ADSL, VDSL, 802.11 PHY", tema:2, distractores:["Ethernet, HDLC, PPP", "IP, ICMP", "HTTP, FTP"]},
+      {texto:"¿Qué dispositivo de la capa de Aplicación (OSI) aparece también como dispositivo de Transporte?", respuesta:"Firewall", tema:2, distractores:["Router", "Switch", "Hub"]},
+      {texto:"Además de segmentar y reensamblar paquetes, ¿qué otras funciones realiza la capa de Transporte?", respuesta:"controla el flujo, establece conexiones y detecta/recupera errores", tema:2, distractores:["enruta, direcciona, fragmenta", "presenta, cifra, comprime", "sincroniza, diálogo, tokens"]},
+      // --- TEMA 3 (11 preguntas) ---
+      {texto:"¿Qué artículo de la CE regula la seguridad pública?", respuesta:"Art. 104", tema:3, distractores:["Art. 149.1.29ª", "Art. 1 LO 2/1986", "Art. 97 CE"]},
+      {texto:"¿Qué ley regula las Fuerzas y Cuerpos de Seguridad?", respuesta:"LO 2/1986", tema:3, distractores:["LO 4/2015", "LO 3/2018", "LO 7/2021"]},
+      {texto:"¿Qué artículo de la CE establece la competencia exclusiva del Estado en seguridad?", respuesta:"Art. 149.1.29ª", tema:3, distractores:["Art. 104", "Art. 1 LO 2/1986", "Art. 148"]},
+      {texto:"¿Quién ejerce el mantenimiento de la seguridad pública?", respuesta:"el Gobierno de la Nación", tema:3, distractores:["las Comunidades Autónomas", "los Ayuntamientos", "el Rey"]},
+      {texto:"¿Quién ejerce la función ejecutiva en materia de seguridad?", respuesta:"todas las Administraciones Públicas, dentro de sus competencias", tema:3, distractores:["solo el Estado", "solo las CCAA", "solo los Ayuntamientos"]},
+      {texto:"¿A través de quién se ejecuta la seguridad pública?", respuesta:"las Fuerzas y Cuerpos de Seguridad", tema:3, distractores:["el Ejército", "la Policía Judicial", "las empresas de seguridad privada"]},
+      {texto:"¿Cuáles son los tres niveles de las FCS?", respuesta:"FCSE, Policías Autonómicas y Policías Locales", tema:3, distractores:["FCSE y Policías Locales", "FCSE, Guardia Civil y Policía Nacional", "Policías Autonómicas y Locales"]},
+      {texto:"¿Qué cuerpos integran las FCSE?", respuesta:"Cuerpo Nacional de Policía y Guardia Civil", tema:3, distractores:["Policía Nacional y Policías Autonómicas", "Guardia Civil y Policías Locales", "CNP y Policías Autonómicas"]},
+      {texto:"¿Cómo pueden configurarse las Policías Autonómicas?", respuesta:"como cuerpos propios o como unidades adscritas", tema:3, distractores:["como policías locales o autonómicas", "como unidades dependientes de la DGP", "como cuerpos de élite"]},
+      {texto:"¿Qué administración tiene competencia sobre las Policías Locales?", respuesta:"los Ayuntamientos", tema:3, distractores:["el Estado", "la Comunidad Autónoma", "la Diputación Provincial"]},
+      {texto:"¿Qué dos artículos constituyen la base normativa del esquema de seguridad pública en España?", respuesta:"Art. 104 CE y Art. 1 LO 2/1986 (LOFCS)", tema:3, distractores:["Art. 149 CE y Art. 2 LO 2/1986", "Art. 97 CE y Art. 1 LO 4/2015", "Art. 1 LO 2/1986 y Art. 35 LO 5/2014"]},
+      // --- TEMA 4 (7 preguntas) ---
+      {texto:"¿Quién es el mando superior de las FCSE?", respuesta:"el Ministerio del Interior", tema:4, distractores:["la Secretaría de Estado de Seguridad", "la Presidencia del Gobierno", "el Delegado del Gobierno"]},
+      {texto:"¿Quién ejerce el mando de las FCSE?", respuesta:"la Secretaría de Estado de Seguridad (SES)", tema:4, distractores:["el Ministerio del Interior", "la Dirección General de Policía", "el Delegado del Gobierno"]},
+      {texto:"Según la LO 2/1986, ¿quién ejerce el mando directo de las FCSE?", respuesta:"el Delegado/Subdelegado del Gobierno", tema:4, distractores:["la Dirección General de Policía", "la Secretaría de Estado de Seguridad", "el Ministerio del Interior"]},
+      {texto:"Según la LO 9/2015, ¿quién ejerce el mando directo de las FCSE?", respuesta:"la DGP bajo autoridad del SES", tema:4, distractores:["el Delegado del Gobierno", "el Ministerio del Interior", "el Presidente del Gobierno"]},
+      {texto:"¿Qué dirige el Gobierno en materia de seguridad según la CE?", respuesta:"la política exterior e interior, la administración civil y militar y la defensa del Estado", tema:4, distractores:["solo la política interior", "la potestad reglamentaria", "la defensa del Estado"]},
+      {texto:"Además de dirigir la política interior y exterior, ¿qué ejerce el Gobierno?", respuesta:"la función ejecutiva y la potestad reglamentaria", tema:4, distractores:["la política exterior", "la administración civil", "la defensa del Estado"]},
+      {texto:"¿De acuerdo con qué ejerce el Gobierno la potestad reglamentaria?", respuesta:"la Constitución y las leyes", tema:4, distractores:["la Constitución y los reglamentos", "las leyes y los tratados", "solo la Constitución"]},
+      // --- TEMA 5 (22 preguntas) ---
+      {texto:"¿Qué artículo regula las funciones del Jefe de Seguridad?", respuesta:"Art. 35 de la Ley 5/2014", tema:5, distractores:["Art. 36", "Art. 34", "Art. 37"]},
+      {texto:"¿Qué artículo regula las funciones del Director de Seguridad?", respuesta:"Art. 36 de la Ley 5/2014", tema:5, distractores:["Art. 35", "Art. 34", "Art. 37"]},
+      {texto:"¿En qué ámbito ejerce sus funciones el Jefe de Seguridad?", respuesta:"en la empresa de seguridad en cuya plantilla está integrado", tema:5, distractores:["en la entidad contratante", "en cualquier empresa de seguridad", "en la empresa que lo contrata como autónomo"]},
+      {texto:"¿En qué ámbito ejerce sus funciones el Director de Seguridad?", respuesta:"en la empresa o entidad en la que presta sus servicios", tema:5, distractores:["en la empresa de seguridad", "en la entidad pública", "en la empresa que lo contrata"]},
+      {texto:"Según el Art. 35 (apartado a), ¿qué función corresponde al Jefe de Seguridad sobre situaciones de riesgo?", respuesta:"análisis de situaciones de riesgo y planificación/programación de actuaciones", tema:5, distractores:["organización del personal", "control de formación", "coordinación con FCS"]},
+      {texto:"Según el Art. 35 (apartado b), ¿qué función corresponde al Jefe de Seguridad sobre el personal?", respuesta:"organización, dirección e inspección del personal y servicios de seguridad privada", tema:5, distractores:["análisis de riesgos", "propuesta de sistemas", "control de formación"]},
+      {texto:"Según el Art. 35 (apartado c), ¿qué función corresponde al Jefe de Seguridad sobre los sistemas de seguridad?", respuesta:"propuesta de sistemas de seguridad y control de su funcionamiento, pudiendo validarlos provisionalmente", tema:5, distractores:["análisis de riesgos", "organización del personal", "coordinación con FCS"]},
+      {texto:"Según el Art. 35 (apartado d), ¿qué función corresponde al Jefe de Seguridad sobre la formación?", respuesta:"control de la formación permanente del personal y propuesta de medidas para su cumplimiento", tema:5, distractores:["organización del personal", "propuesta de sistemas", "análisis de riesgos"]},
+      {texto:"Según el Art. 35 (apartado e), ¿qué función corresponde al Jefe de Seguridad en emergencias?", respuesta:"coordinación de los servicios de seguridad con protección civil en emergencias, catástrofes o calamidad pública", tema:5, distractores:["garantía colaboración con FCS", "supervisión normativa", "custodia armas"]},
+      {texto:"Según el Art. 35 (apartado f), ¿qué función corresponde al Jefe de Seguridad respecto a las FCS?", respuesta:"garantía de la colaboración con las Fuerzas y Cuerpos de Seguridad", tema:5, distractores:["coordinación con protección civil", "supervisión normativa", "custodia armas"]},
+      {texto:"Según el Art. 35 (apartado g), ¿qué función corresponde al Jefe de Seguridad respecto a la normativa?", respuesta:"supervisión de la observancia de la normativa de seguridad privada aplicable", tema:5, distractores:["organización del personal", "análisis de riesgos", "coordinación con FCS"]},
+      {texto:"Según el Art. 35 (apartado h), ¿qué función corresponde al Jefe de Seguridad respecto a las armas?", respuesta:"responsabilidad sobre la custodia y traslado de armas de la empresa", tema:5, distractores:["supervisión normativa", "garantía colaboración FCS", "coordinación protección civil"]},
+      {texto:"Según el Art. 36 (punto 1), ¿qué función corresponde al Director de Seguridad sobre situaciones de riesgo?", respuesta:"identificación, análisis y evaluación de situaciones de riesgo que afecten a personas y al patrimonio", tema:5, distractores:["planificación, organización y control", "organización recursos", "comprobación homologación"]},
+      {texto:"Según el Art. 36 (punto 2), ¿qué función corresponde al Director de Seguridad sobre la prevención?", respuesta:"planificación, organización y control de actuaciones para prevenir, proteger y reducir riesgos mediante planes de seguridad", tema:5, distractores:["identificación y análisis de riesgos", "organización recursos", "comprobación homologación"]},
+      {texto:"Según el Art. 36 (punto 3), ¿qué función corresponde al Director de Seguridad sobre los recursos?", respuesta:"organización, dirección, inspección y administración de servicios y recursos de seguridad privada", tema:5, distractores:["identificación de riesgos", "planificación de actuaciones", "comprobación homologación"]},
+      {texto:"Según el Art. 36 (punto 4), ¿qué función corresponde al Director de Seguridad sobre la homologación?", respuesta:"comprobación de que los sistemas de seguridad y empresas contratadas cumplen las exigencias de homologación", tema:5, distractores:["control funcionamiento y mantenimiento", "comprobaciones personal", "validación provisional"]},
+      {texto:"Según el Art. 36 (punto 5), ¿qué función corresponde al Director de Seguridad sobre el mantenimiento?", respuesta:"control del funcionamiento y mantenimiento de los sistemas de seguridad privada", tema:5, distractores:["comprobación homologación", "comprobaciones personal", "validación provisional"]},
+      {texto:"Según el Art. 36 (punto 6), ¿qué función corresponde al Director de Seguridad sobre el acceso de personal?", respuesta:"comprobaciones sobre el personal que precise acceder a áreas o informaciones", tema:5, distractores:["control funcionamiento", "comprobación homologación", "validación provisional"]},
+      {texto:"Según el Art. 36 (punto 7), ¿qué función corresponde al Director de Seguridad sobre la validación provisional?", respuesta:"validación provisional de medidas de seguridad hasta la comprobación de la Administración", tema:5, distractores:["comprobación homologación", "control mantenimiento", "comprobaciones personal"]},
+      {texto:"Según el Art. 36 (punto 8), ¿qué función corresponde al Director de Seguridad respecto a las FCS?", respuesta:"comunicación a las FCS de circunstancias o informaciones relevantes para la seguridad ciudadana", tema:5, distractores:["comprobación homologación", "control mantenimiento", "validación provisional"]},
+      {texto:"Según el Art. 36 (punto 9), ¿qué función corresponde al Director de Seguridad respecto a la interlocución?", respuesta:"interlocución y enlace con la Administración, especialmente con las FCS", tema:5, distractores:["comunicación FCS", "validación provisional", "comprobación personal"]},
+      {texto:"¿Qué delitos NO castiga el Código Penal en su fase de actos preparatorios, según la nota relacionada?", respuesta:"el hurto, el allanamiento de morada y los daños", tema:5, distractores:["el robo, la extorsión y el homicidio", "los delitos contra la Hacienda Pública y la Seguridad Social", "los delitos de terrorismo y rebelión"]},
+      // --- TEMA 6: Extranjería (34 preguntas) ---
+      {texto:"¿Cuántos años de duración tiene el arraigo familiar?", respuesta:"5 años", tema:6, distractores:["1 año", "3 años", "2 años"]},
+      {texto:"¿Cuántos años de duración tiene el resto de arraigos (no familiar)?", respuesta:"1 año", tema:6, distractores:["5 años", "2 años", "3 años"]},
+      {texto:"¿Cuánto tiempo prescriben las infracciones graves en la LO 4/2000 de Extranjería?", respuesta:"2 años", tema:6, distractores:["1 año", "3 años", "6 meses"]},
+      {texto:"¿Cuánto tiempo de validez tiene el visado de búsqueda de empleo?", respuesta:"12 meses", tema:6, distractores:["6 meses", "18 meses", "24 meses"]},
+      {texto:"¿Cuánto tiempo de ausencia de España provoca la pérdida de residencia permanente (régimen comunitario)?", respuesta:"más de 2 años consecutivos", tema:6, distractores:["1 año", "3 años", "6 meses"]},
+      {texto:"¿Plazo para solicitar el Certificado de Registro o la Tarjeta de Familiar de la UE?", respuesta:"3 meses desde la entrada en España", tema:6, distractores:["1 mes", "6 meses", "1 año"]},
+      {texto:"¿Tras cuántos años de residencia legal y continuada se obtiene la residencia permanente del comunitario?", respuesta:"5 años", tema:6, distractores:["3 años", "10 años", "1 año"]},
+      {texto:"¿Quién emite el informe previo para expulsar a un comunitario?", respuesta:"la Abogacía del Estado de la provincia", tema:6, distractores:["el Delegado del Gobierno", "el Ministerio Fiscal", "el Secretario de Estado"]},
+      {texto:"¿A qué ciudadanos abarca el RD 240/2007?", respuesta:"ciudadanos de la UE, EEE y Suiza (no a los británicos, por el Brexit)", tema:6, distractores:["ciudadanos de la UE y EEE (incluido Reino Unido)", "ciudadanos de la UE y Suiza (incluido Reino Unido)", "ciudadanos de la UE, EEE, Suiza y Reino Unido"]},
+      {texto:"¿Puede un hijo mayor de 21 años de un comunitario ser beneficiario?", respuesta:"Sí, si vive a cargo del comunitario o es incapaz", tema:6, distractores:["No, nunca", "Sí, hasta 25 años", "Sí, si está soltero"]},
+      {texto:"¿Cuánto tiempo de convivencia continuada se exige para la pareja de hecho en régimen comunitario?", respuesta:"1 año (o menos si hay descendencia común)", tema:6, distractores:["2 años", "3 años", "6 meses"]},
+      {texto:"¿Cuándo es obligatoria la TIE?", respuesta:"para permanecer en España más de 6 meses", tema:6, distractores:["para más de 3 meses", "para más de 1 año", "para cualquier estancia"]},
+      {texto:"¿Necesitan TIE los trabajadores de temporada?", respuesta:"No necesitan TIE", tema:6, distractores:["Sí, siempre", "Sí, si superan 6 meses", "Sí, si cobran nómina"]},
+      {texto:"¿Necesitan TIE los trabajadores transfronterizos, aunque estén menos de 6 meses?", respuesta:"Sí, siempre la necesitan", tema:6, distractores:["No, porque no llegan a 6 meses", "Sí, si trabajan más de 3 meses", "No, si residen en otro país"]},
+      {texto:"¿Plazo para solicitar la TIE desde la autorización?", respuesta:"1 mes", tema:6, distractores:["3 meses", "15 días", "2 meses"]},
+      {texto:"¿Hasta cuántos meses puede autorizar trabajar el visado de temporada, dentro de un periodo de 12 meses?", respuesta:"9 meses", tema:6, distractores:["6 meses", "12 meses", "3 meses"]},
+      {texto:"¿A quién se notifica la duda de edad de un MENA?", respuesta:"al Ministerio Fiscal", tema:6, distractores:["al Delegado del Gobierno", "al Juez de Menores", "a la Fiscalía de la Comunidad Autónoma"]},
+      {texto:"¿Plazo máximo para inscribir a un MENA en el Registro MENA, aunque haya duda de edad?", respuesta:"24 horas", tema:6, distractores:["48 horas", "72 horas", "12 horas"]},
+      {texto:"¿Cuántos días mínimos dura el período de reflexión para víctimas de TSH?", respuesta:"90 días", tema:6, distractores:["30 días", "60 días", "120 días"]},
+      {texto:"¿En qué plazo las FCS elevan la propuesta en casos de TSH?", respuesta:"48 horas", tema:6, distractores:["24 horas", "72 horas", "12 horas"]},
+      {texto:"¿En qué plazo resuelve el Delegado/Subdelegado en casos de TSH (fuera de un CIE)?", respuesta:"5 días", tema:6, distractores:["3 días", "7 días", "10 días"]},
+      {texto:"¿En qué plazo resuelve el Delegado/Subdelegado en casos de TSH si la persona está en un CIE?", respuesta:"24 horas", tema:6, distractores:["48 horas", "72 horas", "12 horas"]},
+      {texto:"Si el Delegado/Subdelegado no resuelve en plazo en un caso de TSH, ¿qué ocurre?", respuesta:"silencio positivo", tema:6, distractores:["silencio negativo", "caducidad del procedimiento", "se prorroga el plazo"]},
+      {texto:"¿Qué porcentaje del IPREM se exige al reagrupante en la reagrupación familiar?", respuesta:"400% del IPREM", tema:6, distractores:["300%", "500%", "200%"]},
+      {texto:"¿Qué porcentaje del IPREM se exige por cada familiar reagrupado?", respuesta:"100% del IPREM", tema:6, distractores:["50%", "150%", "200%"]},
+      {texto:"¿Computan las ayudas de la Seguridad Social como medios económicos para la reagrupación?", respuesta:"No, no computan las ayudas de la Seguridad Social", tema:6, distractores:["Sí, siempre", "Sí, si son estructurales", "Sí, si son de carácter familiar"]},
+      {texto:"¿A partir de qué edad se considera ascendiente reagrupable con carácter general?", respuesta:"más de 65 años (excepcionalmente menos, por razones humanitarias)", tema:6, distractores:["más de 60 años", "más de 70 años", "más de 75 años"]},
+      {texto:"¿Qué visado es de tránsito aeroportuario (solo zona internacional)?", respuesta:"Visado Tipo A", tema:6, distractores:["Visado Tipo B", "Visado Tipo C", "Visado Tipo D"]},
+      {texto:"¿Qué visado es de tránsito (atravesar territorio)?", respuesta:"Visado Tipo B", tema:6, distractores:["Visado Tipo A", "Visado Tipo C", "Visado Tipo D"]},
+      {texto:"¿Qué visado es de estancia corta (hasta 90 días en un periodo de 180)?", respuesta:"Visado Tipo C", tema:6, distractores:["Visado Tipo A", "Visado Tipo B", "Visado Tipo D"]},
+      {texto:"¿Qué visado es de larga duración (más de 90 días)?", respuesta:"Visado Tipo D", tema:6, distractores:["Visado Tipo A", "Visado Tipo B", "Visado Tipo C"]},
+      {texto:"¿Qué órgano emite el informe anual sobre integración de inmigrantes?", respuesta:"el Foro para la Integración Social de los Inmigrantes", tema:6, distractores:["el Observatorio del Racismo y la Xenofobia", "la Comisión Laboral Tripartita", "el Consejo de Estado"]},
+      {texto:"¿Qué órgano emite el informe anual sobre racismo y xenofobia?", respuesta:"el Observatorio Español del Racismo y la Xenofobia", tema:6, distractores:["el Foro para la Integración Social", "la Comisión Laboral Tripartita", "el Defensor del Pueblo"]},
+      {texto:"¿Qué órgano emite el informe semestral sobre inmigración?", respuesta:"la Comisión Laboral Tripartita de Inmigración", tema:6, distractores:["el Foro para la Integración Social", "el Observatorio del Racismo", "el Consejo de Estado"]},
+      // --- TEMA 7: Infraestructuras Críticas (30 preguntas) ---
+      {texto:"¿Quién elabora el PNPIC (Plan Nacional de Protección de Infraestructuras Críticas)?", respuesta:"el Ministerio del Interior, a través de la SES", tema:7, distractores:["la SES", "el CNPIC", "el Operador Crítico"]},
+      {texto:"¿Quién aprueba el PNPIC?", respuesta:"la SES", tema:7, distractores:["el Ministerio del Interior", "el CNPIC", "el Consejo de Ministros"]},
+      {texto:"¿Quién revisa el PNPIC?", respuesta:"la SES", tema:7, distractores:["el Ministerio del Interior", "el CNPIC", "el Operador Crítico"]},
+      {texto:"¿Quién actualiza el PNPIC?", respuesta:"el CNPIC, con aprobación expresa de la SES", tema:7, distractores:["la SES", "el Ministerio del Interior", "el Operador Crítico"]},
+      {texto:"¿Quién elabora el PPE (Plan de Protección Específico)?", respuesta:"el Operador Crítico (OC)", tema:7, distractores:["la SES", "el CNPIC", "el Cuerpo Policial"]},
+      {texto:"¿Cuántos PPE hay por cada infraestructura crítica?", respuesta:"1 PPE por cada IC", tema:7, distractores:["1 PPE por cada operador", "tantos como determine el CNPIC", "1 por cada sector"]},
+      {texto:"¿Quién aprueba el PPE?", respuesta:"la SES, como órgano delegado", tema:7, distractores:["el Operador Crítico", "el CNPIC", "la Delegación del Gobierno"]},
+      {texto:"¿En qué plazo debe notificarse la resolución de aprobación del PPE?", respuesta:"máximo 2 meses", tema:7, distractores:["1 mes", "3 meses", "6 meses"]},
+      {texto:"¿Qué informe es preceptivo y previo para la aprobación del PPE?", respuesta:"informe de la Delegación del Gobierno en la CCAA u órgano competente, a través del CNPIC", tema:7, distractores:["informe de la SES", "informe del CNPIC", "informe del Operador Crítico"]},
+      {texto:"¿Plazo para presentar el PPE tras la aprobación del respectivo PSO?", respuesta:"4 meses", tema:7, distractores:["2 meses", "6 meses", "12 meses"]},
+      {texto:"¿Quién revisa el PPE?", respuesta:"el OC", tema:7, distractores:["la SES", "el CNPIC", "la Delegación del Gobierno"]},
+      {texto:"¿Quién aprueba la revisión del PPE?", respuesta:"la Delegación del Gobierno en la CCAA y el CNPIC", tema:7, distractores:["la SES", "el OC", "el Ministerio del Interior"]},
+      {texto:"¿Quién actualiza el PPE?", respuesta:"el OC, con aprobación expresa del CNPIC", tema:7, distractores:["la SES", "el CNPIC", "la Delegación del Gobierno"]},
+      {texto:"¿Quién elabora el PAO (Plan de Apoyo Operativo)?", respuesta:"el Cuerpo Policial Estatal o Autonómico", tema:7, distractores:["el OC", "la SES", "el CNPIC"]},
+      {texto:"¿Cuántos PAO hay por cada infraestructura crítica?", respuesta:"1 PAO por cada IC", tema:7, distractores:["1 PAO por cada sector", "1 PAO por cada CCAA", "tantos como operadores críticos"]},
+      {texto:"¿Quién coordina el PAO?", respuesta:"el CNPIC", tema:7, distractores:["la SES", "el OC", "el Cuerpo Policial"]},
+      {texto:"¿Quién aprueba el PAO?", respuesta:"la Delegación del Gobierno en la CCAA u órgano competente", tema:7, distractores:["la SES", "el CNPIC", "el OC"]},
+      {texto:"¿Quién revisa el PAO?", respuesta:"el Cuerpo Policial Estatal o Autonómico", tema:7, distractores:["el OC", "la SES", "el CNPIC"]},
+      {texto:"¿Quién elabora el PES (Plan Estratégico Sectorial)?", respuesta:"el Grupo de Trabajo Interdepartamental (GTI)", tema:7, distractores:["el OC", "la SES", "el CNPIC"]},
+      {texto:"¿Quién aprueba el PES?", respuesta:"la Comisión Nacional para la Protección de las IC", tema:7, distractores:["la SES", "el CNPIC", "el Consejo de Ministros"]},
+      {texto:"¿Cada cuánto tiempo se revisa el PES?", respuesta:"cada 2 años", tema:7, distractores:["cada 1 año", "cada 3 años", "cada 5 años"]},
+      {texto:"¿En qué plazo desde la entrada en vigor del Real Decreto debe elaborarse el PES?", respuesta:"12 meses", tema:7, distractores:["6 meses", "18 meses", "24 meses"]},
+      {texto:"¿Quién elabora el PSO (Plan de Seguridad del Operador)?", respuesta:"el OC", tema:7, distractores:["la SES", "el CNPIC", "el Cuerpo Policial"]},
+      {texto:"¿Quién supervisa el PSO?", respuesta:"la Delegación del Gobierno en la CCAA u órgano competente", tema:7, distractores:["la SES", "el CNPIC", "el OC"]},
+      {texto:"¿Plazo para presentar el PSO desde la notificación de designación como OC?", respuesta:"6 meses", tema:7, distractores:["3 meses", "4 meses", "12 meses"]},
+      {texto:"¿Cada cuántos años se revisa el PSO?", respuesta:"cada 5 años", tema:7, distractores:["cada 1 año", "cada 2 años", "cada 3 años"]},
+      {texto:"¿Quién actualiza el PSO?", respuesta:"el OC, con aprobación expresa del CNPIC", tema:7, distractores:["la SES", "el CNPIC", "la Delegación del Gobierno"]},
+      {texto:"¿Qué planes del sistema de protección de IC tienen difusión confidencial?", respuesta:"el PPE, el PAO y el PSO", tema:7, distractores:["el PNPIC (Anexo 1) y el PES", "solo el PPE", "solo el PSO"]},
+      {texto:"¿Qué planes del sistema de protección de IC tienen difusión limitada?", respuesta:"el PNPIC (Anexo 1) y el PES", tema:7, distractores:["el PPE, el PAO y el PSO", "solo el PNPIC", "solo el PES"]},
+      {texto:"¿Qué ocurre automáticamente si se modifican datos relevantes de un PPE, PAO o PSO?", respuesta:"se obliga a una actualización automática del plan", tema:7, distractores:["se inicia un nuevo procedimiento", "se suspende la protección", "se requiere nueva aprobación"]},
+      // --- TEMA 8: Prescripciones comparadas (37 preguntas) ---
+      {texto:"¿Cuánto prescribe una infracción leve en la LO 4/2015 de Seguridad Ciudadana?", respuesta:"6 meses", tema:8, distractores:["1 año", "3 meses", "2 años"]},
+      {texto:"¿Cuánto prescribe una infracción grave en la LO 4/2015 de Seguridad Ciudadana?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 años"]},
+      {texto:"¿Cuánto prescribe una infracción muy grave en la LO 4/2015?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "4 años"]},
+      {texto:"¿Cuánto prescribe una sanción leve en la LO 4/2015?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 años"]},
+      {texto:"¿Cuánto prescribe una sanción grave en la LO 4/2015?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "4 años"]},
+      {texto:"¿Cuánto prescribe una sanción muy grave en la LO 4/2015?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una infracción leve en la LO 4/2000 de Extranjería?", respuesta:"6 meses", tema:8, distractores:["1 año", "3 meses", "2 años"]},
+      {texto:"¿Cuánto prescribe una infracción grave en la LO 4/2000 de Extranjería?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "6 meses"]},
+      {texto:"¿Cuánto prescribe una infracción muy grave en la LO 4/2000 de Extranjería?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una sanción leve en la LO 4/2000 de Extranjería?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 años"]},
+      {texto:"¿Cuánto prescribe una sanción grave en la LO 4/2000 de Extranjería?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una sanción muy grave en la LO 4/2000 de Extranjería?", respuesta:"5 años", tema:8, distractores:["3 años", "4 años", "6 años"]},
+      {texto:"¿Cuánto prescribe una infracción leve en la Ley 5/2014 de Seguridad Privada?", respuesta:"6 meses", tema:8, distractores:["1 año", "3 meses", "2 años"]},
+      {texto:"¿Cuánto prescribe una infracción grave en la Ley 5/2014 de Seguridad Privada?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 años"]},
+      {texto:"¿Cuánto prescribe una infracción muy grave en la Ley 5/2014 de Seguridad Privada?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "4 años"]},
+      {texto:"¿Cuánto prescribe una sanción leve en la Ley 5/2014 de Seguridad Privada?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 años"]},
+      {texto:"¿Cuánto prescribe una sanción grave en la Ley 5/2014 de Seguridad Privada?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "4 años"]},
+      {texto:"¿Cuánto prescribe una sanción muy grave en la Ley 5/2014 de Seguridad Privada?", respuesta:"4 años", tema:8, distractores:["3 años", "5 años", "6 años"]},
+      {texto:"¿Cuánto prescribe una infracción leve en la LO 4/2010 Régimen Disciplinario CNP?", respuesta:"1 mes", tema:8, distractores:["6 meses", "1 año", "2 años"]},
+      {texto:"¿Cuánto prescribe una infracción grave en la LO 4/2010?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "1 mes"]},
+      {texto:"¿Cuánto prescribe una infracción muy grave en la LO 4/2010?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una sanción leve en la LO 4/2010?", respuesta:"1 mes", tema:8, distractores:["6 meses", "1 año", "2 años"]},
+      {texto:"¿Cuánto prescribe una sanción grave en la LO 4/2010?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "1 mes"]},
+      {texto:"¿Cuánto prescribe una sanción muy grave en la LO 4/2010?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una infracción leve en la LO 3/2018 Protección de Datos?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 años"]},
+      {texto:"¿Cuánto prescribe una infracción grave en la LO 3/2018?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "4 años"]},
+      {texto:"¿Cuánto prescribe una infracción muy grave en la LO 3/2018?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una sanción leve en la LO 3/2018?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 años"]},
+      {texto:"¿Cuánto prescribe una sanción grave en la LO 3/2018?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "4 años"]},
+      {texto:"¿Cuánto prescribe una sanción muy grave en la LO 3/2018?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una infracción leve en la LO 7/2021 (ámbito penal)?", respuesta:"6 meses", tema:8, distractores:["1 año", "3 meses", "2 años"]},
+      {texto:"¿Cuánto prescribe una infracción grave en la LO 7/2021?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "6 meses"]},
+      {texto:"¿Cuánto prescribe una infracción muy grave en la LO 7/2021?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      {texto:"¿Cuánto prescribe una sanción leve en la LO 7/2021?", respuesta:"1 año", tema:8, distractores:["6 meses", "2 años", "3 meses"]},
+      {texto:"¿Cuánto prescribe una sanción grave en la LO 7/2021?", respuesta:"2 años", tema:8, distractores:["1 año", "3 años", "6 meses"]},
+      {texto:"¿Cuánto prescribe una sanción muy grave en la LO 7/2021?", respuesta:"3 años", tema:8, distractores:["2 años", "4 años", "5 años"]},
+      // --- TEMA 9: Derechos Humanos (68 preguntas) ---
+      {texto:"¿Cómo se llama la característica de los DD.HH. que indica que nacen con la persona y no son concesión de ningún Estado?", respuesta:"Innatos", tema:9, distractores:["Inherentes", "Irrenunciables", "Prevalentes"]},
+      {texto:"¿Cómo se llama la característica que indica que los DD.HH. son parte de la esencia de la persona?", respuesta:"Inherentes", tema:9, distractores:["Innatos", "Absolutos", "Progresivos"]},
+      {texto:"¿Cómo se llaman las características que indican que los DD.HH. forman un conjunto interrelacionado donde el avance de uno impulsa a los demás?", respuesta:"Indivisibles e interdependientes", tema:9, distractores:["Independientes e inviolables", "Imprescriptibles e inmutables", "Inalienables e intransferibles"]},
+      {texto:"¿Cómo se llaman las características que indican que los DD.HH. no dependen de ningún poder y no pueden atacarse sin justa causa?", respuesta:"Independientes e inviolables", tema:9, distractores:["Indivisibles e interdependientes", "Imprescriptibles e inmutables", "Inalienables e intransferibles"]},
+      {texto:"¿Cómo se llaman las características que indican que los DD.HH. no caducan con el tiempo?", respuesta:"Imprescriptibles e inmutables", tema:9, distractores:["Indivisibles e interdependientes", "Independientes e inviolables", "Inalienables e intransferibles"]},
+      {texto:"¿Cómo se llaman las características que indican que los DD.HH. pertenecen a todas las personas, en todo lugar y momento?", respuesta:"Universales, iguales y no discriminatorios", tema:9, distractores:["Indivisibles e interdependientes", "Inalienables e intransferibles", "Imprescriptibles e inmutables"]},
+      {texto:"¿Cómo se llaman las características que indican que los DD.HH. no se pueden suprimir (salvo garantías procesales)?", respuesta:"Inalienables e intransferibles", tema:9, distractores:["Indivisibles e interdependientes", "Independientes e inviolables", "Imprescriptibles e inmutables"]},
+      {texto:"¿Cómo se llama la característica que indica que los DD.HH. son reclamables en todo momento?", respuesta:"Absolutos", tema:9, distractores:["Prevalentes", "Irrenunciables", "Progresivos"]},
+      {texto:"¿Cómo se llama la característica que indica que ni la propia persona puede renunciar a los DD.HH.?", respuesta:"Irrenunciables", tema:9, distractores:["Innatos", "Absolutos", "Prevalentes"]},
+      {texto:"¿Cómo se llama la característica que indica que los DD.HH. priman sobre otras normas?", respuesta:"Prevalentes", tema:9, distractores:["Absolutos", "Irrenunciables", "Inherentes"]},
+      {texto:"¿Cómo se llama la característica que indica que los DD.HH. evolucionan y se amplían con el tiempo?", respuesta:"Progresivos", tema:9, distractores:["Imprescriptibles e inmutables", "Inherentes", "Absolutos"]},
+      {texto:"¿Qué generación de DD.HH. corresponde a los derechos civiles y políticos?", respuesta:"1ª generación", tema:9, distractores:["2ª generación", "3ª generación", "4ª generación"]},
+      {texto:"¿Qué principio rige la 1ª generación de DD.HH.?", respuesta:"Libertad", tema:9, distractores:["Igualdad", "Fraternidad", "Diversidad"]},
+      {texto:"¿Qué generación de DD.HH. corresponde a los derechos económicos, sociales y culturales?", respuesta:"2ª generación", tema:9, distractores:["1ª generación", "3ª generación", "4ª generación"]},
+      {texto:"¿Qué principio rige la 2ª generación de DD.HH.?", respuesta:"Igualdad", tema:9, distractores:["Libertad", "Fraternidad", "Diversidad"]},
+      {texto:"¿Qué generación de DD.HH. corresponde a los derechos de solidaridad o de los pueblos?", respuesta:"3ª generación", tema:9, distractores:["1ª generación", "2ª generación", "4ª generación"]},
+      {texto:"¿Qué principio rige la 3ª generación de DD.HH.?", respuesta:"Fraternidad", tema:9, distractores:["Libertad", "Igualdad", "Diversidad"]},
+      {texto:"¿Qué generación de DD.HH. corresponde a los derechos derivados de avances tecnológicos?", respuesta:"4ª generación", tema:9, distractores:["1ª generación", "2ª generación", "3ª generación"]},
+      {texto:"¿Qué principio rige la 4ª generación de DD.HH.?", respuesta:"Diversidad / globalización", tema:9, distractores:["Libertad", "Igualdad", "Fraternidad"]},
+      {texto:"¿En qué año (aproximado) se sitúa el Código de Hammurabi?", respuesta:"1750 a.C.", tema:9, distractores:["539 a.C.", "1215", "1628"]},
+      {texto:"¿En qué año (aproximado) se sitúa el Cilindro de Ciro?", respuesta:"539 a.C.", tema:9, distractores:["1750 a.C.", "1215", "1689"]},
+      {texto:"¿En qué año se proclamó la Carta Magna (Inglaterra)?", respuesta:"1215", tema:9, distractores:["1628", "1689", "1776"]},
+      {texto:"¿En qué año se firmó la Petition of Right (Inglaterra)?", respuesta:"1628", tema:9, distractores:["1215", "1689", "1791"]},
+      {texto:"¿En qué año se firmó el Bill of Rights inglés?", respuesta:"1689", tema:9, distractores:["1628", "1776", "1791"]},
+      {texto:"¿En qué año se firmó la Declaración de Virginia / Independencia de EE. UU.?", respuesta:"1776", tema:9, distractores:["1689", "1789", "1791"]},
+      {texto:"¿En qué año se firmó la Declaración de los Derechos del Hombre y del Ciudadano (Francia)?", respuesta:"1789", tema:9, distractores:["1776", "1791", "1945"]},
+      {texto:"¿En qué año se firmó el Bill of Rights de EE. UU.?", respuesta:"1791", tema:9, distractores:["1776", "1789", "1689"]},
+      {texto:"¿En qué año se firmó la Carta de las Naciones Unidas?", respuesta:"1945", tema:9, distractores:["1948", "1950", "1789"]},
+      {texto:"¿En qué año se proclamó la Declaración Universal de los Derechos Humanos (DUDH)?", respuesta:"1948", tema:9, distractores:["1945", "1950", "1966"]},
+      {texto:"¿En qué año se firmó el Convenio Europeo de Derechos Humanos (CEDH)?", respuesta:"1950", tema:9, distractores:["1948", "1961", "1966"]},
+      {texto:"¿En qué año se firmó la Carta Social Europea (Carta de Turín)?", respuesta:"1961", tema:9, distractores:["1950", "1966", "2000"]},
+      {texto:"¿En qué año se firmaron los Pactos Internacionales de DD.HH. (PIDCP y PIDESC)?", respuesta:"1966", tema:9, distractores:["1950", "1961", "1948"]},
+      {texto:"¿Quién clasificó las generaciones de DD.HH. en 1979?", respuesta:"Karel Vasak", tema:9, distractores:["René Cassin", "Hersch Lauterpacht", "Eleanor Roosevelt"]},
+      {texto:"¿En qué año se proclamó la Carta de Derechos Fundamentales de la UE?", respuesta:"2000", tema:9, distractores:["1966", "1961", "1950"]},
+      {texto:"¿Dónde y por quién fue proclamada la DUDH?", respuesta:"en París, por la Asamblea General de la ONU (Palacio de Chaillot)", tema:9, distractores:["en Roma, por el Consejo de Europa", "en Ginebra, por el Consejo de Derechos Humanos", "en Niza, por el Parlamento Europeo"]},
+      {texto:"¿Dónde se firmó el CEDH?", respuesta:"en Roma", tema:9, distractores:["en París", "en Estrasburgo", "en Ginebra"]},
+      {texto:"¿Cuántos artículos tiene la DUDH?", respuesta:"30 artículos (más un preámbulo)", tema:9, distractores:["59 artículos, en 3 títulos", "54 artículos en 7 títulos", "33 artículos"]},
+      {texto:"¿Cuántos artículos tiene el CEDH?", respuesta:"59 artículos, en 3 títulos", tema:9, distractores:["30 artículos (más un preámbulo)", "54 artículos en 7 títulos", "33 artículos"]},
+      {texto:"¿Cuándo firmó España el CEDH y cuándo entró en vigor para España?", respuesta:"Firma: 24 nov. 1977; vigor: 4 oct. 1979", tema:9, distractores:["Firma: 4 feb. 1985; vigor: 20 nov. 1987", "Firma: 12 dic. 2007; vigor: 1 dic. 2009", "Firma: 17 jul. 1998; vigor: 1 jul. 2002"]},
+      {texto:"¿Tiene la DUDH valor jurídico vinculante?", respuesta:"No, solo tiene fuerza moral", tema:9, distractores:["Sí, es vinculante y cuenta con tribunal propio (TEDH)", "Sí, desde la entrada en vigor del Tratado de Lisboa", "No, no es reelegible"]},
+      {texto:"¿Tiene el CEDH valor jurídico vinculante?", respuesta:"Sí, es vinculante y cuenta con tribunal propio (TEDH)", tema:9, distractores:["No, solo tiene fuerza moral", "Sí, pero carece de un tribunal propio", "No, su cumplimiento es solo voluntario"]},
+      {texto:"Además del CEDH, ¿qué instrumentos obligan jurídicamente a los Estados que los ratifican?", respuesta:"los Pactos Internacionales de 1966 (PIDCP y PIDESC)", tema:9, distractores:["la Carta Social Europea (Carta de Turín)", "la Carta de Derechos Fundamentales de la UE", "la Declaración Universal de los Derechos Humanos"]},
+      {texto:"¿Qué órgano de control supervisa el cumplimiento de la DUDH y los Pactos?", respuesta:"el Consejo de DD.HH. (Ginebra) / ACNUDH", tema:9, distractores:["el TEDH (Estrasburgo)", "el TJUE", "la Corte Penal Internacional (CPI)"]},
+      {texto:"¿Qué órgano de control supervisa el cumplimiento del CEDH?", respuesta:"el TEDH (Estrasburgo)", tema:9, distractores:["el Consejo de DD.HH. (Ginebra) / ACNUDH", "el TJUE", "la Corte Penal Internacional (CPI)"]},
+      {texto:"¿Qué órgano de la ONU tiene 47 miembros?", respuesta:"el Consejo de Derechos Humanos", tema:9, distractores:["el Comité contra la Tortura (CAT)", "el Subcomité para la Prevención de la Tortura (SPT)", "el Comité de Derechos Humanos (CCPR)"]},
+      {texto:"¿Dónde tiene su sede el Consejo de Derechos Humanos de la ONU?", respuesta:"Ginebra", tema:9, distractores:["Estrasburgo", "La Haya", "Nueva York"]},
+      {texto:"¿Cuántos años dura el mandato de los miembros del Consejo de Derechos Humanos y es reelegible?", respuesta:"3 años, reelegible 1 vez", tema:9, distractores:["9 años, no reelegible", "4 años, con 1 reelección", "6 años, no renovable"]},
+      {texto:"¿Cuántos años dura el mandato de los jueces del TEDH?", respuesta:"9 años", tema:9, distractores:["3 años", "6 años", "4 años"]},
+      {texto:"¿Es reelegible el mandato de los jueces del TEDH?", respuesta:"No, no es reelegible", tema:9, distractores:["Sí, reelegible 1 vez", "Sí, hasta 2 reelecciones", "Sí, reelección indefinida"]},
+      {texto:"¿Cuántos jueces tiene el TEDH?", respuesta:"1 por Estado Parte (46, tras la expulsión de Rusia en 2022)", tema:9, distractores:["18 magistrados", "10 expertos", "25 miembros"]},
+      {texto:"¿Cuántos expertos tiene el Comité contra la Tortura (CAT)?", respuesta:"10 expertos", tema:9, distractores:["18 expertos", "25 miembros", "47 miembros"]},
+      {texto:"¿Cuántos años dura el mandato del CAT?", respuesta:"4 años", tema:9, distractores:["3 años", "6 años", "9 años"]},
+      {texto:"¿Cuántos miembros tiene el Subcomité para la Prevención de la Tortura (SPT)?", respuesta:"25 miembros", tema:9, distractores:["10 expertos", "18 expertos", "47 miembros"]},
+      {texto:"¿Cuántos años dura el mandato del SPT y cuántas reelecciones permite?", respuesta:"4 años, con 1 reelección", tema:9, distractores:["3 años, reelegible 1 vez", "4 años, no renovable", "hasta 2 reelecciones"]},
+      {texto:"¿Cuántos años dura el mandato del CPT (Comité Europeo para la Prevención de la Tortura)?", respuesta:"4 años", tema:9, distractores:["3 años", "9 años", "6 años"]},
+      {texto:"¿Cuántas reelecciones permite el CPT?", respuesta:"hasta 2 reelecciones", tema:9, distractores:["hasta 1 reelección", "no permite reelección", "hasta 3 reelecciones", "reelección indefinida"]},
+      {texto:"¿Cuántos expertos tiene el Comité de Derechos Humanos (CCPR) del PIDCP?", respuesta:"18 expertos", tema:9, distractores:["10 expertos", "25 miembros", "47 miembros"]},
+      {texto:"¿Cuántos expertos tiene el Comité DESC (CESCR) del PIDESC?", respuesta:"18 expertos", tema:9, distractores:["10 expertos", "25 miembros", "47 miembros"]},
+      {texto:"¿Cuántos años dura el mandato del Comisario/a Europeo/a de Derechos Humanos?", respuesta:"6 años, no renovable", tema:9, distractores:["3 años, reelegible 1 vez", "9 años, no reelegible", "4 años, con 1 reelección"]},
+      {texto:"¿Dónde tiene su sede el Comisario/a Europeo/a de Derechos Humanos?", respuesta:"Estrasburgo", tema:9, distractores:["Ginebra", "La Haya", "Roma"]},
+      {texto:"¿Cuándo se firmó la Convención contra la Tortura (1984)?", respuesta:"10 de diciembre de 1984", tema:9, distractores:["26 de junio de 1987", "18 de diciembre de 2002", "22 de junio de 2006"]},
+      {texto:"¿Cuándo entró en vigor la Convención contra la Tortura?", respuesta:"26 de junio de 1987", tema:9, distractores:["10 de diciembre de 1984", "22 de junio de 2006", "20 de noviembre de 1987"]},
+      {texto:"¿Cuántos artículos tiene la Convención contra la Tortura de 1984?", respuesta:"33 artículos", tema:9, distractores:["30 artículos (más un preámbulo)", "59 artículos, en 3 títulos", "54 artículos en 7 títulos"]},
+      {texto:"¿Cuándo firmó España la Convención contra la Tortura y cuándo entró en vigor para España?", respuesta:"Firma: 4 feb. 1985; vigor: 20 nov. 1987", tema:9, distractores:["Firma: 24 nov. 1977; vigor: 4 oct. 1979", "Firma: 17 jul. 1998; vigor: 1 jul. 2002", "Firma: 12 dic. 2007; vigor: 1 dic. 2009"]},
+      {texto:"¿Cuándo se firmó el Protocolo Facultativo de la Convención contra la Tortura (2002)?", respuesta:"18 de diciembre de 2002", tema:9, distractores:["10 de diciembre de 1984", "22 de junio de 2006", "26 de junio de 1987"]},
+      {texto:"¿Cuándo entró en vigor el Protocolo Facultativo de la Convención contra la Tortura?", respuesta:"22 de junio de 2006", tema:9, distractores:["18 de diciembre de 2002", "26 de junio de 1987", "1 de julio de 2002"]},
+      {texto:"¿Qué órgano crea el Protocolo Facultativo de la Convención contra la Tortura?", respuesta:"el SPT (Subcomité para la Prevención de la Tortura)", tema:9, distractores:["el CAT (Comité contra la Tortura)", "el CPT (Comité Europeo para la Prevención de la Tortura)", "el TEDH (Estrasburgo)"]},
+      {texto:"¿Cuándo entró en vigor la Carta Social Europea (Carta de Turín)?", respuesta:"26 de febrero de 1965", tema:9, distractores:["10 de diciembre de 1984", "1 de diciembre de 2009 (Tratado de Lisboa)", "26 de junio de 1987"]},
+      {texto:"¿A qué Pacto Internacional equivale la Carta Social Europea en el ámbito del Consejo de Europa?", respuesta:"al PIDESC", tema:9, distractores:["al PIDCP", "al CEDH", "a la Carta de Derechos Fundamentales de la UE"]},
+      {texto:"¿Cuándo se firmó la Carta de Derechos Fundamentales de la UE?", respuesta:"12 de diciembre de 2007", tema:9, distractores:["7 de diciembre de 2000", "1 de diciembre de 2009 (Tratado de Lisboa)", "17 de julio de 1998"]},
+      {texto:"¿Cuándo entró en vigor la Carta de Derechos Fundamentales de la UE?", respuesta:"1 de diciembre de 2009 (Tratado de Lisboa)", tema:9, distractores:["12 de diciembre de 2007", "7 de diciembre de 2000", "1 de julio de 2002"]},
+      {texto:"¿Cuántos artículos y títulos tiene la Carta de Derechos Fundamentales de la UE?", respuesta:"54 artículos en 7 títulos", tema:9, distractores:["30 artículos (más un preámbulo)", "59 artículos, en 3 títulos", "33 artículos"]},
+      {texto:"¿Qué órgano controla el cumplimiento de la Carta de Derechos Fundamentales de la UE?", respuesta:"el TJUE", tema:9, distractores:["el TEDH (Estrasburgo)", "el Consejo de DD.HH. (Ginebra) / ACNUDH", "la Corte Penal Internacional (CPI)"]},
+      {texto:"¿Cuándo se firmó el Estatuto de Roma (creación de la CPI)?", respuesta:"17 de julio de 1998", tema:9, distractores:["1 de julio de 2002", "12 de diciembre de 2007", "10 de diciembre de 1984"]},
+      {texto:"¿Cuándo entró en vigor el Estatuto de Roma?", respuesta:"1 de julio de 2002", tema:9, distractores:["17 de julio de 1998", "22 de junio de 2006", "1 de diciembre de 2009 (Tratado de Lisboa)"]},
+      {texto:"¿Dónde tiene su sede la Corte Penal Internacional (CPI)?", respuesta:"La Haya", tema:9, distractores:["Ginebra", "Estrasburgo", "Roma"]},
+      {texto:"¿Cuántos magistrados tiene la CPI?", respuesta:"18 magistrados", tema:9, distractores:["10 expertos", "25 miembros", "1 por Estado Parte (46, tras la expulsión de Rusia en 2022)"]},
+      {texto:"¿Qué institución ejerce el Mecanismo Nacional de Prevención (MNP) en España?", respuesta:"el Defensor del Pueblo", tema:9, distractores:["el Consejo General del Poder Judicial", "la Fiscalía General del Estado", "el Tribunal Constitucional", "el Ministerio del Interior"]},
+      {texto:"¿Cómo ejerce el Defensor del Pueblo el Mecanismo Nacional de Prevención (MNP)?", respuesta:"mediante visitas no anunciadas a centros de privación de libertad", tema:9, distractores:["mediante informes anuales remitidos a las Cortes Generales", "mediante denuncias presentadas ante la Fiscalía", "mediante inspecciones programadas con aviso previo"]},
+      // --- TEMA 10: Desarrollo Sostenible (48 preguntas) ---
+      {texto:"¿Cuál es la definición de desarrollo sostenible según la Comisión Brundtland?", respuesta:"El desarrollo que satisface las necesidades de la generación presente sin comprometer la capacidad de las generaciones futuras para satisfacer sus propias necesidades", tema:10, distractores:["El crecimiento económico ilimitado", "La protección del medio ambiente a toda costa", "El desarrollo tecnológico sin límites"]},
+      {texto:"¿Cuáles son los tres pilares del Desarrollo Sostenible?", respuesta:"Social, económico y ambiental", tema:10, distractores:["Político, social y cultural", "Económico, tecnológico y ecológico", "Ambiental, educativo y sanitario"]},
+      {texto:"¿En qué año se publicó 'Los límites del crecimiento' del Club de Roma?", respuesta:"1972", tema:10, distractores:["1987", "1992", "2015"]},
+      {texto:"¿En qué año se celebró la Conferencia de la ONU sobre el Medio Humano (Estocolmo)?", respuesta:"1972", tema:10, distractores:["1987", "1992", "2012"]},
+      {texto:"¿En qué año se publicó el Informe Brundtland ('Nuestro Futuro Común')?", respuesta:"1987", tema:10, distractores:["1972", "1992", "2015"]},
+      {texto:"¿En qué año se firmó el Protocolo de Montreal sobre la capa de ozono?", respuesta:"1987", tema:10, distractores:["1972", "1992", "2015"]},
+      {texto:"¿En qué año se celebró la Cumbre de la Tierra en Río de Janeiro?", respuesta:"1992", tema:10, distractores:["1972", "1987", "2012"]},
+      {texto:"¿Qué documento se adoptó en la Cumbre de la Tierra de 1992, distinto de la Agenda 2030 de 2015?", respuesta:"la Agenda 21", tema:10, distractores:["la Agenda 2030", "el Programa 21", "el Protocolo de Kioto"]},
+      {texto:"¿Qué convención se adoptó también en la Cumbre de la Tierra de 1992?", respuesta:"la Convención Marco de las Naciones Unidas sobre el Cambio Climático (CMNUCC)", tema:10, distractores:["el Protocolo de Kioto", "el Acuerdo de París", "el Convenio de Estocolmo"]},
+      {texto:"¿Dónde y cuándo se celebró la COP 1, que dio origen a la Conferencia de las Partes?", respuesta:"Berlín, 1995", tema:10, distractores:["Río, 1992", "Kioto, 1997", "París, 2015"]},
+      {texto:"¿En qué año se firmó el Protocolo de Kioto y en qué COP?", respuesta:"1997, en la COP 3 de Kioto", tema:10, distractores:["1992, COP 1", "2015, COP 21", "2000, COP 6"]},
+      {texto:"¿En qué año se establecieron los Objetivos del Milenio?", respuesta:"2000", tema:10, distractores:["1990", "2015", "1987"]},
+      {texto:"¿En qué año se celebró Río+20?", respuesta:"2012", tema:10, distractores:["2002", "2010", "2015"]},
+      {texto:"¿En qué año se adoptó la Agenda 2030 con los 17 ODS?", respuesta:"2015", tema:10, distractores:["2012", "2018", "2000"]},
+      {texto:"¿En qué COP se adoptó el Acuerdo de París?", respuesta:"COP 21", tema:10, distractores:["COP 3", "COP 15", "COP 25"]},
+      {texto:"¿Cuál es el límite de aumento de temperatura establecido en el Acuerdo de París?", respuesta:"+2 °C", tema:10, distractores:["+1.5 °C", "+3 °C", "+4 °C"]},
+      {texto:"Según la Ley 7/2021, ¿qué porcentaje de reducción de gases de efecto invernadero se exige para 2030 (respecto a 1990)?", respuesta:"23%", tema:10, distractores:["30%", "20%", "40%"]},
+      {texto:"Según la Ley 7/2021, ¿qué porcentaje de energías renovables en el consumo final se exige para 2030?", respuesta:"42%", tema:10, distractores:["30%", "50%", "60%"]},
+      {texto:"Según la Ley 7/2021, ¿qué porcentaje de electricidad renovable se exige para 2030?", respuesta:"74%", tema:10, distractores:["50%", "60%", "80%"]},
+      {texto:"Según la Ley 7/2021, ¿qué porcentaje de reducción del consumo de energía primaria se exige para 2030?", respuesta:"39,5%", tema:10, distractores:["30%", "35%", "45%"]},
+      {texto:"¿En qué año se alcanzará la neutralidad climática según la Ley 7/2021?", respuesta:"2050", tema:10, distractores:["2040", "2060", "2030"]},
+      {texto:"¿En qué año se prohíbe la venta de turismos nuevos que emitan CO2, según la Ley 7/2021?", respuesta:"2040", tema:10, distractores:["2030", "2050", "2035"]},
+      {texto:"¿Las ciudades de más de cuántos habitantes deben tener zonas de bajas emisiones?", respuesta:"50.000 habitantes", tema:10, distractores:["20.000", "100.000", "500.000"]},
+      {texto:"¿Qué tres actividades prohíbe la Ley 7/2021 autorizar de nuevo en todo el territorio nacional?", respuesta:"exploración, investigación y explotación de hidrocarburos, carbón y minerales radiactivos", tema:10, distractores:["minería, tala y pesca", "energía nuclear, fracking y carbón", "explotación forestal, agrícola y ganadera"]},
+      {texto:"¿Qué organismo evalúa el conocimiento científico del cambio climático?", respuesta:"el IPCC", tema:10, distractores:["la AEMA", "el PNUD", "la OMM"]},
+      {texto:"¿En qué año se creó el IPCC?", respuesta:"1988", tema:10, distractores:["1972", "1990", "2000"]},
+      {texto:"¿Qué organismos crearon el IPCC?", respuesta:"la OMM y el PNUMA", tema:10, distractores:["la ONU y la UNESCO", "el Banco Mundial y el FMI", "la UE y la OCDE"]},
+      {texto:"¿Dónde tiene su sede la AEMA (Agencia Europea de Medio Ambiente)?", respuesta:"Copenhague", tema:10, distractores:["Bruselas", "Estrasburgo", "Luxemburgo"]},
+      {texto:"¿En qué año se creó la AEMA?", respuesta:"1990", tema:10, distractores:["1987", "1992", "2000"]},
+      {texto:"¿Qué órgano asesor en España se creó para la implementación de la Agenda 2030?", respuesta:"el Consejo de Desarrollo Sostenible", tema:10, distractores:["la Comisión de Sostenibilidad", "el Observatorio de la Sostenibilidad", "el Consejo Nacional del Clima"]},
+      {texto:"¿Qué orden creó el Consejo de Desarrollo Sostenible en España?", respuesta:"la Orden DSA/819/2020", tema:10, distractores:["la Ley 7/2021", "el Real Decreto 3/2022", "la Orden DSA/520/2019"]},
+      {texto:"¿Cuántas vocalías tiene el Consejo de Desarrollo Sostenible en España?", respuesta:"60 vocalías", tema:10, distractores:["30", "45", "75"]},
+      {texto:"¿En qué año se creó el PNUD (Programa de las Naciones Unidas para el Desarrollo)?", respuesta:"1965", tema:10, distractores:["1945", "1990", "1972"]},
+      {texto:"¿En qué año nació el Observatorio de la Sostenibilidad en España?", respuesta:"2014", tema:10, distractores:["2010", "2015", "2020"]},
+      {texto:"¿Qué concepto mide todos los recursos que consume una persona comparado con la capacidad de la Tierra para regenerarlos?", respuesta:"la Huella Ecológica", tema:10, distractores:["la Huella de Carbono", "el IDH", "el PIB verde"]},
+      {texto:"¿Quiénes crearon el concepto de huella ecológica?", respuesta:"Wackernagel y Rees", tema:10, distractores:["Brundtland y Daly", "Sen y Forrester", "Brown y Shiva"]},
+      {texto:"¿En qué año se creó el concepto de huella ecológica?", respuesta:"1990", tema:10, distractores:["1987", "1992", "2000"]},
+      {texto:"¿Qué concepto se centra únicamente en las emisiones de gases de efecto invernadero?", respuesta:"la Huella de Carbono", tema:10, distractores:["la Huella Ecológica", "el IDH", "el PIB verde"]},
+      {texto:"¿Qué índice mide el desarrollo en base a salud, educación y nivel de vida?", respuesta:"el IDH (Índice de Desarrollo Humano)", tema:10, distractores:["el PIB per cápita", "el Coeficiente de Gini", "el Índice de Felicidad"]},
+      {texto:"¿Quién creó el IDH?", respuesta:"el PNUD", tema:10, distractores:["el IPCC", "la AEMA", "el Banco Mundial"]},
+      {texto:"¿En qué año se creó el IDH?", respuesta:"1990", tema:10, distractores:["1987", "1992", "2000"]},
+      {texto:"¿Qué norma internacional establece Sistemas de Gestión Ambiental?", respuesta:"la ISO 14001", tema:10, distractores:["la ISO 9001", "la ISO 50001", "la ISO 26000"]},
+      {texto:"¿Qué sistema comunitario de Ecogestión y Auditoría es más exigente que la ISO 14001?", respuesta:"el EMAS", tema:10, distractores:["el ISO 14004", "el PEFC", "el FSC"]},
+      {texto:"¿Quién fue la presidenta de la comisión que elaboró el Informe Brundtland?", respuesta:"Gro Harlem Brundtland", tema:10, distractores:["Margaret Thatcher", "Indira Gandhi", "Angela Merkel"]},
+      {texto:"¿Quién formuló principios para la sostenibilidad?", respuesta:"Herman Daly", tema:10, distractores:["Lester Brown", "Vandana Shiva", "Jay Forrester"]},
+      {texto:"¿Qué Premio Nobel sirvió de base teórica del IDH?", respuesta:"Amartya Sen", tema:10, distractores:["Milton Friedman", "Friedrich Hayek", "Paul Krugman"]},
+      {texto:"¿Quién creó el modelo World2, base de 'Los límites del crecimiento'?", respuesta:"Jay Forrester", tema:10, distractores:["Dennis Meadows", "Donella Meadows", "John Sterman"]},
+      {texto:"¿Quién fundó el Worldwatch Institute y escribió 'Plan B'?", respuesta:"Lester R. Brown", tema:10, distractores:["Vandana Shiva", "Herman Daly", "Gro Harlem Brundtland"]},
+      // --- TEMA 11: LO 3/2018 (Régimen General) (13 preguntas) ---
+      {texto:"Según la LO 3/2018, ¿a partir de qué edad pueden los menores consentir por sí mismos el tratamiento de sus datos?", respuesta:"14 años", tema:11, distractores:["16 años", "18 años", "13 años"]},
+      {texto:"Para los menores de 14 años, ¿quién debe prestar el consentimiento para el tratamiento de datos?", respuesta:"los titulares de la patria potestad o tutela", tema:11, distractores:["los padres", "el tutor", "el menor, si tiene juicio"]},
+      {texto:"¿Quiénes pueden solicitar acceso, rectificación o supresión de datos de personas fallecidas?", respuesta:"familiares, herederos y personas o instituciones designadas expresamente por el fallecido", tema:11, distractores:["solo los herederos", "solo los familiares", "cualquier ciudadano"]},
+      {texto:"¿Se puede acceder a los datos de un fallecido si él lo prohibió expresamente?", respuesta:"No, salvo que la ley establezca lo contrario", tema:11, distractores:["Sí, siempre", "Sí, si son datos patrimoniales", "Sí, con autorización judicial"]},
+      {texto:"¿Pueden los herederos acceder siempre a los datos de carácter patrimonial del causante, aunque este lo hubiera prohibido?", respuesta:"Sí, los herederos siempre pueden acceder a los datos de carácter patrimonial", tema:11, distractores:["No, nunca", "Sí, si no hay testamento", "No, si el causante lo prohibió"]},
+      {texto:"¿Cuándo se considera atendido el derecho de acceso del afectado?", respuesta:"cuando el responsable proporciona un sistema remoto, directo y seguro", tema:11, distractores:["cuando se envía una copia en papel", "cuando se da respuesta por correo", "cuando se cita al afectado"]},
+      {texto:"¿En qué plazo puede considerarse repetitivo el ejercicio del derecho de acceso?", respuesta:"si se ejerce más de una vez en un plazo de 6 meses", tema:11, distractores:["3 meses", "1 año", "2 meses"]},
+      {texto:"¿Qué tipo de autoridad es la Agencia Española de Protección de Datos (AEPD)?", respuesta:"una autoridad administrativa independiente de ámbito estatal", tema:11, distractores:["un organismo autónomo", "una entidad pública empresarial", "una agencia de la UE"]},
+      {texto:"¿Dónde tiene su sede la AEPD?", respuesta:"Madrid", tema:11, distractores:["Barcelona", "Valencia", "Sevilla"]},
+      {texto:"¿A través de qué ministerio se relaciona la AEPD con el Gobierno?", respuesta:"el Ministerio de Justicia", tema:11, distractores:["el Ministerio del Interior", "el Ministerio de Hacienda", "el Ministerio de Asuntos Exteriores"]},
+      {texto:"¿Quién nombra al Presidente de la AEPD?", respuesta:"el Gobierno", tema:11, distractores:["el Rey", "el Consejo General del Poder Judicial", "el Congreso de los Diputados"]},
+      {texto:"¿Cuánto dura el mandato del Presidente de la AEPD?", respuesta:"5 años", tema:11, distractores:["3 años", "4 años", "6 años"]},
+      {texto:"¿Es renovable el mandato del Presidente de la AEPD?", respuesta:"Sí, es renovable", tema:11, distractores:["No", "Solo una vez", "Por decisión del Parlamento"]},
+      // --- TEMA 12: LO 7/2021 (Régimen Penal) (14 preguntas) ---
+      {texto:"¿Qué autoridades son competentes para el tratamiento de datos con fines penales según la LO 7/2021?", respuesta:"FCS, Administraciones Penitenciarias, Dirección Adjunta de Vigilancia Aduanera, SEPBLAC, Comisión de Vigilancia de Financiación del Terrorismo, autoridades judiciales y Ministerio Fiscal", tema:12, distractores:["solo las FCS", "FCS y autoridades judiciales", "todas las administraciones públicas"]},
+      {texto:"¿Cuál es el plazo general de supresión de datos en la LO 7/2021?", respuesta:"20 años", tema:12, distractores:["10 años", "15 años", "5 años"]},
+      {texto:"¿Cada cuántos años debe revisar el responsable la necesidad de conservar los datos?", respuesta:"3 años", tema:12, distractores:["1 año", "5 años", "2 años"]},
+      {texto:"¿Qué categorías de datos son consideradas especiales según la LO 7/2021?", respuesta:"origen étnico/racial, opiniones políticas, convicciones religiosas/filosóficas, afiliación sindical, datos genéticos, biométricos, salud, vida sexual u orientación sexual", tema:12, distractores:["solo datos de salud", "solo datos biométricos", "datos económicos y patrimoniales"]},
+      {texto:"¿Qué figura se encarga de asesorar, supervisar el cumplimiento y cooperar con la autoridad de control?", respuesta:"el Delegado de Protección de Datos (DPD)", tema:12, distractores:["el responsable del tratamiento", "el encargado del tratamiento", "la Agencia Española de Protección de Datos (AEPD)"]},
+      {texto:"¿Está el DPD sujeto al régimen sancionador de la LO 7/2021?", respuesta:"No, no está sujeto al régimen sancionador", tema:12, distractores:["Sí, como cualquier responsable", "Sí, por omisión", "Solo si actúa con dolo"]},
+      {texto:"¿Cómo debe actuar el DPD respecto a posibles conflictos de intereses?", respuesta:"con independencia, evitando conflictos de intereses", tema:12, distractores:["siguiendo siempre las instrucciones del responsable", "subordinado jerárquicamente al Delegado del Gobierno", "solo cuando lo solicite la autoridad judicial"]},
+      {texto:"¿Qué deben requerir los sistemas fijos de videovigilancia policial según la LO 7/2021?", respuesta:"valoración de proporcionalidad y análisis de riesgos", tema:12, distractores:["solo evaluación de impacto", "autorización judicial", "informe del CNPIC"]},
+      {texto:"¿Quién autoriza los dispositivos móviles de videovigilancia policial en la LO 7/2021?", respuesta:"el Delegado o Subdelegado del Gobierno", tema:12, distractores:["el Juez de Instrucción", "el Secretario de Estado", "el Ministerio Fiscal"]},
+      {texto:"¿Cuál es el plazo máximo de autorización para dispositivos móviles de videovigilancia policial?", respuesta:"1 mes, prorrogable por otro mes", tema:12, distractores:["3 meses", "6 meses", "15 días"]},
+      {texto:"En caso de urgencia, ¿quién puede autorizar dispositivos móviles y en qué plazo debe comunicarlo?", respuesta:"el responsable operativo, comunicándolo en 24 horas", tema:12, distractores:["el Delegado, en 48 horas", "el Juez, en 72 horas", "el Fiscal, en 12 horas"]},
+      {texto:"¿En qué plazo máximo se destruyen las grabaciones de videovigilancia policial?", respuesta:"3 meses", tema:12, distractores:["1 mes", "6 meses", "1 año"]},
+      {texto:"Si se captan hechos delictivos, ¿en qué plazo se ponen a disposición judicial las grabaciones?", respuesta:"72 horas", tema:12, distractores:["24 horas", "48 horas", "7 días"]},
+      {texto:"¿En qué plazo prescriben las infracciones y sanciones en la LO 7/2021?", respuesta:"6 meses, en todos los casos", tema:12, distractores:["1 año", "2 años", "3 meses"]},
+    ];
+
+    const TOTAL_PREGUNTAS = preguntas.length;
+    const NOMBRES_TEMA = {
+        1: "Medidas tecnológicas y videovigilancia",
+        2: "Redes OSI / TCP-IP",
+        3: "Seguridad pública en España",
+        4: "Mando de las FCSE",
+        5: "Seguridad Privada (Jefe/Director)",
+        6: "Extranjería",
+        7: "Infraestructuras Críticas",
+        8: "Prescripciones comparadas",
+        9: "Derechos Humanos",
+        10: "Desarrollo Sostenible",
+        11: "LO 3/2018 (Régimen General)",
+        12: "LO 7/2021 (Régimen Penal)"
+    };
+
+    // ============================================================
+    // 2. FUNCIONES AUXILIARES Y LÓGICA DE LA APLICACIÓN
+    // ============================================================
+
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function generarOpciones(idPregunta, correcta, tema) {
+        const manual = preguntas[idPregunta] && preguntas[idPregunta].distractores;
+        if (manual && manual.length >= 3) {
+            const opciones = [correcta, ...shuffleArray([...manual]).slice(0, 3)];
+            return opciones;
+        }
+        const fallbacks = ["Ninguna de las anteriores", "Todas las anteriores", "No procede"];
+        const opciones = [correcta, ...shuffleArray(fallbacks)];
+        return opciones;
+    }
+
+    // ============================================================
+    // 3. LÓGICA DE LA APLICACIÓN (UI, ESTADÍSTICAS, NAVEGACIÓN)
+    // ============================================================
+
+    let state = {
+        modo: 'aleatorio',
+        preguntasBarajadas: [],
+        indiceAleatorio: 0,
+        testActual: [],
+        indicePreguntaActual: 0,
+        respuestasUsuario: [],
+        testFinalizado: false,
+        estadisticas: { vistas: {}, fallos: {}, aciertos: {} },
+    };
+
+    const tabAleatorio = document.getElementById('tabAleatorio');
+    const tabOlvidadas = document.getElementById('tabOlvidadas');
+    const modoSelect = document.getElementById('modoSelect');
+    const btnNuevoTest = document.getElementById('btnNuevoTest');
+    const btnSiguienteTest = document.getElementById('btnSiguienteTest');
+    const btnResetStats = document.getElementById('btnResetStats');
+    const contador = document.getElementById('contador');
+    const temaTag = document.getElementById('temaTag');
+    const preguntaTexto = document.getElementById('preguntaTexto');
+    const opcionesContainer = document.getElementById('opcionesContainer');
+    const feedback = document.getElementById('feedback');
+    const resultados = document.getElementById('resultados');
+    const resAciertos = document.getElementById('resAciertos');
+    const resFallos = document.getElementById('resFallos');
+    const resPorcentaje = document.getElementById('resPorcentaje');
+    const statsMiniLeft = document.getElementById('statsMiniLeft');
+    const statsMiniRight = document.getElementById('statsMiniRight');
+    const progressFill = document.getElementById('progressFill');
+    const totalPreguntasInfo = document.getElementById('totalPreguntasInfo');
+    const stamp = document.getElementById('stamp');
+
+    function init() {
+        totalPreguntasInfo.textContent = TOTAL_PREGUNTAS;
+        cargarEstado();
+        state.preguntasBarajadas = preguntas.map((_, i) => i);
+        shuffleArray(state.preguntasBarajadas);
+        state.indiceAleatorio = 0;
+        if (state.testActual.length === 0) {
+            generarTest();
+        } else {
+            mostrarPregunta();
+        }
+        actualizarStatsMini();
+        modoSelect.value = state.modo;
+        actualizarTabs();
+    }
+
+    function actualizarTabs(){
+        tabAleatorio.classList.toggle('active', state.modo === 'aleatorio');
+        tabOlvidadas.classList.toggle('active', state.modo === 'olvidadas');
+    }
+
+    function guardarEstado() {
+        try {
+            const data = {
+                modo: state.modo,
+                preguntasBarajadas: state.preguntasBarajadas,
+                indiceAleatorio: state.indiceAleatorio,
+                estadisticas: state.estadisticas,
+                testActual: state.testActual.map(p => p.id),
+                indicePreguntaActual: state.indicePreguntaActual,
+                respuestasUsuario: state.respuestasUsuario,
+                testFinalizado: state.testFinalizado,
+            };
+            localStorage.setItem('testOposicionState', JSON.stringify(data));
+        } catch (e) {}
+    }
+
+    function cargarEstado() {
+        try {
+            const raw = localStorage.getItem('testOposicionState');
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            state.modo = data.modo || 'aleatorio';
+            state.preguntasBarajadas = (data.preguntasBarajadas || []).filter(id => id < preguntas.length);
+            state.indiceAleatorio = data.indiceAleatorio || 0;
+            state.estadisticas = data.estadisticas || { vistas: {}, fallos: {}, aciertos: {} };
+            if (data.testActual && data.testActual.length) {
+                state.testActual = data.testActual.map(id => {
+                    const p = preguntas[id];
+                    return p ? { id, texto: p.texto, respuestaCorrecta: p.respuesta, tema: p.tema } : null;
+                }).filter(p => p !== null);
+                state.indicePreguntaActual = data.indicePreguntaActual || 0;
+                state.respuestasUsuario = data.respuestasUsuario || [];
+                state.testFinalizado = data.testFinalizado || false;
+            } else {
+                state.testActual = [];
+                state.indicePreguntaActual = 0;
+                state.respuestasUsuario = [];
+                state.testFinalizado = false;
+            }
+            if (state.testActual.length === 0) {
+                generarTest();
+            }
+        } catch (e) {
+            state.testActual = [];
+            generarTest();
+        }
+    }
+
+    function obtenerSiguienteBloqueAleatorio() {
+        const total = preguntas.length;
+        if (total === 0) return [];
+        if (state.indiceAleatorio >= total) {
+            shuffleArray(state.preguntasBarajadas);
+            state.indiceAleatorio = 0;
+        }
+        const inicio = state.indiceAleatorio;
+        const fin = Math.min(inicio + 20, total);
+        const ids = state.preguntasBarajadas.slice(inicio, fin);
+        state.indiceAleatorio = fin;
+        if (ids.length < 20 && fin === total) {
+            shuffleArray(state.preguntasBarajadas);
+            state.indiceAleatorio = 0;
+            const restantes = 20 - ids.length;
+            const extra = state.preguntasBarajadas.slice(0, restantes);
+            ids.push(...extra);
+            state.indiceAleatorio = restantes;
+        }
+        return ids;
+    }
+
+    function obtenerBloqueOlvidadas() {
+        const puntuaciones = preguntas.map((p, id) => {
+            const vistas = state.estadisticas.vistas[id] || 0;
+            const fallos = state.estadisticas.fallos[id] || 0;
+            if (vistas === 0) return { id, punt: 9999 + Math.random() };
+            const ratio = (fallos + 1) / (vistas + 1);
+            return { id, punt: ratio + Math.random() * 0.01 };
+        });
+        puntuaciones.sort((a, b) => b.punt - a.punt);
+        return puntuaciones.slice(0, 20).map(item => item.id);
+    }
+
+    function generarTest() {
+        let ids;
+        if (state.modo === 'aleatorio') {
+            ids = obtenerSiguienteBloqueAleatorio();
+        } else {
+            ids = obtenerBloqueOlvidadas();
+        }
+        state.testActual = ids.map(id => {
+            const p = preguntas[id];
+            return { id, texto: p.texto, respuestaCorrecta: p.respuesta, tema: p.tema };
+        });
+        state.indicePreguntaActual = 0;
+        state.respuestasUsuario = [];
+        state.testFinalizado = false;
+        resultados.classList.remove('visible');
+        feedback.className = 'feedback';
+        feedback.style.display = 'none';
+        stamp.className = 'stamp';
+        mostrarPregunta();
+        guardarEstado();
+        actualizarStatsMini();
+    }
+
+    function mostrarPregunta() {
+        if (state.testFinalizado || state.testActual.length === 0 || state.indicePreguntaActual >= state.testActual.length) {
+            finalizarTest();
+            return;
+        }
+
+        const pregunta = state.testActual[state.indicePreguntaActual];
+        const idx = state.indicePreguntaActual;
+        contador.textContent = `Pregunta ${idx + 1} / ${state.testActual.length}`;
+        temaTag.textContent = NOMBRES_TEMA[pregunta.tema] || '';
+        preguntaTexto.textContent = pregunta.texto;
+
+        const opciones = generarOpciones(pregunta.id, pregunta.respuestaCorrecta, pregunta.tema);
+        shuffleArray(opciones);
+
+        opcionesContainer.innerHTML = '';
+        const letras = ['A', 'B', 'C', 'D'];
+        opciones.forEach((texto, i) => {
+            const div = document.createElement('div');
+            div.className = 'opcion';
+            div.dataset.correcta = (texto === pregunta.respuestaCorrecta) ? 'true' : 'false';
+            div.innerHTML = `<span class="letra">${letras[i]}</span><span>${texto}</span>`;
+            div.addEventListener('click', () => seleccionarRespuesta(div));
+            opcionesContainer.appendChild(div);
+        });
+
+        feedback.className = 'feedback';
+        feedback.style.display = 'none';
+        stamp.className = 'stamp';
+        resultados.classList.remove('visible');
+        guardarEstado();
+    }
+
+    function seleccionarRespuesta(elemento) {
+        if (state.testFinalizado) return;
+        const yaRespondido = state.respuestasUsuario[state.indicePreguntaActual];
+        if (yaRespondido !== undefined) return;
+
+        const esCorrecta = elemento.dataset.correcta === 'true';
+        const preguntaId = state.testActual[state.indicePreguntaActual].id;
+
+        if (!state.estadisticas.vistas[preguntaId]) state.estadisticas.vistas[preguntaId] = 0;
+        state.estadisticas.vistas[preguntaId]++;
+
+        if (esCorrecta) {
+            if (!state.estadisticas.aciertos[preguntaId]) state.estadisticas.aciertos[preguntaId] = 0;
+            state.estadisticas.aciertos[preguntaId]++;
+        } else {
+            if (!state.estadisticas.fallos[preguntaId]) state.estadisticas.fallos[preguntaId] = 0;
+            state.estadisticas.fallos[preguntaId]++;
+        }
+
+        const opciones = opcionesContainer.querySelectorAll('.opcion');
+        opciones.forEach(el => {
+            el.classList.add('disabled');
+            if (el.dataset.correcta === 'true') {
+                el.classList.add('correcta');
+            } else if (el === elemento && !esCorrecta) {
+                el.classList.add('incorrecta');
+            }
+        });
+
+        const correctaTexto = state.testActual[state.indicePreguntaActual].respuestaCorrecta;
+        if (esCorrecta) {
+            feedback.className = 'feedback acierto';
+            feedback.innerHTML = `Correcto.`;
+            stamp.className = 'stamp acierto show';
+            stamp.textContent = 'Visado';
+        } else {
+            feedback.className = 'feedback fallo';
+            feedback.innerHTML = `Incorrecto. Respuesta correcta: <span class="correcta-text">${correctaTexto}</span>`;
+            stamp.className = 'stamp fallo show';
+            stamp.textContent = 'Revisar';
+        }
+        feedback.style.display = 'block';
+
+        state.respuestasUsuario[state.indicePreguntaActual] = esCorrecta ? 'correcta' : 'incorrecta';
+
+        setTimeout(() => {
+            state.indicePreguntaActual++;
+            if (state.indicePreguntaActual >= state.testActual.length) {
+                finalizarTest();
+            } else {
+                mostrarPregunta();
+            }
+            guardarEstado();
+            actualizarStatsMini();
+        }, 900);
+    }
+
+    function finalizarTest() {
+        state.testFinalizado = true;
+        const total = state.testActual.length;
+        const aciertos = state.respuestasUsuario.filter(r => r === 'correcta').length;
+        const fallos = total - aciertos;
+        const porcentaje = total > 0 ? Math.round((aciertos / total) * 100) : 0;
+
+        resAciertos.textContent = aciertos;
+        resFallos.textContent = fallos;
+        resPorcentaje.textContent = `${porcentaje}%`;
+        resultados.classList.add('visible');
+
+        contador.textContent = 'Test completado';
+        temaTag.textContent = '';
+        preguntaTexto.textContent = 'Expediente cerrado. Resultados archivados abajo.';
+        opcionesContainer.innerHTML = '';
+        feedback.style.display = 'none';
+        stamp.className = 'stamp';
+
+        guardarEstado();
+        actualizarStatsMini();
+    }
+
+    function actualizarStatsMini() {
+        let totalAciertos = 0, totalFallos = 0;
+        for (let id in state.estadisticas.vistas) {
+            const a = state.estadisticas.aciertos[id] || 0;
+            const f = state.estadisticas.fallos[id] || 0;
+            totalAciertos += a;
+            totalFallos += f;
+        }
+        const totalRespuestas = totalAciertos + totalFallos;
+        const porcentaje = totalRespuestas > 0 ? Math.round((totalAciertos / totalRespuestas) * 100) : 0;
+        const vistasUnicas = Object.keys(state.estadisticas.vistas).length;
+        statsMiniLeft.textContent = `Preguntas tocadas: ${vistasUnicas}/${TOTAL_PREGUNTAS}`;
+        statsMiniRight.textContent = `Aciertos: ${porcentaje}%`;
+        progressFill.style.width = `${TOTAL_PREGUNTAS ? (vistasUnicas / TOTAL_PREGUNTAS) * 100 : 0}%`;
+    }
+
+    function resetEstadisticas() {
+        if (confirm('¿Reiniciar todo el progreso? Se perderán las estadísticas.')) {
+            state.estadisticas = { vistas: {}, fallos: {}, aciertos: {} };
+            state.preguntasBarajadas = preguntas.map((_, i) => i);
+            shuffleArray(state.preguntasBarajadas);
+            state.indiceAleatorio = 0;
+            guardarEstado();
+            generarTest();
+            actualizarStatsMini();
+        }
+    }
+
+    // ============================================================
+    // 4. EVENTOS
+    // ============================================================
+
+    function cambiarModo(modo){
+        state.modo = modo;
+        modoSelect.value = modo;
+        actualizarTabs();
+        guardarEstado();
+    }
+    tabAleatorio.addEventListener('click', () => cambiarModo('aleatorio'));
+    tabOlvidadas.addEventListener('click', () => cambiarModo('olvidadas'));
+
+    btnNuevoTest.addEventListener('click', function() {
+        generarTest();
+    });
+
+    btnSiguienteTest.addEventListener('click', function() {
+        generarTest();
+    });
+
+    btnResetStats.addEventListener('click', resetEstadisticas);
+
+    // ============================================================
+    // 5. INICIO
+    // ============================================================
+
+    init();
+</script>
+</body>
+</html>

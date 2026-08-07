@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST DIOS · Instituciones UE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap');
+
+  :root {
+    --lavender:   #C8B8E8;
+    --lavender-l: #EDE6F8;
+    --mint:       #B8E0D2;
+    --mint-l:     #E2F5EF;
+    --peach:      #F5C6AA;
+    --peach-l:    #FDE9DC;
+    --sky:        #A8D5EA;
+    --sky-l:      #DEEEF7;
+    --rose:       #F2B8C6;
+    --rose-l:     #FDEAEE;
+    --butter:     #F7E4A0;
+    --butter-l:   #FEF8DC;
+    --bg:         #F5F0FC;
+    --card:       #FFFFFF;
+    --text:       #3A2D5C;
+    --text-soft:  #6B5C8A;
+    --correct:    #6DBE8C;
+    --wrong:      #E8768A;
+    --shadow:     rgba(120,80,200,0.10);
+  }
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── PANTALLA INICIO ── */
+  #screen-start {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #EDE6F8 0%, #E2F5EF 50%, #FDE9DC 100%);
+  }
+
+  .start-badge {
+    background: var(--lavender);
+    color: var(--text);
+    font-weight: 800;
+    font-size: .75rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: .35rem 1rem;
+    border-radius: 99px;
+    margin-bottom: 1.2rem;
+  }
+
+  .start-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    text-align: center;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: .6rem;
+  }
+
+  .start-title span { color: #9B72CF; }
+
+  .start-sub {
+    font-size: 1.05rem;
+    color: var(--text-soft);
+    text-align: center;
+    max-width: 480px;
+    margin-bottom: 2.2rem;
+    line-height: 1.6;
+  }
+
+  .stats-row {
+    display: flex; gap: 1.2rem; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 2.5rem;
+  }
+
+  .stat-chip {
+    background: white;
+    border-radius: 14px;
+    padding: .7rem 1.3rem;
+    text-align: center;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+
+  .stat-chip .num {
+    font-size: 1.7rem; font-weight: 900; color: #9B72CF; display: block;
+  }
+  .stat-chip .lbl { font-size: .78rem; color: var(--text-soft); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+
+  .btn-start {
+    background: linear-gradient(135deg, #C8B8E8, #A8D5EA);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    border: none;
+    border-radius: 16px;
+    padding: 1rem 3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 18px var(--shadow);
+    transition: transform .15s, box-shadow .15s;
+    letter-spacing: .03em;
+  }
+  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(120,80,200,.18); }
+
+  /* ── PANTALLA QUIZ ── */
+  #screen-quiz { display: none; min-height: 100vh; padding: 1.5rem; }
+
+  .quiz-header {
+    max-width: 720px; margin: 0 auto 1.5rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+
+  .quiz-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; color: #9B72CF;
+    flex: 1; min-width: 140px;
+  }
+
+  .progress-wrap { flex: 2; min-width: 180px; }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: .78rem; font-weight: 700; color: var(--text-soft);
+    margin-bottom: .3rem;
+  }
+  .progress-bar-bg {
+    height: 8px; background: #E0D5F0; border-radius: 99px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, #C8B8E8, #A8D5EA);
+    transition: width .4s ease;
+  }
+
+  .score-chip {
+    background: white;
+    border-radius: 12px;
+    padding: .45rem 1rem;
+    font-weight: 800;
+    font-size: .92rem;
+    color: var(--text);
+    box-shadow: 0 2px 8px var(--shadow);
+    white-space: nowrap;
+  }
+
+  .question-card {
+    max-width: 720px; margin: 0 auto;
+    background: var(--card);
+    border-radius: 24px;
+    padding: 2rem 2.2rem;
+    box-shadow: 0 4px 24px var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition: transform .3s;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, var(--lavender), var(--sky), var(--mint));
+  }
+
+  .q-category {
+    font-size: .72rem; font-weight: 800; letter-spacing: .1em;
+    text-transform: uppercase; margin-bottom: .9rem;
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .25rem .8rem;
+    border-radius: 99px;
+    color: white;
+  }
+
+  .q-number {
+    font-size: .82rem; color: var(--text-soft); font-weight: 700;
+    margin-bottom: .5rem;
+  }
+
+  .q-text {
+    font-size: 1.15rem; font-weight: 700; line-height: 1.55;
+    color: var(--text);
+    margin-bottom: 1.8rem;
+    min-height: 3.5em;
+  }
+
+  .options { display: flex; flex-direction: column; gap: .85rem; }
+
+  .opt-btn {
+    background: #F7F3FD;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: .95rem 1.2rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    transition: background .12s, border-color .12s, transform .1s;
+    display: flex; align-items: center; gap: .8rem;
+    line-height: 1.4;
+  }
+
+  .opt-btn:hover:not(:disabled) {
+    background: var(--lavender-l);
+    border-color: var(--lavender);
+    transform: translateX(4px);
+  }
+
+  .opt-btn .opt-letter {
+    min-width: 28px; height: 28px;
+    background: var(--lavender);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: .85rem;
+    transition: background .12s;
+  }
+
+  .opt-btn.correct {
+    background: #E8F8EE;
+    border-color: var(--correct);
+  }
+  .opt-btn.correct .opt-letter { background: var(--correct); color: white; }
+
+  .opt-btn.wrong {
+    background: #FDE8EB;
+    border-color: var(--wrong);
+  }
+  .opt-btn.wrong .opt-letter { background: var(--wrong); color: white; }
+
+  .opt-btn.revealed {
+    background: #E8F8EE;
+    border-color: var(--correct);
+    opacity: .75;
+  }
+  .opt-btn.revealed .opt-letter { background: var(--correct); color: white; }
+
+  .opt-btn:disabled { cursor: default; }
+
+  .feedback-box {
+    margin-top: 1.3rem;
+    padding: .9rem 1.1rem;
+    border-radius: 12px;
+    font-weight: 600; font-size: .92rem;
+    line-height: 1.5;
+    display: none;
+    animation: fadeIn .25s ease;
+  }
+
+  .feedback-box.correct { background: #E8F8EE; color: #2E7D50; }
+  .feedback-box.wrong   { background: #FDE8EB; color: #B03050; }
+
+  .btn-next {
+    display: none;
+    margin: 1.4rem auto 0;
+    background: linear-gradient(135deg, var(--lavender), var(--sky));
+    border: none; border-radius: 14px;
+    padding: .8rem 2.4rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 800;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s;
+    box-shadow: 0 3px 12px var(--shadow);
+  }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow); }
+
+  /* ── PANTALLA RESULTADOS ── */
+  #screen-results {
+    display: none; min-height: 100vh; padding: 2rem;
+    background: linear-gradient(135deg, #EDE6F8, #E2F5EF, #FDE9DC);
+    align-items: center; justify-content: center; flex-direction: column;
+  }
+
+  .results-card {
+    max-width: 680px; width: 100%;
+    background: white; border-radius: 28px;
+    padding: 2.5rem; box-shadow: 0 6px 36px var(--shadow);
+    text-align: center;
+  }
+
+  .trophy { font-size: 4rem; margin-bottom: .8rem; }
+
+  .result-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; margin-bottom: .5rem;
+    color: var(--text);
+  }
+
+  .result-score-big {
+    font-size: 3.5rem; font-weight: 900;
+    color: #9B72CF; margin-bottom: .3rem;
+  }
+
+  .result-pct { font-size: 1.1rem; color: var(--text-soft); margin-bottom: 2rem; }
+
+  .results-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem; margin-bottom: 2rem;
+  }
+
+  .r-cell {
+    background: var(--lavender-l); border-radius: 14px;
+    padding: 1rem;
+  }
+  .r-cell .val { font-size: 1.8rem; font-weight: 900; }
+  .r-cell .key { font-size: .78rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: .07em; }
+
+  .result-msg {
+    font-size: 1.05rem; line-height: 1.6; color: var(--text-soft);
+    margin-bottom: 2rem; padding: 1rem 1.5rem;
+    background: var(--butter-l);
+    border-radius: 14px;
+  }
+
+  .btn-retry {
+    background: linear-gradient(135deg, var(--lavender), var(--mint));
+    border: none; border-radius: 14px;
+    padding: .85rem 2.4rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.05rem; font-weight: 800;
+    color: var(--text); cursor: pointer;
+    box-shadow: 0 4px 16px var(--shadow);
+    transition: transform .12s;
+  }
+  .btn-retry:hover { transform: translateY(-2px); }
+
+  /* animations */
+  @keyframes fadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: none; } }
+  @keyframes slideIn { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform: none; } }
+
+  .question-card.animate { animation: slideIn .3s ease; }
+
+  /* category colors */
+  .cat-consejo     { background: #C8B8E8; }
+  .cat-europeo     { background: #F5C6AA; }
+  .cat-comision    { background: #B8E0D2; }
+  .cat-parlamento  { background: #A8D5EA; }
+  .cat-tjue        { background: #F2B8C6; }
+  .cat-otros       { background: #F7E4A0; color: #5A4800 !important; }
+  .cat-bce         { background: #C8E8D8; }
+  .cat-organismos  { background: #D8C8E8; }
+
+  /* confetti dot */
+  .confetti-row { display: flex; justify-content: center; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .cdot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ INICIO ══════════════════ -->
+<div id="screen-start">
+  <div class="start-badge">🎯 Nivel Dios · Policía Nacional</div>
+  <h1 class="start-title">Test Instituciones<br><span>Unión Europea</span></h1>
+  <p class="start-sub">Todas las preguntas posibles del temario. Las respuestas erróneas son datos reales de otras preguntas — máxima dificultad garantizada. Sin tiempo límite.</p>
+  <div class="stats-row">
+    <div class="stat-chip"><span class="num" id="total-q-count">60</span><span class="lbl">Preguntas</span></div>
+    <div class="stat-chip"><span class="num">3</span><span class="lbl">Opciones</span></div>
+    <div class="stat-chip"><span class="num">∞</span><span class="lbl">Tiempo</span></div>
+    <div class="stat-chip"><span class="num">8</span><span class="lbl">Bloques</span></div>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">Comenzar el Test →</button>
+</div>
+
+<!-- ══════════════════ QUIZ ══════════════════ -->
+<div id="screen-quiz">
+  <div class="quiz-header">
+    <div class="quiz-logo">✦ Test UE</div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="prog-label">Pregunta 1 de 60</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="score-chip">✓ <span id="score-live">0</span> &nbsp;✗ <span id="wrong-live">0</span></div>
+  </div>
+
+  <div class="question-card" id="question-card">
+    <span class="q-category" id="q-cat"></span>
+    <div class="q-number" id="q-num"></div>
+    <div class="q-text"  id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback-box" id="feedback"></div>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Siguiente pregunta →</button>
+  </div>
+</div>
+
+<!-- ══════════════════ RESULTADOS ══════════════════ -->
+<div id="screen-results" style="display:none; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:2rem; background:linear-gradient(135deg,#EDE6F8,#E2F5EF,#FDE9DC);">
+  <div class="results-card">
+    <div class="trophy" id="trophy-emoji">🏆</div>
+    <div class="confetti-row" id="confetti-row"></div>
+    <h2 class="result-title" id="result-title">¡Test completado!</h2>
+    <div class="result-score-big" id="result-score"></div>
+    <div class="result-pct" id="result-pct"></div>
+    <div class="results-grid">
+      <div class="r-cell"><div class="val" id="r-correct" style="color:#6DBE8C"></div><div class="key">Correctas</div></div>
+      <div class="r-cell"><div class="val" id="r-wrong"   style="color:#E8768A"></div><div class="key">Erróneas</div></div>
+      <div class="r-cell"><div class="val" id="r-total"></div><div class="key">Total</div></div>
+    </div>
+    <div class="result-msg" id="result-msg"></div>
+    <button class="btn-retry" onclick="restartQuiz()">🔄 Repetir el test</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  BASE DE PREGUNTAS — NIVEL DIOS
+//  Respuestas erróneas = datos reales de otras preguntas
+// ══════════════════════════════════════════════════════════════════
+const ALL_QUESTIONS = [
+
+  // ── CONSEJO DE LA UNIÓN EUROPEA ──
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿En qué ciudad tiene su sede principal el Consejo de la Unión Europea?',
+    a:'Bruselas', b:'Luxemburgo', c:'Estrasburgo',
+    ok:'a', exp:'Su sede principal es Bruselas. Se celebran sesiones en Luxemburgo solo en abril, junio y octubre.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿En qué meses el Consejo de la UE celebra sesiones en Luxemburgo?',
+    a:'Enero, mayo y septiembre', b:'Abril, junio y octubre', c:'Marzo, julio y noviembre',
+    ok:'b', exp:'Las sesiones de abril, junio y octubre se celebran en Luxemburgo.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Cuántos representantes forman el Consejo de la Unión Europea?',
+    a:'27', b:'54', c:'329',
+    ok:'a', exp:'Un representante por Estado miembro, 27 en total, de rango ministerial.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Cuánto dura la presidencia rotatoria del Consejo de la UE?',
+    a:'1 año', b:'2,5 años', c:'6 meses',
+    ok:'c', exp:'La presidencia es rotatoria por semestres (6 meses). El trío actual es Polonia-Dinamarca-Chipre.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Qué país ejerce actualmente la Presidencia del Consejo de la UE?',
+    a:'Polonia', b:'Chipre', c:'Dinamarca',
+    ok:'c', exp:'El trío es Polonia-Dinamarca-Chipre; actualmente es Dinamarca.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Quién preside el Consejo de Asuntos Exteriores?',
+    a:'El Presidente rotatorio del Consejo', b:'El Alto Representante', c:'El Presidente del Consejo Europeo',
+    ok:'b', exp:'Es la única formación donde preside el Alto Representante (AR) y no la presidencia rotatoria.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿En cuántas formaciones actúa el Consejo de la UE?',
+    a:'6', b:'8', c:'10',
+    ok:'c', exp:'El Consejo actúa en 10 formaciones distintas según la materia.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Qué es el COREPER?',
+    a:'El comité de representantes permanentes ante la UE', b:'El comité de seguridad interior', c:'Un órgano judicial del Consejo',
+    ok:'a', exp:'El COREPER es el Comité de Representantes Permanentes, órgano preparatorio y filtro técnico/político del Consejo.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Qué temas aborda el COREPER I?',
+    a:'Temas políticos e institucionales', b:'Temas técnicos y sectoriales', c:'Política exterior',
+    ok:'b', exp:'COREPER I gestiona asuntos técnicos/sectoriales y está asistido por el grupo MERTENS.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Qué grupo asiste al COREPER II?',
+    a:'Grupo MERTENS', b:'Grupo COSI', c:'Grupo ANTICI',
+    ok:'c', exp:'COREPER II (temas políticos/institucionales) está asistido por el grupo ANTICI.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Qué coordina el COSI dentro del Consejo?',
+    a:'La cooperación en seguridad interior', b:'La política monetaria', c:'Las relaciones exteriores',
+    ok:'a', exp:'El COSI coordina la cooperación en seguridad interior de la UE.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Cuál es la regla de la doble mayoría cualificada en el Consejo?',
+    a:'50% de EM que representen el 60% de la población', b:'55% de EM que representen el 65% de la población', c:'2/3 de EM que representen el 70% de la población',
+    ok:'b', exp:'La doble mayoría cualificada requiere el 55% de los Estados miembros que representen al menos el 65% de la población.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Qué tipo de mayoría se usa en el Consejo para temas administrativos?',
+    a:'Unanimidad', b:'Doble mayoría cualificada', c:'Mayoría simple',
+    ok:'c', exp:'Para cuestiones administrativas el Consejo decide por mayoría simple.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Qué tipo de mayoría exige el Consejo para política exterior o fiscalidad?',
+    a:'Mayoría simple', b:'Unanimidad', c:'55% de EM',
+    ok:'b', exp:'Política exterior, fiscalidad y otras materias sensibles requieren unanimidad en el Consejo.' },
+
+  { cat:'consejo', catLabel:'Consejo UE',
+    q:'¿Son públicos los debates y votaciones del Consejo de la UE?',
+    a:'Solo las votaciones finales', b:'Sí, ambos son públicos', c:'No, son reservados',
+    ok:'b', exp:'Tanto los debates como las votaciones del Consejo son públicos.' },
+
+  // ── CONSEJO EUROPEO ──
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Quiénes son miembros del Consejo Europeo?',
+    a:'Los ministros de exteriores de los 27 EM', b:'Los Jefes de Estado o de Gobierno de los 27 EM, el Presidente del CE y el Presidente de la Comisión', c:'Los comisarios europeos',
+    ok:'b', exp:'El Consejo Europeo está compuesto por los Jefes de Estado o de Gobierno, el Presidente del Consejo Europeo y el Presidente de la Comisión.' },
+
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Con qué quórum actúa el Consejo Europeo?',
+    a:'Mayoría simple', b:'2/3 de sus miembros', c:'3/4 de sus miembros',
+    ok:'b', exp:'El quórum del Consejo Europeo es de 2/3 de sus miembros.' },
+
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Quién es el actual Presidente del Consejo Europeo?',
+    a:'Charles Michel', b:'Antonio Costa', c:'Ursula von der Leyen',
+    ok:'b', exp:'Antonio Costa (apodado Mr. Europe) es el actual Presidente del Consejo Europeo.' },
+
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Por qué mayoría se elige al Presidente del Consejo Europeo?',
+    a:'Unanimidad', b:'Mayoría simple', c:'Mayoría cualificada',
+    ok:'c', exp:'El Presidente es elegido por mayoría cualificada por los miembros del Consejo Europeo.' },
+
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Cuánto dura el mandato del Presidente del Consejo Europeo?',
+    a:'5 años no renovables', b:'2,5 años renovables una vez', c:'3 años renovables',
+    ok:'b', exp:'El mandato es de 2,5 años, renovable una sola vez.' },
+
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Con qué frecuencia mínima se reúne el Consejo Europeo?',
+    a:'Una vez al semestre', b:'Al menos dos veces cada semestre en cumbres trimestrales', c:'Una vez al mes',
+    ok:'b', exp:'Se reúne al menos 2 veces por semestre en cumbres trimestrales y puede celebrar sesiones extraordinarias.' },
+
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Participa el Alto Representante en el Consejo Europeo?',
+    a:'Sí, como miembro de pleno derecho', b:'Sí, pero no es miembro', c:'No, no participa',
+    ok:'b', exp:'El AR participa en las reuniones del Consejo Europeo pero no es miembro oficial.' },
+
+  { cat:'europeo', catLabel:'Consejo Europeo',
+    q:'¿Qué función asume el Presidente del Consejo Europeo en política exterior?',
+    a:'Preside el Consejo de Asuntos Exteriores', b:'Asume la representación exterior sin perjuicio del AR', c:'Dirige el SEAE',
+    ok:'b', exp:'El Presidente del Consejo Europeo asume la representación exterior de la UE sin perjuicio de las atribuciones del AR.' },
+
+  // ── COMISIÓN EUROPEA ──
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Cuántos comisarios componen la Comisión Europea?',
+    a:'27', b:'54', c:'20',
+    ok:'a', exp:'La Comisión tiene 1 comisario por Estado miembro, 27 en total.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Cuántos vicepresidentes ejecutivos tiene la Comisión Europea (incluyendo el AR)?',
+    a:'4', b:'5', c:'6',
+    ok:'b', exp:'La Comisión tiene 5 vicepresidentes ejecutivos, incluido el Alto Representante.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Cuántos vicepresidentes tiene la Comisión Europea en total?',
+    a:'5', b:'6', c:'8',
+    ok:'b', exp:'La Comisión se configura con el Presidente, 6 Vicepresidentes (5 ejecutivos incluido el AR) y 20 comisarios.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Quién propone al Presidente de la Comisión Europea?',
+    a:'El Parlamento Europeo', b:'El Consejo de la UE', c:'El Consejo Europeo',
+    ok:'c', exp:'El Consejo Europeo propone al Presidente de la Comisión, quien posteriormente es elegido por el PE.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Por qué mayoría el PE elige al Presidente de la Comisión?',
+    a:'Mayoría simple', b:'Mayoría absoluta', c:'Mayoría de 2/3',
+    ok:'b', exp:'El Parlamento Europeo elige al Presidente de la Comisión por mayoría absoluta.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Quién es la actual Presidenta de la Comisión Europea?',
+    a:'Christine Lagarde', b:'Roberta Metsola', c:'Ursula von der Leyen',
+    ok:'c', exp:'Ursula von der Leyen es la Presidenta de la Comisión Europea.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Con qué frecuencia se reúne la Comisión Europea?',
+    a:'Al menos una vez por semana y en sesiones extraordinarias', b:'Al menos dos veces por semana', c:'Bimensualmente',
+    ok:'a', exp:'La Comisión se reúne al menos una vez por semana y puede convocar sesiones extraordinarias.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿En qué materia la Comisión NO representa a la UE en el exterior?',
+    a:'Comercio internacional', b:'PESC (Política Exterior y de Seguridad Común)', c:'Medio ambiente',
+    ok:'b', exp:'La Comisión representa a la UE en el exterior, excepto en la PESC, que corresponde al AR y al Consejo Europeo.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Cómo deciden los comisarios europeos en sus funciones?',
+    a:'Con total independencia de los gobiernos nacionales', b:'Bajo mandato de su Estado miembro', c:'Bajo la dirección del Consejo Europeo',
+    ok:'a', exp:'Los comisarios actúan con total independencia de los intereses de sus respectivos Estados.' },
+
+  { cat:'comision', catLabel:'Comisión Europea',
+    q:'¿Qué tipo de mayoría usa la Comisión para sus decisiones internas?',
+    a:'Unanimidad', b:'Mayoría simple o consenso', c:'Doble mayoría cualificada',
+    ok:'b', exp:'La Comisión decide por mayoría simple o por consenso entre sus miembros.' },
+
+  // ── PARLAMENTO EUROPEO ──
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿En qué ciudad celebra el Parlamento Europeo sus plenarias mensuales?',
+    a:'Bruselas', b:'Luxemburgo', c:'Estrasburgo',
+    ok:'c', exp:'Las plenarias mensuales se celebran en Estrasburgo, las comisiones en Bruselas y el Secretariado en Luxemburgo.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuál es el número máximo de eurodiputados del PE según los Tratados?',
+    a:'720', b:'750', c:'785',
+    ok:'b', exp:'El máximo son 750 eurodiputados (más el Presidente). Actualmente hay 719-720.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuántos eurodiputados corresponden a España en el PE?',
+    a:'54', b:'61', c:'72',
+    ok:'b', exp:'España tiene 61 eurodiputados en el Parlamento Europeo.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuál es el quórum del Parlamento Europeo?',
+    a:'1/4 de sus miembros', b:'1/3 de sus miembros', c:'Mayoría absoluta',
+    ok:'b', exp:'El quórum del Parlamento Europeo es de 1/3 de sus miembros.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Quién es la actual Presidenta del Parlamento Europeo?',
+    a:'Kaja Kallas', b:'Teresa Anjinho', c:'Roberta Metsola',
+    ok:'c', exp:'Roberta Metsola es la Presidenta del Parlamento Europeo.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuántos vicepresidentes tiene la Mesa del Parlamento Europeo?',
+    a:'10', b:'12', c:'14',
+    ok:'c', exp:'La Mesa del PE incluye 14 vicepresidentes y 5 cuestores, con mandato de 2,5 años renovables.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuántos cuestores tiene la Mesa del Parlamento Europeo?',
+    a:'3', b:'5', c:'7',
+    ok:'b', exp:'La Mesa del PE está compuesta por el Presidente, 14 vicepresidentes y 5 cuestores.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuándo se reúne anualmente el Parlamento Europeo en sesión constitutiva?',
+    a:'El primer martes de enero', b:'El segundo martes de marzo', c:'El primer lunes de julio',
+    ok:'b', exp:'El PE se reúne anualmente el segundo martes de marzo.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Qué mayoría se necesita para una moción de censura al PE?',
+    a:'Mayoría absoluta', b:'Mayoría de 2/3', c:'Mayoría cualificada reforzada',
+    ok:'b', exp:'El PE puede ejercer control político mediante mociones de censura que requieren mayoría de 2/3.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuántos grupos políticos mínimos hay en el PE?',
+    a:'6', b:'8', c:'10',
+    ok:'b', exp:'El Parlamento Europeo cuenta con 8 grupos políticos.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuántos eurodiputados mínimos necesita un grupo político en el PE?',
+    a:'23 de al menos 1/4 de los EM', b:'25 de al menos 1/5 de los EM', c:'20 de al menos 1/3 de los EM',
+    ok:'a', exp:'Para constituir grupo político se necesitan mínimo 23 eurodiputados procedentes de al menos 1/4 de los EM.' },
+
+  { cat:'parlamento', catLabel:'Parlamento Europeo',
+    q:'¿Cuántas Comisiones Permanentes tiene el Parlamento Europeo?',
+    a:'18', b:'20', c:'22',
+    ok:'c', exp:'El PE cuenta con 22 Comisiones Permanentes y 4 Subcomisiones.' },
+
+  // ── TJUE ──
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Cuál es la sede del Tribunal de Justicia de la Unión Europea?',
+    a:'Bruselas', b:'Estrasburgo', c:'Luxemburgo',
+    ok:'c', exp:'El TJUE tiene su sede en Luxemburgo.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Cuántos jueces tiene el Tribunal de Justicia (TJ)?',
+    a:'27 jueces (1 por EM)', b:'54 jueces (2 por EM)', c:'21 jueces',
+    ok:'a', exp:'El TJ tiene 1 juez por Estado miembro, 27 en total, más 11 abogados generales.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Cuántos abogados generales tiene el Tribunal de Justicia?',
+    a:'8', b:'11', c:'13',
+    ok:'b', exp:'El Tribunal de Justicia cuenta con 27 jueces y 11 abogados generales.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Cuántos jueces tiene el Tribunal General (TG)?',
+    a:'27', b:'54', c:'81',
+    ok:'b', exp:'El TG tiene 2 jueces por Estado miembro, 54 en total.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Cuánto dura el mandato de los Presidentes del TJ y TG?',
+    a:'5 años renovables', b:'3 años renovables', c:'6 años no renovables',
+    ok:'b', exp:'Los Presidentes del TJ y el TG son elegidos por sus miembros para mandatos de 3 años renovables.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Quién es el Presidente del Tribunal de Justicia?',
+    a:'Marc Jaeger', b:'Tony Murphy', c:'Koen Lenaerts',
+    ok:'c', exp:'Koen Lenaerts es el Presidente del Tribunal de Justicia; Marc Jaeger es el Presidente del Tribunal General.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Qué recurso exclusivo del TJ resuelve dudas de los jueces nacionales sobre el Derecho UE?',
+    a:'Recurso por omisión', b:'Cuestión prejudicial', c:'Recurso de casación',
+    ok:'b', exp:'La cuestión prejudicial permite a los órganos jurisdiccionales nacionales consultar al TJ sobre la interpretación del Derecho de la UE.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Cuál es el plazo para interponer un recurso de casación ante el TJ?',
+    a:'1 mes', b:'3 meses', c:'2 meses',
+    ok:'c', exp:'Los recursos de casación ante el Tribunal de Justicia deben interponerse en el plazo de 2 meses.' },
+
+  { cat:'tjue', catLabel:'TJUE',
+    q:'¿Qué tipo de asuntos resuelve el Tribunal General (TG)?',
+    a:'Solo cuestiones prejudiciales', b:'Recursos de particulares y empresas, EM contra Comisión o Consejo, daños y propiedad intelectual', c:'Solo recursos de anulación de Estados',
+    ok:'b', exp:'El TG resuelve recursos de particulares/empresas, EM contra Comisión o Consejo, reparación de daños, contratos y propiedad intelectual.' },
+
+  // ── BCE Y TRIBUNAL DE CUENTAS ──
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿Dónde tiene su sede el Banco Central Europeo?',
+    a:'Luxemburgo', b:'Bruselas', c:'Frankfurt',
+    ok:'c', exp:'El BCE tiene su sede en Frankfurt (Alemania).' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿Quién es la actual Presidenta del BCE?',
+    a:'Nadia Calviño', b:'Christine Lagarde', c:'Kaja Kallas',
+    ok:'b', exp:'Christine Lagarde es la Presidenta del Banco Central Europeo.' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿Cuánto dura el mandato del Presidente del BCE?',
+    a:'5 años renovables', b:'8 años no renovables', c:'6 años renovables',
+    ok:'b', exp:'El Presidente del BCE tiene un mandato de 8 años no renovables, elegido por el Consejo Europeo por mayoría cualificada.' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿Cuál es el principal órgano de decisión del BCE?',
+    a:'El Comité Ejecutivo', b:'El Consejo General', c:'El Consejo de Gobierno',
+    ok:'c', exp:'El Consejo de Gobierno es el principal órgano de decisión del BCE, compuesto por el Comité Ejecutivo y los gobernadores de los BCN de la zona euro.' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿De qué está compuesto el Comité Ejecutivo del BCE?',
+    a:'El Presidente, el Vicepresidente y otros 4 miembros', b:'El Presidente, el Vicepresidente y otros 6 miembros', c:'Solo los gobernadores de los BCN',
+    ok:'a', exp:'El Comité Ejecutivo está formado por el Presidente, el Vicepresidente y otros 4 miembros, con mandato de 8 años.' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿Cuántos miembros tiene el Tribunal de Cuentas de la UE?',
+    a:'21', b:'27', c:'33',
+    ok:'b', exp:'El Tribunal de Cuentas tiene 1 miembro por Estado miembro, 27 en total.' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿Cuánto dura el mandato de los miembros del Tribunal de Cuentas?',
+    a:'5 años renovables', b:'6 años renovables', c:'8 años no renovables',
+    ok:'b', exp:'Los miembros del Tribunal de Cuentas son nombrados por el Consejo por 6 años renovables.' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿Quién es el Presidente del Tribunal de Cuentas de la UE?',
+    a:'Koen Lenaerts', b:'Marc Jaeger', c:'Tony Murphy',
+    ok:'c', exp:'Tony Murphy es el Presidente del Tribunal de Cuentas, elegido por los miembros por 3 años renovables.' },
+
+  { cat:'bce', catLabel:'BCE / Trib. Cuentas',
+    q:'¿A qué institución informa el Tribunal de Cuentas sus sospechas de fraude?',
+    a:'A Europol', b:'Al TJUE', c:'A la Oficina Europea de Lucha contra el Fraude (OLAF)',
+    ok:'c', exp:'El Tribunal de Cuentas informa a la OLAF sobre sospechas de fraude o corrupción.' },
+
+  // ── OTROS ORGANISMOS ──
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Cuántos miembros tiene el Comité de las Regiones?',
+    a:'329', b:'350', c:'280',
+    ok:'a', exp:'El CDR tiene 329 miembros (21 de España), nombrados por el Consejo por 5 años.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Cuántos miembros españoles tiene el Comité Económico y Social?',
+    a:'18', b:'21', c:'27',
+    ok:'b', exp:'Tanto el CDR como el CESE tienen 21 miembros españoles de los 329 totales.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Cuántas reuniones anuales celebra como máximo el Comité Económico y Social?',
+    a:'6', b:'9', c:'12',
+    ok:'b', exp:'El CESE puede celebrar hasta 9 reuniones anuales y adopta sus dictámenes por mayoría simple.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Quién es la actual Alta Representante para Asuntos Exteriores y Política de Seguridad?',
+    a:'Federica Mogherini', b:'Kaja Kallas', c:'Nadia Calviño',
+    ok:'b', exp:'Kaja Kallas es la actual Alta Representante, nombrada por el Consejo Europeo por 5 años.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Qué comité está bajo la responsabilidad del Alto Representante?',
+    a:'El COREPER', b:'El Comité Político y de Seguridad (CPS)', c:'El COSI',
+    ok:'b', exp:'El Comité Político y de Seguridad (CPS) está bajo la responsabilidad del Alto Representante.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Quién dirige el Servicio Europeo de Acción Exterior (SEAE)?',
+    a:'El Presidente de la Comisión', b:'El Alto Representante', c:'El Presidente del Consejo Europeo',
+    ok:'b', exp:'El SEAE es el cuerpo diplomático de la UE, presidido y dirigido por el Alto Representante.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Dónde tiene su sede la Agencia de los Derechos Fundamentales de la UE?',
+    a:'Bilbao', b:'Vilna', c:'Viena',
+    ok:'c', exp:'La Agencia de Derechos Fundamentales y el VIS Central están en Viena (Austria).' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿En qué ciudad española tiene su sede la Agencia Europea de Seguridad y Salud en el Trabajo?',
+    a:'Madrid', b:'Barcelona', c:'Bilbao',
+    ok:'c', exp:'La Agencia Europea de Seguridad y Salud en el Trabajo tiene su sede en Bilbao (España).' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Dónde está el Instituto Europeo para la Igualdad de Género?',
+    a:'Atenas', b:'Vilna', c:'Viena',
+    ok:'b', exp:'El Instituto Europeo para la Igualdad de Género está en Vilna (Lituania).' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿En qué ciudad está la ENISA (Agencia de la UE para la Ciberseguridad)?',
+    a:'Atenas', b:'Viena', c:'Luxemburgo',
+    ok:'a', exp:'La ENISA tiene su sede en Atenas (Grecia).' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Quién preside el Banco Europeo de Inversiones?',
+    a:'Christine Lagarde', b:'Tony Murphy', c:'Nadia Calviño',
+    ok:'c', exp:'Nadia Calviño es la Presidenta del BEI, con mandato de 6 años renovables. Su sede está en Luxemburgo.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Cuánto dura el mandato del Defensor del Pueblo Europeo y quién lo elige?',
+    a:'5 años renovables, elegido por el PE', b:'6 años renovables, elegido por el Consejo', c:'5 años no renovables, elegido por el TJUE',
+    ok:'a', exp:'El Defensor del Pueblo es elegido por el PE por 5 años renovables. Actualmente es Teresa Anjinho.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿De qué plazo dispone un ciudadano para reclamar ante el Defensor del Pueblo?',
+    a:'1 año desde los hechos', b:'2 años desde el conocimiento de los hechos', c:'6 meses desde los hechos',
+    ok:'b', exp:'Cualquier ciudadano puede reclamar ante el Defensor del Pueblo en los 2 años siguientes al conocimiento de los hechos.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Cuánto tiempo tiene la entidad implicada para responder al Defensor del Pueblo?',
+    a:'1 mes', b:'2 meses', c:'3 meses',
+    ok:'c', exp:'La entidad implicada tiene 3 meses para responder al Defensor del Pueblo.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Quién elige al Supervisor Europeo de Protección de Datos (SEPD)?',
+    a:'Solo el Parlamento Europeo', b:'El PE y el Consejo conjuntamente', c:'El Consejo Europeo',
+    ok:'b', exp:'El SEPD es elegido conjuntamente por el PE y el Consejo por 5 años, renovables una vez.' },
+
+  { cat:'otros', catLabel:'Otros Organismos',
+    q:'¿Cuántas reuniones anuales máximas celebra el Comité de las Regiones?',
+    a:'4', b:'6', c:'9',
+    ok:'b', exp:'El Comité de las Regiones celebra hasta 6 reuniones anuales y adopta sus dictámenes por mayoría simple.' },
+
+];
+
+// ══════════════════ ESTADO DEL JUEGO ══════════════════
+let questions = [];
+let current   = 0;
+let score     = 0;
+let wrongs    = 0;
+let answered  = false;
+
+const CATEGORY_COLORS = {
+  consejo:    'cat-consejo',
+  europeo:    'cat-europeo',
+  comision:   'cat-comision',
+  parlamento: 'cat-parlamento',
+  tjue:       'cat-tjue',
+  bce:        'cat-bce',
+  otros:      'cat-otros',
+};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  questions = shuffle(ALL_QUESTIONS);
+  current = 0; score = 0; wrongs = 0;
+  document.getElementById('total-q-count').textContent = questions.length;
+  document.getElementById('screen-start').style.display = 'none';
+  document.getElementById('screen-quiz').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q   = questions[current];
+  const tot = questions.length;
+
+  // progress
+  document.getElementById('prog-label').textContent = `Pregunta ${current+1} de ${tot}`;
+  const pct = Math.round((current/tot)*100);
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('score-live').textContent = score;
+  document.getElementById('wrong-live').textContent  = wrongs;
+
+  // category
+  const catEl = document.getElementById('q-cat');
+  catEl.textContent = q.catLabel;
+  catEl.className = 'q-category ' + (CATEGORY_COLORS[q.cat] || 'cat-otros');
+
+  document.getElementById('q-num').textContent  = `Pregunta ${current+1} / ${tot}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  // options — shuffle order
+  const opts = shuffle([
+    { key:'a', text:q.a },
+    { key:'b', text:q.b },
+    { key:'c', text:q.c },
+  ]);
+
+  const labels = ['A','B','C'];
+  const container = document.getElementById('options');
+  container.innerHTML = '';
+  opts.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${labels[idx]}</span>${opt.text}`;
+    btn.addEventListener('click', () => chooseAnswer(opt.key, btn, opts, q));
+    container.appendChild(btn);
+  });
+
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'none';
+
+  // animate
+  const card = document.getElementById('question-card');
+  card.classList.remove('animate');
+  void card.offsetWidth;
+  card.classList.add('animate');
+}
+
+function chooseAnswer(chosen, clickedBtn, opts, q) {
+  if (answered) return;
+  answered = true;
+
+  const buttons = document.querySelectorAll('.opt-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  const correct = q.ok;
+  const isRight = chosen === correct;
+
+  if (isRight) {
+    clickedBtn.classList.add('correct');
+    score++;
+  } else {
+    clickedBtn.classList.add('wrong');
+    wrongs++;
+    // reveal correct
+    buttons.forEach(b => {
+      const btnKey = opts.find(o => b.textContent.includes(o.text))?.key;
+      if (btnKey === correct) b.classList.add('revealed');
+    });
+  }
+
+  // feedback
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback-box ' + (isRight ? 'correct' : 'wrong');
+  fb.textContent = (isRight ? '✓ ¡Correcto! ' : '✗ Incorrecto. ') + q.exp;
+  fb.style.display = 'block';
+
+  document.getElementById('score-live').textContent = score;
+  document.getElementById('wrong-live').textContent  = wrongs;
+
+  document.getElementById('btn-next').style.display = 'block';
+  document.getElementById('btn-next').textContent =
+    current < questions.length-1 ? 'Siguiente pregunta →' : 'Ver resultados →';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('screen-quiz').style.display = 'none';
+  const rs = document.getElementById('screen-results');
+  rs.style.display = 'flex';
+
+  const tot = questions.length;
+  const pct = Math.round((score/tot)*100);
+
+  let trophy = '🏆', title = '¡Perfecto, eres un dios!', msg = '';
+  if (pct === 100) {
+    trophy = '🥇'; title = '¡PERFECTO ABSOLUTO!';
+    msg = 'Increíble. Has respondido correctamente TODAS las preguntas. Dominas el 100% de la teoría sobre Instituciones de la UE. ¡Eres imparable en el examen!';
+  } else if (pct >= 90) {
+    trophy = '🏆'; title = '¡Nivel Élite!';
+    msg = `${pct}% de aciertos. Casi perfecto. Repasa las ${wrongs} preguntas falladas y serás imbatible.`;
+  } else if (pct >= 75) {
+    trophy = '🥈'; title = 'Muy buen resultado';
+    msg = `${pct}% de aciertos. Buen dominio del temario. Refuerza los puntos débiles y repite el test.`;
+  } else if (pct >= 50) {
+    trophy = '📚'; title = 'En progreso';
+    msg = `${pct}% de aciertos. Vas por buen camino pero aún hay margen de mejora. ¡Repite el test!`;
+  } else {
+    trophy = '💪'; title = '¡Hay que seguir estudiando!';
+    msg = `${pct}% de aciertos. Revisa el temario y vuelve a intentarlo. Cada intento te hace más fuerte.`;
+  }
+
+  document.getElementById('trophy-emoji').textContent   = trophy;
+  document.getElementById('result-title').textContent   = title;
+  document.getElementById('result-score').textContent   = pct + '%';
+  document.getElementById('result-pct').textContent     = `${score} correctas de ${tot} preguntas`;
+  document.getElementById('r-correct').textContent      = score;
+  document.getElementById('r-wrong').textContent        = wrongs;
+  document.getElementById('r-total').textContent        = tot;
+  document.getElementById('result-msg').textContent     = msg;
+
+  // confetti dots
+  const cr = document.getElementById('confetti-row');
+  cr.innerHTML = '';
+  const colors = ['#C8B8E8','#B8E0D2','#F5C6AA','#A8D5EA','#F2B8C6','#F7E4A0','#9B72CF','#6DBE8C'];
+  for (let i=0; i<20; i++) {
+    const d = document.createElement('span');
+    d.className = 'cdot';
+    d.style.background = colors[i % colors.length];
+    cr.appendChild(d);
+  }
+}
+
+function restartQuiz() {
+  document.getElementById('screen-results').style.display = 'none';
+  document.getElementById('screen-start').style.display   = 'flex';
+  document.getElementById('total-q-count').textContent    = ALL_QUESTIONS.length;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Sistema Político Español</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Georgia', serif; background: #f5f2eb; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 2rem 1rem; }
+  .container { width: 100%; max-width: 680px; }
+  .header { text-align: center; margin-bottom: 2rem; }
+  .header h1 { font-size: 1.7rem; color: #1a1a2e; font-weight: 400; letter-spacing: 0.04em; margin-bottom: 0.4rem; }
+  .header p { font-size: 0.85rem; color: #666; }
+  .progress-wrap { background: #ddd8ce; border-radius: 4px; height: 7px; margin-bottom: 2rem; overflow: hidden; }
+  .progress-bar { height: 100%; background: #2563eb; border-radius: 4px; transition: width 0.4s ease; }
+  .card { background: #ffffff; border: 1px solid #ddd8ce; border-radius: 12px; padding: 2rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .q-counter { font-size: 0.78rem; color: #888; font-family: Arial, sans-serif; margin-bottom: 0.75rem; }
+  .question { font-size: 1.15rem; color: #111; line-height: 1.7; margin-bottom: 1.5rem; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option { background: #f9f7f3; border: 1.5px solid #d4cfc6; border-radius: 8px; padding: 14px 18px; cursor: pointer; color: #222; font-size: 0.95rem; font-family: Arial, sans-serif; transition: all 0.2s; text-align: left; }
+  .option:hover:not(:disabled) { border-color: #2563eb; background: #eff6ff; color: #1e40af; }
+  .option.correct { background: #f0fdf4; border-color: #16a34a; color: #15803d; font-weight: 700; }
+  .option.wrong { background: #fef2f2; border-color: #dc2626; color: #b91c1c; }
+  .option.reveal { background: #f0fdf4; border-color: #16a34a; color: #15803d; font-weight: 700; }
+  .option:disabled { cursor: default; }
+  .feedback { margin-top: 1rem; padding: 14px 18px; border-radius: 8px; font-size: 0.9rem; font-family: Arial, sans-serif; display: none; line-height: 1.6; }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #f0fdf4; color: #15803d; border: 1px solid #16a34a; }
+  .feedback.ko { background: #fef2f2; color: #b91c1c; border: 1px solid #dc2626; }
+  .hint { margin-top: 10px; padding: 12px 16px; border-radius: 8px; background: #fffbeb; border: 1px solid #f59e0b; color: #78350f; font-size: 0.88rem; font-family: Arial, sans-serif; line-height: 1.6; display: none; }
+  .hint.show { display: block; }
+  .hint-label { font-weight: 700; display: block; margin-bottom: 4px; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; color: #b45309; }
+  .btn-next { margin-top: 1.25rem; background: #2563eb; border: none; border-radius: 8px; padding: 12px 28px; color: #fff; font-size: 0.95rem; font-family: Arial, sans-serif; font-weight: 700; cursor: pointer; display: none; transition: background 0.2s; }
+  .btn-next:hover { background: #1d4ed8; }
+  .results { background: #ffffff; border: 1px solid #ddd8ce; border-radius: 12px; padding: 2.5rem; text-align: center; display: none; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .results h2 { color: #1a1a2e; font-size: 1.4rem; font-weight: 400; margin-bottom: 1rem; }
+  .score-big { font-size: 3.5rem; color: #2563eb; font-weight: 400; margin: 1rem 0; }
+  .score-sub { font-size: 0.95rem; color: #555; font-family: Arial, sans-serif; margin-bottom: 1.5rem; }
+  .organ-scores { text-align: left; margin: 1.5rem 0; border-top: 1px solid #e5e0d8; padding-top: 1.5rem; }
+  .organ-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #eee; font-family: Arial, sans-serif; font-size: 0.92rem; color: #333; }
+  .organ-row span:last-child { color: #2563eb; font-weight: 700; }
+  .btn-restart { background: #2563eb; border: none; border-radius: 8px; padding: 12px 32px; color: #fff; font-size: 1rem; font-family: Arial, sans-serif; font-weight: 700; cursor: pointer; margin-top: 1rem; transition: background 0.2s; }
+  .btn-restart:hover { background: #1d4ed8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Sistema Político Español</h1>
+    <p>38 preguntas · Una por función · Demuestra que lo dominas todo</p>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div id="quizArea">
+    <div class="card" id="qCard">
+      <div class="q-counter" id="qCounter"></div>
+      <div class="question" id="questionText"></div>
+      <div class="options" id="optionsArea"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="hint" id="hint"><span class="hint-label">💡 Por qué es así</span><span id="hintText"></span></div>
+      <button class="btn-next" id="btnNext" onclick="nextQ()">Siguiente →</button>
+    </div>
+  </div>
+  <div class="results" id="results">
+    <h2>Test completado</h2>
+    <div class="score-big" id="scoreBig"></div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="organ-scores" id="organScores"></div>
+    <button class="btn-restart" onclick="restart()">Repetir test</button>
+  </div>
+</div>
+<script>
+const questions = [
+  // EL REY (10)
+  {
+    organ: "El Rey", q: "¿En qué plazo debe el Rey sancionar y promulgar las leyes aprobadas por las Cortes?",
+    opts: ["7 días","15 días","30 días","60 días"], correct: 1,
+    hint: "El Rey no puede bloquear leyes indefinidamente — su papel es simbólico. 15 días es el plazo constitucional (art. 91): suficiente para el trámite formal pero sin poder de veto real."
+  },
+  {
+    organ: "El Rey", q: "¿Quién convoca y disuelve las Cortes Generales y convoca elecciones?",
+    opts: ["El Presidente del Gobierno","El Congreso","El Rey","El Consejo de Ministros"], correct: 2,
+    hint: "El Rey es el Jefe del Estado, y convocar/disolver el Parlamento es un acto formal de Estado. Eso sí, siempre a propuesta del Presidente — el Rey firma, pero no decide."
+  },
+  {
+    organ: "El Rey", q: "¿Quién convoca el referéndum (previa propuesta del Presidente y autorización del Congreso)?",
+    opts: ["El Presidente del Gobierno","El Rey","El Senado","El Congreso"], correct: 1,
+    hint: "El referéndum afecta al Estado entero, así que lo convoca el Jefe del Estado (el Rey). Pero necesita dos controles democráticos: que el Presidente lo proponga y que el Congreso lo autorice. El Rey solo ejecuta."
+  },
+  {
+    organ: "El Rey", q: "¿Quién nombra al Presidente del Gobierno tras obtener la confianza del Congreso?",
+    opts: ["El Congreso","El Senado","El Presidente saliente","El Rey"], correct: 3,
+    hint: "El Congreso otorga la confianza (investidura), pero el nombramiento formal es del Rey — porque el Presidente del Gobierno encabeza el Ejecutivo del Estado, y nombrar cargos de Estado es función del Jefe del Estado."
+  },
+  {
+    organ: "El Rey", q: "¿Quién nombra y separa a los Ministros?",
+    opts: ["El Rey (a propuesta del Presidente)","El Congreso","El Presidente directamente","El Senado"], correct: 0,
+    hint: "Aquí hay una lógica clave: el Presidente elige a sus Ministros (es su equipo), pero el nombramiento formal lo hace el Rey porque los Ministros son altos cargos del Estado. El Presidente propone, el Rey nombra."
+  },
+  {
+    organ: "El Rey", q: "¿Quién expide los decretos acordados en el Consejo de Ministros?",
+    opts: ["El Presidente del Gobierno","El Congreso","El Rey","El Senado"], correct: 2,
+    hint: "Los Reales Decretos se llaman 'Reales' precisamente porque los expide el Rey. El Consejo de Ministros los acuerda (decide el contenido), pero es el Rey quien les da validez formal con su firma."
+  },
+  {
+    organ: "El Rey", q: "¿Cuántos miembros del Tribunal Constitucional nombra formalmente el Rey?",
+    opts: ["6","8","10","12"], correct: 3,
+    hint: "El TC tiene 12 miembros en total, y todos los nombra formalmente el Rey — porque es el Jefe del Estado. Pero los proponen distintos órganos: 4 el Congreso, 4 el Senado, 2 el Gobierno y 2 el CGPJ. El Rey solo formaliza."
+  },
+  {
+    organ: "El Rey", q: "¿Cuántos Vocales del CGPJ nombra formalmente el Rey?",
+    opts: ["10","15","20","25"], correct: 2,
+    hint: "El CGPJ tiene 20 Vocales en total, todos nombrados formalmente por el Rey. Los proponen el Congreso (10) y el Senado (10). Patrón idéntico al TC: el Rey nombra a todos los miembros de los órganos constitucionales."
+  },
+  {
+    organ: "El Rey", q: "¿Quién manifiesta el consentimiento del Estado para obligarse por tratados internacionales?",
+    opts: ["El Congreso","El Rey","El Presidente","El Senado"], correct: 1,
+    hint: "En las relaciones internacionales, España habla con una sola voz: la del Jefe del Estado. El Rey representa a España ante el mundo. Los tratados los negocia el Gobierno, pero quien compromete formalmente al Estado es el Rey."
+  },
+  {
+    organ: "El Rey", q: "¿Quién declara la guerra y hace la paz (previa autorización de las Cortes Generales)?",
+    opts: ["El Presidente del Gobierno","El Consejo de Ministros","El Congreso","El Rey"], correct: 3,
+    hint: "Declarar la guerra es el acto más grave que puede hacer un Estado. Por eso lo hace el Jefe del Estado (el Rey), pero con el máximo control democrático posible: autorización de las Cortes Generales completas."
+  },
+  // PRESIDENTE DEL GOBIERNO (7)
+  {
+    organ: "Presidente del Gobierno", q: "¿Quién propone al Rey el nombramiento y separación de Vicepresidentes y Ministros?",
+    opts: ["El Congreso","El Rey","El Presidente del Gobierno","El Senado"], correct: 2,
+    hint: "El Presidente es el jefe del Gobierno y elige a su propio equipo. Nadie más puede imponerle quiénes son sus Ministros — eso sería vaciar su poder. Él propone, el Rey formaliza. Es su gabinete, su responsabilidad."
+  },
+  {
+    organ: "Presidente del Gobierno", q: "¿Quién propone al Rey la disolución del Congreso, Senado o Cortes Generales?",
+    opts: ["El Consejo de Ministros","El Presidente del Gobierno (bajo su exclusiva responsabilidad)","El Congreso","El Rey"], correct: 1,
+    hint: "Es una facultad exclusiva del Presidente — ni siquiera necesita que el Consejo de Ministros esté de acuerdo. La Constitución dice 'bajo su exclusiva responsabilidad' para dejar claro que es una decisión personal. Es su arma política."
+  },
+  {
+    organ: "Presidente del Gobierno", q: "¿Quién plantea la cuestión de confianza ante el Congreso?",
+    opts: ["El Rey","El Senado","El Presidente del Gobierno (previa deliberación del Consejo de Ministros)","El Congreso"], correct: 2,
+    hint: "La cuestión de confianza es el Presidente preguntándole al Congreso: '¿Seguís confiando en mí?' Solo él puede plantearlo, pero debe consultar antes al Consejo de Ministros — es un acto de gobierno, no solo personal."
+  },
+  {
+    organ: "Presidente del Gobierno", q: "¿Quién propone al Rey la convocatoria de un referéndum consultivo?",
+    opts: ["El Congreso","El Senado","El Rey","El Presidente del Gobierno (previa autorización del Congreso)"], correct: 3,
+    hint: "El Presidente gobierna y puede querer consultar al pueblo. Por eso propone el referéndum. Pero como afecta a toda la democracia, necesita que el Congreso lo autorice primero. Luego el Rey lo convoca formalmente."
+  },
+  {
+    organ: "Presidente del Gobierno", q: "¿Quién crea, modifica y suprime los Departamentos Ministeriales y las Secretarías de Estado?",
+    opts: ["El Consejo de Ministros","El Rey","El Presidente del Gobierno (por Real Decreto)","El Congreso"], correct: 2,
+    hint: "Organizar el Gobierno es competencia exclusiva del Presidente — él decide cuántos Ministerios hay y cómo se llaman. Es lógico: si él lidera el Gobierno, él diseña su estructura. Lo hace por Real Decreto (que firma el Rey)."
+  },
+  {
+    organ: "Presidente del Gobierno", q: "¿Quién propone al Rey el candidato a Fiscal General del Estado?",
+    opts: ["El CGPJ","El Presidente del Gobierno","El Congreso","El Consejo de Ministros"], correct: 1,
+    hint: "El Fiscal General depende orgánicamente del Gobierno (aunque sea independiente funcionalmente). Por eso es el Presidente quien propone al candidato — es una figura del Ejecutivo, aunque actúe con autonomía."
+  },
+  {
+    organ: "Presidente del Gobierno", q: "¿Quién propone al Consejo de Ministros los candidatos a la Presidencia y Adjunto de la AEPD?",
+    opts: ["El Congreso","El Senado","El Rey","El Presidente del Gobierno"], correct: 3,
+    hint: "La AEPD (Agencia Española de Protección de Datos) es un organismo del Estado. El proceso es escalonado: el Presidente propone al Consejo de Ministros, el Consejo lo aprueba, y el Congreso ratifica. Cada nivel controla al siguiente."
+  },
+  // CONSEJO DE MINISTROS (10)
+  {
+    organ: "Consejo de Ministros", q: "¿Quién aprueba los Proyectos de Ley para enviarlos al Congreso?",
+    opts: ["El Presidente del Gobierno","El Rey","El Consejo de Ministros","El Senado"], correct: 2,
+    hint: "El Gobierno elabora las leyes que quiere aplicar — es su programa político. Pero antes de enviarlas al Parlamento, el Consejo de Ministros las aprueba en bloque: es la decisión colectiva del Ejecutivo, no solo del Presidente."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién aprueba los Reales Decretos-leyes en casos de urgente necesidad?",
+    opts: ["El Congreso","El Consejo de Ministros","El Rey","El Senado"], correct: 1,
+    hint: "Cuando hay urgencia y no hay tiempo para tramitar una ley en el Parlamento, el Gobierno puede legislar provisionalmente. Lo hace el Consejo de Ministros (no el Presidente solo) porque es una decisión muy grave — luego el Congreso lo valida o rechaza en 30 días."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién aprueba los Reales Decretos Legislativos por delegación de las Cortes?",
+    opts: ["El Rey","El Congreso","El Senado","El Consejo de Ministros"], correct: 3,
+    hint: "Las Cortes pueden delegar en el Gobierno la aprobación de un texto normativo (cuando la materia es técnica o compleja). El Consejo de Ministros ejerce esa delegación — siempre dentro de los límites que fijaron las Cortes."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién declara el Estado de Alarma y cuál es el plazo máximo sin prórroga?",
+    opts: ["El Presidente, máximo 7 días","El Consejo de Ministros, máximo 15 días","El Congreso, máximo 30 días","El Rey, máximo 60 días"], correct: 1,
+    hint: "El Estado de Alarma es una medida del Ejecutivo para situaciones de emergencia (catástrofes, pandemias). Lo declara el Consejo de Ministros — no solo el Presidente — porque es gravísimo. El límite de 15 días obliga a rendir cuentas al Congreso pronto."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién solicita autorización al Congreso para declarar el Estado de Excepción?",
+    opts: ["El Presidente del Gobierno","El Rey","El Consejo de Ministros","El Senado"], correct: 2,
+    hint: "El Estado de Excepción es más grave que el de Alarma: suspende derechos fundamentales. Por eso el Gobierno no puede declararlo solo — necesita que el Congreso lo autorice previamente. El Consejo de Ministros pide permiso, el Congreso decide."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién propone al Congreso la declaración del Estado de Sitio?",
+    opts: ["El Rey","El Senado","El Ejército","El Consejo de Ministros"], correct: 3,
+    hint: "El Estado de Sitio es el más grave de los tres — implica que el orden constitucional está en peligro grave. El Gobierno lo propone, pero quien lo declara es el Congreso por mayoría absoluta. El Ejecutivo propone, el Legislativo decide."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién aprueba el Estatuto de la AEPD mediante Real Decreto?",
+    opts: ["El Congreso","El Presidente del Gobierno","El Consejo de Ministros","El Rey"], correct: 2,
+    hint: "El Estatuto de un organismo público (sus normas de funcionamiento) lo aprueba el Consejo de Ministros mediante Real Decreto. Es una norma reglamentaria del Ejecutivo, no una ley — por eso no pasa por el Parlamento."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién nombra y separa a los Secretarios de Estado, Subsecretarios, Secretarios Generales y Directores Generales?",
+    opts: ["El Presidente del Gobierno","El Congreso","El Rey","El Consejo de Ministros"], correct: 3,
+    hint: "Los Ministros son nombrados por el Rey a propuesta del Presidente. Pero los cargos por debajo (Secretarios de Estado, Subsecretarios...) los nombra el Consejo de Ministros — ya no interviene el Rey, porque son cargos administrativos, no políticos de primer nivel."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién aprueba el Plan Nacional PIC (Protección de Infraestructuras Críticas)?",
+    opts: ["El Congreso","El Senado","El Consejo de Ministros","El Rey"], correct: 2,
+    hint: "El Plan Nacional PIC es una norma de seguridad nacional que afecta a infraestructuras críticas (agua, energía, telecomunicaciones). Es competencia del Ejecutivo aprobar planes nacionales de seguridad — lo hace el Consejo de Ministros mediante Real Decreto."
+  },
+  {
+    organ: "Consejo de Ministros", q: "¿Quién acuerda la declaración general de protección temporal en casos de afluencia masiva de desplazados?",
+    opts: ["El Congreso","El Consejo de Ministros","El Rey","El Senado"], correct: 1,
+    hint: "La protección temporal de desplazados masivos es una medida ejecutiva urgente de política exterior y humanitaria. Como es urgente y ejecutiva, la decide el Consejo de Ministros — no requiere aprobación parlamentaria previa."
+  },
+  // CONGRESO (8)
+  {
+    organ: "Congreso de los Diputados", q: "¿Quién otorga la confianza al candidato a Presidente del Gobierno mediante investidura?",
+    opts: ["El Senado","El Rey","El Congreso","El pueblo directamente"], correct: 2,
+    hint: "En España no elegimos al Presidente directamente — elegimos diputados, y son ellos quienes eligen al Presidente. Por eso es el Congreso (la cámara de representación popular directa) quien inviste al Presidente, no el Senado ni el Rey."
+  },
+  {
+    organ: "Congreso de los Diputados", q: "¿Qué mayoría necesita el Congreso para aprobar en votación final las Leyes Orgánicas?",
+    opts: ["Mayoría simple","Mayoría relativa","Mayoría absoluta","Unanimidad"], correct: 2,
+    hint: "Las Leyes Orgánicas regulan derechos fundamentales y libertades públicas — las materias más importantes. Por eso exigen mayoría absoluta (mitad más uno de los diputados), no solo mayoría simple. Son las leyes más protegidas del sistema."
+  },
+  {
+    organ: "Congreso de los Diputados", q: "¿Quién convalida o deroga los Reales Decretos-leyes en un plazo de 30 días?",
+    opts: ["El Senado","El Rey","El Gobierno","El Congreso"], correct: 3,
+    hint: "El Gobierno legisla por urgencia con los Decretos-ley, pero el Parlamento tiene siempre la última palabra. En 30 días el Congreso decide si los mantiene (convalida) o los anula (deroga). Es el control parlamentario del poder ejecutivo urgente."
+  },
+  {
+    organ: "Congreso de los Diputados", q: "¿Qué instrumento usa el Congreso para destituir al Gobierno y qué mayoría requiere?",
+    opts: ["Veto, mayoría simple","Referéndum, mayoría absoluta","Moción de Censura, mayoría absoluta","Decreto-ley, mayoría relativa"], correct: 2,
+    hint: "La Moción de Censura es 'constructiva': para derribar al Gobierno hay que proponer un candidato alternativo simultáneamente. Necesita mayoría absoluta para evitar que gobiernos estables caigan por accidente. Es difícil a propósito."
+  },
+  {
+    organ: "Congreso de los Diputados", q: "¿Quién autoriza la prórroga del Estado de Alarma y la declaración del Estado de Excepción?",
+    opts: ["El Senado","El Congreso","El Gobierno","El Rey"], correct: 1,
+    hint: "Cualquier suspensión de derechos o extensión de poderes de emergencia requiere control parlamentario. El Congreso (representantes del pueblo) es quien da o niega ese control — no el Senado, que es territorial, ni el Rey, que es simbólico."
+  },
+  {
+    organ: "Congreso de los Diputados", q: "¿Quién declara el Estado de Sitio y con qué mayoría?",
+    opts: ["El Gobierno, mayoría simple","El Rey, sin necesidad de votación","El Congreso, mayoría absoluta","El Senado, mayoría cualificada"], correct: 2,
+    hint: "El Estado de Sitio es el más grave — suspende derechos y puede implicar al Ejército. Es tan excepcional que no lo puede declarar el Gobierno solo: lo declara el Congreso por mayoría absoluta. Máxima gravedad = máximo control democrático."
+  },
+  {
+    organ: "Congreso de los Diputados", q: "¿Cuántos Magistrados del Tribunal Constitucional propone el Congreso?",
+    opts: ["2","4","6","8"], correct: 1,
+    hint: "El TC tiene 12 magistrados repartidos entre 4 órganos: Congreso propone 4, Senado propone 4, Gobierno propone 2, CGPJ propone 2. El reparto equilibrado entre poderes garantiza independencia. Congreso y Senado tienen el mismo peso (4 cada uno)."
+  },
+  {
+    organ: "Congreso de los Diputados", q: "¿Cuántos Vocales del CGPJ propone el Congreso y a través de qué comisión ratifica a la Presidencia de la AEPD?",
+    opts: ["8 Vocales, Comisión Constitucional","10 Vocales, Comisión de Justicia","12 Vocales, Comisión de Interior","6 Vocales, Comisión de Hacienda"], correct: 1,
+    hint: "El CGPJ tiene 20 Vocales: 10 los propone el Congreso y 10 el Senado (reparto igualitario). La AEPD protege datos — materia relacionada con derechos y justicia, por eso la ratifica la Comisión de Justicia, no otra."
+  },
+  // SENADO (3)
+  {
+    organ: "El Senado", q: "¿Cuál es la principal función legislativa del Senado respecto a los proyectos del Congreso?",
+    opts: ["Aprobar definitivamente las leyes","Vetar o enmendar proyectos del Congreso (el Congreso puede levantar el veto)","Crear nuevas leyes de forma autónoma","Ejecutar las leyes aprobadas"], correct: 1,
+    hint: "España es un bicameralismo asimétrico: el Congreso tiene más poder. El Senado es una 'cámara de segunda lectura' — revisa, puede enmendar o vetar, pero el Congreso siempre puede levantar el veto. El Senado frena, pero no bloquea definitivamente."
+  },
+  {
+    organ: "El Senado", q: "¿Cuántos Magistrados del TC y Vocales del CGPJ propone el Senado?",
+    opts: ["2 Magistrados y 8 Vocales","6 Magistrados y 12 Vocales","4 Magistrados y 10 Vocales","8 Magistrados y 20 Vocales"], correct: 2,
+    hint: "Mismo número que el Congreso en ambos casos: 4 magistrados del TC y 10 vocales del CGPJ. El criterio de simetría entre cámaras garantiza equilibrio. Si lo recuerdas para el Congreso, es el mismo para el Senado."
+  },
+  {
+    organ: "El Senado", q: "¿Qué cámara inicia la tramitación de decisiones sobre el Fondo de Compensación Interterritorial y convenios entre CCAA?",
+    opts: ["El Congreso","El Consejo de Ministros","El Rey","El Senado"], correct: 3,
+    hint: "El Senado es la cámara de representación territorial — representa a las Comunidades Autónomas y provincias. Por eso tiene protagonismo en todo lo que afecta al territorio: el Fondo de Compensación Interterritorial y los convenios entre CCAA se tramitan allí primero."
+  }
+];
+
+let current = 0, score = 0, answered = false;
+const organScore = {}, organTotal = {};
+questions.forEach(q => {
+  organTotal[q.organ] = (organTotal[q.organ] || 0) + 1;
+  organScore[q.organ] = organScore[q.organ] || 0;
+});
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const shuffled = shuffle([...questions]);
+
+function loadQ() {
+  const q = shuffled[current];
+  answered = false;
+  document.getElementById('qCounter').textContent = 'Pregunta ' + (current + 1) + ' de ' + shuffled.length;
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('hint').className = 'hint';
+  document.getElementById('hintText').textContent = '';
+  document.getElementById('btnNext').style.display = 'none';
+  const area = document.getElementById('optionsArea');
+  area.innerHTML = '';
+  shuffle([0,1,2,3]).forEach(i => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = q.opts[i];
+    btn.dataset.idx = i;
+    btn.onclick = () => selectOpt(btn, i, q);
+    area.appendChild(btn);
+  });
+  document.getElementById('progressBar').style.width = (current / shuffled.length * 100) + '%';
+}
+
+function selectOpt(btn, idx, q) {
+  if (answered) return;
+  answered = true;
+  document.querySelectorAll('.option').forEach(b => b.disabled = true);
+  const fb = document.getElementById('feedback');
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    fb.textContent = '✓ Correcto';
+    fb.className = 'feedback show ok';
+    score++;
+    organScore[q.organ]++;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.option').forEach(b => {
+      if (parseInt(b.dataset.idx) === q.correct) b.classList.add('reveal');
+    });
+    fb.textContent = '✗ Incorrecto — La respuesta correcta es: ' + q.opts[q.correct];
+    fb.className = 'feedback show ko';
+    document.getElementById('hintText').textContent = q.hint;
+    document.getElementById('hint').className = 'hint show';
+  }
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.style.display = 'inline-block';
+  nextBtn.textContent = current === shuffled.length - 1 ? 'Ver resultados' : 'Siguiente →';
+}
+
+function nextQ() {
+  current++;
+  if (current >= shuffled.length) showResults();
+  else loadQ();
+}
+
+function showResults() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('progressBar').style.width = '100%';
+  const pct = Math.round(score / shuffled.length * 100);
+  document.getElementById('scoreBig').textContent = score + ' / ' + shuffled.length;
+  const msg = pct === 100 ? '🏆 Perfecto, dominas todo el temario' : pct >= 80 ? '¡Muy bien! Repasa los fallos' : pct >= 50 ? 'Bien encaminado, sigue practicando' : 'Necesitas repasar más';
+  document.getElementById('scoreSub').textContent = pct + '% correcto — ' + msg;
+  let html = '';
+  Object.keys(organTotal).forEach(o => {
+    html += '<div class="organ-row"><span>' + o + '</span><span>' + organScore[o] + '/' + organTotal[o] + '</span></div>';
+  });
+  document.getElementById('organScores').innerHTML = html;
+  document.getElementById('results').style.display = 'block';
+}
+
+function restart() {
+  current = 0; score = 0; answered = false;
+  Object.keys(organScore).forEach(k => organScore[k] = 0);
+  shuffle(shuffled);
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'block';
+  loadQ();
+}
+
+loadQ();
+</script>
+</body>
+</html>

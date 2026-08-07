@@ -1,0 +1,391 @@
+{
+  "materiales": [
+    {
+      "titulo": "Temas 10-11 · Extranjería · Test por sesión (corregido)",
+      "tipo": "test",
+      "url": "materiales/test-t10-y-t11/index.html",
+      "fecha": "2026-07-30",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Test-T10-y-T11",
+      "pagina": "pages/temas-10-11-extranjeria-test-por-sesion-corregido.html"
+    },
+    {
+      "titulo": "Expediente de Autores — CNP Escala Básica",
+      "tipo": "esquema",
+      "url": "materiales/autores-t-28-29-30-32-35/index.html",
+      "fecha": "2026-07-30",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Autores-T.-28-29-30-32-35",
+      "pagina": "pages/expediente-de-autores-cnp-escala-basica.html"
+    },
+    {
+      "titulo": "Centro de Mando · Plan de Pista 1.000 m · CNP",
+      "tipo": "plan",
+      "url": "materiales/1000m/index.html",
+      "fecha": "2026-07-29",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/1000m",
+      "pagina": "pages/centro-de-mando-plan-de-pista-1-000-m-cnp.html"
+    },
+    {
+      "titulo": "MNP · CAT · SPT · CPT — Los cuatro guardianes",
+      "tipo": "esquema",
+      "url": "materiales/comparativa-organismos-tortura/index.html",
+      "fecha": "2026-07-23",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/COMPARATIVA-ORGANISMOS-TORTURA",
+      "pagina": "pages/mnp-cat-spt-cpt-los-cuatro-guardianes.html"
+    },
+    {
+      "titulo": "J.A.R.V.I.S. CNP — Central de Mando 2026",
+      "tipo": "otro",
+      "url": "materiales/j-a-r-v-i-s/index.html",
+      "fecha": "2026-07-23",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/J.A.R.V.I.S",
+      "pagina": "pages/j-a-r-v-i-s-cnp-central-de-mando-2026.html"
+    },
+    {
+      "titulo": "Test · Clasificación de Infracciones · Tema 11",
+      "tipo": "test",
+      "url": "materiales/infracciones-t11/index.html",
+      "fecha": "2026-07-23",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Infracciones-T11",
+      "pagina": "pages/test-clasificacion-de-infracciones-tema-11.html"
+    },
+    {
+      "titulo": "Instrumentos de Planificación PIC — Explicado desde cero",
+      "tipo": "esquema",
+      "url": "materiales/instrumentos-i-criticas/index.html",
+      "fecha": "2026-07-16",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/INSTRUMENTOS-I.CRITICAS",
+      "pagina": "pages/instrumentos-de-planificacion-pic-explicado-desde-cero.html"
+    },
+    {
+      "titulo": "MENAS — Régimen Jurídico | Guía CNP",
+      "tipo": "esquema",
+      "url": "materiales/menas/index.html",
+      "fecha": "2026-07-16",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/MENAS",
+      "pagina": "pages/menas-regimen-juridico-guia-cnp.html"
+    },
+    {
+      "titulo": "El Código de Fronteras Schengen, explicado fácil",
+      "tipo": "esquema",
+      "url": "materiales/codigo-fronteras-shengen/index.html",
+      "fecha": "2026-07-16",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/CODIGO-FRONTERAS-SHENGEN",
+      "pagina": "pages/el-codigo-de-fronteras-schengen-explicado-facil.html"
+    },
+    {
+      "titulo": "RD 240/2007 vs LO 4/2000 — Guía Diferenciadora",
+      "tipo": "esquema",
+      "url": "materiales/comparativa-rd240-2007-lo-4-2000/index.html",
+      "fecha": "2026-07-16",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Comparativa-RD240-2007-LO-4-2000",
+      "pagina": "pages/rd-240-2007-vs-lo-4-2000-guia-diferenciadora.html"
+    },
+    {
+      "titulo": "EXPEDIENTE 274 · Unidad de Sociología Criminal (revisar: ¿duplica Autores T28-35?)",
+      "tipo": "esquema",
+      "url": "materiales/autores/index.html",
+      "fecha": "2026-07-09",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/AUTORES",
+      "pagina": "pages/expediente-274-unidad-de-sociologia-criminal-revisar-duplica-autores-t28-35.html"
+    },
+    {
+      "titulo": "EXPEDIENTE 18/16/14 — Edades del Menor en el Código Penal",
+      "tipo": "esquema",
+      "url": "materiales/edades-menores-penal/index.html",
+      "fecha": "2026-07-09",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Edades-menores-PENAL",
+      "pagina": "pages/expediente-18-16-14-edades-del-menor-en-el-codigo-penal.html"
+    },
+    {
+      "titulo": "Tema 25 · Marco Normativo PRL · Test CNP-EB",
+      "tipo": "test",
+      "url": "materiales/tema-25/index.html",
+      "fecha": "2026-07-09",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/TEMA-25",
+      "pagina": "pages/tema-25-marco-normativo-prl-test-cnp-eb.html"
+    },
+    {
+      "titulo": "Test Adaptativo · Modelo OSI",
+      "tipo": "test",
+      "url": "materiales/modelo-osi/index.html",
+      "fecha": "2026-07-03",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/MODELO-OSI",
+      "pagina": "pages/test-adaptativo-modelo-osi.html"
+    },
+    {
+      "titulo": "Test Completo XLI - Preguntas Probables (Temas 1-45)",
+      "tipo": "test",
+      "url": "materiales/probables/index.html",
+      "fecha": "2026-06-30",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Probables",
+      "pagina": "pages/test-completo-xli-preguntas-probables-temas-1-45.html"
+    },
+    {
+      "titulo": "Expediente 0726 · Banco de Test CNP (Completo)",
+      "tipo": "test",
+      "url": "materiales/debilidades/index.html",
+      "fecha": "2026-06-30",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/DEBILIDADES",
+      "pagina": "pages/expediente-0726-banco-de-test-cnp-completo.html"
+    },
+    {
+      "titulo": "PREGUNTAS PROBABLES XLI – RESPUESTAS COMPLETAS (Temas 1-45)",
+      "tipo": "test",
+      "url": "materiales/preguntas-probables/index.html",
+      "fecha": "2026-06-25",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Preguntas.probables",
+      "pagina": "pages/preguntas-probables-xli-respuestas-completas-temas-1-45.html"
+    },
+    {
+      "titulo": "Test CNP · 100 preguntas · Temas 3, 4 y 27",
+      "tipo": "test",
+      "url": "materiales/test-t3-t4-t27/index.html",
+      "fecha": "2026-06-25",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Test-T3-T4-T27",
+      "pagina": "pages/test-cnp-100-preguntas-temas-3-4-y-27.html"
+    },
+    {
+      "titulo": "Entrenador de Clasificaciones (revisar: título poco descriptivo)",
+      "tipo": "otro",
+      "url": "materiales/reuniones/index.html",
+      "fecha": "2026-06-25",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Reuniones",
+      "pagina": "pages/entrenador-de-clasificaciones-revisar-titulo-poco-descriptivo.html"
+    },
+    {
+      "titulo": "CNP · Preguntas de Examen (T9, T13, T14)",
+      "tipo": "test",
+      "url": "materiales/test-t9t13t14/index.html",
+      "fecha": "2026-06-24",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/test-t9t13t14",
+      "pagina": "pages/cnp-preguntas-de-examen-t9-t13-t14.html"
+    },
+    {
+      "titulo": "CNP · Repaso Express · T9 + SP + T14",
+      "tipo": "esquema",
+      "url": "materiales/repaso-t9t13t14/index.html",
+      "fecha": "2026-06-23",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Repaso-t9t13t14",
+      "pagina": "pages/cnp-repaso-express-t9-sp-t14.html"
+    },
+    {
+      "titulo": "Test Infalible · Tema 21 · Derecho Procesal Penal",
+      "tipo": "test",
+      "url": "materiales/test-t21/index.html",
+      "fecha": "2026-06-22",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/TEST-T21",
+      "pagina": "pages/test-infalible-tema-21-derecho-procesal-penal.html"
+    },
+    {
+      "titulo": "Tema 21 · Derecho Procesal Penal · CNP Escala Básica",
+      "tipo": "esquema",
+      "url": "materiales/t21/index.html",
+      "fecha": "2026-06-19",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/T21",
+      "pagina": "pages/tema-21-derecho-procesal-penal-cnp-escala-basica.html"
+    },
+    {
+      "titulo": "Tema 16 · Derecho Penal: Parte General — CNP Escala Básica",
+      "tipo": "esquema",
+      "url": "materiales/t16/index.html",
+      "fecha": "2026-06-19",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/T16",
+      "pagina": "pages/tema-16-derecho-penal-parte-general-cnp-escala-basica.html"
+    },
+    {
+      "titulo": "Oposición CNP – Tema 7 | MacLaren's Study Bar",
+      "tipo": "test",
+      "url": "materiales/test-t7-emilio-facil/index.html",
+      "fecha": "2026-06-18",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/TEST-T7-EMILIO-FACIL-",
+      "pagina": "pages/oposicion-cnp-tema-7-maclaren-s-study-bar.html"
+    },
+    {
+      "titulo": "Test T7 – Ministerio del Interior: Estructura Orgánica",
+      "tipo": "test",
+      "url": "materiales/t7/index.html",
+      "fecha": "2026-06-18",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/t7",
+      "pagina": "pages/test-t7-ministerio-del-interior-estructura-organica.html"
+    },
+    {
+      "titulo": "Tema 5 — CNP Escala Básica · Tests por Página",
+      "tipo": "test",
+      "url": "materiales/test-t5/index.html",
+      "fecha": "2026-06-15",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/test-t5",
+      "pagina": "pages/tema-5-cnp-escala-basica-tests-por-pagina.html"
+    },
+    {
+      "titulo": "Test Nivel Dios — Tema 4: La Unión Europea",
+      "tipo": "test",
+      "url": "materiales/test-t4/index.html",
+      "fecha": "2026-06-10",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/TEST-T4",
+      "pagina": "pages/test-nivel-dios-tema-4-la-union-europea.html"
+    },
+    {
+      "titulo": "Test Dios · Instituciones UE",
+      "tipo": "test",
+      "url": "materiales/test-instituciones/index.html",
+      "fecha": "2026-06-10",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Test-instituciones",
+      "pagina": "pages/test-dios-instituciones-ue.html"
+    },
+    {
+      "titulo": "Tema 4 — Derecho Comunitario | CNP Escala Básica",
+      "tipo": "esquema",
+      "url": "materiales/resto-t4/index.html",
+      "fecha": "2026-06-10",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Resto-t4",
+      "pagina": "pages/tema-4-derecho-comunitario-cnp-escala-basica.html"
+    },
+    {
+      "titulo": "🇪🇺 Instituciones UE — CNP Escala Básica",
+      "tipo": "esquema",
+      "url": "materiales/instituciones-t4-26/index.html",
+      "fecha": "2026-06-09",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/INSTITUCIONES-T4-26",
+      "pagina": "pages/instituciones-ue-cnp-escala-basica.html"
+    },
+    {
+      "titulo": "Test Tratados UE — Policía Nacional",
+      "tipo": "test",
+      "url": "materiales/tratados-t4-2026/index.html",
+      "fecha": "2026-06-09",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/TRATADOS-T4-2026",
+      "pagina": "pages/test-tratados-ue-policia-nacional.html"
+    },
+    {
+      "titulo": "Test LO 4/2015 — Infracciones",
+      "tipo": "test",
+      "url": "materiales/infracciones-4-2015/index.html",
+      "fecha": "2026-06-03",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/INFRACCIONES-4-2015",
+      "pagina": "pages/test-lo-4-2015-infracciones.html"
+    },
+    {
+      "titulo": "Tema 10 – Plazos de Extranjería",
+      "tipo": "esquema",
+      "url": "materiales/plazos-t10/index.html",
+      "fecha": "2026-06-03",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Plazos-T10",
+      "pagina": "pages/tema-10-plazos-de-extranjeria.html"
+    },
+    {
+      "titulo": "Tema 21 – Derecho Procesal Penal",
+      "tipo": "esquema",
+      "url": "materiales/procedimiento-t21/index.html",
+      "fecha": "2026-06-03",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Procedimiento-t21",
+      "pagina": "pages/tema-21-derecho-procesal-penal.html"
+    },
+    {
+      "titulo": "Test Sistema Político Español",
+      "tipo": "test",
+      "url": "materiales/test/index.html",
+      "fecha": "2026-06-02",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/TEST",
+      "pagina": "pages/test-sistema-politico-espanol.html"
+    },
+    {
+      "titulo": "CNP · Estudio Adaptativo v10",
+      "tipo": "test",
+      "url": "materiales/banco-de-preguntas-cnp/index.html",
+      "fecha": "2026-05-28",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Banco-De-preguntas-CNP",
+      "pagina": "pages/cnp-estudio-adaptativo-v10.html"
+    },
+    {
+      "titulo": "OPOSICION CNP 43 (sin clasificar)",
+      "tipo": "otro",
+      "url": "materiales/oposicion-cnp-43/index.html",
+      "fecha": "2026-07-30",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/OPOSICION-CNP-43",
+      "pagina": "pages/oposicion-cnp-43-sin-clasificar.html"
+    },
+    {
+      "titulo": "Web (sin clasificar)",
+      "tipo": "otro",
+      "url": "materiales/web/index.html",
+      "fecha": "2026-07-30",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Web",
+      "pagina": "pages/web-sin-clasificar.html"
+    },
+    {
+      "titulo": "AUTORES MAS PREGUNTADOS",
+      "tipo": "otro",
+      "url": "materiales/autores-mas-preguntados/index.html",
+      "fecha": "2026-08-03",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/AUTORES-MAS-PREGUNTADOS",
+      "pagina": "pages/autores-mas-preguntados.html"
+    },
+    {
+      "titulo": "TODOS LOS AUTORES",
+      "tipo": "otro",
+      "url": "materiales/todos-los-autores/index.html",
+      "fecha": "2026-08-03",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/TODOS-LOS-AUTORES",
+      "pagina": "pages/todos-los-autores.html"
+    },
+    {
+      "titulo": "Tema 12",
+      "tipo": "otro",
+      "url": "materiales/tema-12/index.html",
+      "fecha": "2026-08-04",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Tema-12",
+      "pagina": "pages/tema-12.html"
+    },
+    {
+      "titulo": "Kahoot T8 EXTREMO",
+      "tipo": "otro",
+      "url": "materiales/kahoot-t8-extremo/index.html",
+      "fecha": "2026-08-07",
+      "activo": true,
+      "repo_origen": "https://github.com/rafabg77/Kahoot-T8-EXTREMO",
+      "pagina": "pages/kahoot-t8-extremo.html"
+    }
+  ]
+}

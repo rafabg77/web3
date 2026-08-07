@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 10 – Plazos de Extranjería</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161922;
+    --card: #1e2230;
+    --border: #2a2f42;
+    --accent: #f0a500;
+    --accent2: #3b82f6;
+    --accent3: #10b981;
+    --accent4: #ef4444;
+    --accent5: #8b5cf6;
+    --accent6: #f97316;
+    --text: #e8eaf0;
+    --muted: #7b8099;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  header {
+    padding: 28px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #0d0f14 60%, #161228);
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  header p { color: var(--muted); font-size: 13px; margin-top: 3px; }
+
+  nav {
+    display: flex;
+    gap: 8px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  nav button {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+  }
+  nav button.active, nav button:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 500;
+  }
+
+  .section { display: none; padding: 20px; }
+  .section.active { display: block; }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    background: linear-gradient(135deg, #1a1f2e, #1e2230);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .intro-box h2 { font-family: 'Syne', sans-serif; font-size: 16px; color: var(--accent); margin-bottom: 6px; }
+  .intro-box p { color: #adb3c8; font-size: 13.5px; }
+
+  /* ── PLAZO CARDS ── */
+  .plazo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .plazo-card:hover { border-color: var(--accent); }
+  .plazo-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .plazo-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    min-width: 70px;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 8px;
+    line-height: 1.1;
+  }
+  .plazo-title {
+    flex: 1;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .plazo-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .chevron { color: var(--muted); font-size: 16px; transition: transform .2s; flex-shrink: 0; }
+  .plazo-card.open .chevron { transform: rotate(180deg); }
+
+  .plazo-detail {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .plazo-card.open .plazo-detail { display: block; }
+  .plazo-detail p { font-size: 13px; color: #adb3c8; margin-bottom: 6px; }
+  .plazo-detail strong { color: var(--text); }
+  .plazo-detail .ref { font-size: 11px; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+  .alert-box {
+    background: #1a1210;
+    border: 1px solid var(--accent4);
+    border-left: 3px solid var(--accent4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: #f9c0b0;
+  }
+  .tip-box {
+    background: #101a15;
+    border: 1px solid var(--accent3);
+    border-left: 3px solid var(--accent3);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: #9dd4bb;
+  }
+
+  /* Colores por tipo */
+  .c1 { color: var(--accent); }
+  .c2 { color: var(--accent2); }
+  .c3 { color: var(--accent3); }
+  .c4 { color: var(--accent4); }
+  .c5 { color: var(--accent5); }
+  .c6 { color: var(--accent6); }
+
+  .bg1 { background: rgba(240,165,0,.15); }
+  .bg2 { background: rgba(59,130,246,.15); }
+  .bg3 { background: rgba(16,185,129,.15); }
+  .bg4 { background: rgba(239,68,68,.15); }
+  .bg5 { background: rgba(139,92,246,.15); }
+  .bg6 { background: rgba(249,115,22,.15); }
+
+  /* ── TABLA RESUMEN ── */
+  .tabla-resumen {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-top: 10px;
+  }
+  .tabla-resumen th {
+    background: #12151f;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .tabla-resumen td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #1a1e2a;
+    color: #adb3c8;
+    vertical-align: top;
+  }
+  .tabla-resumen tr:last-child td { border-bottom: none; }
+  .tabla-resumen tr:hover td { background: #12151f; }
+  .num-big {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  /* ── MNEMOTECNIA ── */
+  .mnemo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .mnemo-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .mnemo-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  .mnemo-card p { color: #adb3c8; font-size: 13.5px; }
+  .big-formula {
+    background: #12151f;
+    border-radius: 8px;
+    padding: 14px;
+    margin: 10px 0;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.8;
+  }
+  .key-concept {
+    background: #12151f;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-left: 3px solid;
+    font-size: 13px;
+  }
+  .key-concept.c1 { border-color: var(--accent); }
+  .key-concept.c2 { border-color: var(--accent2); }
+  .key-concept.c3 { border-color: var(--accent3); }
+  .key-concept.c4 { border-color: var(--accent4); }
+  .key-concept.c5 { border-color: var(--accent5); }
+  .key-concept.c6 { border-color: var(--accent6); }
+
+  /* ── QUIZ ── */
+  .quiz-q {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .q-num { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .q-text { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+  .q-options { display: flex; flex-direction: column; gap: 8px; }
+  .q-opt {
+    background: #12151f;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    cursor: pointer;
+    text-align: left;
+    transition: all .15s;
+  }
+  .q-opt:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .q-opt.show-correct { background: rgba(16,185,129,.15); border-color: var(--accent3); color: var(--accent3); }
+  .q-opt.wrong { background: rgba(239,68,68,.1); border-color: var(--accent4); color: var(--accent4); }
+  .q-feedback { margin-top: 10px; font-size: 13px; padding: 10px 12px; border-radius: 8px; display: none; }
+  .q-feedback.correct { display: block; background: rgba(16,185,129,.1); color: var(--accent3); border: 1px solid rgba(16,185,129,.3); }
+  .q-feedback.wrong { display: block; background: rgba(239,68,68,.08); color: #f9a0a0; border: 1px solid rgba(239,68,68,.3); }
+  .quiz-score {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .quiz-score h2 { font-family: 'Syne', sans-serif; font-size: 40px; color: var(--accent); }
+  .quiz-score p { color: var(--muted); margin: 8px 0 16px; font-size: 14px; }
+  .btn-restart {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .filter-btn.active { color: #000; font-weight: 500; }
+  .filter-btn.f1.active { background: var(--accent); border-color: var(--accent); }
+  .filter-btn.f2.active { background: var(--accent2); border-color: var(--accent2); }
+  .filter-btn.f3.active { background: var(--accent3); border-color: var(--accent3); }
+  .filter-btn.f4.active { background: var(--accent4); border-color: var(--accent4); }
+  .filter-btn.f5.active { background: var(--accent5); border-color: var(--accent5); }
+  .filter-btn.f6.active { background: var(--accent6); border-color: var(--accent6); }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⏱ TEMA 10 — PLAZOS DE EXTRANJERÍA</h1>
+  <p>Ingreso Escala Básica · Policía Nacional · RD 240/2007 y LO 4/2000</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showSection('resumen', event)">📋 Resumen</button>
+  <button onclick="showSection('plazos', event)">⏱ Plazos</button>
+  <button onclick="showSection('tabla', event)">📊 Tabla</button>
+  <button onclick="showSection('mnemo', event)">🧠 Mnemotecnia</button>
+  <button onclick="showSection('quiz', event)">🎯 Quiz</button>
+</nav>
+
+<!-- ─────────── RESUMEN ─────────── -->
+<div id="resumen" class="section active">
+
+  <div class="intro-box">
+    <h2>¿Qué encontrarás aquí?</h2>
+    <p>Todos los plazos del T10 organizados por bloques temáticos. Los plazos son los datos más preguntados en el examen. Cada tarjeta se despliega con el detalle, la norma y alertas de trampa.</p>
+  </div>
+
+  <!-- Bloque RD 240/2007 (régimen comunitario) -->
+  <div style="font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+    🇪🇺 RD 240/2007 — RÉGIMEN COMUNITARIO
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg1 c1">3 meses</div>
+      <div class="plazo-title">Plazo para solicitar inscripción / Tarjeta de Residencia (≥3 meses)</div>
+      <span class="plazo-tag bg1 c1">Registro</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Tanto el ciudadano comunitario (Certificado de Registro) como el familiar no comunitario (Tarjeta de Residencia de Familiar de Ciudadano UE) disponen de <strong>3 meses desde la entrada en España</strong> para solicitar su inscripción ante la Oficina de Extranjería de la provincia o, en su defecto, Comisaría de Policía.</p>
+      <div class="alert-box">⚠️ Trampa habitual: el plazo es desde la <strong>entrada en España</strong>, no desde que deciden quedarse más de 3 meses.</div>
+      <p class="ref">Art. 7 y 8 RD 240/2007</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">3 meses</div>
+      <div class="plazo-title">Plazo máximo de resolución del procedimiento de inscripción</div>
+      <span class="plazo-tag bg2 c2">Resolución</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El procedimiento de inscripción en el Registro Central de Extranjeros (comunitario) o expedición de Tarjeta de Residencia de Familiar es preferente y tiene <strong>resolución máx. de 3 meses</strong>, con efectos retroactivos.</p>
+      <div class="tip-box">✅ Si pasan 3 meses sin resolución, los efectos se retrotraen a la fecha de solicitud.</div>
+      <p class="ref">Art. 8 RD 240/2007</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">5 años</div>
+      <div class="plazo-title">Residencia permanente (régimen comunitario)</div>
+      <span class="plazo-tag bg3 c3">Permanente</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Tras <strong>5 años de residencia legal continua</strong> en España, el ciudadano comunitario y sus familiares adquieren el derecho a residir con carácter permanente.</p>
+      <p>La Tarjeta de Residencia Permanente de Familiar se <strong>renueva automáticamente cada 10 años</strong>.</p>
+      <div class="alert-box">⚠️ Se pierde por ausencia superior a <strong>2 años consecutivos</strong> del territorio español.</div>
+      <p class="ref">Art. 10 RD 240/2007</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg1 c1">6 meses</div>
+      <div class="plazo-title">Caducidad por ausencias del Certificado de Registro</div>
+      <span class="plazo-tag bg1 c1">Caducidad</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El Certificado de Registro de ciudadano comunitario caduca por <strong>ausencias superiores a 6 meses en 1 año</strong>.</p>
+      <p>Excepciones: obligaciones militares, ONGs, programas UE, gestación/parto/posparto, enfermedad grave, estudios o traslados profesionales que no excedan los <strong>12 meses consecutivos</strong>.</p>
+      <p class="ref">Art. 8 RD 240/2007</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg5 c5">3 años</div>
+      <div class="plazo-title">Solicitud de levantamiento de prohibición de entrada</div>
+      <span class="plazo-tag bg5 c5">Prohibición</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Quien haya sido objeto de una prohibición de entrada podrá solicitar su levantamiento una vez transcurridos <strong>3 años desde la ejecución</strong> de la decisión.</p>
+      <p>La autoridad competente tiene <strong>3 meses</strong> para resolver. Hasta entonces sigue vigente la prohibición.</p>
+      <div class="alert-box">⚠️ Doble plazo: 3 años para solicitar + 3 meses para que la autoridad resuelva.</div>
+      <p class="ref">Cap. VI RD 240/2007</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">1 mes</div>
+      <div class="plazo-title">Plazo mínimo para abandonar España (resolución de expulsión)</div>
+      <span class="plazo-tag bg4 c4">Expulsión</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La resolución de expulsión debe conceder al interesado un plazo <strong>no inferior a 1 mes</strong> desde la notificación para abandonar el territorio español, <strong>salvo casos urgentes</strong>.</p>
+      <p>Si va a ejecutarse <strong>más de 2 años</strong> después de dictarse, debe revisarse si han cambiado las circunstancias.</p>
+      <p class="ref">Cap. VI RD 240/2007</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">3 años</div>
+      <div class="plazo-title">Nulidad matrimonial: duración mínima del matrimonio para conservar residencia</div>
+      <span class="plazo-tag bg3 c3">Familia</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>En caso de nulidad matrimonial, el familiar conserva el derecho de residencia si la duración del matrimonio fue de <strong>al menos 3 años</strong> (de los cuales <strong>1 en España</strong>).</p>
+      <p class="ref">RD 240/2007</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">3 meses</div>
+      <div class="plazo-title">Declaración de entrada en España (frontera interior, ciudadano comunitario)</div>
+      <span class="plazo-tag bg2 c2">Entrada</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El ciudadano comunitario procedente de otro estado Schengen (frontera interior) que fija su residencia en España debe realizar la <strong>Declaración de Entrada en el plazo de 3 días</strong>.</p>
+      <p class="ref">Código Fronteras Schengen / RD 240/2007</p>
+    </div>
+  </div>
+
+  <!-- Bloque LO 4/2000 -->
+  <div style="font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--accent2); letter-spacing:1px; text-transform:uppercase; margin: 24px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+    🔵 LO 4/2000 — RÉGIMEN GENERAL DE EXTRANJERÍA
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">1 mes</div>
+      <div class="plazo-title">Solicitar la TIE tras autorización (más de 6 meses)</div>
+      <span class="plazo-tag bg2 c2">TIE</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Los extranjeros autorizados a permanecer en España más de 6 meses deberán solicitar la <strong>Tarjeta de Identidad de Extranjero (TIE) en el plazo de 1 mes</strong> desde su correspondiente autorización.</p>
+      <div class="alert-box">⚠️ Excepciones: trabajadores transfronterizos (sí obtienen TIE aunque sean menos de 6 meses) y trabajadores de temporada (no necesitan TIE).</div>
+      <p class="ref">Art. documentación LO 4/2000</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">90 días</div>
+      <div class="plazo-title">Estancia de corta duración</div>
+      <span class="plazo-tag bg3 c3">Estancia</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La estancia de corta duración es la permanencia en España por un período <strong>no superior a 90 días</strong> (en un período de 180 días).</p>
+      <p>La prórroga de estancia <strong>con visado</strong>: máx. 3 meses dentro de un plazo de 6 meses. <strong>Sin visado</strong>: 3 meses adicionales por circunstancias excepcionales.</p>
+      <p>Si se deniega la prórroga: debe salir en el plazo de estancia restante o máx. <strong>72 horas</strong>.</p>
+      <div class="alert-box">⚠️ Quien entra sin visado y se le deniega la prórroga tiene como máximo <strong>72 horas</strong> para salir.</div>
+      <p class="ref">Art. estancia corta duración LO 4/2000 / RD 1155/2024</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg1 c1">2 meses</div>
+      <div class="plazo-title">Solicitud de estancia de larga duración (antelación mínima)</div>
+      <span class="plazo-tag bg1 c1">Estancia</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La solicitud dentro de España de estancia de larga duración (estudios superiores/sanitarios) debe presentarse con <strong>antelación mínima de 2 meses</strong> a la fecha de comienzo de la actividad, o a la expiración de la situación anterior.</p>
+      <p>Resolución: máx. <strong>15 días</strong> (silencio negativo).</p>
+      <p>Para solicitudes de primera vez: resolución en máx. <strong>7 días</strong> (silencio negativo).</p>
+      <p class="ref">LO 4/2000 / RD 1155/2024</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg5 c5">5 días</div>
+      <div class="plazo-title">Emisión de informes para estancia de larga duración</div>
+      <span class="plazo-tag bg5 c5">Informes</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Para valorar la ausencia de antecedentes penales en estancias de larga duración, los informes del Registro Central de Penados y el informe policial serán emitidos en el plazo de <strong>5 días</strong>.</p>
+      <p class="ref">LO 4/2000 / RD 1155/2024</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg6 c6">1 mes</div>
+      <div class="plazo-title">Resolución de prórroga de estancia de larga duración</div>
+      <span class="plazo-tag bg6 c6">Prórroga</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La prórroga de la estancia de larga duración (electrónica, 2 meses antes de caducidad) tiene resolución en <strong>1 mes</strong> (silencio negativo).</p>
+      <p>Si se presenta en los <strong>3 meses posteriores</strong> a la caducidad, también se prorroga la validez anterior, aunque hay posible sanción.</p>
+      <p class="ref">LO 4/2000</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">3 meses / alta SS</div>
+      <div class="plazo-title">Visado de residencia y trabajo: plazo para alta en SS</div>
+      <span class="plazo-tag bg2 c2">Trabajo</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El visado de residencia y trabajo habilita la entrada y estancia por <strong>máximo 3 meses</strong>. En ese plazo debe producirse el <strong>alta en la Seguridad Social</strong>, que dota de eficacia a la autorización de residencia y trabajo.</p>
+      <p>Si no se da de alta: obligado a salir, incurriendo en infracción del art. 53.1.a).</p>
+      <p class="ref">Art. visados tipo D LO 4/2000</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">3 años</div>
+      <div class="plazo-title">Compromiso de no retorno (retorno voluntario)</div>
+      <span class="plazo-tag bg4 c4">Retorno</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El extranjero que retorna voluntariamente (adhiriéndose o no a programa oficial) asume un compromiso de <strong>no retorno al espacio Schengen de 3 años</strong> en general.</p>
+      <p>Transcurrido ese plazo puede volver a solicitar autorización de residencia.</p>
+      <p class="ref">LO 4/2000</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">5 años → RLD</div>
+      <div class="plazo-title">Residencia de Larga Duración Nacional</div>
+      <span class="plazo-tag bg3 c3">RLD</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Residencia temporal durante <strong>5 años continuados</strong> → derecho a la RLD (residir y trabajar indefinidamente en España).</p>
+      <p><strong>Ausencias permitidas sin perder continuidad (general):</strong> hasta 6 meses continuos, no más de 10 meses en 5 años.</p>
+      <p><strong>Por motivos laborales:</strong> hasta 6 meses continuos, no más de 18 meses en 5 años.</p>
+      <p><strong>Tarjeta Azul-UE:</strong> hasta 12 meses continuos, no más de 18 meses en 5 años.</p>
+      <p><strong>Extinción de la RLD:</strong> ausencia de la UE durante <strong>12 meses consecutivos</strong> (24 meses para familiares y titulares Tarjeta Azul-UE).</p>
+      <div class="alert-box">⚠️ RLD-UE se extingue además por ausencia ininterrumpida del territorio español de <strong>6 años</strong>.</div>
+      <p class="ref">Arts. RLD LO 4/2000</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg5 c5">TIE cada 5 años</div>
+      <div class="plazo-title">Renovación de la TIE para titulares de RLD</div>
+      <span class="plazo-tag bg5 c5">TIE</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Los titulares de RLD renuevan la TIE <strong>cada 5 años hasta los 30 años de edad</strong>; a partir de los 30 años, <strong>cada 10 años</strong>.</p>
+      <p>Solicitud: en los <strong>2 meses previos al vencimiento</strong> o en los <strong>3 meses siguientes</strong> (con posible sanción pero sin pérdida de la autorización).</p>
+      <p class="ref">LO 4/2000</p>
+    </div>
+  </div>
+
+  <!-- Bloque reagrupación -->
+  <div style="font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--accent3); letter-spacing:1px; text-transform:uppercase; margin: 24px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+    👨‍👩‍👧 REAGRUPACIÓN FAMILIAR
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">2 años</div>
+      <div class="plazo-title">Convivencia para conservar residencia tras ruptura del vínculo (cónyuge)</div>
+      <span class="plazo-tag bg3 c3">Familia</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Tras <strong>2 años de convivencia en España</strong> el cónyuge/pareja reagrupado conserva la residencia aunque se rompa el vínculo (divorcio, separación, etc.).</p>
+      <p class="ref">Cap. II Título I LO 4/2000</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">6 meses</div>
+      <div class="plazo-title">Comunicar cambio de situación para residencia independiente</div>
+      <span class="plazo-tag bg2 c2">Familia</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Cuando se produce la ruptura del vínculo con el ciudadano español (fallecimiento, nulidad, divorcio, etc.), el familiar extranjero debe <strong>comunicarlo en un plazo máximo de 6 meses</strong> y solicitar la residencia independiente ante la OEX.</p>
+      <p class="ref">LO 4/2000</p>
+    </div>
+  </div>
+
+  <!-- Bloque MENAs -->
+  <div style="font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--accent4); letter-spacing:1px; text-transform:uppercase; margin: 24px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+    👶 MENORES EXTRANJEROS NO ACOMPAÑADOS (MENAs)
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">48 horas</div>
+      <div class="plazo-title">Propuesta de período de reflexión (víctimas TSH)</div>
+      <span class="plazo-tag bg4 c4">TSH</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Cuando las unidades de Extranjería identifican a una posible víctima de TSH, deben elevar en <strong>máx. 48 horas</strong> (previa conformidad) una propuesta a la Del./Subdel. del Gob., incluyendo un período de restablecimiento y reflexión de <strong>al menos 90 días</strong>.</p>
+      <p>El Del./Subdel. resolverá en máx. <strong>5 días</strong> (24 horas si está en un CIE), con <strong>silencio positivo</strong>.</p>
+      <div class="alert-box">⚠️ Único caso de <strong>silencio positivo</strong> en el tema. El resto son silencio negativo.</div>
+      <p class="ref">LO 4/2000 (TSH)</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">10 días</div>
+      <div class="plazo-title">Período de alegaciones y emisión de informe (repatriación MENA)</div>
+      <span class="plazo-tag bg4 c4">MENAs</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>En el procedimiento de repatriación de un MENA: período de alegaciones de <strong>10 días</strong>. Los servicios de protección emiten su informe en <strong>10 días</strong>. Se puede acordar período de prueba <strong>entre 10 y 30 días</strong>.</p>
+      <p>Notificación de la resolución al menor, representante y MF: en <strong>10 días</strong>.</p>
+      <p>Plazo máximo de resolución total: <strong>6 meses</strong> desde inicio del procedimiento.</p>
+      <p class="ref">LO 4/2000 (MENAs)</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">90 días</div>
+      <div class="plazo-title">Inicio de autorización de residencia a MENA (si no se repatría)</div>
+      <span class="plazo-tag bg4 c4">MENAs</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Si la repatriación no puede llevarse a cabo o tras <strong>90 días sin retorno efectivo</strong>, la OEX inicia de oficio el trámite para concederle autorización de residencia.</p>
+      <p>Resolución del Del./Subdel.: máx. <strong>1 mes</strong> (silencio negativo). Comunicación al MF: <strong>10 días</strong>. TIE: el representante la solicita en <strong>1 mes</strong>.</p>
+      <p>Duración inicial de la autorización: <strong>2 años</strong> desde que quedó bajo protección.</p>
+      <p class="ref">LO 4/2000 (MENAs)</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">24h / 15 días</div>
+      <div class="plazo-title">Plan de contingencia solidaria (MENAs)</div>
+      <span class="plazo-tag bg4 c4">MENAs</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Registro en el Registro MENA: en <strong>máx. 24 horas</strong>.</p>
+      <p>Traslado a la CA designada: en <strong>máx. 15 días</strong> desde inscripción.</p>
+      <p>Resolución sobre comunidad de destino: en el mismo plazo de <strong>15 días</strong>.</p>
+      <p class="ref">LO 4/2000 / Plan contingencia solidaria</p>
+    </div>
+  </div>
+
+  <!-- Bloque arraigo -->
+  <div style="font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--accent5); letter-spacing:1px; text-transform:uppercase; margin: 24px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+    🏠 ARRAIGO Y CIRCUNSTANCIAS EXCEPCIONALES
+  </div>
+
+  <div class="plazo-card" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg5 c5">2 años</div>
+      <div class="plazo-title">Permanencia mínima para arraigos (excepto familiar)</div>
+      <span class="plazo-tag bg5 c5">Arraigo</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La mayoría de los arraigos exigen <strong>permanencia continua en España de al menos 2 años</strong> antes de la solicitud.</p>
+      <p>Excepción: el arraigo familiar <strong>no requiere permanencia mínima</strong>.</p>
+      <div class="tip-box">✅ Duración de las autorizaciones por arraigo: <strong>1 año</strong>, salvo arraigo familiar (<strong>5 años</strong>).</div>
+      <p class="ref">LO 4/2000</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─────────── PLAZOS (filtrado) ─────────── -->
+<div id="plazos" class="section">
+
+  <div class="intro-box">
+    <h2>Filtrar por tipo de plazo</h2>
+    <p>Selecciona una categoría para ver solo esos plazos. Haz clic en cada tarjeta para ver el detalle.</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn f1 active" onclick="filterPlazos('all', this)">Todos</button>
+    <button class="filter-btn f2" onclick="filterPlazos('dias', this)">📅 Días</button>
+    <button class="filter-btn f3" onclick="filterPlazos('meses', this)">🗓 Meses</button>
+    <button class="filter-btn f1" onclick="filterPlazos('años', this)">📆 Años</button>
+    <button class="filter-btn f5" onclick="filterPlazos('menas', this)">👶 MENAs</button>
+    <button class="filter-btn f4" onclick="filterPlazos('expulsion', this)">🚫 Expulsión</button>
+  </div>
+
+  <!-- Días -->
+  <div class="plazo-card" data-cat="dias" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">3 días</div>
+      <div class="plazo-title">Declaración de entrada en España (frontera interior)</div>
+      <span class="plazo-tag bg2 c2">Entrada · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Ciudadano comunitario procedente de otro estado Schengen: plazo de <strong>3 días</strong> para realizar la Declaración de Entrada.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="dias menas" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">5 días</div>
+      <div class="plazo-title">Resolución sobre período de reflexión TSH</div>
+      <span class="plazo-tag bg4 c4">TSH · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Del./Subdel. del Gob. resuelve en <strong>máx. 5 días</strong> (o <strong>24 horas</strong> si está en CIE). <strong>Silencio positivo.</strong></p>
+      <div class="alert-box">⚠️ Único silencio positivo del tema.</div>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="dias" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg5 c5">5 días</div>
+      <div class="plazo-title">Emisión de informes penales y policiales (estancia larga duración)</div>
+      <span class="plazo-tag bg5 c5">Informes · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Los informes del Registro Central de Penados e informe policial: <strong>5 días</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="dias" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">7 días</div>
+      <div class="plazo-title">Resolución solicitud estancia larga duración (primera vez)</div>
+      <span class="plazo-tag bg4 c4">Estancia · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Para solicitudes de estancia de larga duración presentadas fuera de España: resolución máx. <strong>7 días</strong> (silencio negativo).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="dias menas" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">10 días</div>
+      <div class="plazo-title">Alegaciones, informes y notificación en repatriación MENA</div>
+      <span class="plazo-tag bg4 c4">MENAs · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Período de alegaciones: <strong>10 días</strong>. Informe servicios protección: <strong>10 días</strong>. Período de prueba: entre <strong>10 y 30 días</strong>. Notificación resolución al menor: <strong>10 días</strong>. Comunicación al MF: <strong>10 días</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="dias menas" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">24 h</div>
+      <div class="plazo-title">Registro en Registro MENA</div>
+      <span class="plazo-tag bg4 c4">MENAs · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Inscripción en el Registro de MENAs en <strong>máx. 24 horas</strong>, independientemente de si la minoría de edad es indubitada o no.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="dias" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">72 horas</div>
+      <div class="plazo-title">Salida tras denegación de prórroga de estancia (sin visado)</div>
+      <span class="plazo-tag bg4 c4">Estancia · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Si se deniega la prórroga de estancia sin visado: el extranjero debe salir en el plazo de estancia restante o <strong>máx. 72 horas</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Meses -->
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">1 mes</div>
+      <div class="plazo-title">Solicitar TIE tras autorización (>6 meses)</div>
+      <span class="plazo-tag bg2 c2">TIE · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Plazo para solicitar la TIE desde la autorización de residencia por más de 6 meses: <strong>1 mes</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses expulsion" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">≥ 1 mes</div>
+      <div class="plazo-title">Plazo mínimo para abandonar España (resolución expulsión comunitario)</div>
+      <span class="plazo-tag bg4 c4">Expulsión · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La resolución de expulsión debe conceder plazo <strong>no inferior a 1 mes</strong> desde la notificación (salvo urgencia).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg1 c1">1 mes</div>
+      <div class="plazo-title">Resolución prórroga estancia larga duración</div>
+      <span class="plazo-tag bg1 c1">Prórroga · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Resolución de prórroga: <strong>1 mes</strong> (silencio negativo). La solicitud se presenta <strong>2 meses antes</strong> de la caducidad.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses menas" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">1 mes</div>
+      <div class="plazo-title">Resolución autorización de residencia MENA (Del./Subdel.)</div>
+      <span class="plazo-tag bg4 c4">MENAs · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Del./Subdel. resuelve y notifica al menor en máx. <strong>1 mes</strong> (silencio negativo). Representante solicita TIE en <strong>1 mes</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">2 meses</div>
+      <div class="plazo-title">Antelación mínima para solicitud de estancia larga duración</div>
+      <span class="plazo-tag bg2 c2">Estancia · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Solicitud dentro de España (estudios superiores): <strong>2 meses antes</strong> del inicio o de la expiración de la situación. Resolución: <strong>15 días</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">3 meses</div>
+      <div class="plazo-title">Inscripción / Tarjeta de Residencia (régimen comunitario)</div>
+      <span class="plazo-tag bg3 c3">Registro · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Ciudadano comunitario y familiar: <strong>3 meses desde la entrada</strong> para solicitar inscripción o tarjeta. Resolución preferente: <strong>3 meses</strong> con efectos retroactivos.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">3 meses</div>
+      <div class="plazo-title">Resolución de la autoridad sobre levantamiento de prohibición de entrada</div>
+      <span class="plazo-tag bg5 c5">Prohibición · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La autoridad competente tiene <strong>3 meses</strong> para resolver la solicitud de levantamiento de prohibición de entrada (que puede presentarse tras 3 años de su ejecución).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg1 c1">3 meses</div>
+      <div class="plazo-title">Plazo de RLD-UE en otro EM para presentar solicitud en España</div>
+      <span class="plazo-tag bg3 c3">RLD · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Quien tenga RLD-UE expedida en otro EM puede presentar su solicitud antes de entrar en España o bien en los <strong>3 meses siguientes a su llegada</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">3 meses</div>
+      <div class="plazo-title">Prórroga TIE presentada fuera de plazo (sin perder autorización RLD)</div>
+      <span class="plazo-tag bg5 c5">TIE · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Aunque la renovación de TIE debe presentarse 2 meses antes del vencimiento, si se presenta en los <strong>3 meses siguientes</strong> no se pierde la autorización (aunque sí hay sanción).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg6 c6">6 meses</div>
+      <div class="plazo-title">Comunicación de ruptura del vínculo con español (residencia independiente)</div>
+      <span class="plazo-tag bg3 c3">Familia · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El familiar debe comunicar el hecho (fallecimiento, divorcio, nulidad…) en <strong>máx. 6 meses</strong> y solicitar la residencia independiente.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg1 c1">6 meses</div>
+      <div class="plazo-title">Ausencias que caducan el Certificado de Registro comunitario</div>
+      <span class="plazo-tag bg1 c1">Caducidad · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El Certificado de Registro caduca por ausencias <strong>superiores a 6 meses en 1 año</strong> (salvo excepciones: enfermedad grave, estudios, traslado profesional no superior a 12 meses…).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses menas" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">6 meses</div>
+      <div class="plazo-title">Plazo máximo de resolución total (repatriación MENA)</div>
+      <span class="plazo-tag bg4 c4">MENAs · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El plazo máximo desde el inicio del procedimiento de repatriación hasta la resolución y notificación: <strong>6 meses</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses menas" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">90 días</div>
+      <div class="plazo-title">Período de restablecimiento y reflexión TSH</div>
+      <span class="plazo-tag bg4 c4">TSH · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El período de restablecimiento y reflexión para víctimas de TSH es de <strong>al menos 90 días</strong>. Durante este tiempo se suspenden expedientes sancionadores y medidas de expulsión.</p>
+    </div>
+  </div>
+
+  <!-- Años -->
+  <div class="plazo-card" data-cat="años" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">3 años</div>
+      <div class="plazo-title">Solicitar levantamiento de prohibición de entrada (régimen comunitario)</div>
+      <span class="plazo-tag bg5 c5">Prohibición · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Puede solicitarse transcurridos <strong>3 años desde la ejecución</strong> de la prohibición de entrada.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="años" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">3 años</div>
+      <div class="plazo-title">Matrimonio mínimo para conservar residencia (nulidad matrimonial)</div>
+      <span class="plazo-tag bg3 c3">Familia · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Nulidad matrimonial: el familiar conserva residencia si el matrimonio duró <strong>al menos 3 años</strong> (1 de ellos en España).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="años" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">3 años</div>
+      <div class="plazo-title">Compromiso de no retorno (retorno voluntario)</div>
+      <span class="plazo-tag bg4 c4">Retorno · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>El retornado voluntariamente asume un compromiso de no retorno al espacio Schengen de <strong>3 años</strong> en general.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="años" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg3 c3">5 años</div>
+      <div class="plazo-title">Residencia Permanente (régimen comunitario)</div>
+      <span class="plazo-tag bg3 c3">Permanente · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Tras <strong>5 años de residencia legal continua</strong> → residencia permanente. Se pierde por ausencia superior a <strong>2 años consecutivos</strong>.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="años" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg2 c2">5 años</div>
+      <div class="plazo-title">Residencia de Larga Duración Nacional</div>
+      <span class="plazo-tag bg2 c2">RLD · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Residencia temporal continuada durante <strong>5 años</strong> → RLD. Extinción: ausencia de la UE de <strong>12 meses consecutivos</strong> (24 para familiares y Tarjeta Azul-UE).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="años" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg5 c5">2 años</div>
+      <div class="plazo-title">Permanencia mínima para arraigos (excepto familiar)</div>
+      <span class="plazo-tag bg5 c5">Arraigo · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Permanencia continua mínima: <strong>2 años</strong>. Arraigo familiar: <strong>sin permanencia mínima</strong>. Duración de la autorización: <strong>1 año</strong> (arraigo familiar: <strong>5 años</strong>).</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="años menas" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">2 años</div>
+      <div class="plazo-title">Duración inicial autorización de residencia MENA</div>
+      <span class="plazo-tag bg4 c4">MENAs · LO 4/2000</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>La autorización inicial dura <strong>2 años</strong> desde que el menor quedó bajo protección. Prórroga automática 2 meses antes de que expire.</p>
+    </div>
+  </div>
+
+  <!-- Expulsión -->
+  <div class="plazo-card" data-cat="años expulsion" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">2 años</div>
+      <div class="plazo-title">Revisión obligatoria si la expulsión no se ejecuta en 2 años</div>
+      <span class="plazo-tag bg4 c4">Expulsión · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>Si la expulsión va a ejecutarse <strong>más de 2 años</strong> después de haberse dictado, debe comprobarse y valorarse si han cambiado las circunstancias.</p>
+    </div>
+  </div>
+
+  <div class="plazo-card" data-cat="meses expulsion" onclick="toggleCard(this)">
+    <div class="plazo-header">
+      <div class="plazo-badge bg4 c4">3 meses (enfermedad)</div>
+      <div class="plazo-title">Enfermedades que NO justifican expulsión si sobrevienen después</div>
+      <span class="plazo-tag bg4 c4">Salud · RD 240</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="plazo-detail">
+      <p>No podrán justificar la expulsión las enfermedades que sobrevengan <strong>tras los 3 primeros meses</strong> desde la llegada a España.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─────────── TABLA ─────────── -->
+<div id="tabla" class="section">
+
+  <div class="intro-box">
+    <h2>Tabla de plazos ordenada</h2>
+    <p>Todos los plazos del T10 de menor a mayor. Ideal para un repaso rápido antes del examen.</p>
+  </div>
+
+  <div style="overflow-x:auto;">
+  <table class="tabla-resumen">
+    <tr>
+      <th>Plazo</th>
+      <th>Concepto</th>
+      <th>Norma</th>
+    </tr>
+    <tr><td><span class="num-big c4">24 h</span></td><td>Registro en Registro MENA</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">24 h</span></td><td>Resolución período reflexión TSH (si está en CIE)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">48 h</span></td><td>Propuesta período reflexión TSH (víctima identificada)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c2">3 días</span></td><td>Declaración de entrada en España (frontera interior)</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c2">5 días</span></td><td>Resolución período reflexión TSH (general)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c2">5 días</span></td><td>Emisión informes penales/policiales (estancia larga duración)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c3">7 días</span></td><td>Resolución solicitud estancia larga duración (1.ª vez)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">10 días</span></td><td>Alegaciones, informes y notificación en repatriación MENA</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">10–30 días</span></td><td>Período de prueba en procedimiento de repatriación MENA</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">72 h</span></td><td>Salida tras denegación de prórroga de estancia sin visado</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c1">15 días</span></td><td>Resolución solicitud estancia larga duración (dentro de España)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c1">15 días</span></td><td>Traslado MENA a comunidad asignada (plan contingencia)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c2">≥1 mes</span></td><td>Plazo mínimo para abandonar España (resolución expulsión comunitario)</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c2">1 mes</span></td><td>Solicitar TIE tras autorización de residencia (>6 meses)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c2">1 mes</span></td><td>Resolución prórroga estancia larga duración</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c2">1 mes</span></td><td>Resolución autorización residencia MENA (Del./Subdel.)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c2">1 mes</span></td><td>Plazo para solicitar TIE (transfronterizo)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c3">2 meses</span></td><td>Antelación mínima para solicitud estancia larga duración (dentro España)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c3">3 meses</span></td><td>Inscripción/Tarjeta de Residencia comunitario (desde entrada)</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c3">3 meses</span></td><td>Resolución máx. del procedimiento de inscripción comunitario</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c3">3 meses</span></td><td>Resolución levantamiento prohibición de entrada</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c3">3 meses</span></td><td>Plazo presentación solicitud RLD-UE (desde llegada a España)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c3">3 meses</span></td><td>Prórroga TIE presentada fuera de plazo (sin perder autorización)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">3 meses</span></td><td>Enfermedades post-llegada que NO justifican expulsión</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c4">90 días</span></td><td>Período de restablecimiento y reflexión TSH (mínimo)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">90 días</span></td><td>Sin retorno efectivo MENA → inicio autorización de residencia</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c1">6 meses</span></td><td>Ausencias que caducan el Certificado de Registro comunitario</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c1">6 meses</span></td><td>Comunicación ruptura vínculo con español (residencia independiente)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c1">6 meses</span></td><td>Plazo máximo resolución repatriación MENA</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c5">1 año</span></td><td>Duración autorizaciones por arraigo (excepto familiar)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c5">1 año</span></td><td>Caducidad Visado de Carácter Extraordinario (máx.)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c5">2 años</span></td><td>Convivencia para conservar residencia tras ruptura del vínculo (cónyuge)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c5">2 años</span></td><td>Duración inicial autorización residencia MENA</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c5">2 años</span></td><td>Permanencia mínima para arraigos (excepto familiar)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c4">2 años</span></td><td>Revisión obligatoria si expulsión no se ejecuta a tiempo</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c4">3 años</span></td><td>Solicitud levantamiento prohibición de entrada</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c4">3 años</span></td><td>Compromiso de no retorno (retorno voluntario)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c3">3 años</span></td><td>Duración mínima del matrimonio para conservar residencia (nulidad)</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c3">5 años</span></td><td>Residencia Permanente (régimen comunitario)</td><td style="color:var(--muted)">RD 240/2007</td></tr>
+    <tr><td><span class="num-big c3">5 años</span></td><td>Residencia de Larga Duración Nacional</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c3">5 años</span></td><td>Duración arraigo familiar</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c3">5 años</span></td><td>Renovación TIE de RLD (hasta los 30 años)</td><td style="color:var(--muted)">LO 4/2000</td></tr>
+    <tr><td><span class="num-big c2">10 años</span></td><td>Renovación Tarjeta Residencia Permanente Familiar / TIE de RLD (>30 años)</td><td style="color:var(--muted)">RD 240/2007 / LO 4/2000</td></tr>
+  </table>
+  </div>
+
+</div>
+
+<!-- ─────────── MNEMOTECNIA ─────────── -->
+<div id="mnemo" class="section">
+
+  <div class="mnemo-card" style="border-color:var(--accent)">
+    <span class="mnemo-tag bg1 c1" style="color:#000">Los 3 del RD 240</span>
+    <h3 style="color:var(--accent)">El número MÁGICO del régimen comunitario: 3</h3>
+    <div class="big-formula c1">
+      3 meses → solicitar inscripción<br>
+      <span style="font-size:14px; color:var(--accent2)">3 meses → resolución del procedimiento</span><br>
+      <span style="font-size:14px; color:var(--accent3)">3 meses → enfermedad no justifica expulsión</span><br>
+      <span style="font-size:14px; color:var(--accent4)">3 meses → resolución levantamiento prohibición</span><br>
+      <span style="font-size:14px; color:var(--accent5)">3 años → solicitar levantar prohibición</span><br>
+      <span style="font-size:14px; color:var(--accent5)">3 años → matrimonio mínimo (nulidad)</span>
+    </div>
+    <p style="font-size:13px; color:var(--muted)">El RD 240 es el reglamento de los <strong>3</strong>. Repite el 3 como un mantra.</p>
+  </div>
+
+  <div class="mnemo-card" style="border-color:var(--accent2)">
+    <span class="mnemo-tag bg2" style="color:#fff">Los 5 de la permanencia</span>
+    <h3 style="color:var(--accent2)">5 años = Permanencia / RLD</h3>
+    <div class="big-formula c2">
+      5 años RD 240 → Residencia PERMANENTE<br>
+      <span style="font-size:14px; color:var(--accent3)">5 años LO 4/2000 → Residencia LARGA DURACIÓN</span><br>
+      <span style="font-size:14px; color:var(--accent)">5 años arraigo familiar → autorización de 5 años</span>
+    </div>
+    <p style="font-size:13px; color:var(--muted)">📌 Se pierde permanencia: ausencia <strong>2 años</strong> consecutivos. Se pierde RLD: ausencia <strong>12 meses</strong> UE (24 familiares/Azul-UE).</p>
+  </div>
+
+  <div class="mnemo-card" style="border-color:var(--accent3)">
+    <span class="mnemo-tag bg3" style="color:#000">Los días clave (MENAs)</span>
+    <h3 style="color:var(--accent3)">Escala de urgencia MENA</h3>
+    <div class="big-formula" style="color:var(--text)">
+      <span style="color:var(--accent4)">24 h</span> → Registro MENA<br>
+      <span style="color:var(--accent)">48 h</span> → Propuesta reflexión TSH<br>
+      <span style="color:var(--accent2)">5 días</span> → Resolución reflexión TSH<br>
+      <span style="color:var(--accent3)">10 días</span> → Todo en repatriación (alegaciones/informe/notificación)<br>
+      <span style="color:var(--accent5)">15 días</span> → Traslado a CA
+    </div>
+    <p style="font-size:13px; color:var(--muted)">Regla: cuanto más urgente, más pequeño el plazo. 24h &gt; 48h &gt; 5d &gt; 10d &gt; 15d.</p>
+  </div>
+
+  <div class="mnemo-card" style="border-color:var(--accent4)">
+    <span class="mnemo-tag bg4" style="color:#fff">⚠️ Trampas de examen</span>
+    <h3 style="color:var(--accent4)">Errores frecuentes en oposición</h3>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "El período de reflexión TSH tiene silencio negativo" → <strong>FALSO</strong>. Es silencio POSITIVO (único caso)</div>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "Los trabajadores de temporada deben obtener TIE" → <strong>FALSO</strong>. Están exentos de obtenerla</div>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "Los transfronterizos no necesitan TIE" → <strong>FALSO</strong>. La obtienen aunque permanezcan menos de 6 meses</div>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "El arraigo familiar exige 2 años de permanencia" → <strong>FALSO</strong>. No exige permanencia mínima</div>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "El plazo para levantar la prohibición y para resolverla es el mismo (3 meses)" → <strong>CUIDADO</strong>: se solicita tras <strong>3 AÑOS</strong>; la autoridad resuelve en <strong>3 MESES</strong></div>
+    <div class="key-concept c4">❌ "La denegación de prórroga sin visado da 1 mes para salir" → <strong>FALSO</strong>. Son <strong>72 horas</strong> (o el tiempo restante si es menos)</div>
+  </div>
+
+  <div class="mnemo-card" style="border-color:var(--accent5)">
+    <span class="mnemo-tag bg5" style="color:#fff">Plazos de TIE</span>
+    <h3 style="color:var(--accent5)">La TIE y sus plazos</h3>
+    <div class="big-formula c5">
+      +6 meses → solicitar TIE en 1 mes<br>
+      <span style="font-size:14px; color:var(--accent2)">RLD hasta 30 años → renovar cada 5 años</span><br>
+      <span style="font-size:14px; color:var(--accent3)">RLD desde 30 años → renovar cada 10 años</span><br>
+      <span style="font-size:14px; color:var(--accent)">Solicitar 2 meses antes o hasta 3 meses después</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─────────── QUIZ ─────────── -->
+<div id="quiz" class="section">
+  <div class="quiz-container" id="quizContainer"></div>
+  <div class="quiz-score" id="quizScore">
+    <h2 id="scoreText"></h2>
+    <p id="scoreSub"></p>
+    <button class="btn-restart" onclick="initQuiz()">🔄 Repetir Quiz</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "¿En qué plazo debe el ciudadano comunitario solicitar su inscripción en el Registro Central de Extranjeros (residencia ≥3 meses)?",
+    opts: ["1 mes desde la entrada", "3 meses desde la entrada", "6 meses desde la entrada", "En cuanto decida quedarse"],
+    correct: 1,
+    exp: "Tanto el comunitario como el familiar disponen de 3 meses desde la entrada en España para solicitar la inscripción o la Tarjeta de Residencia."
+  },
+  {
+    q: "¿Cuándo puede el ciudadano acceder a la residencia permanente en el régimen comunitario (RD 240/2007)?",
+    opts: ["Tras 3 años de residencia continua", "Tras 5 años de residencia continua", "Tras 10 años de residencia continua", "Tras 2 años y solicitud expresa"],
+    correct: 1,
+    exp: "Tras 5 años de residencia legal continua en España se adquiere el derecho a residir con carácter permanente (art. 10 RD 240/2007)."
+  },
+  {
+    q: "La resolución sobre la solicitud de levantamiento de una prohibición de entrada (régimen comunitario) debe dictarse en un plazo máximo de:",
+    opts: ["1 mes", "3 meses", "6 meses", "1 año"],
+    correct: 1,
+    exp: "La autoridad competente tiene 3 meses para resolver la solicitud de levantamiento de prohibición de entrada. Hasta entonces sigue vigente la prohibición."
+  },
+  {
+    q: "Una persona solicita el levantamiento de una prohibición de entrada. ¿Desde cuándo puede presentar esa solicitud?",
+    opts: ["En cualquier momento", "Transcurridos 3 meses desde la prohibición", "Transcurridos 3 años desde la ejecución", "Transcurrido 1 año desde la prohibición"],
+    correct: 2,
+    exp: "La solicitud de levantamiento puede presentarse transcurridos 3 años desde la ejecución de la decisión de prohibición (no desde que se dictó, sino desde que se ejecutó)."
+  },
+  {
+    q: "¿Cuánto tiempo tiene un extranjero para solicitar la TIE después de obtener una autorización de residencia por más de 6 meses?",
+    opts: ["15 días", "1 mes", "3 meses", "6 meses"],
+    correct: 1,
+    exp: "El extranjero debe solicitar la TIE en el plazo de 1 mes desde su autorización de residencia (art. documentación LO 4/2000)."
+  },
+  {
+    q: "En el período de restablecimiento y reflexión para víctimas de TSH, ¿qué tipo de silencio administrativo se aplica?",
+    opts: ["Silencio negativo", "Silencio positivo", "No aplica silencio", "Depende de la autoridad"],
+    correct: 1,
+    exp: "El período de reflexión para TSH es el único caso de silencio POSITIVO en este tema. El Del./Subdel. resuelve en 5 días (24h si está en un CIE); si no resuelve, se entiende concedido."
+  },
+  {
+    q: "¿Qué plazo mínimo de reflexión se concede a las víctimas de TSH?",
+    opts: ["30 días", "60 días", "Al menos 90 días", "6 meses"],
+    correct: 2,
+    exp: "El período de restablecimiento y reflexión para víctimas de TSH es de al menos 90 días. Durante este tiempo se suspenden expedientes sancionadores y medidas de expulsión."
+  },
+  {
+    q: "¿Cuánto tiempo tiene el Del./Subdel. del Gob. para resolver la propuesta de período de reflexión TSH cuando la víctima está en un CIE?",
+    opts: ["48 horas", "72 horas", "24 horas", "5 días"],
+    correct: 2,
+    exp: "Si la víctima de TSH se encuentra en un CIE, la resolución debe dictarse en 24 horas (frente a los 5 días del supuesto general)."
+  },
+  {
+    q: "En el procedimiento de repatriación de un MENA, ¿cuál es el plazo máximo desde el inicio hasta la resolución?",
+    opts: ["3 meses", "6 meses", "1 año", "90 días"],
+    correct: 1,
+    exp: "El plazo máximo total del procedimiento de repatriación de un MENA (desde inicio hasta resolución y notificación) es de 6 meses."
+  },
+  {
+    q: "Si la repatriación de un MENA no puede llevarse a cabo, ¿tras cuántos días sin retorno efectivo se inicia el trámite de autorización de residencia?",
+    opts: ["30 días", "60 días", "90 días", "6 meses"],
+    correct: 2,
+    exp: "Tras 90 días sin retorno efectivo, la OEX inicia de oficio el trámite para conceder al menor una autorización de residencia."
+  },
+  {
+    q: "El arraigo familiar tiene una duración de la autorización de:",
+    opts: ["1 año", "2 años", "3 años", "5 años"],
+    correct: 3,
+    exp: "El arraigo familiar tiene una duración de 5 años (frente al resto de arraigos, que son 1 año). Además, el arraigo familiar no requiere permanencia mínima en España."
+  },
+  {
+    q: "¿Cuándo caduca el Certificado de Registro comunitario por ausencias?",
+    opts: ["Ausencias superiores a 3 meses en 1 año", "Ausencias superiores a 6 meses en 1 año", "Ausencias superiores a 1 año consecutivo", "Ausencias superiores a 2 años consecutivos"],
+    correct: 1,
+    exp: "El Certificado de Registro caduca por ausencias superiores a 6 meses en 1 año (salvo excepciones: obligaciones militares, enfermedad grave, estudios, traslado profesional < 12 meses, etc.)."
+  },
+  {
+    q: "¿A qué plazo deben emitirse los informes del Registro Central de Penados y el informe policial para valorar una estancia de larga duración?",
+    opts: ["24 horas", "48 horas", "5 días", "10 días"],
+    correct: 2,
+    exp: "Los informes del Registro Central de Penados y el informe policial para estancias de larga duración deben emitirse en el plazo de 5 días."
+  },
+  {
+    q: "Si se deniega una prórroga de estancia sin visado, ¿en qué plazo máximo debe salir el extranjero de España?",
+    opts: ["24 horas", "48 horas", "72 horas", "1 semana"],
+    correct: 2,
+    exp: "Si se deniega la prórroga de estancia a quien entró sin visado, debe salir en el plazo de estancia que le quede o, como máximo, en 72 horas."
+  }
+];
+
+let answered = [];
+
+function initQuiz() {
+  answered = new Array(questions.length).fill(null);
+  document.getElementById('quizScore').style.display = 'none';
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = questions.map((q, i) => `
+    <div class="quiz-q" id="q${i}">
+      <div class="q-num">PREGUNTA ${i+1} / ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-options">
+        ${q.opts.map((o, j) => `
+          <button class="q-opt" onclick="answer(${i}, ${j})" id="opt${i}_${j}">${o}</button>
+        `).join('')}
+      </div>
+      <div class="q-feedback" id="fb${i}"></div>
+    </div>
+  `).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi] !== null) return;
+  answered[qi] = oi;
+  const q = questions[qi];
+  for (let j = 0; j < q.opts.length; j++) {
+    const btn = document.getElementById(`opt${qi}_${j}`);
+    btn.disabled = true;
+    if (j === q.correct) btn.classList.add('show-correct');
+    else if (j === oi) btn.classList.add('wrong');
+  }
+  const fb = document.getElementById(`fb${qi}`);
+  if (oi === q.correct) {
+    fb.className = 'q-feedback correct';
+    fb.textContent = '✅ ' + q.exp;
+  } else {
+    fb.className = 'q-feedback wrong';
+    fb.textContent = '❌ ' + q.exp;
+  }
+  if (answered.every(a => a !== null)) showScore();
+}
+
+function showScore() {
+  const correct = answered.filter((a, i) => a === questions[i].correct).length;
+  const score = document.getElementById('quizScore');
+  score.style.display = 'block';
+  document.getElementById('scoreText').textContent = `${correct} / ${questions.length}`;
+  const msgs = ['Sigue practicando 💪', '¡Vas bien! Repasa las trampas ⚡', '¡Muy bien! Casi lo tienes 🎯', '¡Perfecto! CNP incoming 🚔'];
+  const idx = correct < 6 ? 0 : correct < 10 ? 1 : correct < 13 ? 2 : 3;
+  document.getElementById('scoreSub').textContent = msgs[idx];
+  score.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleCard(el) {
+  el.classList.toggle('open');
+}
+
+function showSection(id, event) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (event) event.target.classList.add('active');
+}
+
+function filterPlazos(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('#plazos .plazo-card');
+  cards.forEach(card => {
+    if (cat === 'all') {
+      card.classList.remove('hidden');
+    } else {
+      const cats = (card.dataset.cat || '').split(' ');
+      card.classList.toggle('hidden', !cats.includes(cat));
+    }
+  });
+}
+
+initQuiz();
+</script>
+</body>
+</html>

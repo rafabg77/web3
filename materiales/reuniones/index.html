@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrenador de Clasificaciones</title>
+<style>
+body{
+margin:0;
+font-family:Segoe UI,Arial,sans-serif;
+background:#f4f6f8;
+color:#1f2937;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+.card{
+width:min(900px,92vw);
+background:white;
+padding:40px;
+border-radius:24px;
+box-shadow:0 10px 40px rgba(0,0,0,.08);
+}
+h1{text-align:center;color:#0f172a}
+.subtitle{text-align:center;color:#64748b;margin-bottom:25px}
+.progress{
+height:10px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin-bottom:25px
+}
+.bar{
+height:100%;width:0%;background:#2563eb;transition:.4s;
+}
+#question{
+font-size:1.5rem;
+font-weight:600;
+margin:30px 0;
+text-align:center;
+min-height:80px;
+}
+.answers{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+button.answer{
+padding:16px;
+font-size:1rem;
+border:2px solid #dbeafe;
+background:#fff;
+border-radius:14px;
+cursor:pointer;
+transition:.2s;
+}
+button.answer:hover{
+border-color:#2563eb;
+transform:translateY(-2px);
+}
+#feedback{
+margin-top:20px;
+padding:15px;
+border-radius:12px;
+display:none;
+font-weight:600;
+}
+.correct{background:#dcfce7;color:#166534}
+.wrong{background:#fee2e2;color:#991b1b}
+#next{
+display:none;
+margin-top:15px;
+width:100%;
+padding:14px;
+border:none;
+background:#2563eb;
+color:white;
+border-radius:12px;
+cursor:pointer;
+}
+#score{
+text-align:center;
+font-size:1.3rem;
+font-weight:bold;
+}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Clasificación de Reuniones y Documentos</h1>
+<div class="subtitle">Una pregunta cada vez · Sin ambigüedades · Feedback inmediato</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div id="question"></div>
+<div class="answers" id="answers"></div>
+<div id="feedback"></div>
+<button id="next" onclick="nextQuestion()">Siguiente pregunta</button>
+<div id="score"></div>
+</div>
+
+<script>
+const data=[
+["Sesiones Plenarias del Congreso y el Senado","Públicas"],
+["Deliberaciones del Consejo de Ministros","Secretas"],
+["Deliberaciones de las Comisiones Delegadas del Gobierno","Secretas"],
+["Comisión General de Secretarios de Estado y Subsecretarios","Reservadas"],
+["Actuaciones judiciales (Regla general)","Públicas"],
+["Sentencias judiciales","Públicas"],
+["Catálogo Nacional de Infraestructuras Estratégicas","Secreto"],
+["Planes de protección (PNPIC, PPE, PAO, PSO)","Confidencial"],
+["Resolución judicial que autoriza al Agente Encubierto","Reservada"],
+["Investigaciones de los Detectives Privados","Reservado"],
+["Sesiones del Comité contra la Tortura (CAT)","Públicas"],
+["Sesiones del Subcomité para la Prevención (SPT)","Privadas"],
+["Sesiones del Comité Europeo para la Prevención de la Tortura (CPT)","A puerta cerrada"],
+["Información recogida por el Mecanismo Nacional de Prevención (MNP)","Reservada"],
+["Registros de la Agencia Española de Protección de Datos (AEPD)","Públicos"]
+];
+
+const allAnswers=[
+"Confidencial","Secreto","Secretas","Reservado","Reservada","Reservadas",
+"Público","Públicos","Públicas","Privadas","A puerta cerrada"
+];
+
+data.sort(()=>Math.random()-0.5);
+
+let index=0;
+let correct=0;
+
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+
+function render(){
+let q=data[index];
+document.getElementById("question").textContent=q[0];
+
+let opts=[q[1]];
+while(opts.length<4){
+let r=allAnswers[Math.floor(Math.random()*allAnswers.length)];
+if(!opts.includes(r)) opts.push(r);
+}
+opts=shuffle(opts);
+
+const box=document.getElementById("answers");
+box.innerHTML="";
+opts.forEach(op=>{
+let b=document.createElement("button");
+b.className="answer";
+b.textContent=op;
+b.onclick=()=>answer(op);
+box.appendChild(b);
+});
+
+document.getElementById("feedback").style.display="none";
+document.getElementById("next").style.display="none";
+document.getElementById("bar").style.width=(index/data.length*100)+"%";
+}
+
+function answer(selected){
+const right=data[index][1];
+const fb=document.getElementById("feedback");
+
+document.querySelectorAll(".answer").forEach(b=>b.disabled=true);
+
+if(selected===right){
+correct++;
+fb.className="correct";
+fb.innerHTML="✔ Correcto";
+}else{
+fb.className="wrong";
+fb.innerHTML="✘ Incorrecto. La respuesta correcta es: <b>"+right+"</b>";
+}
+fb.style.display="block";
+document.getElementById("next").style.display="block";
+}
+
+function nextQuestion(){
+index++;
+if(index>=data.length){
+document.getElementById("question").innerHTML="🏁 Test finalizado";
+document.getElementById("answers").innerHTML="";
+document.getElementById("feedback").style.display="none";
+document.getElementById("next").style.display="none";
+document.getElementById("bar").style.width="100%";
+document.getElementById("score").innerHTML=
+"Resultado: "+correct+" / "+data.length+" ("+((correct/data.length)*100).toFixed(0)+"%)";
+return;
+}
+render();
+}
+
+render();
+</script>
+</body>
+</html>

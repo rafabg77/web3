@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instrumentos de Planificación PIC — Explicado desde cero</title>
+<style>
+:root{
+  --bg:#0d1117;--bg-panel:#151b23;--bg-card:#1a222c;--line:#2a3441;
+  --ink:#dfe6ee;--ink-dim:#a3aec0;--ink-faint:#5b6b7a;
+  --pnpic:#4f8fd6;--ppe:#d69b3f;--pao:#c96fd1;--pes:#5fbf9f;--pso:#d6544f;
+  --serif:'Iowan Old Style','Palatino Linotype', Georgia, serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+  --sans:'Inter','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;}
+::selection{background:var(--ppe);color:#0d1117;}
+#progressbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--pnpic),var(--pao),var(--pso));width:0%;z-index:999;}
+
+header.masthead{padding:52px 24px 36px;text-align:center;border-bottom:1px solid var(--line);
+  background:radial-gradient(ellipse at top, rgba(79,143,214,0.08), transparent 60%), var(--bg);}
+.case-number{font-family:var(--mono);letter-spacing:3px;font-size:11px;color:var(--ink-faint);text-transform:uppercase;}
+header.masthead h1{font-family:var(--serif);font-size:clamp(1.7rem,4.5vw,2.7rem);margin:12px 0 8px;font-weight:600;}
+header.masthead h1 span{color:var(--pnpic);}
+header.masthead p.subtitle{color:var(--ink-dim);font-size:15px;max-width:600px;margin:0 auto;}
+
+.wrap{display:flex;max-width:1200px;margin:0 auto;align-items:flex-start;}
+nav.sidebar{position:sticky;top:0;height:100vh;width:230px;flex-shrink:0;padding:32px 18px;border-right:1px solid var(--line);overflow-y:auto;}
+nav.sidebar .nav-title{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--ink-faint);text-transform:uppercase;margin-bottom:14px;}
+nav.sidebar a{display:block;color:var(--ink-dim);text-decoration:none;font-size:13px;padding:8px 10px;border-radius:6px;margin-bottom:2px;border-left:2px solid transparent;}
+nav.sidebar a:hover{color:var(--ink);background:var(--bg-card);}
+nav.sidebar a.active{color:var(--ink);background:var(--bg-card);border-left:2px solid var(--pnpic);}
+
+main{flex:1;min-width:0;padding:40px 36px 120px;max-width:760px;}
+section{scroll-margin-top:20px;padding-top:6px;}
+h2.sh{font-family:var(--serif);font-size:1.5rem;margin:56px 0 6px;font-weight:600;}
+h2.sh:first-of-type{margin-top:10px;}
+.eyebrow{font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+p{color:var(--ink-dim);font-size:15.5px;}
+strong{color:var(--ink);}
+.lead{font-size:16.5px;color:var(--ink);}
+
+/* Analogy callout */
+.analogy{background:var(--bg-card);border-left:3px solid var(--pnpic);border-radius:8px;padding:16px 20px;margin:18px 0;}
+.analogy .lbl{font-family:var(--mono);font-size:10.5px;color:var(--pnpic);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
+.analogy p{margin:0;font-size:14.5px;color:var(--ink-dim);}
+
+/* Actor cards */
+.actorgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0;}
+@media(max-width:640px){.actorgrid{grid-template-columns:1fr;}}
+.actor{background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;}
+.actor .who{font-family:var(--mono);font-weight:700;font-size:14px;margin-bottom:6px;}
+.actor p{font-size:13.8px;margin:0;}
+.actor.oc{border-top:3px solid var(--ppe);} .actor.cnpic{border-top:3px solid var(--pnpic);}
+.actor.ses{border-top:3px solid var(--pso);} .actor.dg{border-top:3px solid var(--pes);}
+
+/* Narrative walk-through */
+.story{background:var(--bg-panel);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin:26px 0;}
+.story .caseheader{font-family:var(--mono);font-size:12px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.storystep{display:flex;gap:16px;padding:14px 0;border-top:1px solid var(--line);}
+.storystep:first-child{border-top:none;}
+.storystep .stepnum{font-family:var(--mono);font-size:12px;color:var(--ink-faint);width:26px;flex-shrink:0;padding-top:2px;}
+.storystep .stepbody h4{margin:0 0 4px;font-size:14.5px;color:var(--ink);}
+.storystep .stepbody p{margin:0;font-size:14px;}
+.storystep .stepbody .when{font-family:var(--mono);font-size:11.5px;color:var(--ppe);display:block;margin-top:6px;}
+
+/* Explained instrument block */
+.instrument{border:1px solid var(--line);border-radius:10px;background:var(--bg-panel);margin-bottom:22px;overflow:hidden;}
+.instrument .head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);}
+.instrument .head .badge{font-family:var(--mono);font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;color:#0d1117;}
+.instrument .head .name{font-weight:600;font-size:15px;}
+.instrument .content{padding:18px 20px 20px;}
+.instrument .content p{margin:0 0 12px;font-size:14.5px;}
+.instrument .whybox{background:var(--bg-card);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:13.3px;}
+.instrument .whybox .lbl{font-family:var(--mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.i-pnpic .badge{background:var(--pnpic);} .i-pnpic{border-left:3px solid var(--pnpic);}
+.i-ppe .badge{background:var(--ppe);} .i-ppe{border-left:3px solid var(--ppe);}
+.i-pao .badge{background:var(--pao);} .i-pao{border-left:3px solid var(--pao);}
+.i-pes .badge{background:var(--pes);} .i-pes{border-left:3px solid var(--pes);}
+.i-pso .badge{background:var(--pso);} .i-pso{border-left:3px solid var(--pso);}
+
+/* Quick reference table (kept, but demoted to "after you understand it") */
+.table-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.8px;min-width:700px;}
+thead th{text-align:left;padding:9px 10px;color:var(--pes);font-family:var(--mono);font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--line);letter-spacing:1px;white-space:nowrap;}
+tbody td{padding:10px;border-bottom:1px solid var(--line);color:var(--ink-dim);vertical-align:top;}
+tbody td:first-child{color:var(--ink);font-weight:700;}
+
+/* Mnemonic */
+.mnemonic{background:linear-gradient(135deg, rgba(79,143,214,0.1), rgba(214,84,79,0.08));border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:26px 0;text-align:center;}
+.mnemonic .phrase{font-family:var(--serif);font-size:1.2rem;color:var(--ink);margin-bottom:8px;}
+.mnemonic .expl{font-size:13px;color:var(--ink-dim);}
+
+/* Quiz with explanation */
+.quiz-q{background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:14px;}
+.quiz-q p.q{font-weight:600;color:var(--ink);margin:0 0 12px;font-size:14.5px;}
+.quiz-opt{display:block;width:100%;text-align:left;background:var(--bg-panel);border:1px solid var(--line);color:var(--ink-dim);padding:10px 14px;border-radius:6px;margin-bottom:8px;cursor:pointer;font-size:13.5px;}
+.quiz-opt:hover{border-color:var(--pnpic);}
+.quiz-opt.correct{border-color:var(--pes);background:rgba(95,191,159,0.12);color:var(--ink);}
+.quiz-opt.wrong{border-color:var(--pso);background:rgba(214,84,79,0.12);color:var(--ink);}
+.quiz-expl{display:none;margin-top:10px;padding:10px 14px;background:var(--bg-panel);border-radius:6px;font-size:13px;color:var(--ink-dim);border-left:3px solid var(--pes);}
+.quiz-expl.show{display:block;}
+#quiz-score{font-family:var(--mono);color:var(--ppe);text-align:center;font-size:14px;}
+
+footer{text-align:center;padding:30px;color:var(--ink-faint);font-family:var(--mono);font-size:11px;border-top:1px solid var(--line);}
+
+@media print{
+  nav.sidebar,#progressbar,.no-print{display:none !important;}
+  body{background:#fff;color:#111;}
+  .wrap{display:block;}
+  main{max-width:100%;padding:0;}
+}
+@media(max-width:860px){
+  nav.sidebar{display:none;}
+  main{padding:28px 18px 100px;}
+}
+</style>
+</head>
+<body>
+
+<div id="progressbar"></div>
+
+<header class="masthead">
+  <div class="case-number">PROTECCIÓN DE INFRAESTRUCTURAS CRÍTICAS · LEY 8/2011 &amp; RD 704/2011</div>
+  <h1>Los cinco planes <span>explicados desde cero</span></h1>
+  <p class="subtitle">No es una lista de datos para memorizar. Es un sistema con una lógica interna — una vez la entiendes, los plazos y las aprobaciones se deducen solos.</p>
+</header>
+
+<div class="wrap">
+  <nav class="sidebar">
+    <div class="nav-title">Índice</div>
+    <a href="#porque">¿Por qué 5 planes?</a>
+    <a href="#actores">Los actores</a>
+    <a href="#caso">Caso paso a paso</a>
+    <a href="#pnpic">PNPIC</a>
+    <a href="#pes">PES</a>
+    <a href="#pso">PSO</a>
+    <a href="#ppe">PPE</a>
+    <a href="#pao">PAO</a>
+    <a href="#mnemo">Regla para recordar</a>
+    <a href="#tabla">Tabla de consulta</a>
+    <a href="#quiz">Autoevaluación</a>
+  </nav>
+
+  <main>
+
+    <section id="porque">
+      <div class="eyebrow">Punto de partida</div>
+      <h2 class="sh">¿Por qué hacen falta cinco planes y no uno solo?</h2>
+      <p class="lead">Porque cada uno responde a una pregunta distinta, y esas preguntas las hacen actores distintos, a escalas distintas.</p>
+      <p>Piénsalo así: el Estado no puede escribir un único documento que diga a la vez "esto es crítico a nivel nacional", "en este sector concreto los riesgos son estos", "esta empresa concreta tiene esta política de seguridad", "esta instalación concreta de esa empresa tiene estas medidas", y "la policía va a apoyar así a esa instalación". Son cinco preguntas de tamaño distinto — nacional, sectorial, de empresa, de instalación, y de apoyo policial — y por eso son cinco documentos distintos, cada uno aprobado por quien tiene competencia sobre esa escala.</p>
+      <div class="analogy">
+        <div class="lbl">Analogía</div>
+        <p>Es como la diferencia entre el plan urbanístico de una ciudad, el plan de zona de un barrio, el reglamento interno de un edificio, el plan de evacuación de una planta concreta, y el operativo de los bomberos si algo falla en ese edificio. Ninguno sustituye a otro: cada uno vive en su escala y se apoya en el de arriba.</p>
+      </div>
+      <p>El orden lógico —de "arriba abajo"— es: <strong>PNPIC</strong> (nacional) → <strong>PES</strong> (por sector) → <strong>PSO</strong> (política general de la empresa) → <strong>PPE</strong> (medidas concretas de una instalación de esa empresa) → <strong>PAO</strong> (cómo la policía apoya a esa instalación). Este orden es la clave de todo lo demás: casi todos los plazos "cuelgan" del documento anterior en la cadena.</p>
+    </section>
+
+    <section id="actores">
+      <div class="eyebrow">Antes de ver los planes</div>
+      <h2 class="sh">Quién es quién</h2>
+      <p>Todos los planes se repiten con los mismos cuatro nombres. Si no tienes claro qué es cada uno, cualquier tabla te va a parecer ruido. Apréndete esto primero:</p>
+      <div class="actorgrid">
+        <div class="actor oc">
+          <div class="who">OC — Operador Crítico</div>
+          <p>La empresa privada o pública dueña de la infraestructura (una eléctrica, un aeropuerto, un banco). Es quien <strong>redacta</strong> sus propios planes (PSO, PPE) — nadie los escribe por él, porque es quien conoce su instalación.</p>
+        </div>
+        <div class="actor cnpic">
+          <div class="who">CNPIC — Centro Nacional de Protección de Infraestructuras Críticas</div>
+          <p>El órgano técnico. No es quien manda políticamente, es quien <strong>revisa el contenido técnico</strong> y da el visto bueno de que un plan está bien hecho, antes o durante la aprobación de otro.</p>
+        </div>
+        <div class="actor ses">
+          <div class="who">SES — Secretaría de Estado de Seguridad</div>
+          <p>La autoridad política, dentro del Ministerio del Interior. <strong>Aprueba</strong> los documentos de mayor peso (PNPIC, PPE) — es la firma que da validez legal.</p>
+        </div>
+        <div class="actor dg">
+          <div class="who">Delegación del Gobierno (CCAA)</div>
+          <p>El representante del Estado en el territorio. Aprueba y <strong>supervisa sobre el terreno</strong> los planes con más componente local (PAO, PSO) — porque es quien está físicamente cerca de la infraestructura.</p>
+        </div>
+      </div>
+      <div class="analogy">
+        <div class="lbl">Cómo no confundirlos</div>
+        <p>Si la pregunta es "¿quién lo escribe?" — casi siempre es el <strong>OC</strong> (para sus propios planes) o un cuerpo policial/grupo de trabajo (para los planes de apoyo o sectoriales). Si la pregunta es "¿quién firma la aprobación?" — depende de la escala: nacional y de instalación específica → <strong>SES</strong>; territorial/policial → <strong>Delegación del Gobierno</strong>. El <strong>CNPIC</strong> casi nunca aprueba solo: informa, evalúa, o da el visto bueno técnico que otro necesita para poder aprobar.</p>
+      </div>
+    </section>
+
+    <section id="caso">
+      <div class="eyebrow">Ahora con un ejemplo</div>
+      <h2 class="sh">Sigue el caso de una central eléctrica, paso a paso</h2>
+      <p>Imagina una central eléctrica designada como infraestructura crítica. Así es como se despliegan los planes en el tiempo, en orden real:</p>
+      <div class="story">
+        <div class="caseheader">Caso: Central Eléctrica "Río Verde" — designada IC el 1 de enero</div>
+
+        <div class="storystep">
+          <div class="stepnum">1</div>
+          <div class="stepbody">
+            <h4>La central ya vive bajo un paraguas nacional y sectorial</h4>
+            <p>El PNPIC (nacional) y el PES del sector energético ya existen de antes — no se crean para esta central en concreto, son el marco general en el que ella ya está incluida por el simple hecho de ser designada IC.</p>
+          </div>
+        </div>
+
+        <div class="storystep">
+          <div class="stepnum">2</div>
+          <div class="stepbody">
+            <h4>La empresa redacta su PSO (su política general de seguridad)</h4>
+            <p>Río Verde S.A. (el OC) tiene que presentar su Plan de Seguridad del Operador: su estrategia general para proteger todas sus instalaciones, no solo esta central.</p>
+            <span class="when">Plazo: 6 meses desde que se le notifica que ha sido designada. El CNPIC lo evalúa y lo informa; la Delegación del Gobierno supervisa.</span>
+          </div>
+        </div>
+
+        <div class="storystep">
+          <div class="stepnum">3</div>
+          <div class="stepbody">
+            <h4>Una vez aprobado el PSO, arranca el reloj del PPE</h4>
+            <p>Ahora sí, específicamente para la central Río Verde (y para cada IC concreta que tenga la empresa), hay que presentar un Plan de Protección Específico: las medidas físicas y lógicas concretas de esa instalación.</p>
+            <span class="when">Plazo: 4 meses desde que se aprobó el PSO. Aprueba la SES, con informe previo de la Delegación del Gobierno vía CNPIC. Notificación de la resolución: máx. 2 meses.</span>
+          </div>
+        </div>
+
+        <div class="storystep">
+          <div class="stepnum">4</div>
+          <div class="stepbody">
+            <h4>La policía prepara cómo va a apoyar a esa central</h4>
+            <p>En paralelo (coordinado por el CNPIC, con el OC participando como asesor técnico), el Cuerpo Policial competente redacta el Plan de Apoyo Operativo: qué hará la policía si la central sufre un incidente.</p>
+            <span class="when">Sin plazo fijo listado — aprueba la Delegación del Gobierno, con informe del CNPIC.</span>
+          </div>
+        </div>
+
+        <div class="storystep">
+          <div class="stepnum">5</div>
+          <div class="stepbody">
+            <h4>Si algo cambia, todo se actualiza en cadena</h4>
+            <p>Si Río Verde cambia un dato relevante (por ejemplo, un cambio de responsable de seguridad), el PPE se actualiza automáticamente — la modificación de un dato obliga a actualizar los planes, no queda a discreción de nadie.</p>
+          </div>
+        </div>
+      </div>
+      <p>Fíjate en lo que acabas de ver sin necesidad de memorizar nada todavía: <strong>el PPE depende del PSO</strong> (su reloj empieza cuando el PSO se aprueba), y <strong>el PAO depende de que exista una IC ya designada</strong>, pero no depende de que el PPE esté terminado. Esa dependencia PSO → PPE es el dato que más se pregunta y más se confunde.</p>
+    </section>
+
+    <section id="pnpic">
+      <h2 class="sh">PNPIC — el paraguas nacional</h2>
+      <div class="instrument i-pnpic">
+        <div class="head"><span class="badge">PNPIC</span><span class="name">Plan Nacional de Protección de Infraestructuras Críticas</span></div>
+        <div class="content">
+          <p>Es el único plan de los cinco que no depende de ninguna instalación ni empresa concreta: es el documento marco que dice, a nivel de todo el país, cómo se organiza la protección de las infraestructuras esenciales.</p>
+          <p>Lo elabora el Ministerio del Interior a través de la SES — es decir, nace y se aprueba en el mismo escalón político, sin necesidad de que el CNPIC intervenga en su aprobación (sí en su actualización). Su difusión es limitada, y el Anexo 1 es confidencial: contiene el listado de infraestructuras, algo que no puede circular libremente.</p>
+          <div class="whybox">
+            <div class="lbl">Por qué lo aprueba y revisa el mismo órgano (SES)</div>
+            <p>Porque no hay nadie por encima a nivel de "seguridad nacional de infraestructuras" — es el techo de la pirámide. Solo la actualización pasa por el CNPIC, porque actualizar es un trabajo técnico de mantenimiento, no una decisión política nueva.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pes">
+      <h2 class="sh">PES — el análisis por sector</h2>
+      <div class="instrument i-pes">
+        <div class="head"><span class="badge">PES</span><span class="name">Plan Estratégico Sectorial</span></div>
+        <div class="content">
+          <p>Baja un escalón: ya no habla de "España" en general, sino de un sector completo (energía, transporte, sistema financiero...). Analiza los riesgos, vulnerabilidades y consecuencias propios de ese sector, y propone medidas generales — todavía no medidas de una instalación concreta.</p>
+          <p>Lo redacta un Grupo de Trabajo Interdepartamental (GTI) — tiene sentido: analizar un sector entero requiere reunir a varios ministerios y organismos con competencias distintas, no un solo actor. Lo aprueba la Comisión Nacional para la Protección de las IC — el órgano colegiado de más alto nivel, coherente con que estás fijando la estrategia de un sector entero del país.</p>
+          <div class="whybox">
+            <div class="lbl">Plazo a recordar</div>
+            <p>12 meses desde que entra en vigor el Real Decreto, con revisión cada 2 años — el ciclo de revisión más corto de los cinco planes, porque el análisis sectorial de riesgos envejece rápido (tecnología, amenazas, geopolítica cambian).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pso">
+      <h2 class="sh">PSO — la política de la empresa</h2>
+      <div class="instrument i-pso">
+        <div class="head"><span class="badge">PSO</span><span class="name">Plan de Seguridad del Operador</span></div>
+        <div class="content">
+          <p>Aquí entra por primera vez el Operador Crítico como protagonista. El PSO no habla de una instalación concreta: es la política general de seguridad de toda la empresa — su filosofía y sus procedimientos marco para proteger cualquiera de sus instalaciones críticas.</p>
+          <p>Por eso solo hay <strong>un PSO por empresa</strong>, no uno por instalación (a diferencia del PPE, que veremos ahora). Lo redacta el propio OC, el CNPIC lo evalúa e informa para su aprobación, y la Delegación del Gobierno supervisa — misma lógica de siempre: quien conoce el terreno (Delegación) vigila, quien tiene la competencia técnica (CNPIC) valida el contenido.</p>
+          <div class="whybox">
+            <div class="lbl">Por qué es la pieza que "arranca el reloj" de otros planes</div>
+            <p>Porque es el primer documento que la empresa presenta tras ser designada — todo lo que viene después (el PPE de cada instalación) se construye sobre la base de esta política general ya aprobada. 6 meses para presentarlo, revisión cada 5 años.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ppe">
+      <h2 class="sh">PPE — la instalación concreta</h2>
+      <div class="instrument i-ppe">
+        <div class="head"><span class="badge">PPE</span><span class="name">Plan de Protección Específico</span></div>
+        <div class="content">
+          <p>Este es el documento más operativo de todos: baja hasta el nivel de una infraestructura crítica concreta y describe las medidas físicas y lógicas ya adoptadas, y las que se van a adoptar, para protegerla.</p>
+          <p>Por eso, a diferencia del PSO, aquí hay <strong>un PPE por cada IC</strong> — si una empresa tiene tres centrales designadas como críticas, presenta tres PPE distintos, uno por central. El OC lo elabora y lo presenta al CNPIC; lo aprueba la SES (mismo nivel que el PNPIC, porque es un documento de peso legal alto, aunque hable de una sola instalación) con informe previo de la Delegación del Gobierno.</p>
+          <div class="whybox">
+            <div class="lbl">El dato que más se confunde</div>
+            <p>El plazo de 4 meses no cuenta desde la designación de la infraestructura, sino <strong>desde la aprobación del PSO</strong>. Si te preguntan "¿desde cuándo cuentan los 4 meses del PPE?", la respuesta nunca es "desde que se designó la IC" — es desde que se aprobó el plan general de la empresa. Y la SES tiene, además, un plazo propio de 2 meses para notificar su resolución una vez recibido el PPE.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pao">
+      <h2 class="sh">PAO — el apoyo policial</h2>
+      <div class="instrument i-pao">
+        <div class="head"><span class="badge">PAO</span><span class="name">Plan de Apoyo Operativo</span></div>
+        <div class="content">
+          <p>Es el único de los cinco que no lo redacta ni el OC ni un órgano político-administrativo: lo redacta un <strong>Cuerpo Policial</strong> (estatal o autonómico según el territorio). Tiene sentido porque su contenido es puramente operativo policial: qué hace la policía si esa infraestructura sufre un incidente.</p>
+          <p>El OC participa, pero solo como asesor técnico — conoce su instalación, pero no es quien decide el operativo policial. El CNPIC coordina la elaboración (para que encaje con el resto del sistema), y aprueba la Delegación del Gobierno, con informe del CNPIC — la misma pareja que aparece en el PSO, porque ambos tienen un fuerte componente territorial.</p>
+          <div class="whybox">
+            <div class="lbl">Por qué no depende del PPE</div>
+            <p>El PAO se coordina en paralelo, no en cadena: existe porque existe una IC designada, no porque exista ya un PPE terminado. Es fácil asumir que sigue al PPE por analogía con cómo funciona el PSO→PPE, pero el documento no establece esa dependencia para el PAO.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mnemo">
+      <h2 class="sh">Una regla para no mezclarlos nunca más</h2>
+      <div class="mnemonic">
+        <div class="phrase">"El país marca el sector, la empresa marca la instalación, la policía la apoya"</div>
+        <div class="expl">PNPIC (país) → PES (sector) → PSO (empresa entera) → PPE (una instalación de esa empresa) → PAO (apoyo policial a esa instalación). Cada flecha es también, casi siempre, quién aprueba: cuanto más "arriba" en la cadena, más centralizada la aprobación (SES); cuanto más "en el terreno", más territorial (Delegación del Gobierno). El CNPIC es la única constante: aparece informando o evaluando en casi todos, pero rara vez firma la aprobación final él solo.</div>
+      </div>
+    </section>
+
+    <section id="tabla">
+      <div class="eyebrow">Solo como consulta rápida — no para memorizar de aquí</div>
+      <h2 class="sh">Tabla resumen</h2>
+      <p>Si ya entendiste las secciones de arriba, esta tabla no debería enseñarte nada nuevo — solo te sirve para verificar en 5 segundos un dato puntual.</p>
+      <div class="table-scroll">
+      <table>
+        <thead><tr><th>Plan</th><th>Escala</th><th>Elabora</th><th>Aprueba</th><th>Plazo</th></tr></thead>
+        <tbody>
+          <tr><td>PNPIC</td><td>Nacional</td><td>Min. Interior (SES)</td><td>SES</td><td>—</td></tr>
+          <tr><td>PES</td><td>Sectorial</td><td>Grupo de Trabajo Interdepartamental</td><td>Comisión Nacional PIC</td><td>12 meses / rev. 2 años</td></tr>
+          <tr><td>PSO</td><td>Empresa (OC)</td><td>OC</td><td>CNPIC evalúa · Delegación Gob. supervisa</td><td>6 meses / rev. 5 años</td></tr>
+          <tr><td>PPE</td><td>Instalación (1 por IC)</td><td>OC</td><td>SES · informe Delegación Gob.</td><td>4 meses desde PSO · notif. SES 2 meses</td></tr>
+          <tr><td>PAO</td><td>Apoyo policial a la instalación</td><td>Cuerpo Policial</td><td>Delegación Gob. · informe CNPIC</td><td>—</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <section id="quiz" class="no-print">
+      <div class="eyebrow">Comprueba si de verdad lo entendiste</div>
+      <h2 class="sh">Autoevaluación con explicación</h2>
+      <div id="quiz-container"></div>
+      <p id="quiz-score"></p>
+    </section>
+
+  </main>
+</div>
+
+<footer>Instrumentos de Planificación PIC — versión explicativa · Preparación CNP · Sin dependencias externas</footer>
+
+<script>
+const sections = document.querySelectorAll('main section');
+const navLinks = document.querySelectorAll('nav.sidebar a');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressbar').style.width = pct + '%';
+  let current = '';
+  sections.forEach(s => { const rect = s.getBoundingClientRect(); if (rect.top <= 120) current = s.id; });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+});
+
+const quizData = [
+  { q: "¿Desde cuándo cuentan los 4 meses de plazo para presentar el PPE?", opts: ["Desde la designación de la IC", "Desde la aprobación del PSO", "Desde la aprobación del PNPIC", "Desde la notificación del PAO"], correct: 1,
+    expl: "El PPE cuelga del PSO, no de la designación de la infraestructura. Es la dependencia en cadena que vertebra todo el sistema: primero la empresa fija su política general (PSO), y solo cuando esa política está aprobada empieza a correr el reloj para el plan específico de cada instalación (PPE)." },
+  { q: "¿Por qué hay un solo PSO por empresa pero un PPE por cada infraestructura crítica?", opts: ["Es arbitrario, no tiene lógica", "El PSO es la política general de la empresa; el PPE son las medidas de una instalación concreta", "El PSO lo exige el CNPIC y el PPE lo exige la SES", "El PPE sustituye al PSO cuando hay más de una IC"], correct: 1,
+    expl: "El PSO opera a nivel de empresa (su filosofía general de seguridad); el PPE opera a nivel de instalación (medidas físicas y lógicas concretas de esa IC). Por eso una empresa con 3 centrales designadas presenta 1 PSO y 3 PPE." },
+  { q: "¿Qué papel tiene el CNPIC en la mayoría de estos planes?", opts: ["Aprueba él solo casi todos los planes", "Informa o evalúa el contenido técnico, pero rara vez aprueba en solitario", "Solo interviene en el PNPIC", "Sustituye a la Delegación del Gobierno"], correct: 1,
+    expl: "El CNPIC es el órgano técnico: evalúa, informa, coordina. La firma de aprobación final suele recaer en la SES (para lo más centralizado) o en la Delegación del Gobierno (para lo más territorial)." },
+  { q: "¿Por qué el PAO lo elabora un Cuerpo Policial y no el Operador Crítico?", opts: ["Porque el OC no tiene permiso legal para elaborar planes", "Porque su contenido es el operativo policial de respuesta, no la seguridad interna de la empresa", "Porque el PAO sustituye al PPE", "Porque lo exige el PNPIC"], correct: 1,
+    expl: "El PAO describe qué hace la policía si la infraestructura sufre un incidente — es un plan operativo policial, no de gestión empresarial. El OC solo participa como asesor técnico, aportando conocimiento de su instalación." },
+  { q: "¿Qué plan tiene el ciclo de revisión más corto de los cinco, y por qué tiene sentido?", opts: ["PNPIC, cada año, porque es el más importante", "PES, cada 2 años, porque el análisis de riesgos de un sector envejece rápido", "PSO, cada 2 años, porque cambia la empresa", "PPE, cada año, porque cambia la instalación"], correct: 1,
+    expl: "El PES se revisa cada 2 años frente a los 5 años del PSO. Tiene sentido: los riesgos y amenazas de un sector completo (tecnología, geopolítica) cambian más rápido que la política de seguridad interna de una sola empresa." }
+];
+let score = 0, answered = 0;
+const quizContainer = document.getElementById('quiz-container');
+quizData.forEach((item, qi) => {
+  const div = document.createElement('div'); div.className = 'quiz-q';
+  const p = document.createElement('p'); p.className = 'q'; p.textContent = (qi+1) + '. ' + item.q;
+  div.appendChild(p);
+  const explDiv = document.createElement('div'); explDiv.className = 'quiz-expl'; explDiv.textContent = item.expl;
+  item.opts.forEach((opt, oi) => {
+    const btn = document.createElement('button'); btn.className = 'quiz-opt'; btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if (btn.dataset.locked) return;
+      const buttons = div.querySelectorAll('.quiz-opt');
+      buttons.forEach(b => b.dataset.locked = 'true');
+      if (oi === item.correct) { btn.classList.add('correct'); score++; }
+      else { btn.classList.add('wrong'); buttons[item.correct].classList.add('correct'); }
+      explDiv.classList.add('show');
+      answered++; updateScore();
+    });
+    div.appendChild(btn);
+  });
+  div.appendChild(explDiv);
+  quizContainer.appendChild(div);
+});
+function updateScore(){
+  document.getElementById('quiz-score').textContent = `Puntuación: ${score} / ${quizData.length} (${answered} de ${quizData.length} respondidas)`;
+}
+</script>
+</body>
+</html>

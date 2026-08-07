@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expediente de Autores — CNP Escala Básica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #0c0d0e;
+  --panel: #17191b;
+  --panel-2: #1f2224;
+  --line: #2c2f31;
+  --paper: #e9e3d2;
+  --paper-dim: #a49f8e;
+  --brass: #b8874a;
+  --brass-bright: #d9a662;
+  --stamp: #a3392f;
+  --stamp-bright: #c4463a;
+  --ink: #cfc9b8;
+  --ink-dim: #6f6b5f;
+  --marker: #d8ff42;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Source Serif 4',serif;}
+body{
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(184,135,74,0.05), transparent 40%),
+    radial-gradient(circle at 85% 90%, rgba(163,57,47,0.05), transparent 40%);
+}
+
+/* HEADER */
+header{
+  border-bottom:2px solid var(--line);
+  padding:28px 5vw 22px;
+  position:sticky; top:0; z-index:50;
+  background:rgba(12,13,14,0.96);
+  backdrop-filter:blur(6px);
+}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--brass); margin-bottom:6px; display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{content:"●"; color:var(--stamp-bright); font-size:9px;}
+h1{
+  font-family:'Oswald',sans-serif; font-weight:700; text-transform:uppercase;
+  letter-spacing:.03em; font-size:clamp(26px,4vw,42px); margin:0 0 6px;
+  color:var(--paper);
+}
+.subhead{color:var(--paper-dim); font-size:15px; max-width:720px; line-height:1.5; margin-bottom:20px;}
+
+.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center;}
+#search{
+  flex:1 1 260px; background:var(--panel); border:1px solid var(--line); color:var(--paper);
+  padding:11px 16px; font-family:'JetBrains Mono',monospace; font-size:13px; border-radius:3px;
+  outline:none;
+}
+#search::placeholder{color:var(--ink-dim);}
+#search:focus{border-color:var(--brass);}
+
+.tabs{display:flex; flex-wrap:wrap; gap:6px;}
+.tab{
+  font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.04em;
+  padding:9px 13px; border:1px solid var(--line); background:var(--panel);
+  color:var(--ink-dim); cursor:pointer; border-radius:3px; user-select:none;
+  transition:all .15s;
+}
+.tab:hover{border-color:var(--brass); color:var(--paper);}
+.tab.active{background:var(--brass); color:#1a1408; border-color:var(--brass); font-weight:600;}
+
+.pri-filter{display:flex; gap:6px; margin-left:auto;}
+.pri-chip{
+  font-family:'JetBrains Mono',monospace; font-size:11px; padding:9px 12px;
+  border:1px solid var(--line); background:var(--panel); color:var(--ink-dim);
+  cursor:pointer; border-radius:3px; transition:all .15s;
+}
+.pri-chip.active{border-color:var(--stamp-bright); color:var(--stamp-bright); background:rgba(163,57,47,0.12);}
+#markToggle.active{border-color:var(--marker); color:var(--marker); background:rgba(216,255,66,0.12);}
+
+/* MAIN */
+main{padding:26px 5vw 80px;}
+.count-line{
+  font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-dim);
+  margin:0 0 18px; letter-spacing:.03em;
+}
+.count-line b{color:var(--brass-bright);}
+
+.tema-block{margin-bottom:44px;}
+.tema-title{
+  font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase;
+  font-size:15px; letter-spacing:.06em; color:var(--brass-bright);
+  border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:16px;
+  display:flex; align-items:baseline; gap:10px;
+}
+.tema-title span{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-dim); font-weight:400;}
+
+.grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px;
+}
+
+.card{
+  background:linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  border:1px solid var(--line); border-radius:4px; padding:16px 18px 15px;
+  position:relative; overflow:hidden; transition:border-color .15s, transform .15s;
+}
+.card:hover{border-color:var(--brass); transform:translateY(-1px);}
+.card.p3::before{
+  content:"MÁS PREGUNTADO"; position:absolute; top:10px; right:-30px;
+  background:var(--stamp); color:var(--paper); font-family:'JetBrains Mono',monospace;
+  font-size:8.5px; font-weight:600; letter-spacing:.08em; padding:3px 34px;
+  transform:rotate(35deg); opacity:0.92;
+}
+.card.marked{
+  border-color:var(--marker); box-shadow:0 0 0 1px var(--marker), 0 0 14px rgba(216,255,66,0.18) inset;
+}
+.card.marked .truco{border-left-color:var(--marker);}
+.mark-btn{
+  position:absolute; top:10px; right:10px; z-index:2;
+  width:24px; height:24px; border-radius:50%; border:1px solid var(--line);
+  background:var(--panel-2); color:var(--ink-dim); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-size:13px;
+  line-height:1; padding:0; transition:all .15s;
+}
+.mark-btn:hover{border-color:var(--marker); color:var(--marker);}
+.card.marked .mark-btn{
+  background:var(--marker); border-color:var(--marker); color:#1a1408;
+  box-shadow:0 0 8px rgba(216,255,66,0.6);
+}
+.card-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:6px; padding-right:26px;}
+.name{
+  font-family:'Oswald',sans-serif; font-weight:600; font-size:16.5px; color:var(--paper);
+  letter-spacing:.01em; line-height:1.2;
+}
+.concept-tag{
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--brass-bright);
+  text-transform:uppercase; letter-spacing:.05em; margin-bottom:9px; opacity:.9;
+}
+.theory{font-size:14px; line-height:1.5; color:var(--ink); margin-bottom:11px;}
+.truco{
+  background:rgba(184,135,74,0.07); border-left:3px solid var(--brass);
+  padding:8px 11px; font-size:12.5px; line-height:1.4; color:var(--paper-dim);
+  border-radius:0 3px 3px 0;
+}
+.truco b{
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--brass-bright);
+  text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:3px;
+}
+
+.empty{
+  text-align:center; padding:60px 20px; color:var(--ink-dim);
+  font-family:'JetBrains Mono',monospace; font-size:13px;
+}
+
+footer{
+  border-top:1px solid var(--line); padding:20px 5vw 40px; text-align:center;
+  color:var(--ink-dim); font-family:'JetBrains Mono',monospace; font-size:11px;
+}
+
+@media (max-width:640px){
+  .pri-filter{margin-left:0; width:100%;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Expediente confidencial · Ingreso Escala Básica · CNP</div>
+  <h1>Fichas de autores</h1>
+  <p class="subhead">Todos los autores de los Temas 28, 29, 30, 32 y 35, con su teoría resumida y un truco para no confundirlos el día del examen. Los marcados como <b style="color:var(--stamp-bright)">MÁS PREGUNTADO</b> son autores con presencia confirmada y recurrente en convocatorias reales (Maslow-Katz-Rocher-Allport-Kohlberg-Freud-Piaget-Skinner-Festinger y equivalentes de peso).</p>
+  <div class="controls">
+    <input id="search" type="text" placeholder="Buscar autor, concepto o palabra clave...">
+    <div class="tabs" id="temaTabs"></div>
+    <div class="pri-filter">
+      <div class="pri-chip" id="priToggle">★ Solo más preguntados</div>
+      <div class="pri-chip" id="markToggle">✎ Solo marcados por mí</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <p class="count-line"><b id="countNum">0</b> autores mostrados</p>
+  <div id="results"></div>
+</main>
+
+<footer>jurispol · material de estudio personal · no oficial · generado para repaso</footer>
+
+<script>
+const DATA = [
+{tema:28, titulo:"Globalización y antiglobalización", autores:[
+{n:"Klaus M. Schwab", c:"Foro Económico Mundial (Davos, 1971)", t:"Fundó el FEM, encuentro anual neoliberal de líderes políticos y empresariales en Davos.", m:"SCHWAB suena a 'show ab-solutamente rico': Davos es el show de los ricos del mundo.", p:2},
+{n:"Theodore Levitt", c:"Acuñó 'globalización' (1985)", t:"Usó por primera vez el término en 'The Globalization of Markets'.", m:"LEVITT suena a 'le ha ido': a la globalización de mercados 'le ha ido' tan bien que él fue quien le puso nombre oficial.", p:2},
+{n:"Joseph Stiglitz", c:"Globalización en sentido amplio", t:"Sentido social y tecnológico: integración de países por menor coste de transporte y comunicación.", m:"Joseph STIGLITZ, premio Nobel de economía: analiza la globalización desde lo social y lo tecnológico, con ojo crítico.", p:2},
+{n:"José María Beneyto", c:"Globalización en sentido económico", t:"Proceso objetivo de cambios hacia mayor interdependencia de las economías mundiales.", m:"BENEYTO suena a 'beneficio': la globalización vista como negocio, como beneficio económico.", p:1},
+{n:"Marshall McLuhan", c:"Aldea global", t:"Comunicación inmediata y mundial de toda información gracias a medios electrónicos.", m:"McLUHAN, el profeta de los medios: el mundo entero conectado como un pueblo pequeño — 'aldea global'.", p:2},
+{n:"Saskia Sassen", c:"Ciudad global", t:"Plataforma económica y regulatoria con recursos para gestionar mercados y operaciones globales.", m:"SASSEN suena a 'aquí, ¿eh?': solo un puñado de ciudades —'aquí', 'aquí' y 'aquí'— controlan la economía mundial: ciudad global.", p:2},
+{n:"Francis Fukuyama", c:"El fin de la historia", t:"Defiende la expansión definitiva del liberalismo tras la Guerra Fría.", m:"FUKUYAMA anuncia 'el fin de la historia': tras la Guerra Fría, la democracia liberal ya ganó para siempre (según él).", p:2},
+{n:"William James", c:"Pragmatismo americano", t:"Filósofo pragmatista; base de la globalización neoliberal (éxito y riqueza individual).", m:"William JAMES, el típico americano práctico: si funciona, es verdad (pragmatismo).", p:1},
+{n:"Anthony Giddens", c:"Tercera vía / globalización cultural", t:"Modelo que concilia progreso social con conservadurismo ante los cambios de la globalización.", m:"GIDDENS suena a 'guía densa': su 'tercera vía' es una guía tan densa que mezcla progreso social con conservadurismo.", p:2},
+{n:"George Ritzer", c:"McDonalización", t:"Homogeneización cultural global inspirada en el modelo de McDonald's.", m:"RITZER suena a 'Ritz' (hamburguesería de lujo, cerca de McDonald's): todo el mundo funciona igual, como un McDonald's — McDonalización.", p:2},
+{n:"Ulrich Beck y Ronald Robertson", c:"Glocalización", t:"Mezcla de elementos globales y locales: globalización de derechos sí, económica no.", m:"BECK suena a 'Beckham': el futbolista más global del mundo, símbolo de la globalización. · ROBERTSON suena a 'ropa local': un turista que piensa en global pero se pone la 'ropa' (costumbres) de cada sitio — glocalización.", p:2},
+{n:"William G. Sumner", c:"Etnocentrismo (Folkways, 1906)", t:"Acuñó el término: interpretar la realidad solo desde los propios parámetros culturales.", m:"SUMNER suena a 'summer' (verano): las costumbres 'folk' de cada pueblo y el orgullo de creerse el centro del mundo (etnocentrismo).", p:2},
+{n:"John Dewey", c:"Precursor del relativismo ético", t:"Sienta las bases filosóficas para juzgar cada cultura según sus propios valores.", m:"DEWEY suena a 'de ley': lo que es 'de ley' depende de cada cultura — relativismo ético.", p:1},
+{n:"Melville Herskovits", c:"Relativismo cultural", t:"El juicio moral de una persona está determinado por sus experiencias culturales.", m:"HERSKOVITS suena a 'sus costumbres' (hers): cada cultura tiene 'sus' costumbres válidas, sin que nadie las juzgue desde fuera.", p:2},
+{n:"Kuhn y Popper", c:"Relativismo gnoseológico", t:"Relativismo del conocimiento: no hay una única forma válida de conocer la realidad.", m:"KUHN, el de los 'paradigmas' científicos: lo que consideramos 'verdad' cambia según el paradigma (relativismo del conocimiento). · POPPER, el filósofo de la ciencia: nada es verdad absoluta, todo puede refutarse (relativismo del conocimiento).", p:1},
+{n:"Marvin Harris", c:"Materialismo cultural", t:"Las condiciones materiales son determinantes en los cambios sociológicos y culturales.", m:"Marvin HARRIS explica la cultura por lo material: lo que comes y produces moldea tus creencias.", p:2},
+{n:"Teilhard de Chardin", c:"Noosfera", t:"Red planetaria pensante, red global de autoconciencia (conciencia planetaria).", m:"(Teilhard de) CHARDIN suena a 'jardín' planetario: el mundo entero como un jardín-cerebro conectado (noosfera).", p:1},
+{n:"John Zerzan", c:"'Gurú de Seattle' (1999)", t:"Persona de interés en la Batalla de Seattle contra la OMC.", m:"ZERZAN suena a 'cero-zan' (anticonsumo, cero cosas): el anarco-primitivista líder simbólico de las protestas antiglobalización de Seattle.", p:1},
+{n:"Ignacio Ramonet", c:"ATTAC (1998)", t:"Fundó ATTAC para controlar democráticamente los mercados e implantar la Tasa Tobin.", m:"RAMONET suena a 'ramo neto': quiere gravar un pequeño ramo neto de cada transacción financiera — Tasa Tobin.", p:2},
+{n:"Paul Bernard Spahn", c:"Tasa Spahn", t:"Alternativa a la Tasa Tobin, planteada por su difícil aplicación práctica.", m:"SPAHN suena a 'span' (extensión): otra 'extensión' (variante) del impuesto a las transacciones financieras, alternativa a Tobin.", p:1},
+{n:"Adam Smith", c:"Liberalismo económico", t:"Fundador del liberalismo económico y defensor del libre mercado.", m:"Adam SMITH y su 'mano invisible': el padre del libre mercado, clásico entre los clásicos.", p:2},
+{n:"Manuel Castells", c:"Globalización digital", t:"Habla de trabajadores autoprogramables y genéricos en la sociedad red.", m:"CASTELLS suena a 'castillos' digitales: redes globales conectando castillos (nodos) de trabajadores autoprogramables.", p:2},
+{n:"Kenichi Ohmae", c:"Empresa global sin patria", t:"La empresa global actúa sin patria ni identidad nacional.", m:"OHMAE = 'oh, no hay patria', empresa apátrida.", p:1},
+{n:"Michael Porter", c:"Multinacional vs global", t:"Diferencia entre empresas multinacionales (varias sedes) y globales (estrategia única).", m:"PORTER, el gurú de estrategia empresarial: distingue la empresa que solo 'exporta' (multinacional) de la que piensa 'como una sola' (global).", p:2},
+{n:"Naomi Klein", c:"'No Logo'", t:"Crítica el poder de las marcas y el consumismo global.", m:"Naomi KLEIN, la anti-marcas: 'No Logo', crítica feroz al consumismo de las multinacionales.", p:2},
+{n:"Susan George", c:"'El informe Lugano'", t:"Crítica al capitalismo financiero; ligada a ATTAC.", m:"Susan GEORGE firma el 'informe' crítico contra el capitalismo financiero global.", p:1},
+{n:"Noam Chomsky", c:"Crítica al poder corporativo", t:"Denuncia imperialismo y manipulación mediática global.", m:"CHOMSKY, el abuelo gruñón de la izquierda que grita contra las multinacionales y los medios manipuladores.", p:2},
+{n:"José Luis Sampedro", c:"Economía al servicio de la persona", t:"Defensor de que la economía debe servir a las personas, no al revés.", m:"José Luis SAMPEDRO, el economista humanista: la economía debe servir a las personas, no al revés.", p:1},
+{n:"Carlos Taibo", c:"Decrecimiento", t:"Crítica el crecimiento económico ilimitado y defiende el decrecimiento.", m:"Carlos TAIBO, español conocido por defender vivir con menos, frenar el consumo — decrecimiento.", p:2},
+{n:"Ralph Nader", c:"Derechos del consumidor", t:"Activista por los derechos del consumidor frente al capitalismo global.", m:"Ralph NADER, el abogado incansable que defiende al consumidor frente a las grandes empresas.", p:1},
+{n:"Johan Norberg", c:"Globalización como progreso", t:"Defensor de la globalización como libertad económica y progreso, postura contraria a Chomsky/Klein.", m:"NORBERG suena a 'norte-berg' (iceberg del norte): defiende que la globalización es libertad y progreso, no una amenaza.", p:2},
+{n:"Hazel Henderson", c:"Indicadores de bienestar", t:"Propone indicadores económicos alternativos centrados en bienestar y sostenibilidad.", m:"HENDERSON suena a 'en descenso': mide el bienestar bajando hasta lo cotidiano, con una vara distinta al PIB — indicadores alternativos.", p:1},
+{n:"Zygmunt Bauman", c:"Globalización líquida", t:"La globalización genera inestabilidad e inseguridad ('modernidad líquida').", m:"BAUMAN suena a 'baño' + agua: todo se vuelve líquido, inestable, resbala entre tus manos.", p:2},
+{n:"Immanuel Wallerstein", c:"Teoría sistema-mundo", t:"El capitalismo como estructura global organizada en centro-periferia.", m:"WALLERSTEIN suena a 'wall' (muro) del mundo: divide al planeta en centro, periferia y semiperiferia — sistema-mundo.", p:2},
+{n:"David Held", c:"Gobernanza global", t:"Defiende una democracia más allá del Estado-nación.", m:"HELD suena a 'élite': una élite de gobernantes sostiene la idea de un gobierno por encima de las fronteras de cada país.", p:1},
+{n:"Thomas Friedman", c:"'The World is Flat'", t:"La globalización tecnológica y económica aplana el mundo (competencia igualada).", m:"Thomas FRIEDMAN dice que el mundo es 'plano' (flat) gracias a la globalización que iguala oportunidades.", p:2},
+]},
+
+{tema:29, titulo:"Actitudes y valores sociales", autores:[
+{n:"Daniel Katz", c:"Definición de actitud", t:"Predisposición aprendida a responder favorable o desfavorablemente hacia un objeto.", m:"KATZ = la definición 'clásica' de examen, autor MUY preguntado en todo el temario CNP.", p:3},
+{n:"Gordon W. Allport", c:"Definición de actitud / prejuicio / estereotipo", t:"Estado mental y neurofisiológico de disponibilidad organizado por la experiencia, que influye en las reacciones. También define prejuicio y estereotipo, y los tipos de prejuicio (endo/exogrupo).", m:"ALL-PORT: 'todo en un puerto' — toda tu experiencia organizada en un solo sistema dinámico interno.", p:3},
+{n:"Vander Zanden", c:"Definición de actitud", t:"Tendencia o predisposición adquirida y duradera que lleva a una evaluación y actuación determinada.", m:"VANDER ZANDEN suena a 'van der' holandés estable: una tendencia 'duradera' (como su apellido largo) que guía cómo evalúas y actúas.", p:2},
+{n:"Newcomb y Murphy", c:"Definición de actitud", t:"Estar a favor o en contra de algo o alguien: la definición más simple y corta.", m:"NEWCOMB suena a 'nuevo peine' (new comb): organiza (peina) tus predisposiciones a favor o en contra antes de actuar. · MURPHY, ley de Murphy: 'si algo puede salir mal (en contra), saldrá mal' — estar a favor o en contra.", p:1},
+{n:"Solomon E. Asch", c:"Definición de actitud", t:"Disposiciones duraderas formadas por experiencias anteriores.", m:"Un tío con 'ascendencia' marcada: sus disposiciones vienen de su historia, duraderas como una tradición familiar.", p:2},
+{n:"M.J. Rosenberg y C. Hovland", c:"Modelo tripartito de la actitud", t:"Tres elementos: cognitivo (creencias), afectivo (emociones) y conativo (conducta).", m:"ROSENBERG suena a 'rosa-berg' (montaña de rosas): busca coherencia entre lo que sientes por la rosa (afecto) y lo que piensas de ella (cognición). · HOVLAND suena a 'huevo-land': la actitud es como un huevo con tres capas — cognitiva, afectiva y conductual (modelo tripartito).", p:3},
+{n:"Osgood, Suci y Tannenbaum", c:"Diferencial semántico", t:"Mide sentimientos con pares de adjetivos opuestos (bueno-malo, fuerte-débil).", m:"OSGOOD suena a 'oh, es bueno': mide con adjetivos opuestos (bueno-malo, fuerte-débil) el significado que le das a algo. · SUCI suena a 'sushi': lo describes con pares de sabores opuestos (bueno-malo) como el diferencial semántico. · TANNENBAUM suena a 'árbol de Navidad' (Tannenbaum en alemán): adornas (calificas) un concepto con adjetivos opuestos, como bolas en el árbol.", p:2},
+{n:"Louis L. Thurstone", c:"Escala de intervalos aparentemente iguales", t:"Jueces comparan ítems indicando cuál es más favorable.", m:"THURSTONE suena a 'true-stone' (piedra verdadera): una escala de piedras (intervalos) que parecen todas del mismo tamaño (iguales).", p:2},
+{n:"Rensis Likert", c:"Escala sumativa/aditiva", t:"Mide el grado de acuerdo o desacuerdo con afirmaciones (la escala más usada en encuestas).", m:"LIKERT, el señor de las encuestas: 'muy de acuerdo / muy en desacuerdo' — la escala que todos conocemos.", p:3},
+{n:"Louis Guttman", c:"Escalograma", t:"Ordena ítems jerárquicamente: aceptar uno implica aceptar los inferiores.", m:"GUTTMAN suena a 'buen hombre' que ordena las cosas en escalones (escalograma) de menor a mayor.", p:2},
+{n:"Edwards y Kilpatrick", c:"Técnica de discriminación escalar", t:"Procedimiento directo poco preguntado, técnica de discriminación por escalas.", m:"EDWARDS diseña una escalera de peldaños numerados del 1 al 10 para medir, peldaño a peldaño, tu nivel de actitud — discriminación escalar. · KILPATRICK suena a 'patrulla que mata en escala': mide en una escala progresiva la discriminación.", p:1},
+{n:"Emory Bogardus", c:"Escala de distancia social", t:"Preguntas indirectas sobre la distancia del sujeto a una minoría étnica (mide prejuicio racial).", m:"BOGARDUS suena a 'voy guardando': la escala mide cuánta distancia social vas guardando frente a otros grupos.", p:2},
+{n:"Murray y Morgan", c:"TAT (Test de Apercepción Temática)", t:"Prueba proyectiva: se interpretan imágenes ambiguas para revelar actitudes.", m:"MURRAY suena a 'mural': pintas (proyectas) tu historia sobre un mural ambiguo (TAT), y también culpa a la víctima de lo ocurrido. · MORGAN suena al banco: te enseña una imagen ambigua (como un billete) y proyectas tu historia — TAT.", p:2},
+{n:"Jones y Sigall", c:"Bogus-Pipeline", t:"Método de engaño con un falso polígrafo para medir el racismo real.", m:"JONES, el nombre más común del mundo, te conecta a una falsa 'tubería' (Bogus Pipeline) que dice detectar tus mentiras. · SIGALL suena a 'sí, gal' (dice la verdad): la máquina falsa que te hace decir la verdad sin querer (Bogus Pipeline).", p:2},
+{n:"Stuart Cook", c:"Técnica de plausibilidad", t:"Compara explicaciones alternativas analizando su consistencia y probabilidad.", m:"COOK = 'cocina' varias explicaciones y ve cuál es más creíble.", p:1},
+{n:"Robert Hammond", c:"Técnica de elección de error", t:"El sujeto cree que se evalúa otra cosa, no su actitud real.", m:"HAMMOND suena a 'jamón' con error: técnica para detectar el 'error' que eliges sin darte cuenta.", p:1},
+{n:"Anthony Greenwald", c:"Test de Asociación Implícita (IAT)", t:"Mide asociaciones automáticas inconscientes entre conceptos (raza, género) y evaluaciones.", m:"GREENWALD suena a 'verde muro': un test que revela tus prejuicios 'verdes' (ocultos) sin que lo notes (implícito).", p:2},
+{n:"Russell Fazio", c:"Tarea de evaluación automática / priming afectivo / modelo MODE", t:"Mide respuestas automáticas a estímulos; también define el priming afectivo y el modelo MODE.", m:"FAZIO suena a italiano rápido: evalúas 'de facto', automáticamente, sin pensar mucho (modelo MODE).", p:3},
+{n:"Elizabeth B. Hurlock", c:"Teoría psicoanalítica de la actitud", t:"La actitud de los padres con los hijos es decisiva en el desarrollo de actitudes obsesivas.", m:"HURLOCK suena a 'her lock' (su candado): los padres son la 'llave' que cierra o abre tu desarrollo.", p:1},
+{n:"J.C. Flugel", c:"Teoría psicoanalítica de la actitud", t:"Las influencias familiares en la niñez son clave (proyección, desplazamiento).", m:"FLUGEL suena a 'fugarse': de niño 'desplazas' la culpa fugándote hacia otro (proyección aprendida).", p:1},
+{n:"Staats, O'Donnell y Brown", c:"Condicionamiento clásico de actitudes", t:"Las actitudes se adquieren por asociación, igual que cualquier respuesta condicionada.", m:"STAATS suena a 'estatus' aprendido: parte del trío del condicionamiento clásico con O'Donell y Brown. · Un perro 'Brown' (marrón) tipo Pavlov, condicionado con Staats y O'Donell.", p:1},
+{n:"Pavlov y Watson", c:"Condicionamiento clásico", t:"Asociar un estímulo neutro con uno que provoca una respuesta automática.", m:"PAVLOV y su perro: la campana y la baba, el condicionamiento clásico de manual. · WATSON, el padre del conductismo: solo importa lo observable (conducta), como el pequeño Albert condicionado a temer.", p:3},
+{n:"Edward Thorndike", c:"Condicionamiento instrumental / Ley del Efecto / Efecto halo", t:"Aprendizaje por ensayo y error (Ley del Efecto); también describe el efecto halo (un rasgo colorea el resto del juicio).", m:"THORNDIKE suena a 'Thor y su llave': cada golpe (conducta) que trae premio se repite, el que trae castigo se abandona — ley del efecto.", p:3},
+{n:"B.F. Skinner", c:"Condicionamiento operante", t:"La conducta se moldea por refuerzos (positivo/negativo) y castigos (positivo/negativo).", m:"SKINNER y su caja: premio (refuerzo) o castigo moldean la conducta — condicionamiento operante, básico de manual.", p:3},
+{n:"Fazio, Powell y Kardes", c:"Priming afectivo", t:"Una experiencia emocional previa potencia la respuesta a un estímulo posterior.", m:"Ver FAZIO arriba: mismo autor repetido en el tema.", p:2},
+{n:"Robert B. Zajonc", c:"Efecto de mera exposición", t:"La repetición de un estímulo facilita la atracción emocional hacia él (efecto familiaridad).", m:"ZAJONC suena a 'ya-jonc' (ya lo conozco): cuanto más ves algo (mera exposición), más te acaba gustando.", p:2},
+{n:"Fritz Heider", c:"Teoría del equilibrio", t:"Las personas buscan equilibrio cuando dos opiniones tienen el mismo signo (P-O-X).", m:"HEIDER suena a 'ideal': busca el estado ideal de equilibrio entre lo que sientes por alguien y lo que esa persona piensa de ti.", p:2},
+{n:"Osgood y Tannenbaum", c:"Teoría de la congruencia", t:"Las personas ajustan percepciones para mantener consistencia entre actitudes relacionadas.", m:"OSGOOD suena a 'oh, es bueno': mide con adjetivos opuestos (bueno-malo, fuerte-débil) el significado que le das a algo. · TANNENBAUM suena a 'árbol de Navidad' (Tannenbaum en alemán): adornas (calificas) un concepto con adjetivos opuestos, como bolas en el árbol.", p:2},
+{n:"Abelson y Rosenberg", c:"Consistencia afectivo-cognitiva", t:"La actitud es una constelación estable de respuestas afectivas y cognitivas equilibradas.", m:"Como Caín y ABEL: Abel era coherente, sentía bien y actuaba bien (consistencia entre lo que sientes y piensas). · ROSENBERG suena a 'rosa-berg' (montaña de rosas): busca coherencia entre lo que sientes por la rosa (afecto) y lo que piensas de ella (cognición).", p:1},
+{n:"Daryl J. Bem", c:"Teoría de la autopercepción", t:"Inferimos nuestras actitudes observando cómo nos comportamos (al revés de lo habitual).", m:"BEM suena a 'ven, mírate': te observas a ti mismo para saber qué piensas (autopercepción).", p:2},
+{n:"Leon Festinger", c:"Disonancia cognitiva", t:"Incomodidad psicológica al mantener creencias/actitudes contradictorias; se ajustan para reducir tensión.", m:"FESTINGER suena a 'fiesta' incómoda: te sientes mal (disonancia) cuando lo que piensas choca con lo que haces.", p:3},
+{n:"William McGuire", c:"Teoría de la inoculación", t:"Exponer a argumentos débiles en contra 'inmuniza' frente a la persuasión, como una vacuna.", m:"McGUIRE suena a 'vacuna que guía': te 'vacuna' con un argumento débil primero para que resistas la persuasión fuerte después.", p:2},
+{n:"Petty y Cacioppo", c:"Modelo de Probabilidad de Elaboración (ELM)", t:"Ruta central (análisis profundo) o ruta periférica (elementos externos), según motivación.", m:"PETTY suena a 'pequeño/petit': a veces te convence un detalle 'pequeño' (ruta periférica) y no el argumento central. · CACIOPPO suena a italiano de anuncio publicitario: te convence con razones elaboradas (ruta central) o con gracia superficial (ruta periférica).", p:3},
+{n:"Fishbein y Ajzen", c:"Modelo de Acción Razonada", t:"Predice la conducta desde la actitud y las normas subjetivas, mediadas por la intención.", m:"FISHBEIN suena a 'pez con cerebro' (fish+brain): piensas razonadamente antes de actuar. · AJZEN suena a 'ajedrez': planifica cada movimiento antes de actuar (acción razonada/planificada).", p:2},
+{n:"Icek Ajzen", c:"Modelo de Acción Planificada", t:"Añade la percepción de control a la teoría anterior por su escaso poder predictivo.", m:"AJZEN suena a 'ajedrez': planifica cada movimiento antes de actuar (acción razonada/planificada).", p:2},
+{n:"Milton Rokeach", c:"Definición de valor / Escala D (dogmatismo)", t:"El valor es una creencia relativamente permanente sobre un modo de conducta preferible; también crea la Escala D para medir el dogmatismo.", m:"ROKEACH suena a 'roca' (rígido como una roca): mide cuán 'dogmático' (cerrado, inflexible) eres — Escala D.", p:2},
+{n:"Walter Lippmann", c:"Estereotipo ('Opinión Pública')", t:"Introdujo el término: generalizaciones simplificadas para clasificar grupos de personas.", m:"LIPPMANN = el PRIMERO en usar 'estereotipo', igual que Sumner con etnocentrismo.", p:3},
+{n:"Diane Mackie", c:"Estereotipo (creencias populares)", t:"Creencias populares sobre atributos de una categoría social con acuerdo sustancial.", m:"MACKIE suena a 'Mac' de ordenador: agrupa (categoriza) por atributos comunes, como carpetas compartidas.", p:1},
+{n:"Roger Brown", c:"Estereotipo (rol social) / Clasificación de masas", t:"Las creencias son más ciertas si el grupo tiene un rol social definido; también clasifica masas activas.", m:"Roger BROWN clasifica a la masa como quien organiza el vestuario de un equipo, cada 'marrón' (grupo) en su cajón.", p:1},
+{n:"Henri Tajfel", c:"Estereotipo / Teoría de la Identidad Social", t:"Consenso de rasgos atribuidos a un grupo; con Turner, busca diferenciar el propio grupo del ajeno.", m:"TAJFEL, el padre de la identidad social: el grupo se pone de acuerdo (consenso) sobre 'cómo somos nosotros'.", p:3},
+{n:"Donald Campbell", c:"Estereotipo (factores externos/internos)", t:"Los estereotipos se forman por factores externos e internos combinados.", m:"Sopa CAMPBELL: mezcla de ingredientes internos y externos, como el origen mixto de los estereotipos.", p:1},
+{n:"Muzafer Sherif", c:"Teoría del conflicto realista", t:"Los estereotipos surgen de la competencia entre grupos por recursos materiales escasos.", m:"SHERIF suena a 'sheriff' del pueblo: reparte el agua y los pastos (recursos escasos) entre dos bandos rivales — conflicto realista.", p:3},
+{n:"Albert Bandura", c:"Teoría del aprendizaje social / Muñeco Bobo", t:"Estereotipos y conductas se aprenden por observación e imitación de modelos (experimento del muñeco bobo).", m:"BAN-DURA: el niño ve la 'banda dura' del barrio y aprende a robar solo observándolos (Bobo doll, aprendizaje vicario).", p:3},
+{n:"Reginald Ashmore", c:"Prejuicio (actitud negativa hacia grupo)", t:"Actitud negativa hacia un grupo definido y hacia cualquier persona percibida como su miembro.", m:"ASH-MORE = 'cenizas más': cuando odias tanto a un grupo que quieres verlo reducido a cenizas.", p:1},
+{n:"Peter Heintz", c:"Prejuicio (juicios sin verificar)", t:"Juicios pronunciados sin verificación previa de la validez de los hechos.", m:"HEINTZ suena a 'ains ya': el cuñado de la comida familiar que suelta un 'ains, ya sé lo que es esto' sin comprobar ningún dato.", p:1},
+{n:"James L. Horowitz", c:"Socialización del prejuicio", t:"El prejuicio se adquiere con la edad como aprendizaje de actitudes culturalmente aceptadas.", m:"HOROWITZ suena a 'horror wits' (ingenio del horror): el prejuicio (horror al otro) se aprende socializando, no nace contigo.", p:1},
+{n:"Sidanius y Pratto", c:"Teoría de la dominación social", t:"La discriminación resulta de jerarquías sociales que buscan mantener el poder de ciertos grupos.", m:"SIDANIUS suena a 'se dan de lado': la jerarquía social empuja a un grupo 'de lado', dominado por otro — dominación social. · PRATTO suena a 'prado' donde manda el más fuerte: la sociedad se organiza en jerarquías de dominación de un grupo sobre otro.", p:2},
+{n:"Robert Rosenthal", c:"Profecía autocumplida / Efecto Pigmalión", t:"Una expectativa sobre alguien puede influir en su comportamiento hasta hacerla realidad (Efecto Golem si es negativa, Galatea si es sobre uno mismo).", m:"ROSENTHAL = 'Pigmalión', LA trampa clásica: Golem (negativo) vs Galatea (autoaplicado).", p:3},
+{n:"Loren y Jean Chapman", c:"Correlación ilusoria", t:"Prejuicio al percibir erróneamente relaciones estadísticas entre rasgos y grupos.", m:"CHAPMAN = 'ilusión' de correlación que no existe realmente.", p:1},
+{n:"Theodor W. Adorno", c:"Autoritarismo / Escala F", t:"Prejuicio exagerado de endogrupo; crea la Escala F con 9 rasgos y 4 tipos de personalidad autoritaria.", m:"Un decorador (ADORNO) obsesivo que exige que todo esté ordenado a su manera o monta un drama autoritario: la 'F' de su Führer interior.", p:3},
+{n:"Gordon W. Allport (bis)", c:"Personalidad prejuiciosa", t:"Enfatiza la autoridad basada en disciplina y relaciones de poder bien definidas.", m:"ALL-PORT: 'todo en un puerto' — toda tu experiencia organizada en un solo sistema dinámico interno.", p:2},
+{n:"Hans J. Eysenck", c:"2 dimensiones del autoritarismo (R y T)", t:"Factor R (conservador-radical, izquierda-derecha) y Factor T (dura-blanda, egoísmo vs altruismo).", m:"EYSENCK suena a 'ice-tank' (tanque de hielo): tu cerebro necesita 'activación' (estímulo), si te falta buscas emociones fuertes y delinques.", p:2},
+{n:"Max Weber", c:"3 tipos de legitimación del poder", t:"Carismática (el líder), tradicional (el pasado/estatus) y legal (la ley racional).", m:"Max WEBER, clásico de la sociología: el poder se legitima por carisma (líder), tradición (costumbre) o ley (norma).", p:3},
+{n:"Philip G. Zimbardo", c:"Plasticidad contagiosa / Cárcel de Stanford", t:"Los individuos adoptan rápido normas autoritarias bajo influencia situacional (experimento de la cárcel de Stanford).", m:"ZIMBARDO = el EXPERIMENTO más famoso de psicología social, imposible no recordarlo.", p:3},
+{n:"Raphael Lemkin", c:"Acuñó 'genocidio'", t:"Creó el término genocidio para nombrar el exterminio sistemático de un grupo.", m:"LEMKIN suena a 'el que mide un exterminio': acuñó la palabra para nombrar por primera vez el crimen de aniquilar a un pueblo entero.", p:2},
+{n:"Marvin E. Shaw", c:"Percepción de membresía grupal", t:"Los miembros reconocen su pertenencia al grupo (conciencia de grupo).", m:"Marvin SHAW define qué te hace 'miembro' real de un grupo (membresía).", p:1},
+{n:"Lersch / Homans", c:"Tamaño del grupo (micro/macro)", t:"Microgrupo (hasta 30, cuantitativo-Lersch) y macrogrupo (+30, cualitativo-Homans).", m:"LERSCH suena a 'listo a repartir': reparte y clasifica los grupos según su tamaño, grandes y pequeños. · HOMANS suena a 'hombres' agrupados de forma cualitativa, no por número sino por tipo de relación.", p:1},
+{n:"Hyman y Merton", c:"Grupo de pertenencia / de referencia", t:"Pertenencia (asignado, no voluntario) vs referencia (elegido voluntariamente como modelo).", m:"HYMAN suena a 'hombre alto (high-man)': mira hacia 'arriba' a un grupo de referencia al que aspira pertenecer. · MERTON suena a 'meter dentro': quieres 'meterte' en un grupo de referencia; y cuando la sociedad no te da medios para tus metas, te adaptas (anomia) de distintas formas.", p:2},
+{n:"Harold Kelley", c:"Funciones normativa y comparativa del grupo", t:"Normativa (orienta conducta) y comparativa (juzga la propia conducta frente a un patrón).", m:"KELLEY suena a 'que lee': el grupo de referencia es el que 'te lee' las normas (qué hacer) y te sirve para comparar cómo vas.", p:2},
+{n:"Kurt Lewin", c:"Intragrupo (endogrupo) / Extragrupo (exogrupo)", t:"Diferenciación social entre el grupo propio y los grupos ajenos.", m:"LEWIN suena a 'el win' (el que gana): distingue entre 'los míos' (endogrupo, con quien ganas) y 'los otros' (exogrupo).", p:2},
+{n:"Elton Mayo", c:"Grupos formales e informales", t:"Formales (normas escritas predeterminadas) e informales (espontáneos, afectivos).", m:"MAYO suena al mes de mayo, fiesta: distingue el grupo 'formal' (trabajo, oficial) del 'informal' (los amigos de mayo, la fiesta).", p:2},
+{n:"Charles Cooley", c:"Grupos primarios y secundarios", t:"Primarios (contacto directo, afectivo) y secundarios (relaciones utilitarias, formales).", m:"COOLEY suena a 'cole' (colegio) = grupo primario, y la 'oficina' de mayor = grupo secundario.", p:2},
+]},
+
+{tema:30, titulo:"Principios éticos de la sociedad actual", autores:[
+{n:"Auguste Comte", c:"Fundador de la Sociología", t:"Ciencia que estudia al ser humano desde su vertiente social y las relaciones entre individuos.", m:"COMTE, el 'conde' fundador que corona a la sociología como ciencia oficial.", p:3},
+{n:"Vander Zanden", c:"Socialización", t:"Proceso en el que al interactuar con otros se desarrollan formas de pensar, sentir y actuar para participar en sociedad.", m:"VANDER ZANDEN suena a 'van der' holandés estable: una tendencia 'duradera' (como su apellido largo) que guía cómo evalúas y actúas.", p:2},
+{n:"Guy Rocher", c:"Socialización / Cambio social / Valores", t:"La persona interioriza elementos socioculturales de su entorno; también define el cambio social como transformación observable no efímera.", m:"ROCHER suena a 'roce': el roce constante con la sociedad te va puliendo hasta interiorizar lo que esa sociedad considera ideal.", p:3},
+{n:"Bronisław K. Malinowski", c:"Formas de adquisición de la cultura", t:"Enculturación (trasplante cultural directo), aculturación (asimilación de otra cultura) y transculturación (la superior desplaza a la inferior).", m:"MALINOWSKY, el antropólogo de campo por excelencia: vive con la tribu y estudia cómo se aprende (enculturación), se mezcla (aculturación) o se transforma (transculturación) la cultura.", p:3},
+{n:"Raymond Cattell", c:"Personalidad como modelo estructural", t:"La personalidad permite predecir lo que hará una persona en una situación dada.", m:"CATTELL suena a 'catálogo': un catálogo de 16 factores para 'catalogar' tu personalidad.", p:2},
+{n:"Theodore Newcomb", c:"Personalidad como predisposiciones", t:"Organización individual de predisposiciones para actuar.", m:"NEWCOMB suena a 'nuevo peine' (new comb): organiza (peina) tus predisposiciones a favor o en contra antes de actuar.", p:1},
+{n:"Hans Eysenck", c:"Personalidad: herencia + ambiente", t:"Suma de patrones de comportamiento determinados por herencia y ambiente.", m:"EYSENCK suena a 'ice-tank' (tanque de hielo): tu cerebro necesita 'activación' (estímulo), si te falta buscas emociones fuertes y delinques.", p:2},
+{n:"William H. Burnham", c:"Frase célebre sobre personalidad", t:"\"Todo el mundo sabe lo que es la personalidad, pero nadie es capaz de expresarlo con palabras\".", m:"BURN-HAM: 'se te quema el jamón' de tanto pensar intentando definir qué es la personalidad.", p:2},
+{n:"Gordon Allport", c:"Personalidad: organización dinámica", t:"Organización dinámica intraindividual de sistemas que determinan el ajuste único al ambiente.", m:"ALL-PORT: 'todo en un puerto' — toda tu experiencia organizada en un solo sistema dinámico interno.", p:3},
+{n:"McDavid y Harari", c:"Personalidad como secuencia de aprendizaje", t:"Secuencia de experiencias de aprendizaje que integran al individuo en la sociedad.", m:"McDAVID suena a 'mac de aviso': integra su personalidad poco a poco, avisando cada paso, como quien sigue un manual de aprendizaje.", p:1},
+{n:"Sigmund Freud", c:"Estadios psicosexuales / 1ª y 2ª Tópica", t:"5 etapas (oral, anal, fálica, latencia, genital) determinadas por pulsiones sexuales; Consciente-Preconsciente-Inconsciente (1ª tópica) y Ello-Yo-Superyó (2ª tópica).", m:"FREUD, el clásico del diván: Ello (impulso), Yo (equilibrio) y Superyó (norma) — el trío psicosexual de siempre.", p:3},
+{n:"Carl Jung", c:"Complejo de Electra", t:"La niña ama al padre y odia a la madre (contrapartida femenina del Edipo de Freud).", m:"JUNG, el discípulo de Freud que va más allá: no solo tu inconsciente, sino uno 'colectivo' compartido por todos, con arquetipos criminales.", p:3},
+{n:"Jean Piaget", c:"Desarrollo cognitivo / Desarrollo moral", t:"El conocimiento se adquiere por construcción (asimilación + acomodación); en lo moral distingue premoral, heterónoma y autónoma.", m:"PIAGET, el clásico suizo: etapas del pensamiento infantil (cognitivo) y moral, de niño a adulto.", p:3},
+{n:"Lawrence Kohlberg", c:"Desarrollo moral: 3 niveles y 6 estadios", t:"Preconvencional (castigo/interés), Convencional (expectativas/normas) y Postconvencional (contrato social/principios universales).", m:"KOHLBERG suena a 'coal-berg' (montaña de carbón): subes en 'estadios' morales, cada vez más alto, hasta interiorizar las normas.", p:3},
+{n:"Erik H. Erikson", c:"Desarrollo psicosocial: 8 etapas", t:"8 etapas vitales, cada una con un conflicto (ej. confianza vs desconfianza, identidad vs confusión).", m:"ERIKSON suena a 'Erik el Vikingo' que pasa por 8 pruebas (etapas) en su viaje de vida — desarrollo psicosocial.", p:3},
+{n:"Lev S. Vygotsky", c:"Interacción social / Zona de Desarrollo Próximo", t:"El conocimiento se construye socialmente; concepto clave: Zona de Desarrollo Próximo (lo que se puede aprender con ayuda).", m:"VYGOTSKY, el ruso: aprendes con ayuda de otros (zona de desarrollo próximo), el desarrollo es social, no solo individual.", p:3},
+{n:"Iván Pavlov y John B. Watson", c:"Condicionamiento clásico", t:"Aprendizaje por asociación de un estímulo neutro con uno incondicionado (perro-campana-comida).", m:"PAVLOV y su perro: la campana y la baba, el condicionamiento clásico de manual. · WATSON, el padre del conductismo: solo importa lo observable (conducta), como el pequeño Albert condicionado a temer.", p:3},
+{n:"Edward Thorndike", c:"Conexionismo / Ley del Efecto", t:"Una respuesta se fortalece si sigue al agrado y se debilita si sigue al dolor.", m:"THORNDIKE suena a 'Thor y su llave': cada golpe (conducta) que trae premio se repite, el que trae castigo se abandona — ley del efecto.", p:3},
+{n:"B.F. Skinner", c:"Condicionamiento operante", t:"4 combinaciones: refuerzo positivo/negativo (aumentan conducta) y castigo positivo/negativo (la disminuyen).", m:"SKINNER y su caja: premio (refuerzo) o castigo moldean la conducta — condicionamiento operante, básico de manual.", p:3},
+{n:"Albert Bandura", c:"Aprendizaje social / Muñeco Bobo", t:"Aprendizaje por observación de las consecuencias en otros (modelado/imitación).", m:"BAN-DURA: el niño ve la 'banda dura' del barrio y aprende a robar solo observándolos (Bobo doll, aprendizaje vicario).", p:3},
+{n:"Hans Jonas", c:"Responsabilidad como valor moderno", t:"Sitúa la responsabilidad como principio de acción moral en la sociedad actual.", m:"JONAS = 'responsabilidad', ambos con doble sílaba fuerte, fácil asociación.", p:1},
+{n:"Robert K. Merton", c:"Solidaridad funcional / Tipos de fanatismo", t:"Ve la solidaridad como valor funcional; también distingue 4 tipos de fanáticos (liberales consecuentes/tibios, fanáticos tímidos/activos).", m:"MERTON suena a 'meter dentro': quieres 'meterte' en un grupo de referencia; y cuando la sociedad no te da medios para tus metas, te adaptas (anomia) de distintas formas.", p:2},
+{n:"Émile Durkheim", c:"Solidaridad mecánica vs orgánica", t:"Mecánica (tradicional, fuerte pertenencia) y orgánica (moderna, mayor tolerancia por interdependencia).", m:"DURKHEIM, el padre serio de la sociología: sociedad simple (mecánica, todos iguales) vs. compleja (orgánica, cada uno su función) y la anomia que lleva al suicidio.", p:3},
+{n:"John Locke", c:"Carta sobre la tolerancia", t:"Obra clásica sobre el respeto a opiniones religiosas y políticas diferentes.", m:"John LOCKE, el filósofo liberal clásico que escribe pidiendo tolerancia religiosa.", p:2},
+{n:"Voltaire", c:"Tratado sobre la tolerancia", t:"Defensa ilustrada de la tolerancia religiosa y de pensamiento.", m:"VOLTAIRE, el ilustrado francés por excelencia: escribe pidiendo tolerancia religiosa y de ideas.", p:2},
+{n:"John Stuart Mill", c:"Tolerancia: despotismo vs anarquía", t:"Reflexiona sobre los límites de la libertad entre el exceso de control y la ausencia total de normas.", m:"John Stuart MILL, el liberal clásico: la libertad individual como equilibrio entre el despotismo y el caos.", p:2},
+{n:"Grissel E. R. Barrueta", c:"Contravalores", t:"Obstáculos y actitudes hostiles que generan disfunción social; conducta que no encaja en las normas.", m:"Un 'barullo' (BARRUETA) social: el caos de contravalores que estorba la convivencia.", p:1},
+{n:"Edwin M. Lemert", c:"Desviación primaria y secundaria", t:"Primaria (transgresión inicial, sin gran impacto); secundaria (tras el etiquetamiento social, cambia la identidad del individuo).", m:"LEMERT suena a 'le mete': primero 'le meten' una etiqueta pequeña (primaria) y luego se asume como identidad (secundaria).", p:2},
+{n:"Taguieff y Todorov", c:"Racismo tradicional / racialismo", t:"Creencia en jerarquía de razas por diferencias biológicas; Todorov lo llama 'racialismo' por su pretensión científica.", m:"TAGUIEFF suena a 'te cala fino': el racismo tradicional te va calando en capas finas, como agua, sin que lo notes. · TODOROV suena a 'todo lo rompo': rompe a la humanidad en categorías de 'raza' — racialismo.", p:2},
+{n:"Sears y Zinder", c:"Racismo simbólico", t:"Niegan ser racistas pero se oponen a políticas de igualdad racial alegando 'valores tradicionales'.", m:"SEARS, como los grandes almacenes: vende un racismo 'de escaparate', simbólico, disfrazado de valores tradicionales. · ZINDER suena a 'cinder' (ceniza escondida): un racismo que se disfraza de 'valores', escondido bajo cenizas simbólicas.", p:2},
+{n:"John McConahay", c:"Racismo moderno", t:"Formas menos evidentes que persisten hoy; niega la discriminación existente.", m:"McCONAHAY suena a 'con ahí, ¿no?': un racismo moderno que se disfraza de simple opinión política — 'es que es así, ¿no?'.", p:2},
+{n:"Dovidio y Gaertner", c:"Racismo aversivo", t:"Dicotomía entre creencias conscientes igualitarias y actitudes inconscientes negativas.", m:"DOVIDIO suena a 'devoción escondida': dice que no es racista, pero por dentro sí lo evita (racismo aversivo, disimulado). · GAERTNER suena a 'jardinero': cuida su jardín (su grupo) y evita sutilmente al de fuera — racismo aversivo.", p:2},
+{n:"Pérez", c:"Racismo latente", t:"Permanece oculto hasta que una situación específica lo desencadena.", m:"PÉREZ, el apellido más común: el racismo 'oculto' (latente) que puede tener cualquiera sin decirlo.", p:1},
+{n:"Katz", c:"Racismo ambivalente", t:"Coexistencia de actitudes positivas y negativas hacia un mismo grupo racial.", m:"Daniel KATZ suena a 'gatos': sentimientos ambivalentes (amor-odio), como quien odia y ama a los gatos a la vez.", p:2},
+{n:"Carl Rogers", c:"Racismo regresivo", t:"Una persona normalmente igualitaria puede tener comportamientos racistas bajo estrés o presión social.", m:"Carl ROGERS, el psicólogo humanista: aquí describe un racismo que 'retrocede' (regresivo) a formas antiguas de rechazo.", p:2},
+{n:"Thomas Pettigrew", c:"Racismo institucional / Neorracismo", t:"Políticas y actos que perjudican a un grupo étnico; con Meertens distingue racismo manifiesto (biológico) y sutil (cultural).", m:"PETTIGREW suena a 'pequeño crece': el racismo pequeño (individual) crece hasta instalarse en las instituciones.", p:2},
+{n:"Joel Kovel", c:"Metarracismo", t:"Racismo de la tecnocracia, de mayor a menor desarrollo económico.", m:"KOVEL suena a 'covil' tecnológico: el racismo se esconde ahora en algoritmos y tecnocracia (metarracismo).", p:1},
+{n:"Jacques-Philippe Leyens", c:"Infrahumanización", t:"Se atribuye mayor esencia humana al propio grupo que a los grupos externos.", m:"LEYENS suena a 'leyes' inhumanas: trata al grupo ajeno como si tuviera menos humanidad (infrahumanización).", p:1},
+{n:"Cristina Roncarati", c:"Ontologización", t:"Se reduce a los miembros del exogrupo a una categoría esencialista, generalmente inferior.", m:"RONCARATI suena a 'roca atada': cree que el grupo ajeno está atado para siempre a su naturaleza, sin poder cambiar — esencialismo.", p:1},
+{n:"Jorge Vala", c:"Heteroetnización", t:"El exogrupo es definido y percibido desde la perspectiva del endogrupo, proyectando estereotipos.", m:"VALA suena a 'bala' (estereotipo que dispara): construye una imagen fija y estereotipada del grupo ajeno.", p:1},
+{n:"Pierre-André Taguieff", c:"Etnocentrismo: 3 dimensiones", t:"Doctrina/ideología racista; prejuicios/actitudes racistas; conductas/prácticas racistas (discriminación, segregación).", m:"TAGUIEFF suena a 'te cala fino': el racismo tradicional te va calando en capas finas, como agua, sin que lo notes.", p:2},
+{n:"Milton y Lyman Stewart", c:"Fundamentalismo", t:"Acuñaron el término para el sometimiento absoluto e intransigente a una doctrina.", m:"STEWART (hermanos) = los que 'fundaron' la palabra fundamentalismo (protestantes americanos).", p:2},
+{n:"Michael D. Langone", c:"Definición de secta", t:"Grupo con devoción excesiva a una idea/persona que acaba dañando a sus miembros y familiares.", m:"LANGONE = 'largo' daño a largo plazo tras la devoción excesiva.", p:1},
+{n:"Eric Dunning", c:"Hooliganismo como acto normalizado", t:"En Inglaterra el hooliganismo se ha llegado a aceptar como algo normal en el fútbol.", m:"DUNNING suena a 'running' de hooligans corriendo por las calles inglesas, aceptados por su gente.", p:1},
+{n:"Taylor y Clark", c:"Hooliganismo: enfoque marxista", t:"Ven el hooliganismo como un enfrentamiento entre clases sociales.", m:"TAYLOR, como la cantante, pero aquí el investigador: amplía la ecología y estudia al hooligan desde la lucha de clases. · CLARK, el hooligan inglés con camiseta roja (marxista) gritando en la grada con Taylor.", p:1},
+{n:"Dollard y Miller", c:"Hipótesis frustración-agresión", t:"La agresión surge como respuesta a la frustración de no alcanzar los objetivos propios.", m:"DOLLARD suena a 'dólar duro': la frustración por no tener dinero (dólares) desata la agresión. · MILLER suena a cerveza Miller: cuando te frustras (no puedes beber, no puedes lograr algo) sale la agresión.", p:2},
+{n:"Leonard Berkowitz", c:"Frustración y predisposición agresiva", t:"La frustración aumenta la predisposición a agredir, aunque no siempre se materialice.", m:"BER-KO-WITZ: 'ber que te KO-witz' (te noqueo) — la frustración te predispone a estallar con violencia.", p:2},
+]},
+
+{tema:32, titulo:"Geografía humana", autores:[
+{n:"Maximilien Le Lannou", c:"Ciencia del 'hombre habitante'", t:"Define la geografía humana como la ciencia del hombre que habita el espacio.", m:"LE LANNOU suena a 'la anoche': estudia al hombre que anochece, vive y habita su territorio — ciencia del 'hombre habitante'.", p:1},
+{n:"Friedrich Ratzel", c:"Determinismo geográfico / fundador", t:"El entorno físico influye decisivamente en el desarrollo de las sociedades ('Antropogeografía').", m:"RATZEL suena a 'ratz' (rata) que recorre el territorio: el hombre y su relación con el espacio — geografía humana.", p:3},
+{n:"Paul Vidal de la Blache", c:"Posibilismo geográfico", t:"El entorno ofrece posibilidades, pero el desarrollo depende de las decisiones humanas.", m:"Vidal DE LA BLACHE suena a 'de la vaca, che': el territorio ofrece posibilidades (como pastos para el ganado), pero el hombre decide qué hacer con ellas — posibilismo.", p:3},
+{n:"Louis Wirth", c:"Definición de ciudad", t:"Asentamiento grande, denso y permanente, fuera de la industria, agricultura o servicios.", m:"WIRTH suena a 'worth' (valor): define qué 'vale' como ciudad — tamaño, densidad y heterogeneidad.", p:2},
+{n:"Ernest W. Burgess", c:"Modelo concéntrico", t:"La ciudad crece de forma radial en anillos desde el centro.", m:"BURGESS suena a 'burguesía': los ricos en el centro, los pobres en los anillos exteriores — círculos concéntricos de la ciudad.", p:2},
+{n:"Homer Hoyt", c:"Modelo sectorial", t:"Las vías de comunicación determinan la expansión de la ciudad en sectores radiales.", m:"HOYT suena a 'hoy-t' (tarta cortada en porciones/sectores): la ciudad crece en cuñas o sectores desde el centro.", p:2},
+{n:"Harris y Ullman", c:"Modelo multinuclear", t:"Cada sector crece a partir de un núcleo propio (histórico, económico, de accesibilidad).", m:"HARRIS, como el actor: la ciudad tiene varios 'núcleos' (barrios centro) como los distintos papeles de un actor. · ULLMAN suena a 'un hombre más': la ciudad no tiene un solo centro, tiene varios núcleos, como si hubiera 'un hombre más' en cada barrio.", p:2},
+{n:"Richard M. Hurd", c:"Modelo en estrella o radial", t:"Las calles parten radialmente desde el centro formando una estrella.", m:"HURD suena a 'herd' (rebaño en inglés) que se mueve en forma de estrella desde un punto central — modelo radial.", p:1},
+{n:"Ernst Griffin y Larry Ford", c:"Modelo periférico", t:"Crecimiento disperso y desorganizado en las periferias de la ciudad.", m:"GRIFFIN, el grifo (mitológico) que vigila los bordes (periferia) de la ciudad. · FORD, la fábrica de coches en la periferia de la ciudad — crecimiento periférico urbano.", p:1},
+{n:"Alain Touraine", c:"Ciudades fragmentadas", t:"Predomina la mezcla de clases sociales y la segregación urbana.", m:"TOURAINE suena a 'tour' turístico roto en pedazos: la ciudad moderna se fragmenta en piezas desconectadas.", p:1},
+{n:"Pierre George", c:"Ciudad bidón (bidonville)", t:"Ciudad donde residen inmigrantes de forma masificada, en condiciones precarias.", m:"Pierre GEORGE describe la 'ciudad bidón' (chabolas), el barrio pobre hecho de bidones.", p:1},
+{n:"Ebenezer Howard", c:"Ciudad jardín", t:"Amplios espacios verdes y casas unifamiliares con jardín.", m:"Ebenezer HOWARD, como el tacaño de 'Cuento de Navidad' que al final quiere una ciudad verde y feliz (ciudad jardín).", p:2},
+{n:"Arturo Soria y Mata", c:"Ciudad lineal", t:"La ciudad se desarrolla a lo largo de un eje principal de comunicación.", m:"SORIA Y MATA, el urbanista madrileño que diseña la ciudad en una línea recta a lo largo del tranvía — ciudad lineal.", p:2},
+{n:"Thomas R. Malthus", c:"Teoría malthusiana", t:"La población crece geométricamente y los alimentos solo aritméticamente: llegará un límite (frenos positivos y preventivos).", m:"MALTHUS suena a 'mal-tú' (vas a estar mal): avisa de que la población crece más rápido que los recursos, así que 'vas a estar mal' si no se controla.", p:3},
+{n:"Ester Boserup", c:"Contrapone a Malthus", t:"El crecimiento de la población impulsa la innovación y el desarrollo agrícola (lo contrario de Malthus).", m:"BOSERUP suena a 'bota, sube': cuanto más sube la población, más fuerte hay que darle a la bota (arar) para producir más alimento.", p:2},
+{n:"Max Sorre", c:"Ecúmene y anecúmene", t:"Ecúmene: áreas pobladas de la Tierra. Anecúmene: áreas despobladas.", m:"SORRÉ suena a 'sorry' triste: hay zonas 'sorry', vacías (anecúmene) y zonas pobladas (ecúmene).", p:2},
+{n:"William Allan", c:"Densidad crítica de población", t:"Capacidad poblacional de un área según la utilización del suelo (habitantes/superficie).", m:"ALLAN = 'A LA suela' (al suelo), densidad relacionada con uso del terreno.", p:1},
+{n:"Achille Guillard", c:"Definición de demografía", t:"Estudio cuantitativo de las poblaciones humanas.", m:"GUILLARD suena a 'guía ya': el primero en tener ya una guía de datos de población — padre de la demografía.", p:2},
+{n:"David Harvey", c:"Enfoque cuantitativo de la demografía", t:"Se centra en cantidad de población, natalidad, mortalidad y migraciones vía estadística.", m:"David HARVEY suena a 'harbor' (puerto) de números: cuantifica y mide la población con datos duros.", p:2},
+{n:"Frank Notenstein", c:"Teoría de la transición demográfica", t:"4 etapas: preindustrial, transición temprana, transición tardía y postindustrial.", m:"NOTENSTEIN = 4 ETAPAS, de alta natalidad/mortalidad a ambas bajas. Muy preguntado en demografía.", p:3},
+{n:"Cristina Blanco", c:"Tipos de migraciones", t:"Distingue migraciones premodernas, modernas y contemporáneas.", m:"BLANCO = 3 tipos de migración según época histórica.", p:1},
+{n:"Gustave Le Bon", c:"Psicología de las masas / 3 leyes", t:"La masa genera un 'alma colectiva' irracional: unanimidad (contagio), emocionalidad (sugestión) e irracionalidad (desindividualización).", m:"Gustave LE BON, el clásico: la masa te hace perder la individualidad, contagio irracional (psicología de las masas).", p:3},
+{n:"Floyd H. Allport", c:"Niega diferencia individuo-masa", t:"No existe diferencia sustancial entre el comportamiento en solitario y en muchedumbre.", m:"El hermano 'Floyd' de Pink Floyd en un concierto masivo: la masa grita mucho pero en el fondo cada uno sigue siendo el mismo.", p:2},
+{n:"Herbert G. Blumer", c:"Teoría del contagio / Clasificación de masas", t:"Personas heterogéneas actúan homogéneamente por reacción circular; clasifica masas en casuales, convencionales, expresivas, afectivas y de protesta.", m:"BLUMER suena a 'bum-er': el rumor estalla como un boom y se contagia por toda la multitud — teoría del contagio.", p:2},
+{n:"Ferdinand Tönnies", c:"Gemeinschaft y Gesellschaft", t:"Comunidad rural (vínculos personales, tradición) vs sociedad urbana (relaciones impersonales, utilitarias).", m:"TÖNNIES suena a 'ton, es': el pueblo pequeño ('de los tuyos') frente a la sociedad fría de la ciudad — comunidad y sociedad.", p:3},
+{n:"Neil J. Smelser", c:"Teoría del valor añadido / tensión estructural", t:"6 etapas del comportamiento colectivo: conductividad, tensión, creencia, factores precipitantes, movilización y fallo del control social.", m:"SMELSER suena a 'smell-ser' (huele a tensión): se necesitan varias condiciones acumuladas (valor añadido) para que estalle un disturbio.", p:2},
+{n:"Turner y Killian", c:"Teoría de la norma emergente", t:"Dentro de la masa surgen normas propias, generadas colectivamente.", m:"TURNER suena a 'torneo': en el 'torneo' social te identificas con tu equipo (identidad social) y en el caos surge una norma nueva sobre la marcha. · KILLIAN suena a 'ya lían': en un disturbio nuevo, la gente 'ya lía' sobre la marcha una norma improvisada — norma emergente.", p:2},
+{n:"Guy Rocher", c:"Definición de cambio social", t:"Transformación observable en el tiempo que afecta la estructura de una organización de forma no efímera.", m:"ROCHER otra vez (autor confirmado como de los más preguntados): aquí 'cambio social', en T30 'socialización'.", p:3},
+{n:"Robert A. Nisbet", c:"Cambio social alternativo", t:"Sucesión de diferencias en el tiempo dentro de una identidad persistente.", m:"NISBET suena a 'ni se bate': aunque la sociedad cambie (se bate), la identidad de fondo persiste — cambio dentro de la continuidad.", p:1},
+{n:"Roger Brown", c:"Multitud desordenada / Masas activas", t:"Multitud: individuos con foco común reunidos fortuitamente. Turbas activas: agresivas, evasivas, adquisitivas, expresivas.", m:"Roger BROWN clasifica a la masa como quien organiza el vestuario de un equipo, cada 'marrón' (grupo) en su cajón.", p:2},
+{n:"Kimball Young", c:"Muchedumbre ordenada / Masas pasivas", t:"Reunión previamente convocada con objetivo común; tipos pasivos: casuales, intencionales, recreativos, buscadores de información.", m:"Kimball YOUNG, joven investigador que distingue entre la muchedumbre física (en la calle) y el público disperso (medios).", p:2},
+{n:"Elias Canetti", c:"Clasificación de masas por objetivo", t:"Masas de acoso, de guerra, de inversión, de lamento y festivas.", m:"CANETTI suena a 'canta ahí': clasifica la masa según hacia dónde 'canta' (se dirige) su objetivo común.", p:2},
+{n:"Frederic Munné", c:"Masas según proximidad física", t:"Difusas (sin proximidad), disgregadas (coinciden sin conciencia colectiva) y congregadas (unidas por interés común).", m:"MUNNÉ suena a 'mi mundo, no': clasifica las masas por cercanía física o interés compartido, y estudia a quien se sale de 'mi mundo' — marginalidad.", p:1},
+{n:"Ernst Haeckel", c:"Definición de ecología", t:"Ciencia que estudia las relaciones de los seres vivos entre sí y con su ambiente.", m:"HAECKEL suena a 'hacha él': de un hachazo abre un hueco nuevo en la biología y lo bautiza como ecología — el primero en ponerle nombre.", p:2},
+]},
+
+{tema:35, titulo:"El desarrollo sostenible", autores:[
+{n:"Gro Harlem Brundtland", c:"Informe Brundtland (1987)", t:"Presidenta de la CMMAD; en su informe 'Nuestro Futuro Común' se formula por primera vez la definición moderna de desarrollo sostenible.", m:"BRUNDTLAND suena a 'tierra verde-land': el país imaginario del desarrollo sostenible.", p:3},
+{n:"José Allende Landa", c:"Indicadores de sostenibilidad urbana", t:"Propuso tres indicadores para evaluar la sostenibilidad de una ciudad: ambientales, económicos y socioculturales.", m:"Un alcalde tipo Salvador ALLENDE que mide cuánto verde tiene su ciudad (LANDA = tierra/terreno sostenible).", p:2},
+{n:"Lester R. Brown", c:"Worldwatch Institute / 'Plan B'", t:"Fundador del instituto; promueve una economía sostenible con propuestas globales frente a la crisis ambiental.", m:"Lester BROWN, el 'vigía marrón' (Worldwatch = vigilar el mundo) que cuida el planeta desde su instituto.", p:2},
+{n:"Barry Commoner", c:"'En paz con el planeta'", t:"Ecólogo que entiende la sostenibilidad como un problema de equidad intergeneracional.", m:"COMMONER suena a 'común': el planeta es un bien común, hay que estar 'en paz' con él.", p:2},
+{n:"Herman Daly", c:"3 reglas de sostenibilidad", t:"Economista ecológico: recolección sostenible, emisión sostenible y uso responsable de recursos no renovables.", m:"DALY suena al inglés 'daily' (diario): marca tres reglas que debes cumplir 'a diario' para vivir de forma sostenible.", p:2},
+{n:"Jan Gehl", c:"Urbanismo sostenible centrado en las personas", t:"Defiende la movilidad peatonal y la calidad de vida ('Ciudades para la gente').", m:"GEHL suena a 'gel' urbano: ciudades diseñadas 'suaves' y a medida para la gente, no para los coches.", p:2},
+{n:"Jay Forrester", c:"Modelo World2 / base de World3", t:"Su modelo World2 sirvió de base al World3, usado en 'Los límites del crecimiento' (1972), que advirtió del colapso ambiental.", m:"FORRESTER suena a 'bosque' (forest): un modelo del 'mundo-bosque' (World2) que da origen al mundo más completo (World3).", p:2},
+{n:"Jorge Riechmann", c:"Concepto de sostenibilidad", t:"Explica cómo los sistemas biológicos pueden conservar diversidad y productividad en el tiempo.", m:"RIECHMANN = español, sostenibilidad como 'conservar en el tiempo'.", p:1},
+{n:"Richard Rogers", c:"'Cities for a Small Planet'", t:"Define 7 características de una ciudad sostenible: bella, justa, diversa, creativa, ecológica, compacta y policéntrica.", m:"Richard ROGERS, el arquitecto (edificios icónicos): imagina ciudades sostenibles 'para un planeta pequeño'.", p:2},
+{n:"Amartya Sen", c:"IDH y desarrollo humano", t:"Economista Nobel; su enfoque de capacidades fue clave en la creación del IDH y en vincular desarrollo con justicia social.", m:"SEN = Premio Nobel, el 'cerebro' económico detrás del Índice de Desarrollo Humano.", p:3},
+{n:"Vandana Shiva", c:"Agroecología y ecofeminismo", t:"Activista india que defiende la soberanía alimentaria y denuncia los impactos de la globalización.", m:"Vandana SHIVA, como la diosa hindú: defiende la Madre Tierra y la agricultura ecológica.", p:2},
+{n:"Mathis Wackernagel y William Rees", c:"Huella ecológica (1990)", t:"Crean el concepto: mide el consumo de recursos de una población frente a la capacidad de regeneración de la Tierra ('Nuestra huella ecológica').", m:"WACKERNAGEL suena a 'walkear-nagel' (caminas dejando huella): mide tu 'huella ecológica' en el planeta. · REES suena a 'reses': cuenta cuántas 'reses' de recursos le clava al planeta cada persona — huella ecológica.", p:3},
+]},
+];
+
+// FLATTEN
+const ALL = [];
+DATA.forEach(block=>{
+  block.autores.forEach((a,i)=>{
+    ALL.push({...a, tema:block.tema, temaTitulo:block.titulo, uid: block.tema+'-'+i+'-'+a.n});
+  });
+});
+
+// Marcado "muy importante" en fosforito. Vive solo en memoria de esta sesión
+// (no se guarda al recargar la página: los artifacts no pueden usar localStorage).
+const marked = new Set();
+
+let activeTema = 'todos';
+let activePriOnly = false;
+let activeMarkOnly = false;
+let query = '';
+
+const temaTabsEl = document.getElementById('temaTabs');
+const temaList = [{id:'todos',label:'Todos'}].concat(DATA.map(b=>({id:b.tema,label:'T'+b.tema})));
+temaList.forEach(t=>{
+  const el = document.createElement('div');
+  el.className = 'tab' + (t.id==='todos' ? ' active':'');
+  el.textContent = t.label;
+  el.dataset.id = t.id;
+  el.onclick = ()=>{
+    activeTema = t.id;
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+    render();
+  };
+  temaTabsEl.appendChild(el);
+});
+
+document.getElementById('priToggle').onclick = function(){
+  activePriOnly = !activePriOnly;
+  this.classList.toggle('active', activePriOnly);
+  render();
+};
+
+document.getElementById('markToggle').onclick = function(){
+  activeMarkOnly = !activeMarkOnly;
+  this.classList.toggle('active', activeMarkOnly);
+  render();
+};
+
+document.getElementById('search').addEventListener('input', e=>{
+  query = e.target.value.trim().toLowerCase();
+  render();
+});
+
+function matches(a){
+  if(activeTema !== 'todos' && a.tema !== activeTema) return false;
+  if(activePriOnly && a.p !== 3) return false;
+  if(activeMarkOnly && !marked.has(a.uid)) return false;
+  if(query){
+    const hay = (a.n+' '+a.c+' '+a.t+' '+a.m).toLowerCase();
+    if(!hay.includes(query)) return false;
+  }
+  return true;
+}
+
+function render(){
+  const filtered = ALL.filter(matches);
+  document.getElementById('countNum').textContent = filtered.length;
+  const resultsEl = document.getElementById('results');
+  resultsEl.innerHTML = '';
+
+  if(filtered.length === 0){
+    resultsEl.innerHTML = '<div class="empty">— No hay autores que coincidan con la búsqueda —</div>';
+    return;
+  }
+
+  const byTema = {};
+  filtered.forEach(a=>{
+    if(!byTema[a.tema]) byTema[a.tema] = {titulo:a.temaTitulo, items:[]};
+    byTema[a.tema].items.push(a);
+  });
+
+  Object.keys(byTema).sort((a,b)=>a-b).forEach(temaId=>{
+    const group = byTema[temaId];
+    const block = document.createElement('div');
+    block.className = 'tema-block';
+    block.innerHTML = `<div class="tema-title">TEMA ${temaId} <span>· ${group.titulo} · ${group.items.length} autores</span></div>`;
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    group.items.forEach(a=>{
+      const card = document.createElement('div');
+      const isMarked = marked.has(a.uid);
+      card.className = 'card' + (a.p===3 ? ' p3':'') + (isMarked ? ' marked':'');
+      card.innerHTML = `
+        <button class="mark-btn" type="button" title="Marcar como muy importante">${isMarked ? '★' : '☆'}</button>
+        <div class="card-head"><div class="name">${a.n}</div></div>
+        <div class="concept-tag">${a.c}</div>
+        <div class="theory">${a.t}</div>
+        <div class="truco"><b>Truco</b>${a.m}</div>
+      `;
+      card.querySelector('.mark-btn').onclick = (e)=>{
+        e.stopPropagation();
+        if(marked.has(a.uid)){ marked.delete(a.uid); } else { marked.add(a.uid); }
+        render();
+      };
+      grid.appendChild(card);
+    });
+    block.appendChild(grid);
+    resultsEl.appendChild(block);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

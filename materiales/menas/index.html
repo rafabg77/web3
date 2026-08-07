@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENAS — Régimen Jurídico | Guía CNP</title>
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#0d1117;
+  --bg-panel:#151b23;
+  --bg-card:#1a222c;
+  --line:#2a3441;
+  --ink:#dfe6ee;
+  --ink-dim:#8a97a8;
+  --ink-faint:#5b6b7a;
+  --proteccion:#4f8fd6;      /* fases de proteccion del menor */
+  --proteccion-bg:rgba(79,143,214,0.12);
+  --administrativo:#d69b3f;  /* fases administrativas / plazos */
+  --administrativo-bg:rgba(214,155,63,0.12);
+  --consultivo:#5fbf9f;      /* organos consultivos */
+  --consultivo-bg:rgba(95,191,159,0.12);
+  --alerta:#d6544f;
+  --serif:'Iowan Old Style','Palatino Linotype', Georgia, serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+  --sans:'Inter','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.6;
+}
+::selection{background:var(--administrativo);color:#0d1117;}
+
+/* ============ TOP PROGRESS BAR ============ */
+#progressbar{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--proteccion),var(--administrativo));
+  width:0%;z-index:999;transition:width .1s linear;
+}
+
+/* ============ HEADER / MASTHEAD ============ */
+header.masthead{
+  padding:56px 24px 40px;
+  text-align:center;
+  border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(ellipse at top, rgba(79,143,214,0.08), transparent 60%),
+    var(--bg);
+  position:relative;
+}
+.case-number{
+  font-family:var(--mono);
+  letter-spacing:3px;
+  font-size:11px;
+  color:var(--ink-dim);
+  text-transform:uppercase;
+}
+header.masthead h1{
+  font-family:var(--serif);
+  font-size:clamp(2rem,5vw,3.4rem);
+  margin:12px 0 8px;
+  letter-spacing:0.5px;
+  font-weight:600;
+}
+header.masthead h1 span{color:var(--proteccion);}
+header.masthead p.subtitle{
+  color:var(--ink-dim);
+  font-size:15px;
+  max-width:640px;
+  margin:0 auto;
+}
+.stamp{
+  display:inline-block;margin-top:20px;
+  border:1px solid var(--alerta);
+  color:var(--alerta);
+  font-family:var(--mono);
+  font-size:11px;letter-spacing:2px;
+  padding:5px 14px;border-radius:2px;
+  transform:rotate(-2deg);
+  text-transform:uppercase;
+}
+
+/* ============ LAYOUT ============ */
+.wrap{display:flex;max-width:1280px;margin:0 auto;align-items:flex-start;}
+nav.sidebar{
+  position:sticky;top:0;
+  height:100vh;
+  width:250px;
+  flex-shrink:0;
+  padding:32px 18px;
+  border-right:1px solid var(--line);
+  overflow-y:auto;
+}
+nav.sidebar .nav-title{
+  font-family:var(--mono);
+  font-size:10px;letter-spacing:2px;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+nav.sidebar a{
+  display:flex;align-items:center;gap:8px;
+  color:var(--ink-dim);
+  text-decoration:none;
+  font-size:13.5px;
+  padding:8px 10px;border-radius:6px;
+  margin-bottom:2px;
+  border-left:2px solid transparent;
+  transition:all .15s ease;
+}
+nav.sidebar a .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--ink-faint);flex-shrink:0;
+}
+nav.sidebar a:hover{color:var(--ink);background:var(--bg-card);}
+nav.sidebar a.active{
+  color:var(--ink);
+  background:var(--bg-card);
+  border-left:2px solid var(--proteccion);
+}
+nav.sidebar a.active .dot{background:var(--proteccion);}
+
+main{flex:1;min-width:0;padding:40px 32px 120px;max-width:900px;}
+
+/* ============ SECTION HEADERS ============ */
+section{scroll-margin-top:20px;padding-top:10px;}
+.section-head{
+  display:flex;align-items:center;gap:14px;
+  margin:60px 0 22px;
+}
+.section-head:first-of-type{margin-top:0;}
+.section-head .icon{
+  width:38px;height:38px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:8px;
+  background:var(--bg-card);border:1px solid var(--line);
+}
+.section-head .icon svg{width:20px;height:20px;}
+.section-head h2{
+  font-family:var(--serif);
+  font-size:1.6rem;margin:0;font-weight:600;
+}
+.section-head .num{
+  font-family:var(--mono);color:var(--ink-faint);font-size:12px;
+}
+
+p{color:var(--ink-dim);}
+.lead{color:var(--ink);font-size:15.5px;}
+
+/* ============ GLOSSARY TOOLTIP ============ */
+.gloss{
+  border-bottom:1px dashed var(--administrativo);
+  color:var(--ink);
+  cursor:help;position:relative;
+  font-weight:600;
+}
+.gloss .tip{
+  display:none;
+  position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
+  background:#050a10;border:1px solid var(--administrativo);
+  color:var(--ink);
+  padding:8px 12px;border-radius:6px;
+  font-size:12.5px;font-weight:400;
+  width:max-content;max-width:240px;
+  line-height:1.4;
+  z-index:50;
+  box-shadow:0 8px 24px rgba(0,0,0,0.5);
+}
+.gloss:hover .tip,.gloss:focus .tip{display:block;}
+.gloss .tip::after{
+  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--administrativo);
+}
+
+/* ============ ACCORDION ============ */
+.accordion{
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:14px;
+  background:var(--bg-panel);
+}
+.accordion summary{
+  list-style:none;cursor:pointer;
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-weight:600;font-size:15px;
+  color:var(--ink);
+}
+.accordion summary::-webkit-details-marker{display:none;}
+.accordion summary::after{
+  content:'+';font-family:var(--mono);font-size:20px;color:var(--ink-faint);
+  transition:transform .2s ease;
+}
+.accordion[open] summary::after{transform:rotate(45deg);}
+.accordion .body{padding:2px 20px 20px;color:var(--ink-dim);font-size:14.5px;}
+.accordion .body ul{padding-left:20px;}
+.accordion .body li{margin-bottom:8px;}
+.accordion.protec{border-left:3px solid var(--proteccion);}
+.accordion.admin{border-left:3px solid var(--administrativo);}
+
+/* ============ TIMELINE ============ */
+.timeline-wrap{
+  overflow-x:auto;
+  padding:20px 4px 30px;
+  margin-bottom:10px;
+}
+.timeline{
+  display:flex;gap:0;min-width:900px;position:relative;
+}
+.timeline::before{
+  content:'';position:absolute;top:24px;left:0;right:0;height:2px;
+  background:var(--line);
+}
+.tstep{
+  flex:1;position:relative;padding:0 8px;text-align:center;
+  cursor:pointer;
+}
+.tstep .marker{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--administrativo);
+  margin:18px auto 12px;position:relative;z-index:2;
+  transition:transform .2s ease;
+}
+.tstep:hover .marker{transform:scale(1.3);}
+.tstep.crit .marker{border-color:var(--alerta);}
+.tstep .plazo{
+  font-family:var(--mono);font-size:11px;color:var(--administrativo);
+  font-weight:700;
+}
+.tstep.crit .plazo{color:var(--alerta);}
+.tstep .label{font-size:12.5px;color:var(--ink-dim);margin-top:4px;}
+.tstep .detail{
+  display:none;text-align:left;
+  background:var(--bg-card);border:1px solid var(--line);
+  border-radius:8px;padding:12px 14px;margin-top:10px;
+  font-size:13px;color:var(--ink-dim);
+  position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  width:220px;z-index:10;box-shadow:0 12px 30px rgba(0,0,0,0.5);
+}
+.tstep.open .detail{display:block;}
+
+/* ============ PLAZOS CHIPS ============ */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 30px;}
+.chip{
+  font-family:var(--mono);font-size:12.5px;
+  background:var(--bg-card);border:1px solid var(--line);
+  padding:8px 14px;border-radius:20px;color:var(--ink);
+  display:flex;align-items:center;gap:8px;
+}
+.chip b{color:var(--administrativo);}
+.chip.alert b{color:var(--alerta);}
+.chip .tag{color:var(--ink-faint);font-size:10.5px;text-transform:uppercase;}
+
+/* ============ CARDS ============ */
+.cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0;}
+@media(max-width:640px){.cardgrid{grid-template-columns:1fr;}}
+.card{
+  background:var(--bg-card);border:1px solid var(--line);
+  border-radius:10px;padding:18px 20px;
+}
+.card h4{margin:0 0 8px;font-size:14px;color:var(--ink);}
+.card p{margin:0;font-size:13.5px;}
+.card.blue{border-top:3px solid var(--proteccion);}
+.card.amber{border-top:3px solid var(--administrativo);}
+
+/* ============ TABLE ============ */
+.table-controls{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.table-controls input{
+  background:var(--bg-card);border:1px solid var(--line);
+  color:var(--ink);padding:8px 12px;border-radius:6px;font-size:13px;
+  flex:1;min-width:180px;
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+thead th{
+  text-align:left;padding:10px 12px;
+  color:var(--consultivo);
+  font-family:var(--mono);font-size:11px;text-transform:uppercase;
+  border-bottom:1px solid var(--line);cursor:pointer;
+  letter-spacing:1px;
+}
+tbody td{padding:12px;border-bottom:1px solid var(--line);color:var(--ink-dim);vertical-align:top;}
+tbody tr:hover{background:var(--bg-card);}
+tbody td:first-child{color:var(--ink);font-weight:600;}
+
+/* ============ QUIZ ============ */
+.quiz-q{
+  background:var(--bg-card);border:1px solid var(--line);border-radius:10px;
+  padding:18px 20px;margin-bottom:14px;
+}
+.quiz-q p.q{font-weight:600;color:var(--ink);margin:0 0 12px;}
+.quiz-opt{
+  display:block;width:100%;text-align:left;
+  background:var(--bg-panel);border:1px solid var(--line);color:var(--ink-dim);
+  padding:10px 14px;border-radius:6px;margin-bottom:8px;cursor:pointer;font-size:13.5px;
+}
+.quiz-opt:hover{border-color:var(--proteccion);}
+.quiz-opt.correct{border-color:var(--consultivo);background:rgba(95,191,159,0.12);color:var(--ink);}
+.quiz-opt.wrong{border-color:var(--alerta);background:rgba(214,84,79,0.12);color:var(--ink);}
+#quiz-score{font-family:var(--mono);color:var(--administrativo);text-align:center;font-size:14px;}
+
+footer{
+  text-align:center;padding:30px;color:var(--ink-faint);
+  font-family:var(--mono);font-size:11px;border-top:1px solid var(--line);
+}
+
+/* ============ PRINT ============ */
+@media print{
+  nav.sidebar,#progressbar,.no-print{display:none !important;}
+  body{background:#fff;color:#111;}
+  .wrap{display:block;}
+  main{max-width:100%;padding:0;}
+  .accordion{border-color:#ccc;}
+  .accordion .body{display:block !important;}
+  a{color:#111;}
+}
+
+/* Mobile */
+@media(max-width:860px){
+  nav.sidebar{display:none;}
+  main{padding:30px 18px 100px;}
+  .timeline{min-width:700px;}
+}
+</style>
+</head>
+<body>
+
+<div id="progressbar"></div>
+
+<header class="masthead">
+  <div class="case-number">EXPEDIENTE · TEMA EXTRANJERÍA · LO 4/2000 &amp; REGLAMENTO</div>
+  <h1><span>MENAS</span> — Menores Extranjeros No Acompañados</h1>
+  <p class="subtitle">Guía interactiva del régimen jurídico: detección, protección, repatriación y residencia.</p>
+  <div class="stamp">Uso exclusivo de estudio · CNP</div>
+</header>
+
+<div class="wrap">
+  <nav class="sidebar">
+    <div class="nav-title">Índice</div>
+    <a href="#definicion"><span class="dot"></span>Definición</a>
+    <a href="#deteccion"><span class="dot"></span>Detección e identificación</a>
+    <a href="#timeline"><span class="dot"></span>Línea de tiempo — Repatriación</a>
+    <a href="#repatriacion"><span class="dot"></span>Procedimiento de repatriación</a>
+    <a href="#residencia"><span class="dot"></span>Autorización de residencia</a>
+    <a href="#contingencia"><span class="dot"></span>Plan de contingencia solidaria</a>
+    <a href="#plazos"><span class="dot"></span>Panel de plazos clave</a>
+    <a href="#organos"><span class="dot"></span>Órganos de integración</a>
+    <a href="#quiz"><span class="dot"></span>Autoevaluación</a>
+  </nav>
+
+  <main>
+
+    <section id="definicion">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4f8fd6" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>
+        </div>
+        <h2>Definición</h2><span class="num">A</span>
+      </div>
+      <p class="lead">
+        <span class="gloss" tabindex="0">MENA<span class="tip">Menor Extranjero No Acompañado</span></span>
+        = extranjero menor de 18 años que llega a España sin un adulto responsable (legal o de hecho),
+        o que estando ya en España se detecta en esa misma situación de desprotección.
+      </p>
+    </section>
+
+    <section id="deteccion">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4f8fd6" stroke-width="1.8"><path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/></svg>
+        </div>
+        <h2>Detección e identificación</h2><span class="num">B</span>
+      </div>
+
+      <details class="accordion protec" open>
+        <summary>Minoría de edad evidente</summary>
+        <div class="body">
+          <p>Las <span class="gloss" tabindex="0">FCS<span class="tip">Fuerzas y Cuerpos de Seguridad</span></span>,
+          si la minoría de edad es evidente (documentación o apariencia): remisión <b>inmediata</b> a los servicios de protección de menores
+          + notificación al <span class="gloss" tabindex="0">MF<span class="tip">Ministerio Fiscal</span></span>.
+          Se inscribe en el Registro de MENAS.</p>
+        </div>
+      </details>
+
+      <details class="accordion admin">
+        <summary>Duda sobre la edad</summary>
+        <div class="body">
+          <ul>
+            <li>Comunicación inmediata al MF, que ordena determinar la edad en el <b>plazo más breve posible</b>, con colaboración de instituciones sanitarias, con carácter prioritario y urgente.</li>
+            <li>Se informa al <span class="gloss" tabindex="0">Del./Subdel.<span class="tip">Delegado o Subdelegado del Gobierno</span></span> competente.</li>
+            <li>Basta con que el extremo inferior de la horquilla de edad esté por debajo de 18 años para considerarlo menor.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="accordion protec">
+        <summary>Protocolo Marco</summary>
+        <div class="body">
+          <p>La Secretaría de Estado de Migraciones elabora un <b>Protocolo Marco</b> que coordina: localización, identificación,
+          determinación de edad, derivación al servicio de protección y tramitación documental.</p>
+        </div>
+      </details>
+    </section>
+
+    <section id="timeline">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d69b3f" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <h2>Línea de tiempo — Repatriación</h2><span class="num">clic en cada fase</span>
+      </div>
+      <p>Gestionada por la Delegación/Subdelegación del Gobierno del domicilio. Haz clic en cada punto para ver el detalle.</p>
+
+      <div class="timeline-wrap">
+        <div class="timeline" id="tline">
+          <div class="tstep" data-i="0">
+            <div class="marker"></div>
+            <div class="plazo">Inicio</div>
+            <div class="label">Incoación / audiencia al menor</div>
+            <div class="detail">Se abre expediente tras oír al menor, con informe previo de los servicios de protección y del MF. La incoación se notifica de inmediato al menor y a la entidad tutora.</div>
+          </div>
+          <div class="tstep" data-i="1">
+            <div class="marker"></div>
+            <div class="plazo">10 días</div>
+            <div class="label">Alegaciones</div>
+            <div class="detail">Mayores de 16: actúan directamente. Menores de 16: representados por tutor. Si hay conflicto de interés y el menor tiene más de 12 años: se suspende y se garantiza un defensor judicial.</div>
+          </div>
+          <div class="tstep" data-i="2">
+            <div class="marker"></div>
+            <div class="plazo">10-30 días</div>
+            <div class="label">Periodo de prueba</div>
+            <div class="detail">Los servicios de protección pueden acordar un periodo de prueba de entre 10 y 30 días.</div>
+          </div>
+          <div class="tstep" data-i="3">
+            <div class="marker"></div>
+            <div class="plazo">—</div>
+            <div class="label">Audiencia</div>
+            <div class="detail">Participan el menor, su representante y el MF. Se decide: repatriación, disposición a servicios de protección del país de origen, o autorizar permanencia en España. Pone fin a la vía administrativa.</div>
+          </div>
+          <div class="tstep crit" data-i="4">
+            <div class="marker"></div>
+            <div class="plazo">10 días</div>
+            <div class="label">Notificación resolución</div>
+            <div class="detail">La resolución se notifica al menor, representante y MF en un plazo de 10 días.</div>
+          </div>
+          <div class="tstep crit" data-i="5">
+            <div class="marker"></div>
+            <div class="plazo">6 meses</div>
+            <div class="label">Plazo máximo total</div>
+            <div class="detail">Plazo máximo para resolución y notificación: 6 meses desde el inicio del procedimiento.</div>
+          </div>
+          <div class="tstep crit" data-i="6">
+            <div class="marker"></div>
+            <div class="plazo">90 días</div>
+            <div class="label">Si no hay retorno efectivo</div>
+            <div class="detail">Tras 90 días sin retorno efectivo, la OEX (de oficio, por orden superior o a instancia de parte) inicia el trámite de autorización de residencia.</div>
+          </div>
+          <div class="tstep" data-i="7">
+            <div class="marker"></div>
+            <div class="plazo">1 mes + 10 días + 1 mes</div>
+            <div class="label">Residencia</div>
+            <div class="detail">Resolución de Del./Subdel. en máx. 1 mes (silencio negativo). Se comunica al MF en máx. 10 días. El representante debe solicitar la TIE en 1 mes.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="repatriacion">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d69b3f" stroke-width="1.8"><path d="M4 12h16M4 12l5-5M4 12l5 5"/></svg>
+        </div>
+        <h2>Procedimiento de repatriación</h2><span class="num">C</span>
+      </div>
+
+      <details class="accordion admin" open>
+        <summary>Incoación y alegaciones</summary>
+        <div class="body">
+          <p>Se abre expediente tras oír al menor, con informe previo de los servicios de protección y del MF, si se concluye
+          que lo mejor para el menor es reunirse con su familia en origen o quedar al cuidado de los servicios de protección allí.
+          La incoación se notifica de inmediato al menor y a la entidad tutora.</p>
+          <ul>
+            <li><b>Alegaciones: 10 días.</b></li>
+            <li>Mayores de 16 años: actúan directamente.</li>
+            <li>Menores de 16: representados por tutor legal (o similar).</li>
+            <li>Si hay conflicto de interés y el menor tiene suficiente madurez (más de 12 años) frente a su tutor: se suspende y se garantiza un defensor judicial.</li>
+            <li>Los servicios de protección pueden acordar un periodo de prueba de entre <b>10 y 30 días</b>.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="accordion protec">
+        <summary>Audiencia y resolución</summary>
+        <div class="body">
+          <p>Participan el menor, su representante y el MF. Se decide: repatriación, ponerlo a disposición de los servicios de protección de su país, o autorizar su permanencia en España.</p>
+          <ul>
+            <li>La resolución pone fin a la vía administrativa.</li>
+            <li>Se notifica al menor, representante y MF en <b>10 días</b>.</li>
+            <li><b>Plazo máximo total para resolución y notificación: 6 meses</b> desde el inicio del procedimiento.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="accordion admin">
+        <summary>Si la repatriación no puede ejecutarse</summary>
+        <div class="body">
+          <ul>
+            <li>Tras <b>90 días</b> sin retorno efectivo, la <span class="gloss" tabindex="0">OEX<span class="tip">Oficina de Extranjería</span></span> —de oficio, por orden superior o a instancia de parte— inicia el trámite de autorización de residencia.</li>
+            <li>Resolución de Del./Subdel. en <b>máx. 1 mes</b> (silencio negativo).</li>
+            <li>Se comunica al MF en <b>máx. 10 días</b>.</li>
+            <li>El representante del menor debe solicitar personalmente la <span class="gloss" tabindex="0">TIE<span class="tip">Tarjeta de Identidad de Extranjero</span></span> en <b>1 mes</b>.</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <section id="residencia">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4f8fd6" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
+        </div>
+        <h2>Autorización de residencia</h2><span class="num">D</span>
+      </div>
+      <div class="cardgrid">
+        <div class="card blue">
+          <h4>Duración inicial</h4>
+          <p><b>2 años</b>, desde que el menor quedó bajo protección.</p>
+        </div>
+        <div class="card amber">
+          <h4>Prórroga automática</h4>
+          <p><b>2 meses antes</b> de que expire, manteniendo la validez mientras se tramita.</p>
+        </div>
+        <div class="card blue">
+          <h4>Renovaciones posteriores</h4>
+          <p>Normalmente <b>3 años</b> (o 2 años si alcanza la mayoría de edad durante ese periodo), o residencia de larga duración si procede.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contingencia">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d69b3f" stroke-width="1.8"><path d="M12 3l9 16H3z"/><path d="M12 9v5"/><circle cx="12" cy="17" r="0.6" fill="#d69b3f"/></svg>
+        </div>
+        <h2>Plan de contingencia solidaria</h2><span class="num">E</span>
+      </div>
+      <p>Situaciones de afluencia migratoria extraordinaria.</p>
+      <div class="cardgrid">
+        <div class="card amber">
+          <h4>Objetivo</h4>
+          <p>Fijar acciones ante una contingencia migratoria extraordinaria, incluyendo protocolos y normativa aplicable.</p>
+        </div>
+        <div class="card amber">
+          <h4>Registro</h4>
+          <p>Inscripción en el Registro MENA en <b>máx. 24 horas</b>, sea la minoría de edad indubitada o no.</p>
+        </div>
+        <div class="card amber">
+          <h4>Traslado</h4>
+          <p>Reubicación en <b>máx. 15 días</b> desde la inscripción, a la comunidad autónoma determinada por el Estado.</p>
+        </div>
+        <div class="card amber">
+          <h4>Resolución de ubicación</h4>
+          <p>Decisión sobre comunidad de destino en el mismo plazo de <b>15 días</b>, con participación del Ministerio.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="plazos">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d6544f" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg>
+        </div>
+        <h2>Panel de plazos clave</h2><span class="num">chuleta rápida</span>
+      </div>
+      <div class="chips">
+        <div class="chip"><span class="tag">Registro</span><b>24h</b></div>
+        <div class="chip"><span class="tag">Alegaciones</span><b>10 días</b></div>
+        <div class="chip"><span class="tag">Prueba</span><b>10–30 días</b></div>
+        <div class="chip"><span class="tag">Notif. resolución</span><b>10 días</b></div>
+        <div class="chip alert"><span class="tag">Máx. total repatriación</span><b>6 meses</b></div>
+        <div class="chip alert"><span class="tag">Sin retorno efectivo</span><b>90 días</b></div>
+        <div class="chip"><span class="tag">Resolución residencia</span><b>1 mes</b></div>
+        <div class="chip"><span class="tag">Comunicación MF</span><b>10 días</b></div>
+        <div class="chip"><span class="tag">Solicitud TIE</span><b>1 mes</b></div>
+        <div class="chip"><span class="tag">Traslado (contingencia)</span><b>15 días</b></div>
+        <div class="chip"><span class="tag">Residencia inicial</span><b>2 años</b></div>
+        <div class="chip"><span class="tag">Prórroga previa</span><b>2 meses</b></div>
+        <div class="chip"><span class="tag">Renovación</span><b>3 años</b></div>
+      </div>
+    </section>
+
+    <section id="organos">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5fbf9f" stroke-width="1.8"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7z"/></svg>
+        </div>
+        <h2>Órganos para la integración social</h2><span class="num">F</span>
+      </div>
+      <div class="table-controls">
+        <input type="text" id="tblFilter" placeholder="Filtrar por nombre, función o periodicidad…">
+      </div>
+      <table id="organTable">
+        <thead>
+          <tr>
+            <th data-k="0">Órgano ▲▼</th>
+            <th data-k="1">Función</th>
+            <th data-k="2">Composición</th>
+            <th data-k="3">Periodicidad ▲▼</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Foro para la Integración de los Inmigrantes</td>
+            <td>Consulta, información y asesoramiento en integración de inmigrantes</td>
+            <td>Tripartito y equilibrado: AP, asociaciones de inmigrantes, organizaciones sindicales y empresariales</td>
+            <td>Anual</td>
+          </tr>
+          <tr>
+            <td>Observatorio Español del Racismo y la Xenofobia</td>
+            <td>Estudio y análisis; puede elevar propuestas contra el racismo y la xenofobia</td>
+            <td>—</td>
+            <td>Anual</td>
+          </tr>
+          <tr>
+            <td>Comisión Laboral Tripartita de Inmigración</td>
+            <td>Órgano colegiado adscrito al Ministerio competente en inmigración; informada y consultada sobre catálogo de ocupaciones de difícil cobertura, gestión colectiva de contrataciones en origen y contratación de temporeros</td>
+            <td>Organizaciones sindicales y empresariales</td>
+            <td>Semestral</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="quiz" class="no-print">
+      <div class="section-head">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5fbf9f" stroke-width="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <h2>Autoevaluación</h2><span class="num">5 preguntas</span>
+      </div>
+      <div id="quiz-container"></div>
+      <p id="quiz-score"></p>
+    </section>
+
+  </main>
+</div>
+
+<footer>MENAS — Guía de estudio autocontenida · Generada para preparación CNP · Sin dependencias externas</footer>
+
+<script>
+// ===== Progress bar & active nav =====
+const sections = document.querySelectorAll('main section');
+const navLinks = document.querySelectorAll('nav.sidebar a');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progressbar').style.width = pct + '%';
+
+  let current = '';
+  sections.forEach(s => {
+    const rect = s.getBoundingClientRect();
+    if (rect.top <= 120) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+
+// ===== Timeline toggle =====
+document.querySelectorAll('.tstep').forEach(step => {
+  step.addEventListener('click', () => {
+    const wasOpen = step.classList.contains('open');
+    document.querySelectorAll('.tstep').forEach(s => s.classList.remove('open'));
+    if (!wasOpen) step.classList.add('open');
+  });
+});
+
+// ===== Table filter =====
+const filterInput = document.getElementById('tblFilter');
+filterInput.addEventListener('input', () => {
+  const q = filterInput.value.toLowerCase();
+  document.querySelectorAll('#organTable tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+
+// ===== Table sort =====
+document.querySelectorAll('#organTable thead th').forEach(th => {
+  let asc = true;
+  th.addEventListener('click', () => {
+    const k = +th.dataset.k;
+    const tbody = document.querySelector('#organTable tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a,b) => {
+      const av = a.children[k].textContent.trim();
+      const bv = b.children[k].textContent.trim();
+      return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+    });
+    rows.forEach(r => tbody.appendChild(r));
+    asc = !asc;
+  });
+});
+
+// ===== Quiz =====
+const quizData = [
+  {
+    q: "¿Cuál es el plazo para presentar alegaciones tras la incoación del expediente de repatriación?",
+    opts: ["5 días", "10 días", "30 días", "1 mes"],
+    correct: 1
+  },
+  {
+    q: "¿Cuál es el plazo máximo total para resolver y notificar el procedimiento de repatriación?",
+    opts: ["90 días", "3 meses", "6 meses", "1 año"],
+    correct: 2
+  },
+  {
+    q: "Si tras cuántos días sin retorno efectivo la OEX inicia el trámite de autorización de residencia?",
+    opts: ["30 días", "60 días", "90 días", "120 días"],
+    correct: 2
+  },
+  {
+    q: "¿Cuál es la duración inicial de la autorización de residencia del MENA?",
+    opts: ["1 año", "2 años", "3 años", "5 años"],
+    correct: 1
+  },
+  {
+    q: "¿Con qué periodicidad informa el Foro para la Integración de los Inmigrantes?",
+    opts: ["Trimestral", "Semestral", "Anual", "Bienal"],
+    correct: 2
+  }
+];
+
+let score = 0;
+let answered = 0;
+const quizContainer = document.getElementById('quiz-container');
+
+quizData.forEach((item, qi) => {
+  const div = document.createElement('div');
+  div.className = 'quiz-q';
+  const p = document.createElement('p');
+  p.className = 'q';
+  p.textContent = (qi+1) + '. ' + item.q;
+  div.appendChild(p);
+  item.opts.forEach((opt, oi) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if (btn.dataset.locked) return;
+      const buttons = div.querySelectorAll('.quiz-opt');
+      buttons.forEach(b => b.dataset.locked = 'true');
+      if (oi === item.correct) {
+        btn.classList.add('correct');
+        score++;
+      } else {
+        btn.classList.add('wrong');
+        buttons[item.correct].classList.add('correct');
+      }
+      answered++;
+      updateScore();
+    });
+    div.appendChild(btn);
+  });
+  quizContainer.appendChild(div);
+});
+
+function updateScore(){
+  document.getElementById('quiz-score').textContent =
+    `Puntuación: ${score} / ${quizData.length} (${answered} de ${quizData.length} respondidas)`;
+}
+</script>
+</body>
+</html>

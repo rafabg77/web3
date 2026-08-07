@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>RD 240/2007 vs LO 4/2000 — Guía Diferenciadora</title>
+<style>
+  :root{
+    --azul: #1e5fa8;
+    --azul-d: #0d3c73;
+    --azul-l: #e8f1fb;
+    --naranja: #c9601c;
+    --naranja-d: #8f4310;
+    --naranja-l: #fbeee2;
+    --gris: #4a4a4a;
+    --gris-l: #f6f6f4;
+    --bg: #fdfcf9;
+    --ok: #1f7a4d;
+    --bad: #b3261e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family: 'Georgia', 'Times New Roman', serif;
+    background:var(--bg); color:#222; line-height:1.5;
+  }
+  .top{
+    background: linear-gradient(120deg, var(--azul-d), var(--azul) 55%, var(--naranja-d));
+    color:#fff; padding:40px 24px 32px; text-align:center;
+  }
+  .top h1{margin:0 0 8px; font-size:1.9rem; letter-spacing:.5px;}
+  .top p{margin:0; font-family: Arial, sans-serif; opacity:.9; font-size:.95rem;}
+  .badge-row{margin-top:18px; display:flex; justify-content:center; gap:14px; flex-wrap:wrap;}
+  .badge{
+    font-family: Arial, sans-serif; font-size:.8rem; background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.4); padding:6px 14px; border-radius:20px;
+  }
+  .container{max-width:1180px; margin:0 auto; padding:28px 20px 60px;}
+
+  /* Objeto comparativo */
+  .vs-wrap{display:flex; gap:18px; margin:20px 0 36px; flex-wrap:wrap;}
+  .card{flex:1; min-width:300px; border-radius:14px; padding:22px 24px; box-shadow:0 4px 14px rgba(0,0,0,.08);}
+  .card.rd{background:var(--azul-l); border:2px solid var(--azul);}
+  .card.lo{background:var(--naranja-l); border:2px solid var(--naranja);}
+  .card h2{margin-top:0; font-size:1.15rem;}
+  .card.rd h2{color:var(--azul-d);}
+  .card.lo h2{color:var(--naranja-d);}
+  .card .sub{font-family:Arial, sans-serif; font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; opacity:.75; margin-bottom:10px;}
+  .vs-center{
+    align-self:center; font-family:Arial, sans-serif; font-weight:bold; font-size:1.3rem;
+    color:#999; padding:0 6px;
+  }
+
+  h2.section-title{
+    font-size:1.3rem; color:var(--azul-d); border-bottom:3px solid var(--azul);
+    padding-bottom:6px; margin-top:48px;
+  }
+  h2.section-title.alt{color:var(--naranja-d); border-bottom-color:var(--naranja);}
+
+  .tip{
+    font-family:Arial, sans-serif; background:#fff8e1; border-left:4px solid #e8a33d;
+    padding:10px 16px; font-size:.88rem; margin:16px 0; border-radius:4px;
+  }
+
+  /* Tabla comparativa */
+  table.compare{
+    width:100%; border-collapse:collapse; margin:18px 0 10px; font-family:Arial, sans-serif; font-size:.88rem;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+  }
+  table.compare th, table.compare td{
+    padding:10px 12px; text-align:left; vertical-align:top; border:1px solid #ddd;
+  }
+  table.compare th{
+    background:var(--gris-l); font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color:#555;
+  }
+  table.compare th.rd-h{background:var(--azul); color:#fff;}
+  table.compare th.lo-h{background:var(--naranja); color:#fff;}
+  table.compare td.rd-c{background:var(--azul-l);}
+  table.compare td.lo-c{background:var(--naranja-l);}
+  table.compare tr:nth-child(even) td.criterio{background:#f0f0ec;}
+  td.criterio{font-weight:bold; background:var(--gris-l); width:18%;}
+
+  /* Botones toggle sección */
+  .toggle-nav{
+    display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 8px; font-family:Arial, sans-serif;
+  }
+  .toggle-nav button{
+    cursor:pointer; border:none; padding:8px 16px; border-radius:20px; font-size:.85rem;
+    background:#eee; color:#333; transition:.15s;
+  }
+  .toggle-nav button.active{background:var(--azul); color:#fff;}
+
+  .flash{
+    background:#fff; border:1px solid #e2e2e2; border-radius:10px; padding:16px 18px;
+    margin:12px 0; box-shadow:0 2px 6px rgba(0,0,0,.05);
+  }
+  .flash .q{font-family:Arial, sans-serif; font-weight:bold; color:var(--azul-d); margin-bottom:6px; cursor:pointer;}
+  .flash .a{display:none; font-size:.92rem; padding-top:6px; border-top:1px dashed #ccc; margin-top:6px;}
+  .flash .a.show{display:block;}
+  .flash .tag{display:inline-block; font-family:Arial, sans-serif; font-size:.7rem; padding:2px 8px; border-radius:10px; color:#fff; margin-right:8px;}
+  .tag.rd{background:var(--azul);}
+  .tag.lo{background:var(--naranja);}
+
+  .quiz-box{
+    background:#fff; border:2px solid #ddd; border-radius:12px; padding:20px; margin:16px 0;
+  }
+  .quiz-q{font-family:Arial, sans-serif; font-weight:bold; margin-bottom:10px;}
+  .quiz-opts button{
+    display:block; width:100%; text-align:left; padding:10px 14px; margin:6px 0;
+    border:1px solid #ccc; border-radius:8px; background:#fafafa; cursor:pointer; font-family:Arial, sans-serif; font-size:.9rem;
+  }
+  .quiz-opts button.correct{background:#d7f2e0; border-color:var(--ok);}
+  .quiz-opts button.wrong{background:#fbdcda; border-color:var(--bad);}
+  .quiz-feedback{font-family:Arial, sans-serif; font-size:.85rem; margin-top:8px; font-weight:bold;}
+
+  .legend-note{
+    font-family:Arial, sans-serif; font-size:.82rem; color:#666; text-align:center; margin:6px 0 28px;
+  }
+
+  .footer{
+    text-align:center; font-family:Arial, sans-serif; font-size:.78rem; color:#888; padding:30px 10px 10px;
+    border-top:1px solid #eee; margin-top:50px;
+  }
+
+  .verif{
+    font-family:Arial, sans-serif; background:#eef7ee; border:1px solid #bfe3bf; border-radius:10px;
+    padding:14px 18px; font-size:.85rem; margin:14px 0 30px;
+  }
+  .verif b{color:var(--ok);}
+
+  @media print{
+    .toggle-nav, .quiz-box, .flash .q{display:none;}
+    .flash .a{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>⚖️ RD 240/2007 vs LO 4/2000</h1>
+  <p>Guía diferenciadora — Tema 10, Escala Básica CNP · Régimen Comunitario vs Régimen General de Extranjería</p>
+  <div class="badge-row">
+    <span class="badge">🔵 RD 240/2007 — Régimen COMUNITARIO</span>
+    <span class="badge">🟠 LO 4/2000 (LOEX) — Régimen GENERAL</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="verif">
+✅ <b>Verificado con normativa vigente (BOE, julio 2026):</b> El RD 240/2007 sigue en vigor (última modificación relevante: RD 1710/2011, en vigor desde el 27/11/2011). La LO 4/2000 sigue en vigor, actualmente desarrollada por su nuevo reglamento, el RD 1155/2024. Ambas normas conviven: la LO 4/2000 se aplica a los ciudadanos del régimen comunitario en lo que les resulte <i>más favorable</i> (art. 1.2 LOEX / art. 2 y DA de su Reglamento).
+</div>
+
+<h2 class="section-title">🎯 El error nº1 que hay que eliminar</h2>
+<p>La confusión no está en el contenido, está en <b>a quién se aplica cada norma</b>. Todo lo demás (visados, tarjetas, expulsión, reagrupación...) son <i>consecuencias</i> de esa primera pregunta. Fija esto y ya no te perderás:</p>
+
+<div class="vs-wrap">
+  <div class="card rd">
+    <div class="sub">Ámbito subjetivo</div>
+    <h2>🔵 RD 240/2007</h2>
+    <p><b>Se aplica a:</b> ciudadanos de la UE (27), del EEE (+ Islandia, Liechtenstein, Noruega) y de Suiza, y a sus familiares (de cualquier nacionalidad) que les acompañen o se reúnan con ellos.</p>
+    <p><b>Objeto (art. 1):</b> regular entrada, salida, libre circulación, estancia, residencia, residencia permanente y trabajo de estos ciudadanos, con las limitaciones por orden, seguridad y salud pública.</p>
+    <p><b>Filosofía:</b> desarrolla el Derecho de la UE (Directiva 2004/38/CE) → régimen de <i>libre circulación</i>, más favorable y con menos trabas.</p>
+  </div>
+  <div class="vs-center">VS</div>
+  <div class="card lo">
+    <div class="sub">Ámbito subjetivo</div>
+    <h2>🟠 LO 4/2000 (LOEX)</h2>
+    <p><b>Se aplica a:</b> todo extranjero (art. 1) — es decir, quien carezca de nacionalidad española — <b>que NO esté en el régimen comunitario</b>. Es el régimen "general" o "residual".</p>
+    <p><b>Objeto:</b> regular los derechos y libertades de los extranjeros en España y su integración social (documentación, entrada/salida, estancias, residencias, trabajo, expulsión, infracciones, integración).</p>
+    <p><b>Filosofía:</b> régimen nacional de extranjería, más restrictivo y con más autorizaciones administrativas previas (visados, autorizaciones de trabajo, etc.).</p>
+  </div>
+</div>
+
+<div class="tip">
+💡 <b>Regla mnemotécnica:</b> RD 240/2007 = "Europa entre Europa" (ciudadano UE/EEE/Suiza + sus familiares). LO 4/2000 = "el resto del mundo" (todos los demás extranjeros: régimen general).<br>
+🔗 <b>El puente entre ambas:</b> el art. 1.2 de la LOEX dice que a los ciudadanos del régimen comunitario también se les aplica la LOEX en lo que les sea <i>más favorable</i>. Es decir: RD 240/2007 no deroga ni sustituye a la LO 4/2000, sino que es un régimen especial y prioritario para un colectivo concreto.
+</div>
+
+<h2 class="section-title">📊 Tabla maestra de diferenciación</h2>
+<p style="font-family:Arial, sans-serif; font-size:.85rem; color:#666;">Compara los mismos conceptos en ambos regímenes. Este es el núcleo de la confusión típica en examen.</p>
+
+<table class="compare">
+  <tr>
+    <th>Criterio</th>
+    <th class="rd-h">🔵 RD 240/2007 (Comunitario)</th>
+    <th class="lo-h">🟠 LO 4/2000 (General)</th>
+  </tr>
+  <tr>
+    <td class="criterio">Norma de origen</td>
+    <td class="rd-c">Real Decreto (norma reglamentaria) que traspone la Directiva 2004/38/CE.</td>
+    <td class="lo-c">Ley Orgánica (rango de ley), desarrollada reglamentariamente por el RD 1155/2024.</td>
+  </tr>
+  <tr>
+    <td class="criterio">Sujetos</td>
+    <td class="rd-c">Ciudadanos UE/EEE/Suiza + familiares (cualquier nacionalidad) que les acompañan/reúnen.</td>
+    <td class="lo-c">Resto de extranjeros (régimen general), excluidos diplomáticos y organismos internacionales (art. 2).</td>
+  </tr>
+  <tr>
+    <td class="criterio">Documento para +3 meses</td>
+    <td class="rd-c">Ciudadano: <b>Certificado de Registro</b> (Registro Central de Extranjeros). Familiar no comunitario: <b>Tarjeta de Residencia de Familiar de Ciudadano UE.</b></td>
+    <td class="lo-c"><b>Tarjeta de Identidad de Extranjero (TIE)</b>, obligatoria para toda estancia superior a 6 meses.</td>
+  </tr>
+  <tr>
+    <td class="criterio">Visado de entrada</td>
+    <td class="rd-c">Ciudadano UE: NO necesita visado (solo pasaporte/DNI). Familiar no comunitario: SÍ, salvo que tenga la Tarjeta de Residencia de Familiar de Ciudadano UE (le exime).</td>
+    <td class="lo-c">Por regla general SÍ es necesario (salvo exenciones tasadas: TIE, autorización de regreso, países exentos UE, etc.).</td>
+  </tr>
+  <tr>
+    <td class="criterio">Residencia ≥3 meses: requisitos</td>
+    <td class="rd-c">Trabajar, tener medios+seguro, estudiar con medios+seguro, o ser familiar de quien cumple lo anterior (art. 7).</td>
+    <td class="lo-c">Régimen tasado de autorizaciones (no lucrativa, trabajo por cuenta propia/ajena, estudios, arraigo, reagrupación, circunstancias excepcionales...).</td>
+  </tr>
+  <tr>
+    <td class="criterio">Caducidad de la residencia</td>
+    <td class="rd-c">La del <b>ciudadano</b> comunitario NO caduca (mientras cumpla requisitos); la del <b>familiar</b> se renueva a los 5 años.</td>
+    <td class="lo-c">Las autorizaciones son temporales y deben renovarse periódicamente (1 año, 2 años, 5 años según tipo) hasta acceder a la Residencia de Larga Duración.</td>
+  </tr>
+  <tr>
+    <td class="criterio">Residencia "indefinida" tras 5 años</td>
+    <td class="rd-c"><b>Residencia permanente</b> (art. 10 RD 240/2007) — Certificado del Derecho a Residir con Carácter Permanente.</td>
+    <td class="lo-c"><b>Residencia de Larga Duración (RLD)</b> — nacional o RLD-UE (Directiva 2003/109/CE) — TIE renovable cada 5 o 10 años.</td>
+  </tr>
+  <tr>
+    <td class="criterio">Ausencias que no rompen la continuidad</td>
+    <td class="rd-c">Hasta 6 meses en 1 año (con excepciones tasadas: estudios UE, gestación, enfermedad grave, etc.).</td>
+    <td class="lo-c">Hasta 6 meses continuados (máx. 10 meses en 5 años general; hasta 18 meses por motivos laborales o Tarjeta Azul-UE).</td>
+  </tr>
+  <tr>
+    <td class="criterio">Expulsión / medidas de orden público</td>
+    <td class="rd-c">Umbral <b>reforzado</b>: motivos graves si hay residencia permanente; motivos <b>imperiosos</b> si hay 10 años de residencia o es menor de edad. Muy protector (Capítulo VI).</td>
+    <td class="lo-c">Umbral general del régimen sancionador de extranjería (Título III LOEX): expulsión como sanción o consecuencia de estancia/residencia irregular, con procedimiento preferente o de infracciones.</td>
+  </tr>
+  <tr>
+    <td class="criterio">Reagrupación familiar</td>
+    <td class="rd-c">No se llama "reagrupación": se habla de familiares "que acompañan o se reúnen con él", regulado dentro del propio RD (art. 2).</td>
+    <td class="lo-c">Institución expresamente regulada como <b>Reagrupación Familiar</b> (Capítulo II Título I LOEX): cónyuge, hijos, ascendientes +65, requisitos de vivienda/medios económicos (400% IPREM + 100% por familiar).</td>
+  </tr>
+  <tr>
+    <td class="criterio">Órgano tramitador habitual</td>
+    <td class="rd-c">Oficina de Extranjería (OEX) o Comisaría de Policía de la provincia.</td>
+    <td class="lo-c">OEX, Delegación/Subdelegación del Gobierno, según el trámite.</td>
+  </tr>
+  <tr>
+    <td class="criterio">Vínculo entre ambas normas</td>
+    <td class="rd-c" colspan="2" style="background:var(--gris-l); text-align:center;">Art. 1.2 LOEX: al ciudadano comunitario se le aplica la LOEX en lo que le sea <b>más favorable</b>. No son excluyentes: son un sistema de "norma especial (RD 240/2007) + norma supletoria favorable (LO 4/2000)".</td>
+  </tr>
+</table>
+
+<div class="tip">
+⚠️ <b>Trampa típica de examen:</b> preguntar por "Tarjeta de Identidad de Extranjero" dando por hecho que es lo mismo que "Certificado de Registro" o "Tarjeta de Residencia de Familiar de Ciudadano UE". <b>No son intercambiables</b>: la TIE es del régimen general (LOEX); el Certificado de Registro es del ciudadano comunitario; la Tarjeta de Residencia de Familiar de Ciudadano UE es del familiar no comunitario de un ciudadano UE — ¡las tres bajo normas y lógicas distintas!
+</div>
+
+<h2 class="section-title alt">🃏 Tarjetas rápidas (pulsa para ver la respuesta)</h2>
+<div id="flashArea"></div>
+
+<h2 class="section-title">✅ Autoevaluación rápida</h2>
+<div id="quizArea"></div>
+<div style="text-align:center; margin-top:14px;">
+  <button onclick="location.reload()" style="font-family:Arial, sans-serif; padding:10px 20px; border-radius:20px; border:none; background:var(--azul); color:#fff; cursor:pointer;">🔄 Reiniciar cuestionario</button>
+</div>
+
+</div>
+
+<div class="footer">
+  Guía de estudio personal — Tema 10 CNP Escala Básica · Contenido contrastado con BOE-A-2007-4184 (consolidado) y normativa vigente de la LO 4/2000 / RD 1155/2024 · Julio 2026
+</div>
+
+<script>
+const flashcards = [
+  {tag:"rd", q:"¿Qué documento acredita al CIUDADANO comunitario que reside +3 meses?", a:"El <b>Certificado de Registro</b> en el Registro Central de Extranjeros (contiene nombre, nacionalidad, domicilio, NIE y fecha de registro). No es una tarjeta física de extranjería tipo TIE."},
+  {tag:"rd", q:"¿Qué documento acredita al FAMILIAR NO comunitario de un ciudadano UE?", a:"La <b>Tarjeta de Residencia de Familiar de Ciudadano UE</b>, válida por 5 años (o el periodo de residencia previsto del comunitario, si es menor), y que exime del visado de entrada."},
+  {tag:"lo", q:"¿Qué documento identifica a un extranjero del régimen general que permanece +6 meses?", a:"La <b>Tarjeta de Identidad de Extranjero (TIE)</b>, que debe solicitarse en el plazo de 1 mes desde la autorización correspondiente."},
+  {tag:"rd", q:"¿Caduca la residencia del ciudadano comunitario?", a:"No caduca mientras siga cumpliendo los requisitos. Es distinto del familiar, cuya tarjeta sí debe renovarse a los 5 años."},
+  {tag:"lo", q:"¿Cómo se llama la autorización 'indefinida' tras 5 años en el régimen general?", a:"<b>Residencia de Larga Duración (RLD)</b>, nacional o RLD-UE (Directiva 2003/109/CE), con renovación de TIE cada 5 o 10 años según edad."},
+  {tag:"rd", q:"¿Cómo se llama la autorización equivalente tras 5 años en el régimen comunitario?", a:"<b>Residencia Permanente</b> (art. 10 RD 240/2007), acreditada mediante Certificado del Derecho a Residir con Carácter Permanente."},
+  {tag:"lo", q:"¿Qué IPREM se exige para reagrupar familiares en el régimen general?", a:"400% del IPREM para el reagrupante + 100% adicional por cada familiar a reagrupar (no computan ayudas de la SS)."},
+  {tag:"rd", q:"¿Con qué umbral se protege frente a la expulsión a un comunitario con 10 años de residencia o menor de edad?", a:"Solo puede expulsarse por <b>motivos imperiosos de seguridad pública</b> — el umbral más alto de protección del RD 240/2007."},
+  {tag:"lo", q:"¿Se aplica siempre la LOEX en exclusiva a los ciudadanos comunitarios?", a:"No: la LOEX se les aplica de forma <b>supletoria y solo si les resulta más favorable</b> (art. 1.2 LOEX). El RD 240/2007 prevalece como norma especial."},
+  {tag:"rd", q:"¿Necesita visado un ciudadano UE para entrar en España?", a:"No. Le basta con pasaporte o documento de identidad válido y en vigor que acredite su nacionalidad (art. 4 RD 240/2007)."}
+];
+
+const flashArea = document.getElementById('flashArea');
+flashcards.forEach((f,i)=>{
+  const div = document.createElement('div');
+  div.className = 'flash';
+  div.innerHTML = `<div class="q" onclick="this.nextElementSibling.classList.toggle('show')">
+      <span class="tag ${f.tag}">${f.tag==='rd'?'RD 240/2007':'LO 4/2000'}</span>${f.q}
+    </div>
+    <div class="a">${f.a}</div>`;
+  flashArea.appendChild(div);
+});
+
+const quiz = [
+  {
+    q:"1. Un familiar de un ciudadano alemán (no comunitario él mismo) quiere residir en España más de 3 meses. ¿Qué necesita?",
+    opts:["TIE del régimen general", "Tarjeta de Residencia de Familiar de Ciudadano UE", "Certificado de Registro", "Visado de larga duración tipo D"],
+    correct:1,
+    exp:"Es un familiar no comunitario de un ciudadano UE: le corresponde el RD 240/2007, y su documento es la Tarjeta de Residencia de Familiar de Ciudadano UE, no la TIE del régimen general."
+  },
+  {
+    q:"2. ¿Qué norma regula la Reagrupación Familiar como institución con ese nombre?",
+    opts:["RD 240/2007", "LO 4/2000 (LOEX)", "Ambas por igual", "Ninguna, es un concepto solo jurisprudencial"],
+    correct:1,
+    exp:"La Reagrupación Familiar como figura jurídica con ese nombre está en el Capítulo II del Título I de la LOEX (régimen general)."
+  },
+  {
+    q:"3. Un ciudadano comunitario con residencia permanente en España solo puede ser expulsado por:",
+    opts:["Cualquier motivo de orden público", "Motivos graves de orden o seguridad pública", "Motivos económicos", "Denuncia de un particular"],
+    correct:1,
+    exp:"Con residencia permanente, el umbral sube a 'motivos graves' de orden o seguridad pública (y a 'motivos imperiosos' si hay 10 años de residencia o es menor)."
+  },
+  {
+    q:"4. ¿Qué documento acredita al ciudadano UE registrado (no a su familiar) tras solicitar su inscripción?",
+    opts:["Tarjeta de Identidad de Extranjero", "Resguardo Acreditativo", "Certificado de Registro", "Autorización de residencia temporal"],
+    correct:2,
+    exp:"El ciudadano comunitario obtiene el Certificado de Registro; el Resguardo Acreditativo es lo que recibe el familiar mientras tramita su tarjeta."
+  },
+  {
+    q:"5. El artículo 1.2 de la LOEX establece que a los ciudadanos del régimen comunitario:",
+    opts:["Nunca se les aplica la LOEX", "Se les aplica la LOEX en lo que les resulte más favorable", "Se les aplica la LOEX solo en materia de expulsión", "Se les aplica la LOEX en lugar del RD 240/2007"],
+    correct:1,
+    exp:"Es la 'norma puente': la LOEX actúa como red de protección adicional para los comunitarios cuando les es más favorable que el RD 240/2007."
+  }
+];
+
+const quizArea = document.getElementById('quizArea');
+quiz.forEach((item, qi)=>{
+  const box = document.createElement('div');
+  box.className = 'quiz-box';
+  let optsHtml = '<div class="quiz-opts">';
+  item.opts.forEach((o,oi)=>{
+    optsHtml += `<button onclick="answerQuiz(${qi},${oi})" id="q${qi}o${oi}">${o}</button>`;
+  });
+  optsHtml += '</div><div class="quiz-feedback" id="fb'+qi+'"></div>';
+  box.innerHTML = `<div class="quiz-q">${item.q}</div>${optsHtml}`;
+  quizArea.appendChild(box);
+});
+
+function answerQuiz(qi, oi){
+  const item = quiz[qi];
+  for(let i=0;i<item.opts.length;i++){
+    const btn = document.getElementById(`q${qi}o${i}`);
+    btn.disabled = true;
+    if(i === item.correct) btn.classList.add('correct');
+    if(i === oi && i !== item.correct) btn.classList.add('wrong');
+  }
+  const fb = document.getElementById('fb'+qi);
+  fb.style.color = (oi===item.correct) ? '#1f7a4d' : '#b3261e';
+  fb.textContent = (oi===item.correct ? '✅ Correcto. ' : '❌ Incorrecto. ') + item.exp;
+}
+</script>
+
+</body>
+</html>

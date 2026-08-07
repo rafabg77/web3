@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST INFALIBLE · Tema 21 · Derecho Procesal Penal · CNP</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c10;
+  --bg2: #111520;
+  --bg3: #181d2a;
+  --card: #1a1f2e;
+  --border: #252d40;
+  --garnet: #c0394a;
+  --garnet-glow: rgba(192,57,74,0.18);
+  --brass: #d4a43a;
+  --brass-glow: rgba(212,164,58,0.15);
+  --green: #2ecc7e;
+  --green-glow: rgba(46,204,126,0.15);
+  --blue: #4a9eff;
+  --text: #e8e4dc;
+  --text2: #9ba5b8;
+  --text3: #5a6479;
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Fraunces', serif;
+  --sans: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── FONDO ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(192,57,74,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(74,158,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── BARRA DE PROGRESO ── */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--garnet), var(--brass));
+  z-index: 1000;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* ── PANTALLA INICIO ── */
+#screen-start {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.badge-t21 {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid var(--garnet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 32px;
+  position: relative;
+  animation: breathe 3s ease-in-out infinite;
+}
+.badge-t21::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(192,57,74,0.3);
+  animation: spin 15s linear infinite;
+}
+.badge-t21 .badge-inner {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--garnet);
+  line-height: 1;
+  text-align: center;
+}
+.badge-t21 .badge-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--brass);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,74,0); }
+  50% { box-shadow: 0 0 30px 6px rgba(192,57,74,0.15); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.start-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--garnet);
+  margin-bottom: 16px;
+}
+.start-title {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.04;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.start-title em { color: var(--garnet); font-style: italic; font-weight: 600; }
+.start-sub {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 520px;
+  margin: 0 auto 36px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.stat-pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 7px 15px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+}
+.stat-pill b { color: var(--text); }
+
+.btn-start {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--garnet);
+  color: #fff;
+  border: none;
+  padding: 16px 48px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-start::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(192,57,74,0.4); }
+.btn-start:active { transform: translateY(0); }
+
+.warning-box {
+  margin-top: 32px;
+  background: rgba(212,164,58,0.08);
+  border: 1px solid rgba(212,164,58,0.3);
+  border-radius: 8px;
+  padding: 16px 20px;
+  max-width: 480px;
+  text-align: left;
+}
+.warning-box .w-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.warning-box p {
+  font-size: 13px;
+  color: #bfb8a8;
+  line-height: 1.5;
+}
+
+/* ── CABECERA TEST ── */
+#screen-test {
+  display: none;
+  position: relative;
+  z-index: 1;
+}
+
+.test-header {
+  position: sticky;
+  top: 0;
+  background: rgba(10,12,16,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.test-header .h-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+.test-header .h-num b { color: var(--brass); }
+.h-track {
+  flex: 1;
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.h-track-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--garnet), var(--brass));
+  transition: width 0.4s ease;
+  border-radius: 2px;
+}
+.h-score {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+.h-score .s-ok { color: var(--green); font-weight: 700; }
+.h-score .s-fail { color: var(--garnet); font-weight: 700; }
+
+.h-timer {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brass);
+  white-space: nowrap;
+}
+.h-timer.urgent { color: var(--garnet); animation: blink 0.8s step-end infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ── PREGUNTA ── */
+.question-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.question-card {
+  margin: 40px 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: slideIn 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+.q-header {
+  padding: 20px 26px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.q-num {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--brass);
+}
+.q-meta {
+  flex: 1;
+}
+.q-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.q-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.q-tag.kill { background: #1a0a0d; color: var(--garnet); border: 1px solid rgba(192,57,74,0.4); }
+.q-tag.trap { background: #1a1500; color: var(--brass); border: 1px solid rgba(212,164,58,0.4); }
+.q-tag.hot { background: #0a1a14; color: var(--green); border: 1px solid rgba(46,204,126,0.3); }
+.q-tag.new { background: #0a1020; color: var(--blue); border: 1px solid rgba(74,158,255,0.3); }
+
+.q-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ── OPCIONES ── */
+.q-opts {
+  padding: 20px 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg2);
+  position: relative;
+}
+.opt:hover:not(.locked) {
+  border-color: rgba(212,164,58,0.5);
+  background: rgba(212,164,58,0.04);
+  transform: translateX(3px);
+}
+.opt-letter {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text3);
+  transition: all 0.2s;
+}
+.opt-text {
+  font-size: 14.5px;
+  color: var(--text2);
+  line-height: 1.45;
+  padding-top: 4px;
+}
+
+/* Estados */
+.opt.correct {
+  border-color: var(--green);
+  background: var(--green-glow);
+  animation: correctPulse 0.4s ease;
+}
+.opt.correct .opt-letter {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+.opt.correct .opt-text { color: var(--green); font-weight: 600; }
+
+.opt.wrong {
+  border-color: var(--garnet);
+  background: var(--garnet-glow);
+  animation: wrongShake 0.4s ease;
+}
+.opt.wrong .opt-letter {
+  background: var(--garnet);
+  color: #fff;
+  border-color: var(--garnet);
+}
+.opt.wrong .opt-text { color: #e07080; }
+
+.opt.reveal {
+  border-color: rgba(46,204,126,0.2);
+  background: rgba(46,204,126,0.03);
+}
+.opt.reveal .opt-letter { background: rgba(46,204,126,0.15); color: var(--green); border-color: rgba(46,204,126,0.3); }
+.opt.reveal .opt-text { color: rgba(46,204,126,0.6); }
+
+.opt.locked { pointer-events: none; }
+
+@keyframes correctPulse {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+/* ── EXPLICACIÓN ── */
+.q-explain {
+  margin: 0 26px 24px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 16px 20px;
+  border-left: 3px solid var(--brass);
+  display: none;
+  animation: fadeUp 0.3s ease;
+}
+.q-explain.visible { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.q-explain .e-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.q-explain p {
+  font-size: 13.5px;
+  color: #9ba5b8;
+  line-height: 1.55;
+}
+.q-explain strong { color: var(--text); }
+
+/* ── BOTÓN SIGUIENTE ── */
+.btn-next {
+  display: none;
+  margin: 0 26px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--brass);
+  border: 1.5px solid rgba(212,164,58,0.4);
+  padding: 12px 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-next:hover {
+  background: rgba(212,164,58,0.08);
+  border-color: var(--brass);
+}
+
+/* ── RESULTADO FINAL ── */
+#screen-result {
+  display: none;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 60px 24px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.result-badge {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 96px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.result-badge.A { color: var(--green); }
+.result-badge.B { color: #7ec8e3; }
+.result-badge.C { color: var(--brass); }
+.result-badge.D { color: var(--garnet); }
+
+.result-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 24px;
+}
+.result-message {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text2);
+  max-width: 480px;
+  margin: 0 auto 36px;
+  line-height: 1.4;
+}
+.result-stats {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.rs {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 28px;
+  min-width: 120px;
+}
+.rs-val {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.rs-val.ok { color: var(--green); }
+.rs-val.fail { color: var(--garnet); }
+.rs-val.neutral { color: var(--brass); }
+.rs-lbl {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.btn-retry {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--garnet);
+  color: #fff;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 8px 12px;
+}
+.btn-retry:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(192,57,74,0.35); }
+
+.btn-review {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--text2);
+  border: 1.5px solid var(--border);
+  padding: 14px 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 8px 12px;
+}
+.btn-review:hover { border-color: var(--brass); color: var(--brass); }
+
+/* ── REVIEW ── */
+#screen-review {
+  display: none;
+  position: relative;
+  z-index: 1;
+}
+.review-header {
+  position: sticky;
+  top: 0;
+  background: rgba(10,12,16,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 100;
+}
+.review-header h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+}
+.btn-back {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+}
+.btn-back:hover { border-color: var(--brass); color: var(--brass); }
+
+.review-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+.review-item {
+  margin-bottom: 16px;
+  background: var(--card);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.review-item.ok { border-left: 3px solid var(--green); }
+.review-item.ko { border-left: 3px solid var(--garnet); }
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+}
+.review-icon { font-size: 16px; }
+.review-qtext { font-size: 14px; font-weight: 600; color: var(--text2); flex: 1; line-height: 1.4; }
+.review-body {
+  padding: 0 18px 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  font-size: 13px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+.review-body strong { color: var(--text); }
+.review-answer {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-top: 6px;
+  display: inline-block;
+}
+.review-answer.ok { background: var(--green-glow); color: var(--green); border: 1px solid rgba(46,204,126,0.3); }
+.review-answer.ko { background: var(--garnet-glow); color: #e07080; border: 1px solid rgba(192,57,74,0.3); }
+
+/* ── TOAST ── */
+#toast {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brass);
+  z-index: 900;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+  max-width: 280px;
+}
+#toast.show { transform: translateX(0); }
+
+/* ── KEYBOARD ── */
+.key-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 24px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  z-index: 10;
+}
+.key-hint kbd {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--text2);
+}
+
+/* ── CANVAS CONFETTI ── */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 990;
+  display: none;
+}
+
+/* ── MINI MAPA ── */
+.mini-map {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0 24px;
+  max-width: 780px;
+  margin: 24px auto 0;
+}
+.mm-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.mm-dot.current { border-color: var(--brass); color: var(--brass); background: rgba(212,164,58,0.08); }
+.mm-dot.ok { background: rgba(46,204,126,0.15); border-color: rgba(46,204,126,0.4); color: var(--green); }
+.mm-dot.ko { background: var(--garnet-glow); border-color: rgba(192,57,74,0.4); color: var(--garnet); }
+
+@media (max-width: 600px) {
+  .q-text { font-size: 15px; }
+  .opt-text { font-size: 13.5px; }
+  .test-header { padding: 10px 14px; gap: 10px; }
+  .question-wrap { padding: 0 14px 100px; }
+  .q-header, .q-opts { padding: 16px 18px; }
+  .q-explain, .btn-next { margin: 0 18px 18px; }
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ══════════════════ PANTALLA INICIO ══════════════════ -->
+<div id="screen-start">
+  <div class="badge-t21">
+    <div>
+      <div class="badge-inner">21</div>
+      <div class="badge-sub">CNP</div>
+    </div>
+  </div>
+  <div class="start-eyebrow">Test Infalible · Escala Básica</div>
+  <h1 class="start-title">Derecho <em>Procesal</em> Penal</h1>
+  <p class="start-sub">50 preguntas de eliminación máxima. Las respuestas incorrectas son las correctas de otras preguntas — el modelo exacto de trampa del tribunal.</p>
+  <div class="stats-row">
+    <span class="stat-pill"><b>50</b> preguntas</span>
+    <span class="stat-pill"><b>4</b> bloques cubiertos</span>
+    <span class="stat-pill"><b>50 min</b> cronometrado</span>
+    <span class="stat-pill">Respuestas <b>cruzadas</b></span>
+  </div>
+  <button class="btn-start" onclick="startTest()">⚔ Iniciar Test</button>
+  <div class="warning-box">
+    <div class="w-label">⚠ Advertencia de dificultad</div>
+    <p>Cada opción incorrecta es la respuesta correcta de otra pregunta. No hay comodines. Si suspendes este test, sabes exactamente qué repasar.</p>
+  </div>
+</div>
+
+<!-- ══════════════════ PANTALLA TEST ══════════════════ -->
+<div id="screen-test">
+  <div class="test-header">
+    <span class="h-num">Pregunta <b id="h-current">1</b> / 50</span>
+    <div class="h-track"><div class="h-track-fill" id="h-fill"></div></div>
+    <span class="h-score"><span class="s-ok" id="h-ok">0</span> · <span class="s-fail" id="h-fail">0</span></span>
+    <span class="h-timer" id="h-timer">50:00</span>
+  </div>
+  <div class="mini-map" id="mini-map"></div>
+  <div class="question-wrap" id="question-wrap"></div>
+</div>
+
+<!-- ══════════════════ PANTALLA RESULTADO ══════════════════ -->
+<div id="screen-result">
+  <div class="result-label">Resultado final · Tema 21</div>
+  <div class="result-badge" id="res-badge">0%</div>
+  <div class="result-message" id="res-msg"></div>
+  <div class="result-stats">
+    <div class="rs"><div class="rs-val ok" id="rs-ok">0</div><div class="rs-lbl">Correctas</div></div>
+    <div class="rs"><div class="rs-val fail" id="rs-fail">0</div><div class="rs-lbl">Incorrectas</div></div>
+    <div class="rs"><div class="rs-val neutral" id="rs-pct">0%</div><div class="rs-lbl">Porcentaje</div></div>
+    <div class="rs"><div class="rs-val neutral" id="rs-time">—</div><div class="rs-lbl">Tiempo</div></div>
+  </div>
+  <div>
+    <button class="btn-retry" onclick="startTest()">🔄 Repetir Test</button>
+    <button class="btn-review" onclick="showReview()">📋 Revisar Respuestas</button>
+  </div>
+</div>
+
+<!-- ══════════════════ PANTALLA REVISIÓN ══════════════════ -->
+<div id="screen-review">
+  <div class="review-header">
+    <h2>Revisión completa</h2>
+    <button class="btn-back" onclick="backToResult()">← Volver</button>
+  </div>
+  <div class="review-wrap" id="review-wrap"></div>
+</div>
+
+<div id="toast"></div>
+<div class="key-hint"><kbd>→</kbd> siguiente &nbsp; <kbd>1/2/3</kbd> opción</div>
+
+<script>
+const QUESTIONS = [
+  // ══════════════════ BLOQUE 1 · Órganos ══════════════════
+  {
+    id: 1,
+    block: 'B1',
+    tags: ['kill'],
+    text: '¿Cuántas Salas tiene el Tribunal Supremo?',
+    opts: [
+      { letter: 'A', text: '4 Salas (Civil, Penal, Contencioso-Administrativo y Social)' },
+      { letter: 'B', text: '6 Salas (incluyendo la Sala Especial del art. 61 LOPJ)' },
+      { letter: 'C', text: '5 Salas numeradas (1ª a 5ª)', correct: true },
+    ],
+    explain: '<strong>A incorrecta</strong> (trampa cruzada: son las salas de la AN, no del TS). <strong>B incorrecta:</strong> la Sala Especial del art. 61 existe pero no se cuenta en la numeración. <strong>C correcta:</strong> el TS tiene exactamente 5 Salas: 1ª Civil, 2ª Penal, 3ª Contencioso-Administrativo, 4ª Social y 5ª Militar.',
+  },
+  {
+    id: 2,
+    block: 'B1',
+    tags: ['hot'],
+    text: '¿A qué Sala del Tribunal Supremo corresponde el orden penal?',
+    opts: [
+      { letter: 'A', text: 'Sala 1ª' },
+      { letter: 'B', text: 'Sala 3ª' },
+      { letter: 'C', text: 'Sala 2ª', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> la Sala 1ª es Civil. <strong>B incorrecta:</strong> la Sala 3ª es Contencioso-Administrativo. <strong>C correcta:</strong> la Sala 2ª del TS es la Sala de lo Penal — la más relevante para el CNP.',
+  },
+  {
+    id: 3,
+    block: 'B1',
+    tags: ['trap'],
+    text: '¿Qué asunto conoce la Sala Especial del art. 61 LOPJ?',
+    opts: [
+      { letter: 'A', text: 'Los recursos de amparo contra sentencias del Tribunal Supremo' },
+      { letter: 'B', text: 'La disolución de partidos políticos y recursos de revisión contra sentencias de la Sala 3ª en única instancia', correct: true },
+      { letter: 'C', text: 'Los delitos cometidos por Magistrados del Tribunal Supremo' },
+    ],
+    explain: '<strong>A incorrecta:</strong> el amparo es del Tribunal Constitucional, no del TS. <strong>C incorrecta:</strong> el aforamiento de magistrados del TS tiene un régimen específico distinto. <strong>B correcta:</strong> la Sala Especial (Sala Innominada) conoce, entre otros, la disolución de partidos políticos y revisiones contra sentencias de la Sala 3ª en única instancia.',
+  },
+  {
+    id: 4,
+    block: 'B1',
+    tags: ['kill'],
+    text: '¿Cuántas Salas tiene la Audiencia Nacional?',
+    opts: [
+      { letter: 'A', text: '5 Salas (incluida la Sala Militar)' },
+      { letter: 'B', text: '3 Salas (Penal, Contencioso-Administrativo y Social)' },
+      { letter: 'C', text: '4 Salas: Apelación, Penal, Contencioso-Administrativo y Social', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> la AN no tiene Sala Militar (esa confusión viene de las 5 salas del TS). <strong>B incorrecta:</strong> omite la Sala de Apelación. <strong>C correcta:</strong> art. 64 LOPJ: la AN tiene exactamente estas 4 Salas.',
+  },
+  {
+    id: 5,
+    block: 'B1',
+    tags: ['hot'],
+    text: '¿Cuál de los siguientes delitos es competencia penal de la Audiencia Nacional?',
+    opts: [
+      { letter: 'A', text: 'Homicidio consumado de un funcionario público en acto de servicio' },
+      { letter: 'B', text: 'Tráfico de drogas por organizaciones con efectos en varias Audiencias Provinciales', correct: true },
+      { letter: 'C', text: 'Cualquier delito con pena privativa de libertad superior a 5 años' },
+    ],
+    explain: '<strong>A incorrecta:</strong> el homicidio de funcionario en acto de servicio no es por eso competencia de la AN. <strong>C incorrecta:</strong> la pena >5 años determina competencia de la AP, no de la AN. <strong>B correcta:</strong> el tráfico de drogas ejecutado por organizaciones cuyas actividades se extienden a más de una Audiencia Provincial es competencia de la AN.',
+  },
+  {
+    id: 6,
+    block: 'B1',
+    tags: ['kill'],
+    text: 'Composición del Tribunal del Jurado: ¿cuántos miembros tiene?',
+    opts: [
+      { letter: 'A', text: '9 jurados + 1 magistrado-presidente + 2 suplentes', correct: true },
+      { letter: 'B', text: '12 jurados + 1 magistrado-presidente + 2 suplentes' },
+      { letter: 'C', text: '9 jurados + 2 magistrados + 1 suplente' },
+    ],
+    explain: '<strong>B incorrecta:</strong> 12 miembros es la composición del Consejo Fiscal, no del Jurado. <strong>C incorrecta:</strong> solo hay 1 magistrado-presidente, no 2. <strong>A correcta:</strong> art. 2 LO 5/1995: 9 jurados titulares + 1 magistrado-presidente + 2 jurados suplentes.',
+  },
+  {
+    id: 7,
+    block: 'B1',
+    tags: ['kill'],
+    text: '¿Cuántos votos se necesitan para declarar CULPABLE al acusado en el Tribunal del Jurado?',
+    opts: [
+      { letter: 'A', text: '5 votos de los 9 jurados' },
+      { letter: 'B', text: '6 votos de los 9 jurados' },
+      { letter: 'C', text: '7 votos de los 9 jurados', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 5 votos es el umbral para la INculpabilidad (más fácil absolver que condenar). <strong>B incorrecta:</strong> 6 no aparece en la LO 5/1995. <strong>C correcta:</strong> art. 59 LO 5/1995: se necesitan 7 votos para el veredicto de culpabilidad y 5 para el de inculpabilidad.',
+  },
+  {
+    id: 8,
+    block: 'B1',
+    tags: ['trap'],
+    text: '¿Cuántos votos se necesitan para declarar INCULPABLE al acusado en el Tribunal del Jurado?',
+    opts: [
+      { letter: 'A', text: '7 votos' },
+      { letter: 'B', text: '5 votos', correct: true },
+      { letter: 'C', text: '6 votos' },
+    ],
+    explain: '<strong>A incorrecta:</strong> 7 es el umbral para la culpabilidad. La asimetría es intencional: siempre más fácil absolver que condenar. <strong>C incorrecta:</strong> no existe ese umbral. <strong>B correcta:</strong> solo se necesitan 5 votos para la inculpabilidad, la remisión condicional o el indulto.',
+  },
+  {
+    id: 9,
+    block: 'B1',
+    tags: ['trap'],
+    text: '¿Cuál de los siguientes delitos NUNCA puede ser juzgado por el Tribunal del Jurado?',
+    opts: [
+      { letter: 'A', text: 'Cohecho' },
+      { letter: 'B', text: 'Omisión del deber de socorro' },
+      { letter: 'C', text: 'Prevaricación', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> tanto el cohecho como la omisión del deber de socorro están en el catálogo de delitos del Tribunal del Jurado (LO 5/1995). <strong>C correcta:</strong> la prevaricación está expresamente excluida del ámbito del Tribunal del Jurado.',
+  },
+  {
+    id: 10,
+    block: 'B1',
+    tags: ['kill'],
+    text: '¿En qué supuesto puede el Tribunal del Jurado enjuiciar un delito de homicidio?',
+    opts: [
+      { letter: 'A', text: 'Siempre, incluida la tentativa' },
+      { letter: 'B', text: 'Solo si es homicidio consumado', correct: true },
+      { letter: 'C', text: 'Solo si va acompañado de delito de allanamiento de morada' },
+    ],
+    explain: '<strong>A incorrecta:</strong> la tentativa está excluida. <strong>C incorrecta:</strong> no se exige conexión con el allanamiento. <strong>B correcta:</strong> el Tribunal del Jurado solo juzga homicidio y asesinato cuando sean consumados (arts. 138-140 CP) — dato eliminatorio de la LO 5/1995.',
+  },
+  {
+    id: 11,
+    block: 'B1',
+    tags: ['kill'],
+    text: '¿Qué órgano jurisdiccional culmina la organización judicial en el ámbito de la Comunidad Autónoma?',
+    opts: [
+      { letter: 'A', text: 'La Audiencia Provincial' },
+      { letter: 'B', text: 'El Tribunal Constitucional' },
+      { letter: 'C', text: 'El Tribunal Superior de Justicia', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> la AP tiene ámbito provincial, no autonómico. <strong>B incorrecta:</strong> el TC no forma parte de la organización judicial ordinaria. <strong>C correcta:</strong> art. 70 LOPJ: el TSJ de la Comunidad Autónoma culmina la organización judicial en su territorio. Pregunta oficial de la convocatoria XLII.',
+  },
+  {
+    id: 12,
+    block: 'B1',
+    tags: ['hot'],
+    text: '¿Cuál es la Audiencia Provincial de competencia para el Tribunal del Jurado?',
+    opts: [
+      { letter: 'A', text: 'La Audiencia Provincial donde se cometió el delito', correct: true },
+      { letter: 'B', text: 'La Audiencia Nacional en todo caso' },
+      { letter: 'C', text: 'El Tribunal Superior de Justicia correspondiente' },
+    ],
+    explain: '<strong>B incorrecta:</strong> la AN tiene su propia competencia, no alberga el Tribunal del Jurado ordinario. <strong>C incorrecta:</strong> el TSJ es el ámbito autonómico, no el propio del TJ. <strong>A correcta:</strong> el Tribunal del Jurado celebra sus juicios en el ámbito de la Audiencia Provincial donde se cometió el delito.',
+  },
+
+  // ══════════════════ BLOQUE 2 · Denuncia, Querella, Detención ══════════════════
+  {
+    id: 13,
+    block: 'B2',
+    tags: ['trap'],
+    text: '¿La denuncia es una declaración de conocimiento o de voluntad?',
+    opts: [
+      { letter: 'A', text: 'De voluntad — quien denuncia queda constituido como parte en el proceso' },
+      { letter: 'B', text: 'De conocimiento, sin que el denunciante quede constituido como parte', correct: true },
+      { letter: 'C', text: 'De voluntad, pero sin necesidad de fianza' },
+    ],
+    explain: '<strong>A y C incorrectas:</strong> el tribunal intercambia los conceptos. La VOLUNTAD y la constitución como parte son de la querella. <strong>B correcta:</strong> la denuncia es una declaración de CONOCIMIENTO de hechos. El denunciante NO queda automáticamente parte en el proceso.',
+  },
+  {
+    id: 14,
+    block: 'B2',
+    tags: ['trap'],
+    text: '¿Requiere fianza la denuncia presentada por un ciudadano extranjero?',
+    opts: [
+      { letter: 'A', text: 'Sí, siempre que sea extranjero no comunitario' },
+      { letter: 'B', text: 'Sí, salvo tratado de reciprocidad' },
+      { letter: 'C', text: 'No; la denuncia nunca exige fianza sea quien sea el denunciante', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> esa norma sobre fianza y tratado de reciprocidad se refiere a la QUERELLA, no a la denuncia. <strong>C correcta:</strong> la denuncia nunca exige fianza. La regla de fianza para extranjeros aplica exclusivamente a la querella.',
+  },
+  {
+    id: 15,
+    block: 'B2',
+    tags: ['hot'],
+    text: '¿Qué diferencia formal clave distingue a la querella de la denuncia?',
+    opts: [
+      { letter: 'A', text: 'La querella puede presentarse verbalmente o por escrito; la denuncia solo por escrito' },
+      { letter: 'B', text: 'La querella requiere Procurador y firma de Letrado; la denuncia no', correct: true },
+      { letter: 'C', text: 'La querella la puede presentar cualquier persona; la denuncia solo el perjudicado' },
+    ],
+    explain: '<strong>A incorrecta:</strong> es al revés: la denuncia puede ser oral o escrita; la querella SOLO es escrita. <strong>C incorrecta:</strong> la acción popular (cualquier ciudadano) corresponde a la querella, no a la denuncia. <strong>B correcta:</strong> la querella exige Procurador + firma de Letrado y presentación por escrito en papel de oficio.',
+  },
+  {
+    id: 16,
+    block: 'B2',
+    tags: ['trap'],
+    text: '¿Quiénes están exentos de prestar fianza en la querella?',
+    opts: [
+      { letter: 'A', text: 'El ofendido y sus herederos o representantes legales', correct: true },
+      { letter: 'B', text: 'Cualquier ciudadano español por acción popular' },
+      { letter: 'C', text: 'Los funcionarios que actúan en ejercicio de sus funciones' },
+    ],
+    explain: '<strong>B incorrecta:</strong> el ciudadano que ejerce acción popular SÍ debe prestar fianza. <strong>C incorrecta:</strong> no existe tal exención para funcionarios en ejercicio. <strong>A correcta:</strong> el ofendido y sus herederos o representantes legales están exentos de prestar fianza en la querella.',
+  },
+  {
+    id: 17,
+    block: 'B2',
+    tags: ['kill'],
+    text: 'Regla general de detención: ¿cuál es el plazo máximo antes de ponerlo en libertad o a disposición judicial?',
+    opts: [
+      { letter: 'A', text: '24 horas' },
+      { letter: 'B', text: '48 horas' },
+      { letter: 'C', text: '72 horas', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 24h es el plazo para la detención de MENORES. <strong>B incorrecta:</strong> 48h es la prórroga adicional en casos de terrorismo. <strong>C correcta:</strong> art. 17.2 CE: el plazo máximo de detención preventiva es de 72 horas, transcurridas las cuales el detenido deberá ser puesto en libertad o a disposición judicial.',
+  },
+  {
+    id: 18,
+    block: 'B2',
+    tags: ['kill'],
+    text: 'En caso de detención por pertenencia a banda armada, ¿qué prórroga adicional puede autorizarse?',
+    opts: [
+      { letter: 'A', text: '24 horas, previa solicitud al juez en cualquier momento' },
+      { letter: 'B', text: '72 horas adicionales sin necesidad de autorización judicial' },
+      { letter: 'C', text: '48 horas, solicitada en las primeras 48h de la detención y autorizada por el juez en las 24h siguientes', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> la prórroga es de 48h, no de 24, y la solicitud tiene una ventana temporal específica. <strong>B incorrecta:</strong> siempre se requiere autorización judicial; 72h adicionales no existen. <strong>C correcta:</strong> art. 520 bis LECrim: prórroga de hasta 48h más, solicitada en las primeras 48h de la detención y autorizada por el juez en las 24h siguientes.',
+  },
+  {
+    id: 19,
+    block: 'B2',
+    tags: ['kill'],
+    text: 'Un menor de 15 años es detenido por delito común. ¿Cuál es el plazo máximo y ante quién se le pone a disposición?',
+    opts: [
+      { letter: 'A', text: '72 horas · Juez de Instrucción' },
+      { letter: 'B', text: '48 horas · Juez de Menores' },
+      { letter: 'C', text: '24 horas · Ministerio Fiscal', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 72h + Juez de Instrucción es para adultos. <strong>B incorrecta:</strong> 48h es el plazo que tiene el MF para resolver, no el de la detención; y el menor no va al Juez de Menores directamente. <strong>C correcta:</strong> art. 17 LORPM: máximo 24 horas y a disposición del Ministerio Fiscal (Sección de Menores).',
+  },
+  {
+    id: 20,
+    block: 'B2',
+    tags: ['trap'],
+    text: '¿Cuánto tiempo tiene el Ministerio Fiscal para resolver una vez que se le pone a disposición un menor detenido?',
+    opts: [
+      { letter: 'A', text: '24 horas' },
+      { letter: 'B', text: '72 horas' },
+      { letter: 'C', text: '48 horas', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 24h es el plazo de la DETENCIÓN del menor, no el del MF para resolver. <strong>B incorrecta:</strong> 72h es el plazo de detención de adultos. <strong>C correcta:</strong> art. 17 LORPM: el MF habrá de resolver en 48 horas desde la detención del menor.',
+  },
+  {
+    id: 21,
+    block: 'B2',
+    tags: ['kill'],
+    text: '¿Puede detenerse a alguien por la presunta comisión de un delito leve?',
+    opts: [
+      { letter: 'A', text: 'Sí, siempre que haya indicios suficientes' },
+      { letter: 'B', text: 'No, nunca puede detenerse por delito leve' },
+      { letter: 'C', text: 'No, salvo que no tenga domicilio conocido o no dé fianza bastante', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> la mera existencia de indicios no autoriza la detención por delito leve. <strong>B incorrecta:</strong> existe una excepción. <strong>C correcta:</strong> art. 495 LECrim: no se detendrá por delitos leves, salvo que el presunto reo no tenga domicilio conocido ni preste fianza bastante.',
+  },
+  {
+    id: 22,
+    block: 'B2',
+    tags: ['hot'],
+    text: 'Un particular encuentra a alguien cometiendo un delito in fraganti. ¿Puede detenerlo?',
+    opts: [
+      { letter: 'A', text: 'No; solo pueden detener autoridades y agentes de la PJ' },
+      { letter: 'B', text: 'Sí; art. 490 LECrim permite a cualquier persona detener al delincuente in fraganti', correct: true },
+      { letter: 'C', text: 'Solo si el delito lleva pena superior a 2 años de prisión' },
+    ],
+    explain: '<strong>A incorrecta:</strong> los particulares sí pueden detener en determinados supuestos. <strong>C incorrecta:</strong> no existe ese requisito de pena para la detención por particular in fraganti. <strong>B correcta:</strong> art. 490 LECrim: cualquier persona puede detener, entre otros, al delincuente in fraganti.',
+  },
+  {
+    id: 23,
+    block: 'B2',
+    tags: ['kill'],
+    text: 'Derechos del detenido: ¿en qué único supuesto puede el detenido renunciar a la asistencia letrada?',
+    opts: [
+      { letter: 'A', text: 'En cualquier delito leve, con información previa de las consecuencias' },
+      { letter: 'B', text: 'Nunca; la asistencia letrada es irrenunciable en todo caso' },
+      { letter: 'C', text: 'Solo cuando la detención es por delitos contra la seguridad del tráfico', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> no es para cualquier delito leve sino exclusivamente para la seguridad del tráfico. <strong>B incorrecta:</strong> sí existe ese supuesto de renuncia. <strong>C correcta:</strong> art. 520.8 LECrim: la renuncia a la asistencia letrada solo es posible si la detención se produce por delitos contra la seguridad del tráfico, previa información de las consecuencias.',
+  },
+  {
+    id: 24,
+    block: 'B2',
+    tags: ['kill'],
+    text: '¿Cuánto tiempo tiene el abogado designado para comparecer en el centro de detención?',
+    opts: [
+      { letter: 'A', text: '1 hora desde la recepción del encargo' },
+      { letter: 'B', text: '6 horas desde la recepción del encargo' },
+      { letter: 'C', text: '3 horas desde la recepción del encargo', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 1 hora es insuficiente y no figura en la LECrim. <strong>B incorrecta:</strong> 6h es un plazo de investigación del MF, no del abogado. <strong>C correcta:</strong> art. 520 LECrim: el abogado designado (por el detenido o de oficio) debe comparecer en el lugar de detención en un máximo de 3 horas desde la recepción del encargo.',
+  },
+  {
+    id: 25,
+    block: 'B2',
+    tags: ['trap'],
+    text: '¿Puede el agente de policía recomendar un abogado concreto al detenido?',
+    opts: [
+      { letter: 'A', text: 'Sí, si el detenido no conoce ningún letrado' },
+      { letter: 'B', text: 'Sí, pero solo abogados de oficio del colegio local' },
+      { letter: 'C', text: 'No; ninguna autoridad ni agente puede efectuar recomendación sobre el abogado a designar', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> la ley es tajante: ninguna recomendación está permitida. <strong>C correcta:</strong> art. 520 LECrim: se prohíbe expresamente que autoridades o agentes efectúen recomendación sobre el abogado a designar; el objetivo es preservar la independencia de la defensa.',
+  },
+
+  // ══════════════════ BLOQUE 3 · HC, Incomunicación, ISES ══════════════════
+  {
+    id: 26,
+    block: 'B3',
+    tags: ['kill'],
+    text: '¿Cuál es el juez competente para tramitar el habeas corpus cuando lo solicita un menor de edad?',
+    opts: [
+      { letter: 'A', text: 'El Juez de Menores de la circunscripción' },
+      { letter: 'B', text: 'La Fiscalía de Menores' },
+      { letter: 'C', text: 'El Juez de Instrucción del lugar de la detención', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> trampa clásica confirmada en la convocatoria XLII. El Juez de Menores no tiene competencia para el habeas corpus. <strong>B incorrecta:</strong> el MF puede instarlo pero no tramitarlo. <strong>C correcta:</strong> art. 2 LO 6/1984: el Juez de Instrucción es siempre competente, sin distinción de si el detenido es mayor o menor.',
+  },
+  {
+    id: 27,
+    block: 'B3',
+    tags: ['kill'],
+    text: '¿En qué ley se regula el procedimiento de habeas corpus?',
+    opts: [
+      { letter: 'A', text: 'LO 5/1995, de 22 de mayo, del Tribunal del Jurado' },
+      { letter: 'B', text: 'LO 6/1984, de 24 de mayo', correct: true },
+      { letter: 'C', text: 'LECrim, arts. 520-527' },
+    ],
+    explain: '<strong>A incorrecta:</strong> la LO 5/1995 regula el Tribunal del Jurado. <strong>C incorrecta:</strong> la LECrim regula la detención; el habeas corpus tiene su propia LO. <strong>B correcta:</strong> la LO 6/1984, de 24 de mayo, regula el procedimiento de habeas corpus, desarrollando el mandato del art. 17.4 CE.',
+  },
+  {
+    id: 28,
+    block: 'B3',
+    tags: ['kill'],
+    text: '¿En qué plazo máximo debe resolverse el procedimiento de habeas corpus desde su incoación?',
+    opts: [
+      { letter: 'A', text: '48 horas' },
+      { letter: 'B', text: '72 horas' },
+      { letter: 'C', text: '24 horas', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 48h es el plazo para resolver del MF respecto al menor detenido. <strong>B incorrecta:</strong> 72h es el plazo general de detención preventiva. <strong>C correcta:</strong> LO 6/1984: el habeas corpus debe resolverse en un plazo máximo de 24 horas desde su incoación, principio de agilidad.',
+  },
+  {
+    id: 29,
+    block: 'B3',
+    tags: ['trap'],
+    text: '¿Requiere abogado o procurador la solicitud de habeas corpus?',
+    opts: [
+      { letter: 'A', text: 'Sí, siempre necesita asistencia letrada por ser un procedimiento judicial' },
+      { letter: 'B', text: 'Solo necesita procurador' },
+      { letter: 'C', text: 'No; el habeas corpus no requiere ni abogado ni procurador', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> el HC se basa en los principios de sencillez y carencia de formalismos. <strong>C correcta:</strong> LO 6/1984: la solicitud puede hacerse verbalmente y no son preceptivos ni abogado ni procurador. Cualquier persona legitimada puede iniciarlo directamente.',
+  },
+  {
+    id: 30,
+    block: 'B3',
+    tags: ['trap'],
+    text: '¿Puede el abogado defensor del detenido instar el habeas corpus en su propio nombre?',
+    opts: [
+      { letter: 'A', text: 'Sí; el abogado defensor tiene legitimación propia' },
+      { letter: 'B', text: 'Sí, pero solo si el detenido está incomunicado' },
+      { letter: 'C', text: 'No; el abogado defensor no tiene legitimación propia, aunque puede presentar la solicitud en nombre del detenido', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> el letrado defensor no aparece como legitimado activo en el art. 3 LO 6/1984 por derecho propio. <strong>C correcta:</strong> los legitimados son el propio detenido, cónyuge/familia, representante legal, MF, Defensor del Pueblo y el Juez de oficio. El abogado solo actúa en representación del detenido.',
+  },
+  {
+    id: 31,
+    block: 'B3',
+    tags: ['kill'],
+    text: '¿Puede el Defensor del Pueblo instar el habeas corpus?',
+    opts: [
+      { letter: 'A', text: 'No; el Defensor del Pueblo no tiene legitimación activa en este procedimiento' },
+      { letter: 'B', text: 'Solo si el Ministerio Fiscal no lo ha solicitado previamente' },
+      { letter: 'C', text: 'Sí; el Defensor del Pueblo está expresamente legitimado para instarlo', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> trampa habitual. <strong>B incorrecta:</strong> no existe tal condición de subsidiariedad. <strong>C correcta:</strong> art. 3 LO 6/1984: el Defensor del Pueblo está expresamente incluido entre los legitimados para instar el habeas corpus.',
+  },
+  {
+    id: 32,
+    block: 'B3',
+    tags: ['kill'],
+    text: '¿Cuál es el plazo máximo de incomunicación con carácter general?',
+    opts: [
+      { letter: 'A', text: '3 días' },
+      { letter: 'B', text: '10 días' },
+      { letter: 'C', text: '5 días', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 3 días no figura en la LECrim para la incomunicación ordinaria. <strong>B incorrecta:</strong> 10 días es el plazo máximo para bandas armadas/terrorismo (5+5), no el general. <strong>C correcta:</strong> art. 509 LECrim: la incomunicación tiene una duración máxima de 5 días con carácter general.',
+  },
+  {
+    id: 33,
+    block: 'B3',
+    tags: ['kill'],
+    text: 'En caso de banda armada o terrorismo, ¿cuál es el plazo máximo total de incomunicación?',
+    opts: [
+      { letter: 'A', text: '5 días en todo caso, sin posibilidad de prórroga' },
+      { letter: 'B', text: '15 días (5 + 5 + 5)' },
+      { letter: 'C', text: '10 días (5 días + prórroga máxima de 5 días)', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> sí existe prórroga en terrorismo. <strong>B incorrecta:</strong> 15 días excede el límite legal. <strong>C correcta:</strong> art. 509 LECrim: en supuestos de banda armada, terrorismo o crimen organizado de ≥2 personas, puede prorrogarse hasta otros 5 días, total máximo 10 días.',
+  },
+  {
+    id: 34,
+    block: 'B3',
+    tags: ['kill'],
+    text: '¿Por debajo de qué edad está PROHIBIDA absolutamente la detención incomunicada?',
+    opts: [
+      { letter: 'A', text: 'Menores de 18 años' },
+      { letter: 'B', text: 'Menores de 14 años' },
+      { letter: 'C', text: 'Menores de 16 años', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> trampa recurrente del tribunal. La línea NO es los 18 años. Un menor de 17 puede ser incomunicado. <strong>B incorrecta:</strong> 14 años es el límite para la reseña con fines identificativos en la ISES 1/2024. <strong>C correcta:</strong> art. 509 LECrim: en ningún caso podrá ser objeto de detención incomunicada quien sea menor de 16 años.',
+  },
+  {
+    id: 35,
+    block: 'B3',
+    tags: ['new'],
+    text: 'Según la ISES 1/2024, los principios que rigen el uso de la fuerza en toda detención son:',
+    opts: [
+      { letter: 'A', text: 'Necesidad, adecuación y moderación' },
+      { letter: 'B', text: 'Legalidad, proporcionalidad y oportunidad' },
+      { letter: 'C', text: 'Oportunidad, Congruencia y Proporcionalidad (COP)', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> son principios genéricos, no la denominación específica de la ISES 1/2024. <strong>C correcta:</strong> la ISES 1/2024 establece expresamente los principios COP: Oportunidad (necesidad o no de la coacción), Congruencia (medio más idóneo) y Proporcionalidad (intensidad adecuada, sin exceso).',
+  },
+  {
+    id: 36,
+    block: 'B3',
+    tags: ['kill', 'new'],
+    text: 'Según la ISES 1/2024, si el detenido se niega a que le tomen las huellas dactilares (reseña decadactilar), ¿qué debe hacer el agente?',
+    opts: [
+      { letter: 'A', text: 'Solicitar autorización judicial mediante auto antes de proceder' },
+      { letter: 'B', text: 'Reflejarlo en el atestado y no proceder sin autorización' },
+      { letter: 'C', text: 'Proceder de forma coactiva; no se necesita autorización judicial', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> el auto judicial es necesario para la reseña GENÉTICA (ADN), no para la decadactilar. <strong>B incorrecta:</strong> el agente no puede simplemente desistir. <strong>C correcta:</strong> ISES 1/2024: la reseña decadactilar se puede realizar de forma coactiva sin necesidad de autorización judicial si el detenido se niega.',
+  },
+  {
+    id: 37,
+    block: 'B3',
+    tags: ['kill', 'new'],
+    text: 'Según la ISES 1/2024, ¿qué se requiere para obtener la reseña genética (ADN) del detenido mediante frotis bucal si este se niega?',
+    opts: [
+      { letter: 'A', text: 'Se puede obtener coactivamente sin trámite adicional, igual que la huella dactilar' },
+      { letter: 'B', text: 'Basta con la autorización verbal del jefe de la unidad' },
+      { letter: 'C', text: 'Es indispensable obtener un auto judicial', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> la huella dactilar y el ADN tienen regímenes distintos. <strong>B incorrecta:</strong> no existe tal habilitación en la ISES. <strong>C correcta:</strong> ISES 1/2024: si el detenido se niega a la toma de muestra para ADN (frotis bucal), es indispensable un auto judicial para proceder.',
+  },
+  {
+    id: 38,
+    block: 'B3',
+    tags: ['new'],
+    text: 'El registro personal en el momento de la detención, según la ISES 1/2024, ¿quién lo debe realizar?',
+    opts: [
+      { letter: 'A', text: 'Cualquier agente independientemente del sexo' },
+      { letter: 'B', text: 'Personal del mismo sexo que el detenido, salvo urgencia', correct: true },
+      { letter: 'C', text: 'Siempre lo realiza el agente que efectúa la detención' },
+    ],
+    explain: '<strong>A incorrecta:</strong> la ISES establece una regla específica sobre el sexo del agente. <strong>C incorrecta:</strong> no es necesariamente el agente que detiene. <strong>B correcta:</strong> ISES 1/2024: el registro personal (prospección superficial externa) debe realizarlo personal del mismo sexo que el detenido, salvo urgencia justificada.',
+  },
+  {
+    id: 39,
+    block: 'B3',
+    tags: ['new'],
+    text: 'En las áreas de custodia de detenidos (ACUDE) sin cámaras de videovigilancia, ¿con qué frecuencia mínima deben realizarse las rondas de vigilancia según la ISES 1/2024?',
+    opts: [
+      { letter: 'A', text: 'Cada hora' },
+      { letter: 'B', text: 'Cada 15 minutos' },
+      { letter: 'C', text: 'Cada 30 minutos', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> cada hora es la periodicidad de comprobación cuando SÍ hay cámaras. <strong>B incorrecta:</strong> 15 minutos no figura en la ISES 1/2024. <strong>C correcta:</strong> ISES 1/2024: si no hay cámaras, rondas cada 30 minutos como mínimo; si hay cámaras, comprobación cada hora.',
+  },
+  {
+    id: 40,
+    block: 'B3',
+    tags: ['trap'],
+    text: '¿Durante cuántos días como mínimo deben conservarse las grabaciones de videovigilancia del ACUDE según la ISES 1/2024?',
+    opts: [
+      { letter: 'A', text: '15 días' },
+      { letter: 'B', text: '60 días' },
+      { letter: 'C', text: '30 días', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> 15 o 60 días no son los plazos fijados. <strong>C correcta:</strong> ISES 1/2024: las grabaciones de videovigilancia del ACUDE deben conservarse al menos 30 días.',
+  },
+
+  // ══════════════════ BLOQUE 4 · MF y Policía Judicial ══════════════════
+  {
+    id: 41,
+    block: 'B4',
+    tags: ['kill'],
+    text: '¿Cuál es el mandato del Fiscal General del Estado?',
+    opts: [
+      { letter: 'A', text: '5 años renovables por otros 5' },
+      { letter: 'B', text: '6 años sin posibilidad de renovación' },
+      { letter: 'C', text: '4 años', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 5+5 es el mandato de los presidentes de la AN, TSJ y AP. <strong>B incorrecta:</strong> 6 años no figura en el EOMF. <strong>C correcta:</strong> art. 29 EOMF: el FGE tiene un mandato de 4 años. Puede renovarse solo si el titular ostentó el cargo por menos de 2 años.',
+  },
+  {
+    id: 42,
+    block: 'B4',
+    tags: ['kill'],
+    text: '¿Cómo se nombra al Fiscal General del Estado?',
+    opts: [
+      { letter: 'A', text: 'Por el Rey, a propuesta del CGPJ, oído el Gobierno' },
+      { letter: 'B', text: 'Por las Cortes Generales, a propuesta del Gobierno, por mayoría absoluta' },
+      { letter: 'C', text: 'Por el Rey, a propuesta del Gobierno, oído el CGPJ', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> el orden está invertido — es el GOBIERNO quien propone, el CGPJ quien es oído. <strong>B incorrecta:</strong> las Cortes no participan en el nombramiento del FGE. <strong>C correcta:</strong> art. 29 EOMF: el FGE es nombrado por el Rey, a propuesta del Gobierno, oído el CGPJ.',
+  },
+  {
+    id: 43,
+    block: 'B4',
+    tags: ['trap'],
+    text: '¿Qué requisito personal exige el EOMF para ser nombrado Fiscal General del Estado?',
+    opts: [
+      { letter: 'A', text: 'Ser Fiscal de carrera con categoría de Fiscal de Sala' },
+      { letter: 'B', text: 'Ser jurista español de reconocido prestigio con más de 15 años de ejercicio efectivo', correct: true },
+      { letter: 'C', text: 'Ser magistrado del Tribunal Supremo con al menos 10 años de antigüedad' },
+    ],
+    explain: '<strong>A y C incorrectas:</strong> no se exige ser Fiscal de carrera ni Magistrado del TS. <strong>B correcta:</strong> art. 29 EOMF: cualquier jurista español de reconocido prestigio con más de 15 años de ejercicio profesional efectivo puede ser nombrado FGE.',
+  },
+  {
+    id: 44,
+    block: 'B4',
+    tags: ['hot'],
+    text: 'Los principios de actuación del Ministerio Fiscal son:',
+    opts: [
+      { letter: 'A', text: 'Unidad de actuación, dependencia jerárquica, legalidad e imparcialidad', correct: true },
+      { letter: 'B', text: 'Oportunidad, congruencia, proporcionalidad e imparcialidad' },
+      { letter: 'C', text: 'Independencia, objetividad, legalidad y jerarquía' },
+    ],
+    explain: '<strong>B incorrecta:</strong> oportunidad, congruencia y proporcionalidad son los principios COP de la ISES 1/2024 para el uso de la fuerza. <strong>C incorrecta:</strong> "independencia" no figura como principio del MF (sí lo es de los jueces). <strong>A correcta:</strong> art. 124 CE: el MF actúa con sujeción a los principios de unidad de actuación, dependencia jerárquica, legalidad e imparcialidad.',
+  },
+  {
+    id: 45,
+    block: 'B4',
+    tags: ['hot'],
+    text: '¿Cuál es el plazo máximo de las diligencias de investigación del MF para asuntos de corrupción y criminalidad organizada?',
+    opts: [
+      { letter: 'A', text: '6 meses, igual que la regla general' },
+      { letter: 'B', text: '18 meses, improrrogables' },
+      { letter: 'C', text: '12 meses, prorrogable por decreto motivado del FGE', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> 6 meses es la regla general para delitos ordinarios. <strong>B incorrecta:</strong> el plazo es 12 meses, y sí puede prorrogarse. <strong>C correcta:</strong> EOMF: regla general 6 meses; corrupción y criminalidad organizada, 12 meses, ampliables mediante decreto motivado del FGE.',
+  },
+  {
+    id: 46,
+    block: 'B4',
+    tags: ['kill'],
+    text: 'La dependencia de las Unidades Orgánicas de Policía Judicial es:',
+    opts: [
+      { letter: 'A', text: 'Orgánicamente de Jueces/Tribunales · funcionalmente del Ministerio del Interior' },
+      { letter: 'B', text: 'Orgánicamente del MF · funcionalmente del Ministerio del Interior' },
+      { letter: 'C', text: 'Orgánicamente del Ministerio del Interior · funcionalmente de Jueces, Tribunales o MF que conocen del asunto', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> las dependencias están invertidas — trampa clásica del examen. <strong>C correcta:</strong> LOFCS + art. 286 LECrim: dependencia orgánica del MI y dependencia funcional de los Jueces/Tribunales o MF competentes en cada asunto.',
+  },
+  {
+    id: 47,
+    block: 'B4',
+    tags: ['kill'],
+    text: '¿Quién otorga la identidad supuesta al agente encubierto y cuánto dura inicialmente?',
+    opts: [
+      { letter: 'A', text: 'El Juez de Instrucción competente · 3 meses prorrogables' },
+      { letter: 'B', text: 'El Ministerio Fiscal · 6 meses improrrogables' },
+      { letter: 'C', text: 'El Ministerio del Interior · 6 meses prorrogables por periodos iguales', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> el J.Ins autoriza la operación pero no otorga la identidad; la duración tampoco es 3 meses. <strong>B incorrecta:</strong> el MF también puede autorizar la operación, pero la identidad la otorga el MI, y SÍ es prorrogable. <strong>C correcta:</strong> art. 282 bis LECrim: el MI otorga la identidad supuesta con duración de 6 meses prorrogables por periodos de igual duración.',
+  },
+  {
+    id: 48,
+    block: 'B4',
+    tags: ['trap'],
+    text: '¿Puede el superior del agente obligarle a actuar como agente encubierto?',
+    opts: [
+      { letter: 'A', text: 'Sí, si lo considera necesario para la investigación' },
+      { letter: 'B', text: 'Sí, pero con carácter excepcional y solo por el Juez de Instrucción' },
+      { letter: 'C', text: 'No; la autorización al agente es potestativa y nunca puede imponerse', correct: true },
+    ],
+    explain: '<strong>A y B incorrectas:</strong> nadie puede obligar al agente, ni el juez ni el superior jerárquico. <strong>C correcta:</strong> art. 282 bis LECrim: la actuación bajo identidad supuesta es siempre potestativa para el agente. Nunca puede ser obligado a actuar como encubierto.',
+  },
+  {
+    id: 49,
+    block: 'B4',
+    tags: ['trap'],
+    text: '¿Con qué periodicidad se reúne la Comisión Nacional de Coordinación de la Policía Judicial?',
+    opts: [
+      { letter: 'A', text: 'Mensual' },
+      { letter: 'B', text: 'Semestral' },
+      { letter: 'C', text: 'Trimestral', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> mensual es la periodicidad de las Comisiones PROVINCIALES — trampa cruzada. <strong>B incorrecta:</strong> semestral no figura en el RD 769/87. <strong>C correcta:</strong> RD 769/87: la Comisión NACIONAL se reúne con periodicidad trimestral; las Comisiones PROVINCIALES con periodicidad mensual.',
+  },
+  {
+    id: 50,
+    block: 'B4',
+    tags: ['trap'],
+    text: '¿Qué diferencia al agente encubierto del agente provocador?',
+    opts: [
+      { letter: 'A', text: 'El agente encubierto actúa sin autorización judicial; el agente provocador sí la tiene' },
+      { letter: 'B', text: 'No existe diferencia legal; ambos términos son sinónimos en la LECrim' },
+      { letter: 'C', text: 'El agente provocador instiga al delito para descubrir al autor; sus actos no están amparados legalmente', correct: true },
+    ],
+    explain: '<strong>A incorrecta:</strong> el agente encubierto SÍ necesita autorización; es el provocador el que actúa sin cobertura legal adecuada. <strong>B incorrecta:</strong> son figuras radicalmente distintas. <strong>C correcta:</strong> el agente encubierto investiga sin instigar; el agente provocador provoca la comisión del delito para descubrir/castigar al provocado, lo que no tiene amparo legal en el art. 282 bis LECrim.',
+  },
+];
+
+// ── STATE ──
+let currentQ = 0;
+let score = { ok: 0, fail: 0 };
+let answers = [];
+let timer = null;
+let timeLeft = 50 * 60;
+let startTime = null;
+let questions = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startTest() {
+  questions = shuffle(QUESTIONS);
+  currentQ = 0;
+  score = { ok: 0, fail: 0 };
+  answers = [];
+  timeLeft = 50 * 60;
+  startTime = Date.now();
+
+  document.getElementById('screen-start').style.display = 'none';
+  document.getElementById('screen-result').style.display = 'none';
+  document.getElementById('screen-review').style.display = 'none';
+  document.getElementById('screen-test').style.display = 'block';
+
+  buildMiniMap();
+  renderQuestion();
+  startTimer();
+}
+
+function buildMiniMap() {
+  const mm = document.getElementById('mini-map');
+  mm.innerHTML = '';
+  questions.forEach((q, i) => {
+    const d = document.createElement('div');
+    d.className = 'mm-dot' + (i === 0 ? ' current' : '');
+    d.id = `mm-${i}`;
+    d.textContent = i + 1;
+    mm.appendChild(d);
+  });
+}
+
+function updateMiniMap(idx, result) {
+  document.querySelectorAll('.mm-dot').forEach((d, i) => {
+    d.classList.remove('current');
+    if (i === idx && result !== null) {
+      d.classList.add(result ? 'ok' : 'ko');
+    }
+  });
+  const next = document.getElementById(`mm-${idx + 1}`);
+  if (next) next.classList.add('current');
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const wrap = document.getElementById('question-wrap');
+
+  // header
+  document.getElementById('h-current').textContent = currentQ + 1;
+  document.getElementById('h-fill').style.width = ((currentQ / 50) * 100) + '%';
+  document.getElementById('h-ok').textContent = score.ok;
+  document.getElementById('h-fail').textContent = score.fail;
+  document.getElementById('progress-bar').style.width = ((currentQ / 50) * 100) + '%';
+
+  const tagHtml = q.tags.map(t => {
+    const labels = { kill: '💀 Eliminatorio', trap: '⚡ Trampa', hot: '🔥 Frecuente', new: '✦ ISES 2024' };
+    return `<span class="q-tag ${t}">${labels[t]}</span>`;
+  }).join('');
+
+  const optsHtml = q.opts.map(o => `
+    <div class="opt" data-letter="${o.letter}" onclick="selectOpt(this, ${!!o.correct})">
+      <div class="opt-letter">${o.letter}</div>
+      <div class="opt-text">${o.text}</div>
+    </div>
+  `).join('');
+
+  wrap.innerHTML = `
+    <div class="question-card" id="qcard">
+      <div class="q-header">
+        <div class="q-num">${currentQ + 1}</div>
+        <div class="q-meta">
+          <div class="q-tags">${tagHtml}<span class="q-tag" style="background:rgba(255,255,255,0.04);color:var(--text3);border:1px solid var(--border);">${q.block}</span></div>
+          <div class="q-text">${q.text}</div>
+        </div>
+      </div>
+      <div class="q-opts">${optsHtml}</div>
+      <div class="q-explain" id="q-explain">
+        <div class="e-label">📖 Explicación</div>
+        <p>${q.explain}</p>
+      </div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Siguiente pregunta →</button>
+    </div>
+  `;
+}
+
+function selectOpt(el, isCorrect) {
+  if (el.closest('.q-opts').querySelector('.locked')) return;
+
+  const opts = el.closest('.q-opts').querySelectorAll('.opt');
+  opts.forEach(o => o.classList.add('locked'));
+
+  if (isCorrect) {
+    el.classList.add('correct');
+    score.ok++;
+    playSound(true);
+    updateMiniMap(currentQ, true);
+    answers.push({ q: questions[currentQ], chosen: el.dataset.letter, ok: true });
+  } else {
+    el.classList.add('wrong');
+    score.fail++;
+    playSound(false);
+    updateMiniMap(currentQ, false);
+    answers.push({ q: questions[currentQ], chosen: el.dataset.letter, ok: false });
+    // Reveal correct
+    opts.forEach(o => {
+      const optDef = questions[currentQ].opts.find(x => x.letter === o.dataset.letter);
+      if (optDef && optDef.correct) o.classList.add('reveal');
+    });
+  }
+
+  document.getElementById('h-ok').textContent = score.ok;
+  document.getElementById('h-fail').textContent = score.fail;
+  document.getElementById('q-explain').classList.add('visible');
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= 50) {
+    showResult();
+    return;
+  }
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    const el = document.getElementById('h-timer');
+    el.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+    if (timeLeft <= 60) el.classList.add('urgent');
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      showResult();
+    }
+  }, 1000);
+}
+
+function showResult() {
+  clearInterval(timer);
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const pct = Math.round((score.ok / 50) * 100);
+  const em = Math.floor(elapsed / 60);
+  const es = elapsed % 60;
+
+  document.getElementById('screen-test').style.display = 'none';
+  const rs = document.getElementById('screen-result');
+  rs.style.display = 'flex';
+
+  const badge = document.getElementById('res-badge');
+  badge.textContent = pct + '%';
+  badge.className = 'result-badge';
+  let grade, msg;
+  if (pct >= 90) { grade = 'A'; msg = 'Dominio total. Estás listo para el tribunal.'; }
+  else if (pct >= 75) { grade = 'B'; msg = 'Muy sólido. Unos repasos y cierras el tema.'; }
+  else if (pct >= 60) { grade = 'C'; msg = 'Base correcta, pero hay trampas que aún te colan.'; }
+  else { grade = 'D'; msg = 'Hay conceptos que necesitan trabajo. Repasa y vuelve.'; }
+  badge.classList.add(grade);
+
+  document.getElementById('res-msg').textContent = msg;
+  document.getElementById('rs-ok').textContent = score.ok;
+  document.getElementById('rs-fail').textContent = score.fail;
+  document.getElementById('rs-pct').textContent = pct + '%';
+  document.getElementById('rs-time').textContent = `${em}:${es.toString().padStart(2, '0')}`;
+  document.getElementById('progress-bar').style.width = '100%';
+
+  if (pct >= 90) launchConfetti();
+}
+
+function showReview() {
+  document.getElementById('screen-result').style.display = 'none';
+  const rv = document.getElementById('screen-review');
+  rv.style.display = 'block';
+  const wrap = document.getElementById('review-wrap');
+  wrap.innerHTML = answers.map((a, i) => {
+    const chosen = a.q.opts.find(o => o.letter === a.chosen);
+    const correct = a.q.opts.find(o => o.correct);
+    return `
+      <div class="review-item ${a.ok ? 'ok' : 'ko'}">
+        <div class="review-head">
+          <span class="review-icon">${a.ok ? '✅' : '❌'}</span>
+          <span class="review-qtext">${i + 1}. ${a.q.text}</span>
+        </div>
+        <div class="review-body">
+          ${!a.ok ? `<span class="review-answer ko">Tu respuesta: ${a.chosen}) ${chosen ? chosen.text : ''}</span><br>` : ''}
+          <span class="review-answer ok">Correcta: ${correct.letter}) ${correct.text}</span>
+          <div style="margin-top:10px; font-size:12.5px;">${a.q.explain}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function backToResult() {
+  document.getElementById('screen-review').style.display = 'none';
+  document.getElementById('screen-result').style.display = 'flex';
+}
+
+// ── AUDIO ──
+function playSound(ok) {
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    if (ok) {
+      [392, 523].forEach((f, i) => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.connect(g); g.connect(ac.destination);
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0.08, ac.currentTime + i * 0.1);
+        g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + i * 0.1 + 0.12);
+        o.start(ac.currentTime + i * 0.1);
+        o.stop(ac.currentTime + i * 0.1 + 0.13);
+      });
+    } else {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sawtooth'; o.frequency.value = 120;
+      g.gain.setValueAtTime(0.07, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.22);
+      o.connect(g); g.connect(ac.destination);
+      o.start(); o.stop(ac.currentTime + 0.22);
+    }
+  } catch(e) {}
+}
+
+// ── CONFETTI ──
+function launchConfetti() {
+  const cvs = document.getElementById('confetti-canvas');
+  cvs.style.display = 'block';
+  cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+  const ctx = cvs.getContext('2d');
+  const colors = ['#c0394a', '#d4a43a', '#2ecc7e', '#4a9eff', '#fff'];
+  const pieces = Array.from({ length: 120 }, () => ({
+    x: Math.random() * cvs.width, y: -20,
+    vx: (Math.random() - 0.5) * 5,
+    vy: Math.random() * 4 + 2,
+    gravity: 0.06,
+    rotation: Math.random() * 360,
+    rotSpeed: (Math.random() - 0.5) * 6,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    size: Math.random() * 8 + 4,
+    alpha: 1,
+    shape: Math.random() > 0.5 ? 'rect' : 'circle',
+  }));
+  function draw() {
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    let alive = 0;
+    pieces.forEach(p => {
+      p.vy += p.gravity; p.x += p.vx; p.y += p.vy;
+      p.rotation += p.rotSpeed; p.alpha -= 0.008;
+      if (p.alpha <= 0) return; alive++;
+      ctx.save(); ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.fillStyle = p.color;
+      ctx.translate(p.x, p.y); ctx.rotate(p.rotation * Math.PI / 180);
+      if (p.shape === 'circle') {
+        ctx.beginPath(); ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2); ctx.fill();
+      } else {
+        ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      }
+      ctx.restore();
+    });
+    if (alive > 0) requestAnimationFrame(draw);
+    else cvs.style.display = 'none';
+  }
+  draw();
+}
+
+// ── TOAST ──
+function toast(msg, ms = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), ms);
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', e => {
+  if (document.getElementById('screen-test').style.display !== 'block') return;
+  if (['1', '2', '3'].includes(e.key)) {
+    const letters = ['A', 'B', 'C'];
+    const opts = document.querySelectorAll('.opt:not(.locked)');
+    const target = [...opts].find(o => o.dataset.letter === letters[+e.key - 1]);
+    if (target) target.click();
+  }
+  if (e.key === 'ArrowRight' || e.key === 'Enter') {
+    const btn = document.getElementById('btn-next');
+    if (btn && btn.style.display !== 'none') btn.click();
+  }
+});
+</script>
+</body>
+</html>

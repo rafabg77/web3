@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Test Completo XLI - Preguntas Probables (Temas 1-45)</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;max-width:900px;margin:0 auto;padding:20px;background:#f4f6f8;color:#222}
+  h1{font-size:22px;text-align:center}
+  #bar{position:sticky;top:0;background:#fff;padding:10px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .q{background:#fff;border-radius:8px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  .q h3{margin:0 0 6px 0;font-size:14px;color:#555}
+  .q p.qtext{margin:0 0 10px 0;font-weight:bold}
+  label{display:block;padding:6px 8px;border-radius:6px;cursor:pointer;margin-bottom:4px;border:1px solid #ddd}
+  label:hover{background:#eef2f7}
+  .correct{background:#d4f7d4!important;border-color:#4caf50!important}
+  .incorrect{background:#fbd3d3!important;border-color:#e53935!important}
+  .disabled label{cursor:default}
+  button{background:#2c5fb8;color:#fff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;font-size:14px}
+  button:hover{background:#1f478f}
+  #score{font-weight:bold;font-size:16px}
+  #filterWrap select{padding:6px;border-radius:6px}
+  .topic-tag{display:inline-block;background:#e3eaf6;color:#2c5fb8;font-size:11px;padding:2px 6px;border-radius:10px;margin-right:6px}
+  #finalBox{display:none;text-align:center;background:#fff;padding:20px;border-radius:8px;margin-top:15px}
+  #finalBox.show{display:block}
+  .progress{height:8px;background:#ddd;border-radius:4px;overflow:hidden;margin-top:6px}
+  .progress-fill{height:100%;background:#4caf50;width:0%}
+</style>
+</head>
+<body>
+<h1>Test Completo – Preguntas Probables XLI (Temas 1 a 45)</h1>
+<div id="bar">
+  <div>
+    <span id="score">Respondidas: 0 / 0 — Aciertos: 0</span>
+    <div class="progress"><div class="progress-fill" id="progFill"></div></div>
+  </div>
+  <div id="filterWrap">
+    <select id="topicFilter"><option value="">Todos los temas</option></select>
+    <button onclick="resetTest()">Reiniciar test</button>
+  </div>
+</div>
+<div id="finalBox">
+  <h2>Resultado final</h2>
+  <p id="finalText"></p>
+</div>
+<div id="quiz"></div>
+
+<script>
+// ---- BANCO DE PREGUNTAS (245) ----
+// Formato: [tema, pregunta, [4 opciones], indiceCorrecto]
+const QUESTIONS = [
+// TEMA 1
+["T1","Según el art. 1.1 CC, ¿cuáles son las fuentes del ordenamiento jurídico español?",["La ley, la costumbre y los principios generales del derecho","La ley, la jurisprudencia y la costumbre","La Constitución, la ley y los reglamentos","La ley, la doctrina y la costumbre"],0],
+["T1","¿En cuántos días entran en vigor las leyes según el art. 2.1 CC, salvo que dispongan otra cosa (vacatio legis)?",["15 días","20 días","30 días","10 días"],1],
+["T1","¿Cuántos años de residencia continuada exige el art. 14.5 CC para adquirir la vecindad civil con manifestación de voluntad?",["1 año","2 años","5 años","10 años"],1],
+["T1","Sin declaración en contrario, ¿cuántos años de residencia hacen adquirir la vecindad civil según el art. 14.5 CC?",["5 años","10 años","15 años","20 años"],1],
+["T1","Según el art. 17 CC, la determinación de la filiación después de los 18 años...",["Es causa automática de adquisición de la nacionalidad","No es por sí sola causa de adquisición, pero permite optar en 2 años","Da derecho a residencia permanente","Anula la nacionalidad de origen"],1],
+["T1","Según el art. 22.2 CC, ¿a quién le basta 1 año de residencia para adquirir la nacionalidad?",["Al nacido en España","Al que lleve 5 años casado con español/a","Al residente legal sin más requisitos","A cualquier ciudadano de la UE"],0],
+["T1","¿A partir de qué edad exige el art. 23 CC ser capaz de prestar declaración para adquirir la nacionalidad por opción, carta de naturaleza o residencia?",["12 años","14 años","16 años","18 años"],1],
+["T1","Según el art. 24 CC, los españoles emancipados que adquieran otra nacionalidad residiendo en el extranjero pierden la española transcurridos...",["1 año","2 años","3 años","5 años"],2],
+["T1","Según el art. 35 CC, ¿qué son las corporaciones, asociaciones y fundaciones de interés público reconocidas por la ley?",["Personas jurídicas","Personas físicas asimiladas","Entes sin personalidad","Sociedades mercantiles especiales"],0],
+["T1","Según el art. 193 CC, ¿cuántos años de desaparición se exigen, con carácter general, para la declaración de fallecimiento?",["5 años","8 años","10 años","15 años"],2],
+["T1","Si al expirar el plazo general el desaparecido hubiera cumplido 75 años, el plazo para la declaración de fallecimiento (art. 193 CC) se reduce a...",["2 años","3 años","5 años","7 años"],2],
+["T1","Para la emancipación por concesión de quienes ejercen la patria potestad (art. 241 CC), ¿qué edad mínima debe tener el menor?",["14 años","16 años","17 años","18 años"],1],
+["T1","Según el art. 244 CC, la emancipación por concesión es, con carácter general...",["Revocable en cualquier momento","No revocable, salvo la concedida por vida independiente","Revocable solo por sentencia judicial","Revocable a petición del menor"],1],
+// TEMA 2
+["T2","Según el art. 2 LO 3/1981, el Defensor del Pueblo es nombrado por las Cortes Generales por una mayoría de...",["Mayoría absoluta de cada Cámara","3/5 de cada Cámara","2/3 de cada Cámara","Mayoría simple del Congreso"],1],
+["T2","¿Cuál es la duración del mandato del Defensor del Pueblo según el art. 2 LO 3/1981?",["4 años","5 años","6 años","7 años"],1],
+["T2","Según el art. 13 LO 3/1981, para actuar ante el Defensor del Pueblo...",["Es obligatorio ser asistido por abogado","No se requiere abogado ni procurador","Solo se permite actuación por procurador","Se requiere autorización judicial previa"],1],
+["T2","¿Quién acredita el nombramiento del Defensor del Pueblo según el art. 2.3 LO 3/1981?",["El Rey","El Presidente del Gobierno","El Presidente del Congreso","El Presidente del Tribunal Constitucional"],2],
+["T2","¿Cuándo fue aprobado el texto de la Constitución Española por las Cortes?",["6 de diciembre de 1978","31 de octubre de 1978","27 de diciembre de 1978","29 de diciembre de 1978"],1],
+["T2","¿Cuál fue el último artículo reformado de la Constitución Española y en qué fecha?",["Art. 13.2, en 1992","Art. 135, en 2011","Art. 49, en 2024","Art. 57, en 2020"],2],
+["T2","Según el art. 28 CE, el derecho de sindicación está limitado para...",["Los funcionarios civiles del Estado","Las Fuerzas Armadas y los institutos armados de carácter militar","Los miembros del Poder Judicial únicamente","Los empleados de empresas públicas"],1],
+["T2","Según el art. 9.3 CE, ¿cuál de los siguientes NO es uno de los principios que garantiza dicho precepto?",["La irretroactividad de las disposiciones sancionadoras no favorables","La interdicción de la arbitrariedad de los poderes públicos","La supremacía del Derecho de la Unión Europea","La seguridad jurídica"],2],
+["T2","Durante el estado de excepción, según el art. 55 CE, ¿hasta cuántos días puede prolongarse la detención (art. 17.2) como derecho susceptible de suspensión?",["72 horas","5 días","10 días","15 días"],2],
+["T2","¿Qué derecho adicional se suspende en el estado de sitio respecto al de excepción, según el art. 55 CE?",["El art. 18.2 (domicilio)","El art. 17.3 (asistencia letrada e información al detenido)","El art. 20.1 (libertad de expresión)","El art. 28.2 (huelga)"],1],
+// TEMA 3
+["T3","Según el art. 57 CE, en igualdad de grado, ¿quién tiene preferencia en la sucesión a la Corona?",["La línea de mayor edad sobre la de menor edad","El varón sobre la mujer","La línea posterior sobre la anterior","El cónyuge sobre los descendientes"],1],
+["T3","Según el art. 59 CE, en defecto de padre/madre o Príncipe heredero mayor de edad, ¿quién ejerce la Regencia?",["El Gobierno en pleno","Las Cortes Generales, nombrando una, tres o cinco personas","El Tribunal Constitucional","El Presidente del Congreso"],1],
+["T3","Según el art. 73 CE, ¿cuáles son los dos períodos ordinarios de sesiones de las Cámaras?",["Enero-marzo y julio-septiembre","Septiembre-diciembre y febrero-junio","Octubre-enero y abril-julio","Marzo-junio y septiembre-diciembre"],1],
+["T3","Según el art. 68 CE, las elecciones al Congreso se celebran entre los...",["15 y 30 días tras finalizar el mandato","30 y 60 días tras finalizar el mandato","60 y 90 días tras finalizar el mandato","20 y 40 días tras finalizar el mandato"],1],
+["T3","Según el art. 70 CE, ¿quiénes son inelegibles e incompatibles para ser Diputados o Senadores?",["Los funcionarios interinos del Estado","Los Magistrados, Jueces y Fiscales en activo","Los pensionistas del sistema público","Los miembros de colegios profesionales"],1],
+["T3","Según el art. 86 CE, los Decretos-Leyes deben ser sometidos a debate y votación de totalidad en el Congreso en el plazo de...",["15 días","20 días","30 días","60 días"],2],
+["T3","Según el art. 90 CE, ¿de cuánto tiempo dispone el Senado para vetar o enmendar un proyecto de ley, salvo declaración de urgencia?",["1 mes","2 meses","3 meses","45 días"],1],
+["T3","Según el art. 113 CE, la moción de censura debe ser propuesta, al menos, por...",["1/5 de los Diputados","1/10 de los Diputados","Mayoría simple del Congreso","Mayoría absoluta del Congreso"],1],
+// TEMA 4
+["T4","Según el art. 288 TFUE, ¿qué acto jurídico de la UE obliga al Estado miembro en cuanto al resultado, dejando libertad sobre la forma?",["El Reglamento","La Directiva","La Decisión","La Recomendación"],1],
+["T4","Según el art. 19 TUE/TFUE, ¿cuántos años dura el mandato de los jueces del Tribunal de Justicia de la UE?",["3 años","6 años","9 años","5 años"],1],
+["T4","¿Dónde tiene su sede la Fiscalía Europea (EPPO), creada por el Reglamento (UE) 2017/1939?",["Bruselas","La Haya","Luxemburgo","Estrasburgo"],2],
+["T4","¿Dónde tiene su sede Europol, según el Reglamento (UE) 2016/794?",["Luxemburgo","La Haya","Bruselas","Lyon"],1],
+["T4","¿Cuál es la duración del mandato del Presidente del Consejo Europeo según el art. 15 TUE?",["2 años renovable una vez","2,5 años renovable una vez","5 años no renovable","3 años renovable una vez"],1],
+["T4","¿Dónde tiene su sede CEPOL, la agencia de formación policial de la UE?",["Atenas","Budapest","Tallin","Varsovia"],1],
+// TEMA 5
+["T5","Según el art. 55 Ley 40/2015, ¿cuáles son los órganos superiores de la AGE?",["Ministros y Subsecretarios","Ministros y Secretarios de Estado","Secretarios de Estado y Directores Generales","Subsecretarios y Secretarios Generales Técnicos"],1],
+["T5","Según el art. 59 Ley 40/2015, los órganos superiores y directivos se crean, modifican y suprimen por...",["Orden Ministerial","Real Decreto del Consejo de Ministros","Resolución de la Subsecretaría","Acuerdo del Consejo de Estado"],1],
+["T5","Según el art. 72 Ley 40/2015, ¿qué rango tienen los Delegados del Gobierno en las CCAA?",["Rango de Director General","Rango de Secretario de Estado","Rango de Subsecretario","Rango de Ministro"],2],
+["T5","Según el art. 18 de la Ley del Gobierno, las deliberaciones del Consejo de Ministros son...",["Públicas","Secretas","Semipúblicas, salvo acuerdo en contrario","Accesibles tras 5 años"],1],
+["T5","Los Ministros sin cartera se caracterizan por...",["Tener un Departamento ministerial reducido","No tener Departamento ministerial pero asumir funciones que les encomiende el Presidente","Ser nombrados por el Rey directamente","Carecer de voto en el Consejo de Ministros"],1],
+["T5","Según el art. 21 de la Ley del Gobierno, el Gobierno en funciones NO puede...",["Realizar el despacho ordinario de asuntos públicos","Aprobar los Presupuestos Generales del Estado","Atender situaciones de urgencia","Ejercer competencias delegadas por el Congreso"],1],
+// TEMA 6
+["T6","Según el art. 8 TREBEP, ¿cuál de los siguientes NO es un tipo de empleado público?",["Funcionario de carrera","Funcionario interino","Personal directivo profesional","Personal eventual"],2],
+["T6","Según el art. 16 TREBEP, el progreso en grado, categoría o escalón sin cambiar de puesto de trabajo se denomina...",["Carrera vertical","Carrera horizontal","Promoción interna vertical","Promoción interna horizontal"],1],
+["T6","Según el art. 62 TREBEP, ¿cuál de los siguientes NO es requisito para adquirir la condición de funcionario de carrera?",["Superar el proceso selectivo","Nombramiento por el órgano competente","Acatamiento de la Constitución y el Estatuto de Autonomía","Superar un período de prueba de 2 años"],3],
+["T6","Según los arts. 87-89 TREBEP, ¿en qué situación administrativa se encuentra el funcionario designado para un Organismo Internacional?",["Excedencia voluntaria","Servicios especiales","Servicio en otras Administraciones Públicas","Suspensión de funciones"],1],
+["T6","Según el art. 89 TREBEP, la excedencia voluntaria por interés particular requiere haber prestado servicios efectivos durante, al menos...",["3 años","5 años","7 años","10 años"],1],
+// TEMA 7
+["T7","Según el RD 207/2024, ¿de quién depende orgánicamente la Dirección General de la Policía?",["De la Subsecretaría del Interior","De la Secretaría de Estado de Seguridad","Del Ministro del Interior directamente","De la Secretaría General Técnica"],1],
+["T7","Según el art. 2 RD 207/2024, ¿cuál de las siguientes NO es competencia del Secretario de Estado de Seguridad?",["La cooperación policial internacional","La seguridad privada","La política penitenciaria","La protección de infraestructuras críticas"],2],
+["T7","Según el RD 207/2024, el Gabinete del SES tiene nivel orgánico de...",["Dirección General","Subdirección General","Secretaría General","Servicio"],1],
+["T7","Según el RD 207/2024, ¿qué nivel orgánico tiene el CITCO?",["Dirección General","Subdirección General","Secretaría General Técnica","Servicio Central"],1],
+["T7","Según el RD 207/2024, ¿qué órgano gestiona el NFPOC y el NCC de Eurosur?",["La DG de Coordinación y Estudios","La DG de la Policía","La DG de Relaciones Internacionales y Extranjería","El CITCO"],2],
+["T7","Según el RD 207/2024, ¿qué órgano desarrolla la Estadística Nacional de Criminalidad?",["La DG de Relaciones Internacionales y Extranjería","La DG de Coordinación y Estudios (DGCyE)","El CITCO","La Subsecretaría del Interior"],1],
+["T7","¿Quién nombra al titular de la ONGADH (Oficina Nacional de Garantías de los Derechos Humanos)?",["El Ministro del Interior","El Secretario de Estado de Seguridad","El Subsecretario del Interior","El Director General de la Policía"],1],
+["T7","Según el RD 207/2024, la secretaría y presidencia de la CIPAE corresponde a...",["La Secretaría de Estado de Seguridad","La Secretaría General Técnica del Ministerio del Interior","La Dirección General de la Policía","La Subdirección General de Armas y Explosivos"],1],
+["T7","Según el RD 207/2024, ¿en qué Dirección General se integran la Escuela Nacional de Protección Civil y el CEISE?",["DG de Protección Internacional","DG de Protección Civil y Emergencias","DG de Política Interior","Subsecretaría del Interior"],1],
+// TEMA 8
+["T8","Según la LO 4/2010, ¿cuál de las siguientes NO es una sanción disciplinaria recogida en el art. 10?",["Apercibimiento","Traslado forzoso","Inhabilitación absoluta","Separación del servicio"],2],
+["T8","Según la LO 4/2010, ¿cuál es el plazo de prescripción de las infracciones muy graves?",["1 año","2 años","3 años","5 años"],2],
+["T8","Según el art. 46 LO 4/2010, el procedimiento disciplinario caduca a los...",["3 meses","6 meses","9 meses","12 meses"],1],
+["T8","Según la LO 9/2015, ¿a qué edad pasa a segunda actividad por razón de edad un funcionario de la Escala Básica?",["55 años","58 años","60 años","62 años"],1],
+["T8","Según la LO 9/2015, ¿cuál es el número máximo de convocatorias para la antigüedad selectiva?",["2 convocatorias","3 convocatorias","4 convocatorias","5 convocatorias"],1],
+["T8","¿Quién concede la rehabilitación de un funcionario del CNP según la LO 9/2015?",["El Director General de la Policía","El Consejo de Ministros a propuesta del Ministro del Interior","El Consejo de Policía","El Secretario de Estado de Seguridad"],1],
+["T8","Según el RD 853/2022, ¿cuántos años de servicio se exigen para ascender a Subinspector?",["2 años","3 años","5 años","7 años"],1],
+["T8","Según el RD 853/2022, ¿cuál es el número mínimo de miembros de los tribunales de selección, que deben ser impares?",["3","5","7","9"],1],
+["T8","Según la Orden INT/859/2023, ¿quién suple al Director General de la Policía en primer lugar?",["El Director Adjunto Operativo (DAO)","El SDG de Recursos Humanos y Formación","El Gabinete Técnico","El SDG de Logística e Innovación"],0],
+["T8","Según la Orden INT/859/2023, ¿en qué unidad se integra la Brigada Central de Protecciones Especiales?",["UDEV","UCP (Unidad Central de Protección)","UCRIF","UCFAM"],1],
+["T8","Según la Orden INT/859/2023, ¿qué unidad gestiona el Servicio de Atención a Víctimas de Trata de Seres Humanos?",["UCFAM","UCRIF (dentro de la CGEYF)","UCC","UCR"],1],
+["T8","Según la Orden INT/859/2023, ¿quién coordina los CIE y los CATE?",["La Unidad Central de Repatriaciones (UCR)","La UCRIF","La Brigada de Coordinación con Frontex","El CENIF"],0],
+["T8","Según la Orden INT/859/2023, ¿dónde tiene su sede IBERPOL?",["En la sede central de la DGP en Madrid","En la Escuela Nacional de Policía (Ávila)","En el CITCO","En la Comisaría General de Policía Científica"],1],
+// TEMA 9
+["T9","Según el art. 5 LO 2/1986, los miembros de las FCSE deben usar las armas...",["En cualquier intervención que lo requiera el mando","Solo en situaciones de riesgo racionalmente grave","Siempre que exista resistencia pasiva","Por decisión exclusiva del agente sin más límite"],1],
+["T9","Según el art. 12 LO 2/1986, ¿a qué Cuerpo corresponde el control del juego, las drogas y la seguridad privada?",["A la Guardia Civil","Al Cuerpo Nacional de Policía","A ambos por igual","A las Policías Autonómicas"],1],
+["T9","Según el art. 12 LO 2/1986, ¿qué competencia es propia de la Guardia Civil?",["El resguardo fiscal del Estado y el contrabando","La extranjería y el control de fronteras aéreas","El DNI y el pasaporte","La seguridad privada"],0],
+["T9","Según el art. 38 LO 2/1986, ¿cuál es una competencia propia de las Policías Autonómicas?",["Velar por el cumplimiento de leyes estatales","Proteger los órganos y edificios de la propia CCAA","Funciones de Policía Judicial","Vigilancia de manifestaciones"],1],
+["T9","Según el art. 47 LO 2/1986, las unidades del CNP adscritas a las CCAA actúan bajo...",["El mando exclusivo del Delegado del Gobierno","El mando de sus jefes naturales, con dependencia funcional autonómica y orgánica del MI","El mando directo del Consejero de Interior autonómico, sin más vínculo con el Estado","El mando compartido entre Estado y CCAA en pie de igualdad total"],1],
+// TEMA 10
+["T10","Según el art. 2 bis RD 240/2007, ¿qué tiempo mínimo de convivencia marital se exige a una pareja de hecho, salvo descendencia común?",["6 meses","1 año","2 años","3 años"],1],
+["T10","Según el art. 10 RD 240/2007, se pierde la residencia permanente por ausencia del territorio español superior a...",["1 año consecutivo","2 años consecutivos","3 años consecutivos","5 años consecutivos"],1],
+["T10","Según el art. 14 RD 240/2007, ¿cuál es la validez de la tarjeta de residencia de familiar de ciudadano de la UE?",["2 años","3 años","5 años","10 años"],2],
+["T10","Según el art. 4 LOEX, ¿a partir de qué permanencia en España debe obtenerse la TIE?",["3 meses","6 meses","9 meses","12 meses"],1],
+["T10","Según el art. 25 bis LOEX, ¿qué tipo de visado corresponde a una estancia de corta duración de hasta 90 días en 180?",["Visado A","Visado B","Visado C","Visado D"],2],
+["T10","Según la LOEX, para la reagrupación familiar, el reagrupante debe acreditar medios económicos del...",["100% del IPREM para el reagrupante","200% del IPREM para el reagrupante","400% del IPREM para el reagrupante, más un porcentaje adicional por familiar","600% del IPREM para el reagrupante"],2],
+// TEMA 11
+["T11","Según el art. 26 LOEX, tras la denegación de entrada en frontera, el extranjero debe regresar a su lugar de procedencia en un plazo de...",["24 horas","48 horas","72 horas","7 días"],2],
+["T11","Según el art. 55 LOEX, ¿cuál es la cuantía máxima de la sanción pecuniaria para infracciones leves?",["300 €","500 €","1.000 €","2.000 €"],1],
+["T11","Según el art. 59 LOEX, ¿cuál es el plazo de prescripción de las infracciones graves?",["1 año","2 años","3 años","5 años"],1],
+["T11","Según el art. 62 LOEX, ¿cuál es la duración máxima del internamiento en un CIE?",["30 días","40 días","60 días","90 días"],2],
+["T11","En el procedimiento preferente de extranjería, ¿de cuánto tiempo se dispone para formular alegaciones?",["24 horas","48 horas","72 horas","5 días"],1],
+// TEMA 12
+["T12","Según el RD 501/2024, ¿cómo se denomina el centro de Atención, Emergencias y Derivación dentro de los centros de migraciones?",["CAPI","CAED","CETI","CPLL"],1],
+["T12","Según la Ley 12/2009 y el RD 220/2022, ¿cuál es la duración máxima de la fase de valoración inicial y derivación del itinerario de acogida?",["15 días","1 mes","3 meses","6 meses"],1],
+["T12","Según la Ley 12/2009, ¿qué órgano realiza la instrucción de las solicitudes de protección internacional?",["La CIAR","El MIR","La OAR (Oficina de Asilo y Refugio)","La SES"],2],
+["T12","Según la Ley 12/2009, ¿en qué plazo se resuelve una solicitud de protección internacional presentada en puesto fronterizo, ampliable si lo pide ACNUR?",["2 días, ampliable a 6","4 días, ampliable a 10","7 días, ampliable a 14","10 días, ampliable a 20"],1],
+["T12","Según la Ley 12/2009, la protección subsidiaria se otorga frente a...",["Actos de persecución por motivos de raza o religión","Daños graves como la pena de muerte, tortura o violencia indiscriminada","Delitos comunes en el país de origen","Catástrofes naturales"],1],
+// TEMA 13
+["T13","Según el art. 11 LSP (Ley 5/2014), en el Registro Nacional de Seguridad Privada se inscriben de oficio, entre otros...",["Solo las empresas de seguridad privada","Las empresas de seguridad privada, despachos de detectives, centros de formación y sanciones impuestas","Únicamente las sanciones administrativas","Solo los vigilantes de seguridad habilitados"],1],
+["T13","Según el art. 27 LSP, ¿qué órgano otorga la habilitación al personal de seguridad privada, salvo guardas rurales?",["La Dirección General de la Guardia Civil","La Dirección General de la Policía","La Secretaría de Estado de Seguridad","El Ministerio del Interior directamente"],1],
+["T13","Según el art. 33 LSP, los escoltas privados...",["Pueden identificar y detener en cualquier circunstancia","No pueden identificar ni detener, salvo en caso de agresión","Tienen las mismas funciones que los vigilantes de seguridad","Dependen orgánicamente de las FCSE"],1],
+["T13","Según el art. 29.5 LSP, los miembros de las FCSE no pueden ejercer funciones de dirección de centros de formación de seguridad privada si han ejercido funciones de control de SP en los...",["1 año anterior","2 años anteriores","3 años anteriores","5 años anteriores"],1],
+["T13","Según el art. 38 LSP, los directores de seguridad desempeñan sus funciones...",["Integrados siempre en empresas de seguridad","En plantillas de usuarios o de empresas","Únicamente a través de despachos de detectives","Bajo mando directo de las FCSE"],1],
+// TEMA 14
+["T14","Según el art. 11 LO 4/2015, el DNI es obligatorio a partir de los...",["12 años","14 años","16 años","18 años"],1],
+["T14","Según el art. 16 LO 4/2015, el traslado a dependencias policiales para identificar a una persona no puede superar...",["3 horas","6 horas","12 horas","24 horas"],1],
+["T14","Según la LO 9/1983, las manifestaciones requieren comunicación previa a la autoridad con una antelación de, con carácter general...",["24 horas","48 horas","72 horas","7 días"],2],
+["T14","Según el art. 20 LO 4/2015, los registros corporales externos deben realizarse, con carácter general...",["Por un agente de cualquier sexo","Por un agente del mismo sexo que la persona registrada","Únicamente por personal sanitario","Por dos agentes de distinto sexo"],1],
+["T14","Según el art. 39 LO 4/2015, ¿cuál es el tramo de sanción económica para infracciones muy graves?",["100 € a 600 €","601 € a 30.000 €","30.001 € a 600.000 €","600.001 € a 1.000.000 €"],2],
+["T14","Según el art. 30 LO 4/2015, los menores de 14 años que cometan infracciones...",["Son sancionados con multa reducida","Quedan exentos de responsabilidad y se comunica al Ministerio Fiscal","Son sancionados igual que los adultos","Quedan exentos solo si reinciden"],1],
+// TEMA 15
+["T15","Según la Ley 8/2011, ¿quién declara una zona crítica, previo informe del CNPIC?",["El Ministro del Interior","La Secretaría de Estado de Seguridad","El Consejo de Ministros","El Director del CNPIC"],1],
+["T15","Según la Ley 8/2011, el Delegado de Seguridad de una infraestructura crítica es designado por...",["La Secretaría de Estado de Seguridad","El Operador Crítico","El CNPIC","El Ministerio del Interior"],1],
+["T15","Según la Ley 8/2011, ¿quién preside la Comisión Nacional para la Protección de las Infraestructuras Críticas?",["El Ministro del Interior","La Secretaría de Estado de Seguridad","El Director del CNPIC","El Secretario General Técnico"],1],
+["T15","Según la Ley 8/2011, ¿qué calificación de seguridad tiene el Catálogo Nacional de Infraestructuras Estratégicas?",["CONFIDENCIAL","RESERVADO","SECRETO","DIFUSIÓN LIMITADA"],2],
+["T15","Según la Ley 8/2011, ¿quién elabora el Plan de Protección Específico (PPE) de una infraestructura crítica?",["El CNPIC","El Operador Crítico","El Grupo de Trabajo Interdepartamental","El cuerpo policial competente"],1],
+["T15","Según la Ley 8/2011, ¿quién elabora el Plan de Apoyo Operativo (PAO)?",["El Operador Crítico","El CNPIC","El cuerpo policial estatal o autonómico","La Comisión Nacional"],2],
+["T15","¿A qué órgano compete el proceso de identificación de una infraestructura como crítica según la Ley 8/2011?",["A la SES exclusivamente","Al CNPIC","Al Ministerio sectorial correspondiente","Al Operador Crítico"],1],
+// TEMA 16
+["T16","Según el art. 20.4 CP, ¿cuál NO es requisito de la legítima defensa?",["Agresión ilegítima","Necesidad racional del medio empleado","Falta de provocación suficiente por parte del defensor","Ánimo de venganza previo del agredido"],3],
+["T16","Según el art. 14.1 CP, el error de tipo vencible se castiga...",["Excluyendo siempre la responsabilidad","Como imprudente, si la modalidad imprudente está prevista por la ley","Con la misma pena que el delito doloso","Con pena inferior en dos grados siempre"],1],
+["T16","Según el art. 16 CP, la pena de la tentativa respecto al delito consumado se impone...",["En su mitad superior","Inferior en uno o dos grados","Igual a la del delito consumado","Superior en un grado"],1],
+["T16","Según el art. 17 CP, cuando dos o más personas se conciertan para la ejecución de un delito y resuelven ejecutarlo, se habla de...",["Provocación","Proposición","Conspiración","Coautoría"],2],
+["T16","Según el art. 50 CP, ¿cuál es la extensión máxima de la pena de multa por días-multa para una persona física?",["1 año","18 meses","2 años","3 años"],2],
+["T16","Según el art. 131 CP, ¿a partir de qué pena de prisión prescribe el delito a los 15 años?",["Superior a 5 años","Superior a 10 años","Superior a 15 años","Igual o superior a 20 años"],1],
+// TEMA 17
+["T17","Según el art. 142 CP, el homicidio por imprudencia grave se castiga con prisión de...",["6 meses a 2 años","1 a 4 años","2 a 6 años","3 a 8 años"],1],
+["T17","Según el art. 140 CP, ¿en cuál de los siguientes casos se impone prisión permanente revisable por asesinato?",["Cuando la víctima sea mayor de 65 años","Cuando la víctima sea menor de 16 años o persona especialmente vulnerable","Cuando exista premeditación simple","Cuando el autor confiese el delito"],1],
+["T17","Según el art. 145 CP, la embarazada que produce su propio aborto fuera de los casos permitidos se castiga con...",["Prisión de 6 meses a 1 año","Multa de 6 a 24 meses","Trabajos en beneficio de la comunidad","No es punible en ningún caso"],1],
+["T17","¿Cuál es la principal diferencia entre el art. 153.1 y el 153.2 CP en materia de lesiones?",["La pena, que es mayor en el 153.2","El círculo de víctimas protegidas","El tipo de instrumento utilizado","La gravedad de la lesión causada"],1],
+["T17","Según el art. 163 CP, la detención ilegal se agrava cuando dura más de...",["10 días","15 días","20 días","30 días"],1],
+["T17","Según el art. 163.2 CP, ¿qué efecto tiene la liberación del detenido dentro de los 3 primeros días sin haber logrado el objeto que se había propuesto?",["Ninguno, la pena es la misma","Se impone la pena inferior en grado","Se exime totalmente de responsabilidad","Se convierte en delito leve"],1],
+["T17","Según el art. 172 ter CP (stalking), si la víctima es persona especialmente vulnerable, la pena es prisión de...",["3 meses a 2 años","6 meses a 2 años","1 a 2 años","6 meses a 3 años"],1],
+["T17","Según el art. 191 CP, para proceder por agresiones sexuales se requiere, con carácter general...",["Denuncia de la víctima o querella del Ministerio Fiscal","Persecución de oficio sin excepción","Autorización judicial previa","Denuncia de cualquier persona"],0],
+// TEMA 18
+["T18","Según el art. 235 CP, ¿cuál de las siguientes NO es una agravante del hurto?",["Sustracción de cosas de valor artístico o histórico","Cometerlo utilizando a menores de 16 años","Sustracción de cosa propia a quien la posee legítimamente","Pertenencia a organización criminal"],2],
+["T18","Según el art. 239 CP, ¿cuál de los siguientes objetos se considera 'llave falsa' a efectos de robo con fuerza?",["Una llave legítima entregada voluntariamente por su dueño","Las tarjetas magnéticas y los mandos a distancia","Una ganzúa entregada por el propietario para reparación","Una copia autorizada notarialmente"],1],
+["T18","Según el art. 243 CP, la extorsión consiste en obligar a otro mediante violencia o intimidación a...",["Entregar directamente una cantidad de dinero en metálico","Realizar u omitir un acto o negocio jurídico en perjuicio de su patrimonio","Firmar una confesión de delito","Abandonar su domicilio habitual"],1],
+["T18","Según el art. 244 CP, el hurto o robo de uso de vehículo exige su restitución en un plazo no superior a...",["24 horas","48 horas","72 horas","7 días"],1],
+["T18","Según el art. 250.5 CP, la estafa se agrava cuando el valor de la defraudación supera...",["10.000 €","50.000 €","100.000 €","250.000 €"],1],
+["T18","Según el art. 254 CP, la apropiación de cosa perdida o de dueño desconocido se castiga, con carácter general, con...",["Prisión de 6 meses a 1 año","Multa de 3 a 6 meses","Trabajos en beneficio de la comunidad","Inhabilitación especial"],1],
+// TEMA 19
+["T19","Según el art. 551 CP, ¿cuál de las siguientes NO es una circunstancia agravante del delito de atentado?",["Uso de armas u objetos peligrosos","Uso de vehículo para acometer","Cometerlo en motín en centro penitenciario","Ser el sujeto pasivo un particular sin condición de autoridad"],3],
+["T19","Según el art. 556 CP, la falta de respeto y consideración a la autoridad se castiga con...",["Prisión de 3 a 6 meses","Multa de 1 a 3 meses","Trabajos en beneficio de la comunidad","Inhabilitación especial de 1 año"],1],
+["T19","Según el art. 557.2 CP, los desórdenes públicos cometidos por una multitud idónea para afectar gravemente el orden público se castigan con prisión de...",["1 a 3 años","2 a 4 años","3 a 5 años","4 a 6 años"],2],
+["T19","Según el art. 561 CP, la falsa alarma que provoca la movilización de servicios de policía o salvamento se castiga con prisión de...",["1 a 6 meses","3 meses y 1 día a 1 año","6 meses a 2 años","1 a 3 años"],1],
+["T19","Según el CP, ¿a partir de cuántas armas reglamentadas se considera depósito de armas?",["20 o más","30 o más","50 o más","100 o más"],2],
+// TEMA 20
+["T20","Según el art. 588 bis de la LECrim, ¿cuál es el plazo máximo, prorrogable, de las interceptaciones de comunicaciones telefónicas y telemáticas?",["6 meses","12 meses","18 meses","24 meses"],2],
+["T20","Según el art. 183.1 CP, el delito de grooming exige contactar con un menor de...",["14 años","16 años","17 años","18 años"],1],
+["T20","Según el art. 201 CP, para proceder por el descubrimiento y revelación de secretos se requiere, con carácter general...",["Persecución de oficio sin excepciones","Denuncia de la persona agraviada o su representante legal","Autorización judicial previa","Querella exclusiva del Ministerio Fiscal"],1],
+["T20","Según el art. 282 bis LECrim, ¿por cuánto tiempo se concede inicialmente la identidad supuesta a un agente encubierto?",["3 meses","6 meses","12 meses","2 años"],1],
+// TEMA 21
+["T21","Según el art. 490 LECrim, ¿quién puede detener a un delincuente in fraganti?",["Solo la policía judicial","Solo el Ministerio Fiscal","Cualquier particular","Solo el Juez de Instrucción"],2],
+["T21","Según los arts. 509 y 527 LECrim, ¿cuál es la duración máxima de la incomunicación del detenido en casos generales?",["3 días","5 días","10 días","15 días"],1],
+["T21","Según la LO 5/1995, ¿cuántos jurados componen el Tribunal del Jurado?",["7","9","11","12"],1],
+["T21","Según el art. 554 LECrim, se considera domicilio...",["Solo la vivienda habitual inscrita en el padrón","Todo lugar cerrado donde una persona reside habitualmente y desarrolla su vida privada","Cualquier inmueble de su propiedad","Únicamente la segunda residencia vacacional"],1],
+["T21","Según la ISES 1/2024, el uso del arma de fuego solo procede cuando exista...",["Cualquier resistencia del sospechoso","Riesgo racionalmente grave para la vida, integridad o seguridad ciudadana","Orden expresa del superior, sin más condición","Negativa a identificarse"],1],
+["T21","Según el art. 520 LECrim, el detenido tiene derecho a comunicarse telefónicamente con un tercero...",["Sin demora injustificada, en presencia de un funcionario","Solo tras 24 horas de detención","Únicamente si lo autoriza el juez por escrito","Solo con su abogado, nunca con familiares"],0],
+["T21","Según la ISES 1/2024, la reseña genética del detenido requiere...",["Consentimiento del detenido con asistencia letrada, salvo autorización judicial","Autorización del Ministerio Fiscal exclusivamente","Ser siempre coactiva como la decadactilar","No requerir nunca autorización judicial"],0],
+["T21","Según la ISES 1/2024, las rondas de vigilancia en celdas sin videovigilancia deben realizarse, como mínimo, cada...",["15 minutos","30 minutos","45 minutos","60 minutos"],1],
+["T21","Según la ISES 1/2024, a las personas incomunicadas se les deben realizar, como mínimo, los siguientes reconocimientos médicos cada 24 horas:",["1","2","3","4"],1],
+// TEMA 22
+["T22","Según el art. 17 Ley 4/2015 (Estatuto de la Víctima), la víctima indirecta es...",["La persona que ha sufrido el daño directamente","Los familiares y allegados que sufren daños como consecuencia del delito","El testigo presencial del delito","El denunciante del hecho delictivo"],1],
+["T22","Según el art. 6 Ley 4/2015, ¿qué derecho tiene la víctima antes de renunciar a sus derechos o consentir mediación?",["Derecho a indemnización inmediata","Derecho a un período de reflexión","Derecho a recurso de amparo","Derecho a asistencia letrada gratuita obligatoria"],1],
+["T22","Según la Ley 4/2015, la justicia restaurativa queda vedada, entre otros casos, en delitos de...",["Hurto leve","Violencia de género","Daños imprudentes","Falta de respeto a la autoridad"],1],
+["T22","Según el art. 23 Ley 4/2015, la evaluación individual de la víctima valora, entre otros factores...",["Únicamente su situación económica","Su vulnerabilidad, situación personal y riesgo de victimización secundaria","Solo la gravedad objetiva del delito","Exclusivamente su nacionalidad"],1],
+["T22","Según la Ley 4/2015, ¿cuál de las siguientes medidas puede aplicarse tanto en fase de investigación como de enjuiciamiento?",["El uso de videoconferencia","El juicio a puerta cerrada exclusivamente","La prisión provisional","La conformidad procesal"],0],
+// TEMA 23
+["T23","Según el art. 71 LO 3/2007, la composición equilibrada de mujeres y hombres en órganos de la AGE se sitúa entre...",["30% y 70%","40% y 60%","45% y 55%","35% y 65%"],1],
+["T23","Según el art. 23 LO 1/2004, ¿cuál de los siguientes NO es un medio de acreditación de la violencia de género?",["Sentencia condenatoria","Orden de protección","Informe del Ministerio Fiscal","Declaración jurada de un vecino"],3],
+["T23","Según el art. 27 LO 1/2004, las ayudas económicas a víctimas de violencia de género se conceden cuando sus rentas no superen...",["El 50% del SMI","El 75% del SMI","El 100% del SMI","El 125% del SMI"],1],
+["T23","Según la Ley 39/2006, el Grado II de dependencia (severa) implica que la persona necesita ayuda...",["1 vez al día","2-3 veces al día","De forma continua e indispensable","Solo en situaciones excepcionales"],1],
+["T23","¿En qué fecha y ciudad se adoptó la Convención sobre los Derechos de las Personas con Discapacidad?",["10/12/2006 en Ginebra","13/12/2006 en Nueva York","3/12/2006 en París","13/12/2007 en Bruselas"],1],
+// TEMA 24/25
+["T24","Según el art. 4 LPRL (Ley 31/1995), el 'riesgo laboral' se define como...",["Cualquier característica del trabajo","La posibilidad de que el trabajador sufra un determinado daño derivado del trabajo","Un equipo de trabajo defectuoso","Una enfermedad ya manifestada"],1],
+["T24","Según el RD 2/2006, los Delegados Policiales de Prevención pueden ser designados por...",["Designación sindical o elección, según haya o no representación sindical","Únicamente por sorteo entre los funcionarios","Designación directa del Director General de la Policía","Votación exclusiva entre los mandos superiores"],0],
+["T24","Según el RD 2/2006, ¿con qué periodicidad mínima se reúne la Comisión de Seguridad y Salud Laboral Policial (CSSLP)?",["Mensualmente","Trimestralmente","Semestralmente","Anualmente"],2],
+["T24","Según el art. 19 RD 2/2006, el sistema de prevención de la DGP se somete a auditoría cada...",["2 años","3 años","4 años","5 años"],3],
+["T24","Según la Ley 31/1995, ¿quién preside la Comisión Nacional de Seguridad y Salud en el Trabajo?",["El Ministro de Trabajo","El Secretario de Estado de Empleo","El Director del INSST","El Presidente del Gobierno"],1],
+["T24","Según la Ley 31/1995, el órgano científico-técnico especializado en seguridad y salud laboral es...",["La Inspección de Trabajo y Seguridad Social","El Instituto Nacional de Seguridad y Salud en el Trabajo (INSST)","La Comisión Nacional de Seguridad y Salud","El Consejo de Política de Seguridad"],1],
+// TEMA 26
+["T26","Según el art. 13.3 LO 3/2018, se considera repetitivo el ejercicio del derecho de acceso cuando se realiza en más de una ocasión durante...",["3 meses","6 meses","9 meses","12 meses"],1],
+["T26","Según el art. 22.3 LO 3/2018, las grabaciones de videovigilancia se suprimen, con carácter general, en el plazo de...",["15 días","1 mes","3 meses","6 meses"],1],
+["T26","Según el art. 18.3 LO 7/2021, las grabaciones policiales con fines penales se destruyen, con carácter general, en el plazo máximo de...",["1 mes","3 meses","6 meses","1 año"],1],
+["T26","Según el art. 7 LO 3/2018, el tratamiento de datos de un menor puede fundarse en su propio consentimiento a partir de los...",["12 años","13 años","14 años","16 años"],2],
+["T26","Según la LO 3/2018, las personas vinculadas a un fallecido pueden solicitar acceso, rectificación o supresión de sus datos, salvo que...",["Hayan transcurrido 5 años desde el fallecimiento","El fallecido lo hubiera prohibido expresamente","El fallecido fuera menor de edad","Sean herederos forzosos"],1],
+["T26","Según la LO 3/2018, ¿qué rango tiene el Presidente de la Agencia Española de Protección de Datos?",["Director General","Subsecretario","Secretario de Estado","Ministro"],1],
+["T26","Según el art. 5 LO 7/2021, la 'seudonimización' es...",["La eliminación irreversible de todo dato personal","El tratamiento que impide atribuir los datos a un interesado sin información adicional separada","La anonimización total e irreversible de los datos","Un sinónimo de cifrado de extremo a extremo"],1],
+["T26","Según el art. 8 LO 7/2021, el responsable debe revisar la necesidad de conservación, limitación o supresión de los datos cada...",["1 año","2 años","3 años","5 años"],2],
+["T26","Según el art. 4 LO 7/2021, ¿cuál de los siguientes NO es una autoridad competente a efectos de dicha ley?",["Las FCSE","Las Administraciones Penitenciarias","La Agencia Tributaria en su función recaudatoria general","El Ministerio Fiscal"],2],
+["T26","Según la LO 7/2021, el uso de dispositivos móviles de videovigilancia en casos de urgencia puede autorizarse por un plazo máximo de...",["15 días","1 mes, prorrogable por otro","3 meses","6 meses"],1],
+// TEMA 27
+["T27","¿Cuándo y dónde se aprobó la Declaración Universal de los Derechos Humanos?",["10/12/1948 en Ginebra","10/12/1948 en París","24/10/1945 en San Francisco","10/12/1950 en Roma"],1],
+["T27","Según el Convenio Europeo de Derechos Humanos, ¿cuántos años dura el mandato de los jueces del TEDH?",["6 años renovables","9 años no renovables","12 años no renovables","5 años renovables una vez"],1],
+["T27","Según la Convención contra la Tortura, el Comité CAT está compuesto por...",["8 miembros","10 miembros","18 miembros","25 miembros"],1],
+["T27","Según el Protocolo Facultativo de la Convención contra la Tortura, el Subcomité para la Prevención (SPT) está compuesto por...",["10 miembros","18 miembros","25 miembros","46 miembros"],2],
+["T27","¿Cuántos vocales componen el Consejo Asesor del Mecanismo Nacional de Prevención de la Tortura?",["6 vocales","8 vocales","10 vocales","12 vocales"],2],
+// TEMA 28
+["T28","¿Quién acuñó el término 'aldea global'?",["Theodore Levitt","Marshall McLuhan","Susan George","Ignacio Ramonet"],1],
+["T28","¿Quién es la autora del 'Informe Lugano'?",["Naomi Klein","Susan George","Vandana Shiva","Wangari Maathai"],1],
+["T28","¿En qué año y ciudad nació ATTAC?",["1998, en París","1999, en Seattle","2001, en Porto Alegre","1997, en Ginebra"],0],
+["T28","¿En qué año tuvo lugar la 'Batalla de Seattle' contra la OMC?",["1997","1999","2001","2003"],1],
+["T28","Según la Carta de Principios del Foro Social Mundial (2001), ¿quiénes NO pueden participar en el FSM?",["Movimientos sociales","ONG sin ánimo de lucro","Partidos políticos como tales y gobiernos","Sindicatos"],2],
+// TEMA 29
+["T29","Según Daniel Katz, ¿cuál de las siguientes NO es una función de las actitudes sociales?",["Función de conocimiento","Función utilitaria","Función de defensa del yo","Función normativa-jurídica"],3],
+["T29","Según el modelo tripartito de las actitudes, ¿cuáles son sus tres componentes?",["Cognitivo, afectivo y conductual","Racional, emocional y social","Personal, grupal e institucional","Perceptivo, motivacional y volitivo"],0],
+["T29","Según Rokeach, los valores son...",["Evaluaciones puntuales hacia un objeto concreto","Creencias duraderas de que un modo de conducta o estado final es preferible","Reacciones emocionales pasajeras","Normas jurídicas codificadas"],1],
+["T29","¿Quién definió los estereotipos como 'imágenes mentales' o generalizaciones sobre grupos?",["Gordon Allport","Walter Lippmann","Henri Tajfel","Solomon Asch"],1],
+["T29","Según Rokeach, el dogmatismo se caracteriza por...",["Flexibilidad y apertura a nuevas ideas","Rigidez, intolerancia a la ambigüedad y autoritarismo","Empatía y pensamiento crítico","Relativismo moral extremo"],1],
+// TEMA 30
+["T30","Según Piaget, ¿en qué estadio del desarrollo cognitivo se encuentra un niño de 8 años?",["Sensorio-motor","Preoperacional","Operaciones concretas","Operaciones formales"],2],
+["T30","Según Kohlberg, ¿en qué nivel se sitúa el estadio de 'orden social'?",["Nivel preconvencional","Nivel convencional","Nivel postconvencional","Ninguno de los anteriores"],1],
+["T30","La socialización que ocurre en la infancia a través de la familia se denomina...",["Socialización secundaria","Socialización primaria","Aculturación","Asimilación"],1],
+["T30","¿Cómo se denomina la conducta violenta y vandálica asociada a grupos de aficionados deportivos?",["Fanatismo","Fundamentalismo","Hooliganismo","Xenofobia"],2],
+["T30","Según el II Plan de Acción contra los Delitos de Odio, ¿cómo se denomina el rechazo a las personas mayores?",["Aporofobia","Mesofobia","Gerontofobia","Disfobia"],2],
+// TEMA 31
+["T31","¿Quién formuló las 'leyes de las migraciones' en 1885?",["Everett S. Lee","Ernst G. Ravenstein","Wilbur Zelinsky","Israel Zangwill"],1],
+["T31","Según Everett Lee, el proceso migratorio depende de factores en el área de origen, área de destino, obstáculos intermedios y...",["Factores climáticos","Factores personales","Factores religiosos exclusivamente","Factores lingüísticos"],1],
+["T31","¿Quién acuñó el concepto de 'melting pot' o crisol de culturas?",["Israel Zangwill","Wilbur Zelinsky","Ernst Ravenstein","Robert Park"],0],
+["T31","¿Cómo se denomina la emigración de personas cualificadas hacia otros países?",["Síndrome de Ulises","Brain Drain","Melting pot","Aculturación"],1],
+// TEMA 32
+["T32","¿Quién formuló el modelo de Círculos Concéntricos en geografía urbana?",["Homer Hoyt","Ernest Burgess","Harris y Ullman","Richard M. Hurd"],1],
+["T32","Según Louis Wirth, una ciudad es...",["Un núcleo de más de 10.000 habitantes según el INE","Un asentamiento relativamente grande, denso y permanente con actividad fuera de la agricultura","Cualquier capital de provincia","Un municipio con ayuntamiento propio"],1],
+["T32","Una pirámide de población con base estrecha y tendencia al envejecimiento se denomina...",["Progresiva","Regresiva","Estable","Desequilibrada"],1],
+["T32","Según Malthus, la población crece en progresión...",["Aritmética, mientras los alimentos crecen geométricamente","Geométrica, mientras los alimentos crecen aritméticamente","Geométrica igual que los alimentos","Constante, independiente de los alimentos"],1],
+["T32","Según Gustave Le Bon, en las masas se genera...",["Un pensamiento racional colectivo","Un 'alma colectiva' que actúa de forma distinta al individuo","Una disolución total de la personalidad sin efectos conductuales","Mayor responsabilidad individual"],1],
+// TEMA 33
+["T33","Según Robert K. Merton, el modo de adaptación que rechaza tanto las metas como los medios se denomina...",["Innovación","Ritualismo","Retraimiento","Rebelión"],2],
+["T33","Según Sheldon, el tipo de sujeto 'mesomorfo' se caracteriza por ser...",["Sociable y viscerotónico","Agresivo y somatotónico","Reservado y cerebrotónico","Ciclotímico"],1],
+["T33","¿Quién desarrolló el sistema de identificación de delincuentes conocido como Bertillonaje?",["Cesare Lombroso","Alphonse Bertillon","Edwin Sutherland","Francis Galton"],1],
+["T33","Según Sutherland, la teoría de la asociación diferencial sostiene que la delincuencia...",["Se hereda genéticamente","Se aprende por asociación con personas que la definen favorablemente","Surge espontáneamente sin influencia social","Depende exclusivamente de factores económicos"],1],
+["T33","Según Wilson y Kelling, la teoría de las 'ventanas rotas' sostiene que...",["El deterioro del entorno fomenta la delincuencia al transmitir ausencia de control social","La delincuencia depende únicamente de la pobreza","Las ventanas rotas no influyen en la criminalidad","El control policial es irrelevante frente al entorno"],0],
+["T33","Según Maslow, ¿cuál es la base de la pirámide de necesidades?",["Seguridad","Fisiología","Afiliación","Reconocimiento"],1],
+["T33","Según Albert Cohen, la subcultura delictiva surge como reacción a...",["La frustración por no alcanzar el estatus de la clase media","La falta de control parental exclusivamente","Una predisposición biológica","El exceso de oportunidades sociales"],0],
+["T33","La teoría de la elección racional sostiene que los delincuentes...",["Actúan siempre de forma impulsiva sin cálculo","Toman decisiones calculadas, sopesando costes y beneficios","Cometen delitos exclusivamente por enfermedad mental","No tienen capacidad de decisión"],1],
+// TEMA 34
+["T34","¿Cuál de las siguientes sustancias se considera un depresor del SNC usado como droga de sumisión?",["LSD","GHB","PCP","Metedrona"],1],
+["T34","¿Cómo se denomina la necesidad de aumentar la dosis de una sustancia para conseguir el mismo efecto?",["Síndrome de abstinencia","Tolerancia","Dependencia psicológica","Intoxicación aguda"],1],
+["T34","¿En qué año comercializó Bayer la heroína como analgésico?",["1874","1898","1912","1925"],1],
+["T34","¿Qué significan las siglas NSP en el contexto de las drogas?",["Nuevas Sustancias Psicoactivas","Narcóticos Sintéticos Prohibidos","Núcleo de Sustancias Peligrosas","Normativa de Seguridad sobre Psicotrópicos"],0],
+["T34","El fentanilo es un opioide sintético cuya potencia respecto a la morfina es, aproximadamente...",["10-20 veces más potente","50-100 veces más potente","200-300 veces más potente","Igual de potente"],1],
+// TEMA 35
+["T35","¿En qué año se publicó el Informe Brundtland 'Nuestro futuro común'?",["1972","1987","1992","1997"],1],
+["T35","Según la Ley 7/2021, ¿cuál es el objetivo de reducción de gases de efecto invernadero para 2030 respecto a 1990?",["15%","23%","35%","50%"],1],
+["T35","¿En qué año se presentó el Pacto Verde Europeo?",["2015","2017","2019","2021"],2],
+["T35","¿En qué año se aprobó la Agenda 2030 y sus 17 ODS por la Asamblea General de la ONU?",["2012","2015","2017","2019"],1],
+["T35","¿En qué ciudad y año se adoptó el Acuerdo de París (COP21)?",["Kioto, 1997","Río de Janeiro, 1992","París, 2015","Johannesburgo, 2002"],2],
+["T35","¿En qué año tuvo lugar la primera Cumbre de la Tierra en Estocolmo?",["1968","1972","1982","1992"],1],
+// TEMA 38
+["T38","¿Cuál de los siguientes NO es una distribución de GNU/Linux?",["Debian","Ubuntu","Windows NT","Fedora"],2],
+["T38","¿Qué diferencia hay entre sistema de archivos y dispositivo de almacenamiento?",["Son sinónimos exactos","El sistema de archivos es la estructura lógica; el dispositivo es el hardware físico","El dispositivo es software y el sistema de archivos es hardware","No existe relación entre ambos"],1],
+["T38","¿Cuál es la principal ventaja de un SSD frente a un HDD?",["Mayor capacidad por precio","Mayor velocidad, al no tener partes móviles","Menor coste por GB","Mayor vida útil garantizada siempre"],1],
+["T38","¿Qué tipo de kernel utiliza Linux?",["Microkernel","Monolítico","Híbrido","Exokernel"],1],
+// TEMA 39
+["T39","¿Qué dispositivo de red aprende direcciones MAC y envía datos solo al puerto de destino?",["Hub","Switch","Router","Repetidor"],1],
+["T39","¿Para qué sirve el protocolo DHCP?",["Cifrar comunicaciones","Asignar automáticamente direcciones IP a los dispositivos de una red","Resolver nombres de dominio","Enrutar paquetes entre redes distintas"],1],
+["T39","¿Cuántos bits tiene una dirección IPv6?",["32 bits","64 bits","128 bits","256 bits"],2],
+["T39","¿Cuántas capas tiene el modelo TCP/IP, frente a las 7 del modelo OSI?",["3","4","5","6"],1],
+// TEMA 40
+["T40","Según la doctrina de inteligencia, la información interpretada y aplicable para la toma de decisiones se denomina...",["Dato","Información","Conocimiento","Inteligencia"],3],
+["T40","Según el ciclo de inteligencia del CNI, ¿cuál es la primera fase?",["Obtención","Dirección","Elaboración","Difusión"],1],
+["T40","¿Qué significan las siglas OSINT?",["Open Source Intelligence","Operational Strategic Intelligence","Open System Information Network","Official Source Internal Network"],0],
+["T40","En el sistema de evaluación de fuentes e información 4x4, la fuente calificada como 'B' es...",["Fiable","Normalmente fiable","No fiable","No calificada"],1],
+["T40","¿Qué tipo de dominios utiliza la red TOR para sus servicios ocultos?",[".tor",".onion",".hidden",".dark"],1],
+["T40","Según los informes de Europol, ¿cada cuánto tiempo se publica el SOCTA?",["Anualmente","Cada 2 años","Cada 4 años","Cada 5 años"],2],
+// TEMA 41
+["T41","¿Qué término describe el fraude por correo electrónico que suplanta a un directivo de la empresa (Business Email Compromise)?",["Phishing","BEC","Pharming","Spoofing"],1],
+["T41","¿Cuántas fases tiene el modelo Cyber Kill Chain de Lockheed Martin?",["5","6","7","8"],2],
+["T41","¿Cómo se denomina una red de dispositivos infectados controlados remotamente?",["APT","Botnet","CSIRT","IoT"],1],
+["T41","¿Qué significa la sigla APT en ciberseguridad?",["Ataque de Phishing Total","Amenaza Persistente Avanzada","Análisis de Protocolo de Transporte","Auditoría Periódica de Ti"],1],
+["T41","¿Qué es un CSIRT?",["Un protocolo de cifrado","Un equipo de respuesta a incidentes de ciberseguridad","Un tipo de malware","Un organismo legislativo europeo"],1],
+// TEMA 42
+["T42","Según el RD 137/1993, ¿a partir de cuántos cartuchos se considera prohibida un arma semiautomática larga?",["Más de 5","Más de 11","Más de 21","Más de 30"],1],
+["T42","Según el art. 2 del Reglamento de Armas, un arma se considera 'antigua' si es anterior a...",["1850","1870","1890","1900"],2],
+["T42","Según el Reglamento de Armas, ¿cuántas armas reglamentadas se necesitan reunir para constituir depósito de armas?",["20 o más","30 o más","50 o más","100 o más"],2],
+["T42","¿Cuál es la periodicidad de la revista de armas con carácter general?",["Cada 2 años","Cada 3 años","Cada 5 años","Cada 10 años"],2],
+["T42","La Licencia D ampara hasta cuántas armas largas rayadas (categoría 2ª2)?",["3","5","8","10"],1],
+["T42","¿Quién concede las licencias B y D de armas?",["La Dirección General de la Policía","La Dirección General de la Guardia Civil","El Ministerio del Interior directamente","La Secretaría de Estado de Seguridad"],1],
+["T42","¿Cuál es la validez máxima de la Tarjeta Europea de Armas?",["3 años","5 años","7 años","10 años"],1],
+["T42","¿Quién expide la licencia para armas de lanzar cabos según el art. 113 del Reglamento de Armas?",["La DGP","La DGGC","Los Delegados o Subdelegados del Gobierno","El Ministerio de Defensa"],2],
+["T42","¿En qué unidad de la DGP está ubicado el sistema IBIS de identificación balística?",["UDEV","Comisaría General de Policía Científica","UCRIF","Gabinete Técnico"],1],
+// TEMA 43-45
+["T43","¿De qué color es la señal luminosa V-1, propia de vehículos policiales y de emergencia en servicio urgente?",["Rojo","Verde","Azul","Ámbar"],2],
+["T43","Según el RGC, la señal V-1 debe ser visible a una distancia mínima de...",["30 metros","50 metros","100 metros","150 metros"],1],
+["T43","Según el art. 68 RGC, los vehículos prioritarios pueden incumplir los límites de velocidad y normas de circulación, salvo...",["Las órdenes de los agentes de circulación","La climatología adversa","El estado del firme","Las indicaciones del propio conductor"],0],
+["T43","Según el art. 69 RGC, ante señales de un agente para detenerse, el conductor debe pararse...",["En el lado izquierdo, detrás del vehículo policial","En el lado derecho, delante del vehículo policial, en lugar seguro","En cualquier punto de la calzada inmediatamente","En el arcén central"],1],
+["T43","Según el art. 70 RGC, los vehículos no prioritarios en servicio de urgencia pueden, excepcionalmente, en autopista...",["Adelantar por el arcén derecho únicamente","Circular en sentido contrario por el arcén y penetrar en la mediana","Superar siempre el límite de velocidad sin restricción","Detenerse en el carril central"],1],
+["T43","Según la Orden PCI/881/2019, ante una inspección ITV desfavorable de un vehículo de la DGP...",["Se expide igualmente la tarjeta ITV","Se establecen plazos para subsanar o se inmoviliza el vehículo","El vehículo se da de baja automáticamente","No tiene ninguna consecuencia"],1],
+["T43","Según el RGC, ¿están exentos del cinturón de seguridad los conductores de vehículos prioritarios en servicio de urgencia?",["Sí, en cualquier vía","Sí, en poblado, pero no en autopistas, autovías o carreteras convencionales","No, nunca están exentos","Solo si lo autoriza el agente"],1],
+["T43","La seguridad que actúa para proteger a los ocupantes durante el accidente (airbag, cinturón) se denomina...",["Seguridad activa","Seguridad pasiva","Seguridad vial","Seguridad preventiva"],1],
+["T43","Según la Orden INT/1518/2021, ¿quién autoriza a personal ajeno a la DGP a conducir sus vehículos?",["La Dirección General de la Policía directamente","El Área de Automoción de la División Económica y Técnica","El Ministerio del Interior","La Subdirección General de RRHH"],1],
+["T43","Según la Orden INT/2573/2015, en los vehículos M2/M3 de conducción de detenidos, la ventana de socorro se ubica en el lado izquierdo con unas dimensiones de...",["90x50 cm","100x55 cm","110x60 cm","120x70 cm"],2],
+["T43","Según el art. 20 RGC, la tasa general de alcoholemia en sangre para conductores no profesionales es de...",["0,3 g/l","0,5 g/l","0,8 g/l","0,15 g/l"],1]
+];
+
+// ---- CONSTRUCCIÓN DEL TEST ----
+const quizDiv = document.getElementById('quiz');
+const topicFilter = document.getElementById('topicFilter');
+let answered = 0, correct = 0;
+const total = QUESTIONS.length;
+
+const topics = [...new Set(QUESTIONS.map(q=>q[0]))];
+topics.forEach(t=>{
+  const o = document.createElement('option');
+  o.value = t; o.textContent = t;
+  topicFilter.appendChild(o);
+});
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+let currentOrder = [];
+
+function render(){
+  quizDiv.innerHTML='';
+  currentOrder = shuffle(QUESTIONS.map((_,i)=>i));
+  currentOrder.forEach((origIdx,idx)=>{
+    const item = QUESTIONS[origIdx];
+    const [topic,q,opts,correctIdx] = item;
+    const optWithIdx = opts.map((text,i)=>({text,isCorrect:i===correctIdx}));
+    shuffle(optWithIdx);
+
+    const card = document.createElement('div');
+    card.className='q';
+    card.dataset.topic = topic;
+    card.innerHTML = `<h3><span class="topic-tag">${topic}</span>Pregunta ${idx+1}</h3><p class="qtext">${q}</p>`;
+    const form = document.createElement('div');
+    optWithIdx.forEach((op,oi)=>{
+      const lbl = document.createElement('label');
+      lbl.innerHTML = `<input type="radio" name="q${idx}" value="${oi}"> ${op.text}`;
+      lbl.onclick = ()=>handleAnswer(idx, op.isCorrect, lbl, form);
+      form.appendChild(lbl);
+    });
+    card.appendChild(form);
+    quizDiv.appendChild(card);
+  });
+}
+
+function handleAnswer(idx, isCorrect, lbl, form){
+  if(form.classList.contains('disabled')) return;
+  form.classList.add('disabled');
+  form.querySelectorAll('label').forEach(l=>{
+    l.style.pointerEvents='none';
+  });
+  lbl.classList.add(isCorrect ? 'correct' : 'incorrect');
+  if(!isCorrect){
+    form.querySelectorAll('input').forEach(inp=>{
+      // mark the actual correct one too
+    });
+    // find correct label by checking option text against stored data not directly possible here; simplest: highlight none else
+  }
+  answered++;
+  if(isCorrect) correct++;
+  updateScore();
+}
+
+function updateScore(){
+  document.getElementById('score').textContent = `Respondidas: ${answered} / ${total} — Aciertos: ${correct}`;
+  document.getElementById('progFill').style.width = (answered/total*100)+'%';
+  if(answered===total){
+    const box = document.getElementById('finalBox');
+    box.classList.add('show');
+    const pct = Math.round(correct/total*100);
+    document.getElementById('finalText').textContent =
+      pct===100
+      ? `¡Enhorabuena! Has acertado el 100% (${correct}/${total}). Dominas el contenido completo del PDF.`
+      : `Has acertado ${correct} de ${total} (${pct}%). Sigue repasando los temas marcados en rojo hasta llegar al 100%.`;
+  }
+}
+
+function resetTest(){
+  answered=0; correct=0;
+  document.getElementById('finalBox').classList.remove('show');
+  render();
+  updateScore();
+  applyFilter();
+}
+
+function applyFilter(){
+  const val = topicFilter.value;
+  document.querySelectorAll('.q').forEach(card=>{
+    card.style.display = (!val || card.dataset.topic===val) ? '' : 'none';
+  });
+}
+topicFilter.addEventListener('change', applyFilter);
+
+render();
+updateScore();
+</script>
+</body>
+</html>

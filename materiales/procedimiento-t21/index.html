@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 21 – Derecho Procesal Penal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161922;
+    --card: #1e2230;
+    --border: #2a2f42;
+    --accent: #f0a500;
+    --accent2: #3b82f6;
+    --accent3: #10b981;
+    --accent4: #ef4444;
+    --accent5: #8b5cf6;
+    --text: #e8eaf0;
+    --muted: #7b8099;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  header {
+    padding: 28px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #0d0f14 60%, #161228);
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  header p { color: var(--muted); font-size: 13px; margin-top: 3px; }
+
+  nav {
+    display: flex;
+    gap: 8px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  nav button {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+  }
+  nav button.active, nav button:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 500;
+  }
+
+  .section { display: none; padding: 20px; }
+  .section.active { display: block; }
+
+  /* ── RESUMEN ──────────────────────────────── */
+  .intro-box {
+    background: linear-gradient(135deg, #1a1f2e, #1e2230);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .intro-box h2 { font-family: 'Syne', sans-serif; font-size: 16px; color: var(--accent); margin-bottom: 6px; }
+  .intro-box p { color: #adb3c8; font-size: 13.5px; }
+
+  .proc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .proc-card:hover { border-color: var(--accent); }
+  .proc-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .proc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    flex: 1;
+  }
+  .pena-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .chevron { color: var(--muted); font-size: 16px; transition: transform .2s; }
+  .proc-card.open .chevron { transform: rotate(180deg); }
+  .proc-detail {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+    padding-top: 14px;
+  }
+  .proc-card.open .proc-detail { display: block; }
+
+  .phase-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .phase-box {
+    background: #12151f;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid var(--border);
+  }
+  .phase-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-label.instruccion { color: var(--accent2); }
+  .phase-label.enjuiciamiento { color: var(--accent3); }
+  .phase-box ul { list-style: none; }
+  .phase-box li { font-size: 12.5px; color: #adb3c8; padding: 2px 0; }
+  .phase-box li::before { content: "›"; color: var(--accent); margin-right: 5px; }
+
+  .key-concept {
+    background: #12151f;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-left: 3px solid;
+    font-size: 13px;
+  }
+
+  /* ── SALAS ──────────────────────────────── */
+  .salas-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .sala-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sala-header {
+    padding: 12px 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sala-count {
+    font-size: 11px;
+    font-weight: 400;
+    font-family: 'DM Sans', sans-serif;
+    opacity: .7;
+  }
+  .sala-list { padding: 12px 16px; border-top: 1px solid var(--border); }
+  .sala-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid #1a1e2a;
+    font-size: 13px;
+  }
+  .sala-item:last-child { border-bottom: none; }
+  .sala-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    min-width: 22px;
+    text-align: center;
+  }
+
+  /* ── MNEMOTECNIA ──────────────────────────── */
+  .mnemo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .mnemo-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .mnemo-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .mnemo-card p { color: #adb3c8; font-size: 13.5px; }
+  .big-formula {
+    background: #12151f;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 12px;
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  /* ── QUIZ ──────────────────────────────── */
+  .quiz-container { max-width: 100%; }
+  .quiz-q {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .q-num {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .q-options { display: grid; gap: 8px; }
+  .q-opt {
+    background: #12151f;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 13.5px;
+    transition: all .15s;
+    text-align: left;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .q-opt:hover { border-color: var(--accent); color: var(--accent); }
+  .q-opt.correct { background: #0d2b1e; border-color: var(--accent3); color: var(--accent3); }
+  .q-opt.wrong { background: #2b0d0d; border-color: var(--accent4); color: var(--accent4); }
+  .q-opt.show-correct { background: #0d2b1e; border-color: var(--accent3); color: var(--accent3); }
+  .q-feedback {
+    display: none;
+    margin-top: 10px;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  .q-feedback.correct { display: block; background: #0d2b1e; color: var(--accent3); }
+  .q-feedback.wrong { display: block; background: #2b0d0d; color: #f87171; }
+
+  .quiz-score {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .quiz-score h2 { font-family: 'Syne', sans-serif; font-size: 28px; color: var(--accent); }
+  .quiz-score p { color: var(--muted); margin-top: 6px; }
+  .btn-restart {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+
+  .c1 { color: var(--accent); border-color: var(--accent); }
+  .c2 { color: var(--accent2); border-color: var(--accent2); }
+  .c3 { color: var(--accent3); border-color: var(--accent3); }
+  .c4 { color: var(--accent4); border-color: var(--accent4); }
+  .c5 { color: var(--accent5); border-color: var(--accent5); }
+
+  .bg1 { background: var(--accent); }
+  .bg2 { background: var(--accent2); }
+  .bg3 { background: var(--accent3); }
+  .bg4 { background: var(--accent4); }
+  .bg5 { background: var(--accent5); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚖️ TEMA 21 · Derecho Procesal Penal</h1>
+  <p>Tipos de procedimientos y órganos jurisdiccionales</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showSection('resumen')">📋 Procedimientos</button>
+  <button onclick="showSection('salas')">🏛️ Salas/Órganos</button>
+  <button onclick="showSection('mnemo')">🧠 Mnemotecnia</button>
+  <button onclick="showSection('quiz')">🎯 Quiz</button>
+</nav>
+
+<!-- ──── RESUMEN ──────────────────────────────── -->
+<div id="resumen" class="section active">
+
+  <div class="intro-box">
+    <h2>¿Cómo funciona el proceso penal?</h2>
+    <p>Todo proceso penal tiene <strong>dos grandes fases</strong>: la <span style="color:var(--accent2)">Instrucción</span> (investigar el delito) y el <span style="color:var(--accent3)">Enjuiciamiento</span> (juzgar y dictar sentencia). El tipo de procedimiento depende de la <strong>pena privativa de libertad</strong> máxima del delito.</p>
+  </div>
+
+  <!-- PROC 1 -->
+  <div class="proc-card" onclick="toggleCard(this)">
+    <div class="proc-card-header">
+      <div>
+        <span class="pena-badge c1" style="background:#1a1200; border:1px solid var(--accent)">+9 años prisión</span>
+        <div class="proc-title" style="margin-top:6px; color:var(--accent)">PROCEDIMIENTO ORDINARIO</div>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="proc-detail">
+      <div class="phase-row">
+        <div class="phase-box">
+          <div class="phase-label instruccion">📂 Instrucción → SUMARIO</div>
+          <ul>
+            <li>Sección de Instrucción del TCCI</li>
+            <li>Sección de Instrucción</li>
+            <li>Sección de Violencia sobre la Mujer</li>
+            <li>Sección de Violencia Infancia/Adol.</li>
+            <li>Ministerio Fiscal <em>(menores)</em></li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <div class="phase-label enjuiciamiento">🔨 Enjuiciamiento</div>
+          <ul>
+            <li>Audiencia Provincial</li>
+            <li>Audiencia Nacional <em>(sala penal)</em></li>
+          </ul>
+        </div>
+      </div>
+      <div class="key-concept c1" style="margin-top:10px; border-left-color:var(--accent)">
+        💡 <strong>Clave:</strong> Es el más grave. La fase de instrucción se llama <strong>SUMARIO</strong>.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROC 2 -->
+  <div class="proc-card" onclick="toggleCard(this)">
+    <div class="proc-card-header">
+      <div>
+        <span class="pena-badge c2" style="background:#0a1628; border:1px solid var(--accent2)">Hasta 9 años / otras penas</span>
+        <div class="proc-title" style="margin-top:6px; color:var(--accent2)">PROCEDIMIENTO ABREVIADO</div>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="proc-detail">
+      <div class="phase-row">
+        <div class="phase-box">
+          <div class="phase-label instruccion">📂 Instrucción → DILIGENCIAS PREVIAS</div>
+          <ul>
+            <li>Sección de Instrucción del TCCI</li>
+            <li>Sección de Instrucción</li>
+            <li>Sección de Violencia sobre la Mujer</li>
+            <li>Sección de Violencia Infancia/Adol.</li>
+            <li>Ministerio Fiscal <em>(menores)</em></li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <div class="phase-label enjuiciamiento">🔨 Enjuiciamiento</div>
+          <ul>
+            <li>Sección de lo Penal</li>
+            <li>Secc. Penal del TCCI</li>
+            <li>Audiencia Provincial <em>(no delitos TJ)</em></li>
+            <li>Audiencia Nacional <em>(sala penal)</em></li>
+          </ul>
+        </div>
+      </div>
+      <div class="key-concept c2" style="margin-top:10px; border-left-color:var(--accent2)">
+        💡 <strong>Clave:</strong> El más habitual. Instrucción = <strong>DILIGENCIAS PREVIAS</strong>. Incluye "otras de cualquier naturaleza o cuantía".
+      </div>
+    </div>
+  </div>
+
+  <!-- PROC 3 -->
+  <div class="proc-card" onclick="toggleCard(this)">
+    <div class="proc-card-header">
+      <div>
+        <span class="pena-badge c3" style="background:#0a1e16; border:1px solid var(--accent3)">Hasta 5 años privativas / hasta 10 otras</span>
+        <div class="proc-title" style="margin-top:6px; color:var(--accent3)">PROC. ENJUICIAMIENTO RÁPIDO</div>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="proc-detail">
+      <div class="phase-row">
+        <div class="phase-box">
+          <div class="phase-label instruccion">📂 Instrucción → DILIGENCIAS URGENTES</div>
+          <ul>
+            <li>Sección de Instrucción <em>(guardia)</em></li>
+            <li>Sección de Violencia sobre la Mujer</li>
+            <li>Sección Violencia Infancia/Adol.</li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <div class="phase-label enjuiciamiento">🔨 Enjuiciamiento</div>
+          <ul>
+            <li>Sección de lo Penal</li>
+          </ul>
+        </div>
+      </div>
+      <div class="key-concept c3" style="margin-top:10px; border-left-color:var(--accent3)">
+        💡 <strong>Clave:</strong> Rápido = delitos "in fraganti". Instrucción = <strong>DILIGENCIAS URGENTES</strong>. Solo juzga la Sección de lo Penal.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROC 4 -->
+  <div class="proc-card" onclick="toggleCard(this)">
+    <div class="proc-card-header">
+      <div>
+        <div class="proc-title" style="color:var(--accent5)">⚡ JUICIO POR DELITOS LEVES</div>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="proc-detail">
+      <div class="phase-row">
+        <div class="phase-box">
+          <div class="phase-label instruccion">📂 Instrucción</div>
+          <ul>
+            <li>Sección de Instrucción</li>
+            <li>Sección de Violencia sobre la Mujer</li>
+            <li>Sección Violencia Infancia/Adol.</li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <div class="phase-label enjuiciamiento">🔨 Enjuiciamiento</div>
+          <ul>
+            <li>Sección de Instrucción</li>
+            <li>Sección de Violencia sobre la Mujer</li>
+            <li>Sección Violencia Infancia/Adol.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="key-concept c5" style="margin-top:10px; border-left-color:var(--accent5)">
+        💡 <strong>Clave:</strong> ¡El mismo órgano instruye Y enjuicia! Antiguas "faltas".
+      </div>
+    </div>
+  </div>
+
+  <!-- PROC 5 -->
+  <div class="proc-card" onclick="toggleCard(this)">
+    <div class="proc-card-header">
+      <div>
+        <div class="proc-title" style="color:var(--accent4)">🧑‍⚖️ PROCEDIMIENTO ANTE TRIBUNAL DE JURADO</div>
+      </div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="proc-detail">
+      <div class="phase-row">
+        <div class="phase-box">
+          <div class="phase-label instruccion">📂 Instrucción</div>
+          <ul>
+            <li>Sección de Instrucción</li>
+            <li>Sección de Violencia sobre la Mujer</li>
+            <li>Sección Violencia Infancia/Adol.</li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <div class="phase-label enjuiciamiento">🔨 Enjuiciamiento</div>
+          <ul>
+            <li>Audiencia Provincial</li>
+            <li style="color:var(--accent4)">⚠️ NUNCA delitos AN</li>
+          </ul>
+        </div>
+      </div>
+      <div class="key-concept c4" style="margin-top:10px; border-left-color:var(--accent4)">
+        💡 <strong>Trampa de examen:</strong> Siempre enjuicia la <strong>Audiencia Provincial</strong>. NUNCA delitos de la Audiencia Nacional.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ──── SALAS ──────────────────────────────── -->
+<div id="salas" class="section">
+
+  <div class="intro-box">
+    <h2>🏛️ Salas de los Órganos Jurisdiccionales</h2>
+    <p>Memoriza el número de salas de cada órgano: <strong>TS = 5, AN = 4, TSJ = 3</strong>. Fácil: va bajando.</p>
+  </div>
+
+  <div class="salas-grid">
+
+    <div class="sala-card">
+      <div class="sala-header" style="background: linear-gradient(90deg, #1a1200, #1e2230); color:var(--accent)">
+        TRIBUNAL SUPREMO
+        <span class="sala-count">⬛⬛⬛⬛⬛ 5 SALAS</span>
+      </div>
+      <div class="sala-list">
+        <div class="sala-item"><span class="sala-num c1">1ª</span> Civil</div>
+        <div class="sala-item"><span class="sala-num c1">2ª</span> Penal</div>
+        <div class="sala-item"><span class="sala-num c1">3ª</span> Contencioso-Administrativo</div>
+        <div class="sala-item"><span class="sala-num c1">4ª</span> Social</div>
+        <div class="sala-item"><span class="sala-num c1">5ª</span> Militar ⚔️</div>
+      </div>
+      <div style="padding: 10px 16px; background:#12151f; border-top:1px solid var(--border); font-size:12px; color:var(--muted)">
+        🧠 <strong style="color:var(--accent)">Mnemotecnia:</strong> "Civil Penal Contencioso Social Militar" → <strong style="color:var(--text)">CP·C·S·M</strong> (Como Pedro Come Sopa Militarmente)
+      </div>
+    </div>
+
+    <div class="sala-card">
+      <div class="sala-header" style="background: linear-gradient(90deg, #0a1628, #1e2230); color:var(--accent2)">
+        AUDIENCIA NACIONAL
+        <span class="sala-count">⬛⬛⬛⬛ 4 SALAS</span>
+      </div>
+      <div class="sala-list">
+        <div class="sala-item"><span class="sala-num c2">1ª</span> Apelación</div>
+        <div class="sala-item"><span class="sala-num c2">2ª</span> Penal</div>
+        <div class="sala-item"><span class="sala-num c2">3ª</span> Contencioso-Administrativo</div>
+        <div class="sala-item"><span class="sala-num c2">4ª</span> Social</div>
+      </div>
+      <div style="padding: 10px 16px; background:#12151f; border-top:1px solid var(--border); font-size:12px; color:var(--muted)">
+        🧠 <strong style="color:var(--accent2)">Mnemotecnia:</strong> AN = <strong style="color:var(--text)">A·P·C·S</strong> (Apelación Penal Contencioso Social) → "Antes Pueden Condenar Sin militar"
+      </div>
+    </div>
+
+    <div class="sala-card">
+      <div class="sala-header" style="background: linear-gradient(90deg, #0a1e16, #1e2230); color:var(--accent3)">
+        TRIBUNAL SUPERIOR DE JUSTICIA
+        <span class="sala-count">⬛⬛⬛ 3 SALAS</span>
+      </div>
+      <div class="sala-list">
+        <div class="sala-item"><span class="sala-num c3">1ª</span> Civil y Penal</div>
+        <div class="sala-item"><span class="sala-num c3">2ª</span> Contencioso-Administrativo</div>
+        <div class="sala-item"><span class="sala-num c3">3ª</span> Social</div>
+      </div>
+      <div style="padding: 10px 16px; background:#12151f; border-top:1px solid var(--border); font-size:12px; color:var(--muted)">
+        🧠 TSJ junta Civil+Penal en una sola sala. Sin Apelación. Sin Militar. → <strong style="color:var(--text)">CP·C·S</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mnemo-card" style="margin-top:16px; background: #12151f; border-color:#2a2f42;">
+    <div style="font-family:'Syne',sans-serif; font-size:15px; margin-bottom:10px; color:var(--accent)">⚡ Diferencias clave TS vs AN vs TSJ</div>
+    <div class="key-concept c1" style="margin-bottom:8px">TS tiene la sala <strong>Militar</strong> (5ª) — la AN y TSJ NO</div>
+    <div class="key-concept c2" style="margin-bottom:8px">AN tiene la sala de <strong>Apelación</strong> (1ª) — el TS y TSJ NO</div>
+    <div class="key-concept c3">TSJ fusiona <strong>Civil y Penal</strong> en una sola sala — los demás las tienen separadas</div>
+  </div>
+
+</div>
+
+<!-- ──── MNEMOTECNIA ──────────────────────────── -->
+<div id="mnemo" class="section">
+
+  <div class="mnemo-card" style="border-color:var(--accent)">
+    <span class="mnemo-tag bg1" style="color:#000">Procedimientos</span>
+    <h3 style="color:var(--accent)">Los 3 tipos de DILIGENCIAS</h3>
+    <p>Confunden mucho. Cada procedimiento tiene su nombre de instrucción:</p>
+    <div class="big-formula c1">
+      ORDINARIO → SUMARIO<br>
+      <span style="font-size:14px; color:var(--accent2)">ABREVIADO → DILIGENCIAS PREVIAS</span><br>
+      <span style="font-size:14px; color:var(--accent3)">RÁPIDO → DILIGENCIAS URGENTES</span>
+    </div>
+    <p style="margin-top:12px; font-size:13px; color:var(--muted)">Regla: cuanto más grave → nombre más corto (Sumario). Cuanto menos grave → más urgente y abreviado.</p>
+  </div>
+
+  <div class="mnemo-card" style="border-color:var(--accent2)">
+    <span class="mnemo-tag bg2" style="color:#fff">Penas</span>
+    <h3 style="color:var(--accent2)">Escala de gravedad por años</h3>
+    <div class="big-formula c2">
+      +9 años → ORDINARIO<br>
+      <span style="font-size:14px">hasta 9 → ABREVIADO</span><br>
+      <span style="font-size:14px; color:var(--accent3)">hasta 5 → RÁPIDO</span>
+    </div>
+    <p style="margin-top:10px; font-size:13px; color:var(--muted)">📌 El Abreviado también incluye penas de <strong>otra naturaleza</strong> (no solo privativas).</p>
+  </div>
+
+  <div class="mnemo-card" style="border-color:var(--accent3)">
+    <span class="mnemo-tag bg3" style="color:#000">Salas</span>
+    <h3 style="color:var(--accent3)">5 → 4 → 3 (bajada de escalera)</h3>
+    <div class="big-formula" style="color:var(--text)">
+      <span style="color:var(--accent)">TS = 5</span> &nbsp;→&nbsp;
+      <span style="color:var(--accent2)">AN = 4</span> &nbsp;→&nbsp;
+      <span style="color:var(--accent3)">TSJ = 3</span>
+    </div>
+    <p style="margin-top:10px; font-size:13px; color:var(--muted)">Baja 1 sala a cada escalón. Fácil de recordar: <strong>5-4-3</strong>.</p>
+  </div>
+
+  <div class="mnemo-card" style="border-color:var(--accent4)">
+    <span class="mnemo-tag bg4" style="color:#fff">Trampas examen</span>
+    <h3 style="color:var(--accent4)">⚠️ Errores frecuentes en oposición</h3>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "El Tribunal de Jurado puede juzgar delitos de la AN" → <strong>FALSO</strong>. Siempre Audiencia Provincial</div>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "El TSJ tiene sala de Apelación" → <strong>FALSO</strong>. Solo la AN la tiene</div>
+    <div class="key-concept c4" style="margin-bottom:8px">❌ "El Rápido instruye con Diligencias Previas" → <strong>FALSO</strong>. Son Urgentes</div>
+    <div class="key-concept c4">❌ "El TS tiene 4 salas" → <strong>FALSO</strong>. Son 5 (incluida Militar)</div>
+  </div>
+
+</div>
+
+<!-- ──── QUIZ ──────────────────────────────── -->
+<div id="quiz" class="section">
+<div class="quiz-container" id="quizContainer"></div>
+<div class="quiz-score" id="quizScore">
+  <h2 id="scoreText"></h2>
+  <p id="scoreSub"></p>
+  <button class="btn-restart" onclick="initQuiz()">🔄 Repetir Quiz</button>
+</div>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "¿Qué fase de instrucción corresponde al Procedimiento Ordinario?",
+    opts: ["Diligencias Previas", "Diligencias Urgentes", "Sumario", "Diligencias Preliminares"],
+    correct: 2,
+    exp: "El Procedimiento Ordinario (penas +9 años) instruye mediante SUMARIO."
+  },
+  {
+    q: "¿Cuántas salas tiene el Tribunal Supremo?",
+    opts: ["3", "4", "5", "6"],
+    correct: 2,
+    exp: "El TS tiene 5 salas: Civil, Penal, Contencioso, Social y Militar."
+  },
+  {
+    q: "El Procedimiento Abreviado se usa para penas privativas de libertad de:",
+    opts: ["Hasta 5 años", "Hasta 9 años", "Más de 9 años", "Hasta 10 años"],
+    correct: 1,
+    exp: "El Procedimiento Abreviado cubre penas de hasta 9 años y otras de cualquier naturaleza."
+  },
+  {
+    q: "¿Qué órgano NUNCA puede enjuiciar en el Tribunal de Jurado?",
+    opts: ["Audiencia Provincial", "Audiencia Nacional", "Tribunal Superior de Justicia", "Juzgado de lo Penal"],
+    correct: 1,
+    exp: "El Tribunal de Jurado enjuicia en la Audiencia Provincial. NUNCA delitos de la Audiencia Nacional."
+  },
+  {
+    q: "¿Qué sala es EXCLUSIVA del Tribunal Supremo y no existe en AN ni TSJ?",
+    opts: ["Sala de lo Social", "Sala de lo Penal", "Sala de lo Militar", "Sala de lo Contencioso"],
+    correct: 2,
+    exp: "Solo el TS tiene Sala de lo Militar (5ª sala). La AN y TSJ no la tienen."
+  },
+  {
+    q: "En el Procedimiento de Enjuiciamiento Rápido, la instrucción se denomina:",
+    opts: ["Sumario", "Diligencias Previas", "Diligencias Urgentes", "Actuaciones Previas"],
+    correct: 2,
+    exp: "El Procedimiento Rápido (hasta 5 años privativas) instruye con DILIGENCIAS URGENTES, normalmente en juzgado de guardia."
+  },
+  {
+    q: "¿Cuántas salas tiene la Audiencia Nacional?",
+    opts: ["3", "4", "5", "2"],
+    correct: 1,
+    exp: "La AN tiene 4 salas: Apelación, Penal, Contencioso-Administrativo y Social."
+  },
+  {
+    q: "¿Qué sala tiene la Audiencia Nacional que NO tienen ni el TS ni el TSJ?",
+    opts: ["Sala de lo Social", "Sala de Apelación", "Sala de lo Penal", "Sala de lo Civil"],
+    correct: 1,
+    exp: "Solo la AN tiene Sala de Apelación (1ª). El TS y TSJ no la tienen."
+  },
+  {
+    q: "En el Juicio por Delitos Leves, ¿qué ocurre con las fases de instrucción y enjuiciamiento?",
+    opts: [
+      "Instruye la Sección de Instrucción, enjuicia la Audiencia Provincial",
+      "El mismo órgano instruye y enjuicia",
+      "Instruye el Ministerio Fiscal, enjuicia el Juzgado de lo Penal",
+      "Solo hay fase de enjuiciamiento"
+    ],
+    correct: 1,
+    exp: "En el Juicio por Delitos Leves el mismo órgano (ej. Sección de Instrucción) instruye y enjuicia."
+  },
+  {
+    q: "El Tribunal Superior de Justicia tiene 3 salas. ¿Cuál es diferente respecto al TS?",
+    opts: [
+      "No tiene Sala de lo Social",
+      "Fusiona Civil y Penal en una sola sala",
+      "Tiene Sala de Apelación en vez de Penal",
+      "No tiene Sala Contencioso-Administrativa"
+    ],
+    correct: 1,
+    exp: "El TSJ fusiona Civil y Penal en su 1ª Sala. El TS las tiene separadas (1ª Civil, 2ª Penal)."
+  }
+];
+
+let answered = [];
+
+function initQuiz() {
+  answered = new Array(questions.length).fill(null);
+  document.getElementById('quizScore').style.display = 'none';
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = questions.map((q, i) => `
+    <div class="quiz-q" id="q${i}">
+      <div class="q-num">PREGUNTA ${i+1} / ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-options">
+        ${q.opts.map((o, j) => `
+          <button class="q-opt" onclick="answer(${i}, ${j})" id="opt${i}_${j}">${o}</button>
+        `).join('')}
+      </div>
+      <div class="q-feedback" id="fb${i}"></div>
+    </div>
+  `).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi] !== null) return;
+  answered[qi] = oi;
+  const q = questions[qi];
+  for (let j = 0; j < q.opts.length; j++) {
+    const btn = document.getElementById(`opt${qi}_${j}`);
+    btn.disabled = true;
+    if (j === q.correct) btn.classList.add('show-correct');
+    else if (j === oi) btn.classList.add('wrong');
+  }
+  const fb = document.getElementById(`fb${qi}`);
+  if (oi === q.correct) {
+    fb.className = 'q-feedback correct';
+    fb.textContent = '✅ ' + q.exp;
+  } else {
+    fb.className = 'q-feedback wrong';
+    fb.textContent = '❌ ' + q.exp;
+  }
+  if (answered.every(a => a !== null)) showScore();
+}
+
+function showScore() {
+  const correct = answered.filter((a, i) => a === questions[i].correct).length;
+  const score = document.getElementById('quizScore');
+  score.style.display = 'block';
+  document.getElementById('scoreText').textContent = `${correct} / ${questions.length}`;
+  const msgs = ['Sigue practicando 💪', 'Vas bien, repasa las trampas ⚡', '¡Muy bien! Casi lo tienes 🎯', '¡Perfecto! CNP incoming 🚔'];
+  const idx = correct < 5 ? 0 : correct < 8 ? 1 : correct < 10 ? 2 : 3;
+  document.getElementById('scoreSub').textContent = msgs[idx];
+  score.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleCard(el) {
+  el.classList.toggle('open');
+}
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+initQuiz();
+</script>
+</body>
+</html>

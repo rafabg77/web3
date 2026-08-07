@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>J.A.R.V.I.S. CNP — Central de Mando 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+  :root{
+    --cyan:#00f0ff; --cyan-dim:#0098b8; --blue:#0066cc; --red:#ff3a5c; --amber:#ffc23c; --green:#00ff88; --orange:#ff5500;
+    --bg:#00050a; --bg2:#060c16; --panel:rgba(0, 20, 40, 0.15); --panel-soft:rgba(6,14,28,0.6); --border:rgba(0,240,255,0.25); --border-glow:rgba(0,240,255,0.08);
+    --text-main:#e8f4ff; --text-dim:#8aa8c4; --text-faint:#506880;
+    --holo:rgba(0,212,255,0.04);
+  }
+  *{box-sizing:border-box; margin:0; padding:0; overflow-wrap:break-word; word-break:break-word; -webkit-text-size-adjust:100%; text-size-adjust:100%;}
+  html,body{width:100%; height:100%; background:var(--bg); overflow:hidden; font-family:'Rajdhani',sans-serif; color:var(--text-main); cursor:crosshair;}
+  #canvas-wrap{position:fixed; inset:0; z-index:1; touch-action:none;}
+  canvas{display:block; touch-action:none;}
+
+  /* SVG Noise Texture para Glassmorphism real */
+  .noise-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.12; mix-blend-mode: overlay; pointer-events: none; z-index: 2;
+  }
+
+  /* HUD Overlay - Glassmorphism Class */
+  .glass-panel {
+    position: relative;
+    background: var(--panel);
+    backdrop-filter: blur(8px) saturate(150%);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.05);
+    clip-path: polygon(0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px));
+    overflow: hidden;
+  }
+
+  #scanlines{position:fixed; inset:0; pointer-events:none; z-index:50; background:repeating-linear-gradient(to bottom, rgba(0,240,255,0.015) 0px, rgba(0,240,255,0.015) 1px, transparent 1px, transparent 3px); mix-blend-mode:screen; opacity:0.8;}
+  #vignette{position:fixed; inset:0; pointer-events:none; z-index:49; background:radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.9) 100%);}
+  #grain{display:none;}
+
+  .hud-corner{position:fixed; width:40px; height:40px; z-index:48; pointer-events:none;}
+  .hud-tl{top:12px; left:12px; border-top:1.5px solid var(--cyan); border-left:1.5px solid var(--cyan); opacity:0.35; box-shadow:-3px -3px 8px rgba(0,240,255,0.08);}
+  .hud-tr{top:12px; right:12px; border-top:1.5px solid var(--cyan); border-right:1.5px solid var(--cyan); opacity:0.35; box-shadow:3px -3px 8px rgba(0,240,255,0.08);}
+  .hud-bl{bottom:12px; left:12px; border-bottom:1.5px solid var(--cyan); border-left:1.5px solid var(--cyan); opacity:0.35; box-shadow:-3px 3px 8px rgba(0,240,255,0.08);}
+  .hud-br{bottom:12px; right:12px; border-bottom:1.5px solid var(--cyan); border-right:1.5px solid var(--cyan); opacity:0.35; box-shadow:3px 3px 8px rgba(0,240,255,0.08);}
+
+  #boot-screen{position:fixed; inset:0; z-index:100; background:var(--bg); display:flex; flex-direction:column; justify-content:center; align-items:center; transition:opacity 1s ease;}
+  #boot-terminal{font-family:'JetBrains Mono', monospace; color:var(--cyan); font-size:14px; text-align:left; width:400px; height:200px; text-shadow:0 0 5px var(--cyan);}
+  .boot-line{opacity:0; animation:fadeIn 0.5s forwards;}
+  @keyframes fadeIn{to{opacity:1;}}
+
+  #jarvis-overlay{position:fixed; inset:0; z-index:90; background:rgba(5,8,15,0.85); display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; pointer-events:none; transition:opacity 0.3s; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);}
+  #jarvis-overlay.active{opacity:1;}
+  .jarvis-text{font-family:'Orbitron',sans-serif; font-size:16px; color:var(--cyan); letter-spacing:3px; text-shadow:0 0 10px var(--cyan); margin-top:20px;}
+  .jarvis-ring{width:60px; height:60px; border:3px solid rgba(0,240,255,0.2); border-top:3px solid var(--cyan); border-radius:50%; animation:spin 1s linear infinite;}
+  @keyframes spin{100%{transform:rotate(360deg);}}
+
+  ::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:rgba(0,240,255,0.02);}
+  ::-webkit-scrollbar-thumb{background:rgba(0,240,255,0.35); border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(0,240,255,0.5);}
+
+  .topbar{position:fixed; top:0; left:0; right:0; z-index:20; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; padding:18px 44px; background:linear-gradient(to bottom, rgba(0,5,10,0.98) 60%, transparent); pointer-events:none; border-bottom:1px solid var(--border-glow);}
+  .brand-name{font-family:'Orbitron',sans-serif; font-weight:900; font-size:13px; letter-spacing:5px; color:var(--cyan); text-shadow:0 0 12px rgba(0,240,255,0.7);}
+  .brand-sub{font-size:9px; letter-spacing:2.5px; color:var(--cyan-dim); margin-top:4px; text-transform:uppercase;}
+  .clock{font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:2px; color:var(--cyan); text-shadow:0 0 8px rgba(0,240,255,0.5);}
+
+  .hint{position:fixed; bottom:80px; left:50%; transform:translateX(-50%); z-index:20; font-family:'Orbitron',sans-serif; font-size:12px; letter-spacing:3px; color:rgba(0,240,255,0.85); text-shadow:0 0 10px var(--cyan); text-align:center; pointer-events:none; display:none;}
+  .sys-status{position:fixed; bottom:30px; left:50px; z-index:20; font-family:'JetBrains Mono'; font-size:10px; color:rgba(0,240,255,0.5); letter-spacing:2px; pointer-events:none;}
+  .kbd-hints{position:fixed; bottom:30px; right:50px; z-index:20; font-family:'JetBrains Mono'; font-size:9px; color:rgba(0,240,255,0.4); letter-spacing:1.5px; text-align:right; pointer-events:none; line-height:1.8;}
+  .kbd-hints kbd{border:1px solid rgba(0,240,255,0.4); padding:1px 5px; border-radius:3px; color:var(--cyan);}
+
+  /* ===== ÍNDICE ===== */
+  #index-layer{position:fixed; inset:0; z-index:10; opacity:0; pointer-events:none; transition:opacity 0.8s ease;}
+  #index-layer.show{opacity:1;}
+  .index-title{position:fixed; top:72px; left:50%; transform:translateX(-50%); text-align:center; z-index:11; padding:12px 28px; pointer-events:none;}
+  .index-title h2{font-family:'Orbitron',sans-serif; font-size:14px; letter-spacing:6px; color:#fff; text-shadow:0 0 20px rgba(0,240,255,0.5);}
+  .index-title p{font-size:10px; letter-spacing:2.5px; color:var(--text-faint); margin-top:5px; font-family:'JetBrains Mono';}
+  
+  .cyl-hud{position:fixed; bottom:85px; left:50%; transform:translateX(-50%); z-index:11; text-align:center; width:min(440px,88vw); padding:14px 22px; pointer-events:none;}
+  .cyl-hud-num{font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:4px; color:var(--cyan-dim);}
+  .cyl-hud-title{font-size:19px; color:#fff; font-weight:600; margin-top:3px; text-shadow:0 0 12px rgba(0,240,255,0.35); min-height:26px; letter-spacing:0.5px;}
+  .cyl-hud-bar{height:1px; background:rgba(0,240,255,0.1); margin-top:10px;}
+  .cyl-hud-fill{height:100%; background:linear-gradient(90deg,transparent,var(--cyan)); box-shadow:0 0 6px var(--cyan);}
+  .cyl-hud-status{font-size:9px; letter-spacing:3px; color:var(--text-faint); margin-top:6px; font-family:'JetBrains Mono';}
+  .cyl-jump{margin-top:10px; display:flex; gap:6px; justify-content:center; pointer-events:auto;}
+  .cyl-jump input{width:70px; background:rgba(0,0,0,0.3); border:1px solid rgba(0,240,255,0.3); color:var(--text-main); font-family:'JetBrains Mono'; font-size:11px; padding:6px; text-align:center;}
+  .cyl-jump button{background:transparent; border:1px solid var(--cyan); color:var(--cyan); font-family:'Orbitron'; font-size:10px; letter-spacing:1px; padding:6px 10px; cursor:pointer;}
+  .cyl-jump button:hover{background:rgba(0,240,255,0.15);}
+
+  #module-layer{position:fixed; inset:16px; z-index:15; opacity:0; pointer-events:none; transition:opacity 0.4s ease, transform 0.4s ease; transform:scale(0.98); display:flex; flex-direction:column; overflow:hidden;}
+  #module-layer.show{opacity:1; pointer-events:auto; transform:scale(1);}
+
+  .m-topbar{display:flex; align-items:center; justify-content:space-between; padding:14px 22px; border-bottom:1px solid var(--border); background:linear-gradient(to bottom, rgba(0,240,255,0.03), transparent); flex:0 0 auto;}
+  .back-btn{font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:2px; color:var(--cyan); border:1px solid rgba(0,240,255,0.3); padding:7px 14px; cursor:pointer; background:transparent; transition:all 0.25s; text-shadow:0 0 6px rgba(0,240,255,0.4);}
+  .back-btn:hover,.back-btn:active{box-shadow:0 0 16px rgba(0,240,255,0.2); border-color:var(--cyan); background:rgba(0,240,255,0.08);}
+  .m-title{text-align:center;}
+  .m-title h2{font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:4px; color:#fff; text-shadow:0 0 14px rgba(0,240,255,0.5);}
+  .m-title p{font-size:10px; letter-spacing:2px; color:var(--text-faint); margin-top:2px; font-family:'JetBrains Mono';}
+  .m-search{display:flex; align-items:center; gap:8px; border:1px solid rgba(0,240,255,0.2); padding:6px 12px; width:200px; background:rgba(0,0,0,0.4); transition:border-color 0.2s;}
+  .m-search:focus-within{border-color:rgba(0,240,255,0.5);}
+  .m-search input{background:transparent; border:none; outline:none; color:var(--text-main); font-family:'Rajdhani'; font-size:14px; width:100%;}
+  .m-search .cnt{font-size:10px; color:var(--text-faint); font-family:'JetBrains Mono';}
+
+  .tabs{display:flex; gap:0; padding:0 26px; border-bottom:1px solid var(--border); background:rgba(0,0,0,0.25); flex:0 0 auto;}
+  .tab{font-family:'Orbitron',sans-serif; font-size:10.5px; letter-spacing:1.5px; color:var(--text-dim); padding:12px 18px; cursor:default; border-bottom:2px solid transparent; transition:all 0.2s;}
+  .tab.active{color:var(--cyan); border-bottom:2px solid var(--cyan); text-shadow:0 0 10px rgba(0,240,255,0.6); background:rgba(0,240,255,0.04);}
+  .tab:hover{color:#fff;}
+
+  .m-body{position:relative; flex:1 1 auto; min-height:0; overflow:hidden;}
+  .tab-panel{display:none; height:100%;}
+  .tab-panel.active{display:flex;}
+
+  .read-progress{position:absolute; top:0; left:0; height:2px; background:var(--cyan); width:0%; z-index:5; box-shadow:0 0 8px var(--cyan); transition:width 0.1s;}
+
+  .toc{width:250px; flex-shrink:0; border-right:1px solid var(--border); overflow-y:auto; padding:20px 14px; background:rgba(0,0,0,0.4); position:relative; transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease; max-height:9999px; opacity:1;}
+  .toc.collapsed{max-height:0; opacity:0; padding:0 14px; overflow:hidden; border-right-color:transparent;}
+  .toc-toggle{display:none; position:absolute; top:0; left:0; right:0; z-index:3; background:var(--panel-soft); border-bottom:1px solid var(--border); padding:10px 14px; font-family:'Orbitron',sans-serif; font-size:9px; letter-spacing:2px; color:var(--cyan); cursor:pointer; text-align:center; pointer-events:auto; transition:background 0.2s; text-shadow:0 0 6px rgba(0,240,255,0.3);}
+  .toc-toggle:active{background:rgba(0,240,255,0.1);}
+  .toc-toggle::before{content:'▾ ';}
+  .toc-toggle.collapsed::before{content:'▸ ';}
+  .toc-label{font-family:'JetBrains Mono',sans-serif; font-size:9px; letter-spacing:2.5px; color:var(--cyan-dim); margin-bottom:12px;}
+  .toc-item{font-size:13.5px; padding:9px 10px; color:var(--text-dim); cursor:pointer; border-left:2px solid transparent; line-height:1.4; transition:all 0.2s; border-radius:2px;}
+  .toc-item:hover{color:#fff; background:rgba(255,255,255,0.04);}
+  .toc-item.on{color:var(--cyan); border-left:2px solid var(--cyan); background:rgba(0,240,255,0.08); font-weight:600; text-shadow:0 0 6px rgba(0,240,255,0.3);}
+
+  .theory-scroll{flex:1; overflow-y:auto; padding:40px 60px 100px; max-width:920px; position:relative; background:rgba(4,7,13,0.4);}
+  .theory-body h3{font-family:'Orbitron',sans-serif; font-size:14px; letter-spacing:2px; color:var(--cyan); text-shadow:0 0 10px rgba(0,240,255,0.3); margin:32px 0 14px; padding-bottom:8px; border-bottom:1px solid rgba(0,240,255,0.15); scroll-margin-top:20px;}
+  .theory-body h4{font-size:16.5px; color:var(--amber); margin:20px 0 8px; scroll-margin-top:20px; font-weight:700;}
+  .theory-body p{font-size:16.5px; line-height:1.85; color:var(--text-main); margin-bottom:14px;}
+  .theory-body ul{margin:8px 0 16px 24px;}
+  .theory-body li{font-size:15.5px; line-height:1.85; color:var(--text-main); margin-bottom:9px;}
+  .theory-body strong{color:#fff; font-weight:700;}
+  mark{background:rgba(255,85,0,0.45); color:#fff; padding:0 3px; border-radius:2px;}
+
+  .scroll-top-btn{position:fixed; bottom:40px; right:40px; width:45px; height:45px; background:var(--panel-soft); border:1px solid var(--cyan); color:var(--cyan); display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:0; transition:opacity 0.3s; z-index:16; font-size:18px; backdrop-filter:blur(8px);}
+  .scroll-top-btn.show{opacity:1;}
+
+  /* ===== WIDGET RADIAL CENTRAL JARVIS 2026 ===== */
+  .radial-hud-container {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    z-index: 5; pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.4;
+  }
+  .radial-ring {
+    position: absolute; top: 50%; left: 50%;
+    border-radius: 50%; border: 1px solid var(--cyan);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.1), inset 0 0 15px rgba(0, 240, 255, 0.1);
+  }
+  .r1 { width: 100%; height: 100%; border-style: dashed; opacity: 0.3; }
+  .r2 { width: 75%; height: 75%; border-top-color: transparent; border-left-color: transparent; opacity: 0.6; }
+  .r3 { width: 50%; height: 50%; border-bottom-color: var(--orange); border-right-color: var(--orange); box-shadow: 0 0 15px rgba(255, 85, 0, 0.2); }
+  .r4 { width: 30%; height: 30%; border: 2px solid var(--orange); opacity: 0.8; box-shadow: 0 0 20px rgba(255, 85, 0, 0.4); }
+  .radial-core {
+    position: absolute; top: 50%; left: 50%;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, var(--orange) 30%, transparent 70%);
+    transform: translate(-50%, -50%); border-radius: 50%;
+    filter: blur(5px);
+  }
+  .radial-bracket {
+    position: absolute; top: 50%; left: 50%;
+    width: 120%; height: 120%;
+    transform: translate(-50%, -50%);
+  }
+  .bracket-arm {
+    position: absolute; width: 2px; height: 10%;
+    background: var(--cyan); box-shadow: 0 0 10px var(--cyan);
+  }
+
+  /* ===== IPHONE X / MOBILE OPTIMIZATIONS ===== */
+  @supports (height: 100dvh) { html, body { height: 100dvh; } }
+  @media (max-width: 480px) {
+    .topbar { padding: 12px 16px; }
+    .brand-name { font-size: 10px; letter-spacing: 2px; }
+    .brand-sub { font-size: 8px; }
+    .clock { font-size: 11px; }
+    .hud-corner { width: 25px; height: 25px; }
+    .hud-tl { top: 8px; left: 8px; } .hud-tr { top: 8px; right: 8px; }
+    .hud-bl { bottom: 8px; left: 8px; } .hud-br { bottom: 8px; right: 8px; }
+    .hint { bottom: 120px; font-size: 10px; letter-spacing: 1.5px; display: none; }
+    .sys-status { left: 16px; bottom: 16px; font-size: 8px; }
+    .kbd-hints { display: none !important; }
+    .index-title { top: 60px; padding: 10px 16px; }
+    .index-title h2 { font-size: 12px; letter-spacing: 3px; }
+    .index-title p { font-size: 9px; }
+    .cyl-hud { bottom: 70px; width: 92vw; padding: 12px 16px; }
+    .cyl-hud-title { font-size: 16px; }
+    .cyl-jump { margin-top: 8px; }
+    .cyl-jump input { width: 55px; font-size: 10px; padding: 5px; }
+    .cyl-jump button { font-size: 9px; padding: 5px 8px; }
+    #module-layer { inset: 0; border: none; border-top: 1px solid var(--border); }
+    .m-topbar { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+    .back-btn { font-size: 10px; padding: 6px 12px; }
+    .m-title h2 { font-size: 11px; letter-spacing: 2px; }
+    .m-title p { font-size: 9px; }
+    .m-search { width: 100%; order: 3; }
+    .tabs { padding: 0 12px; }
+    .tab { font-size: 9px; padding: 10px 12px; }
+    .toc-toggle { display: block; }
+    .toc { width: 100%; max-height: 30vh; border-right: none; border-bottom: 1px solid var(--border); padding: 12px 10px; background: rgba(0,0,0,0.35); margin-top: 36px; }
+    .toc.collapsed { max-height: 0; margin-top: 0; }
+    .toc-label { font-size: 8px; margin-bottom: 8px; }
+    .toc-item { font-size: 12px; padding: 7px 8px; }
+    .tab-panel.active { flex-direction: column; }
+    .theory-scroll { padding: 20px 16px 100px; max-width: 100%; -webkit-overflow-scrolling: touch; }
+    .theory-body h3 { font-size: 13px; margin: 25px 0 12px; }
+    .theory-body h4 { font-size: 14.5px; }
+    .theory-body p { font-size: 14.5px; line-height: 1.75; }
+    .theory-body li { font-size: 13.5px; line-height: 1.75; }
+    .scroll-top-btn { bottom: 20px; right: 16px; width: 38px; height: 38px; font-size: 16px; }
+    #boot-terminal { width: 90vw; font-size: 11px; }
+    /* Desactivar el radial HUD en móvil mejora enormemente el rendimiento de composición del navegador */
+    .radial-hud-container { display: none; }
+    .back-btn, .cyl-jump button, .toc-item { min-height: 36px; display: flex; align-items: center; }
+  }
+  .theory-scroll, .toc { -webkit-overflow-scrolling: touch; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+<div id="boot-screen"><div id="boot-terminal"></div><div id="boot-fallback-msg" style="display:none; margin-top:18px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#ff5b5b; text-align:center; max-width:88vw; line-height:1.6;"></div></div>
+
+<script>
+/* ===== RED DE SEGURIDAD DE ARRANQUE =====
+   Si el script principal (type="module", Three.js vía CDN) falla por cualquier
+   motivo -bloqueador de contenido, red lenta, fallo de un solo archivo remoto-
+   la pantalla de carga no debe quedarse congelada para siempre. Este script NO
+   es un módulo, así que se ejecuta siempre, incluso si el resto falla. */
+(function(){
+  var bootDone = false;
+  window.addEventListener('app:booted', function(){ bootDone = true; });
+
+  function showFallback(msg){
+    var box = document.getElementById('boot-fallback-msg');
+    if (box) {
+      box.textContent = msg;
+      box.style.display = 'block';
+    }
+  }
+
+  // Si tras 12s no se ha completado el arranque normal, algo ha fallado:
+  // mostramos un mensaje claro en vez de dejar la pantalla en negro.
+  setTimeout(function(){
+    if (!bootDone) {
+      showFallback('⚠ No se pudo cargar el sistema 3D (red, bloqueador de contenido o navegador no compatible). Prueba a recargar la página o desactivar el bloqueador de anuncios/contenido de Safari para este sitio.');
+    }
+  }, 12000);
+
+  // Si el módulo principal lanza un error de JS o de carga (import fallido, etc.),
+  // lo capturamos aquí para no dejar al usuario con una pantalla muda.
+  window.addEventListener('error', function(e){
+    if (!bootDone) showFallback('⚠ Error al iniciar: ' + (e && e.message ? e.message : 'desconocido') + '. Prueba a recargar la página.');
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    if (!bootDone) showFallback('⚠ Error al cargar recursos remotos (Three.js). Comprueba tu conexión o desactiva bloqueadores de contenido, y recarga la página.');
+  });
+})();
+</script>
+<div id="jarvis-overlay"><div class="jarvis-ring"></div><div class="jarvis-text" id="jarvis-overlay-text">PROCESANDO...</div></div>
+
+<div id="canvas-wrap"></div>
+
+<!-- Widget Radial HUD 2026 -->
+<div class="radial-hud-container" id="radial-hud">
+    <div class="radial-ring r1"></div>
+    <div class="radial-ring r2"></div>
+    <div class="radial-ring r3"></div>
+    <div class="radial-ring r4"></div>
+    <div class="radial-core"></div>
+    <div class="radial-bracket" id="radial-bracket"></div>
+</div>
+
+<div id="scanlines"></div>
+<div id="grain"></div>
+<div id="vignette"></div>
+
+<div class="hud-corner hud-tl"></div><div class="hud-corner hud-tr"></div><div class="hud-corner hud-bl"></div><div class="hud-corner hud-br"></div>
+
+<div class="topbar">
+  <div><div class="brand-name">J.A.R.V.I.S CNP SYSTEM</div><div class="brand-sub">EDICIÓN STARK · ESCALA BÁSICA</div></div>
+  <div class="clock" id="clock">00:00:00</div>
+</div>
+
+<div class="hint" id="hint">◈ INICIAR INTERFAZ NEURAL ◈</div>
+<div class="sys-status" id="sysStatus">SISTEMA EN ESPERA...</div>
+<div class="kbd-hints" id="kbdHints" style="display:none;">
+  <div><kbd>ESC</kbd> volver</div>
+</div>
+
+<div id="index-layer">
+  <div class="glass-panel index-title"><div class="noise-bg"></div><h2>ÍNDICE DE TEMARIO</h2><p>ARRASTRA PARA GIRAR EL CILINDRO · TOCA UN TEMA PARA ENTRAR</p></div>
+  <div class="glass-panel cyl-hud">
+    <div class="noise-bg"></div>
+    <div class="cyl-hud-num" id="cylNum">TEMA —</div><div class="cyl-hud-title" id="cylTitle">—</div>
+    <div class="cyl-hud-bar"><div class="cyl-hud-fill" id="cylFill" style="width:0%"></div></div>
+    <div class="cyl-hud-status" id="cylStatus"></div>
+    <div class="cyl-jump">
+      <input type="text" inputmode="numeric" pattern="[0-9]*" id="jumpInput" min="1" max="45" placeholder="Nº tema">
+      <button id="jumpBtn">IR AL TEMA</button>
+    </div>
+  </div>
+</div>
+
+<div id="module-layer" class="glass-panel">
+  <div class="noise-bg"></div>
+  <div class="m-topbar">
+    <div class="back-btn" id="backBtn">‹ VOLVER (ESC)</div>
+    <div class="m-title"><h2 id="moduleTitle">TEMA</h2><p id="moduleSub"></p></div>
+    <div class="m-search"><span style="color:rgba(0,240,255,0.6)">⌕</span><input id="searchBox" placeholder="Buscar en teoría..."><span class="cnt" id="searchCnt"></span></div>
+  </div>
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-tab="teoria">01 · TEORÍA</div>
+  </div>
+  <div class="m-body" id="mBody"></div>
+</div>
+
+<div class="glass-panel scroll-top-btn" id="scrollTopBtn">↑</div>
+
+<script nomodule>
+document.getElementById('boot-fallback-msg').textContent = '⚠ Tu navegador no es compatible con este sistema (necesita soporte de módulos JS). Actualiza tu navegador.';
+document.getElementById('boot-fallback-msg').style.display = 'block';
+</script>
+<script type="module">
+// ===== Importaciones corregidas con esm.sh =====
+import * as THREE from 'https://esm.sh/three@0.160.0';
+import { EffectComposer } from 'https://esm.sh/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://esm.sh/three@0.160.0/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'https://esm.sh/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'https://esm.sh/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'https://esm.sh/three@0.160.0/examples/jsm/shaders/FXAAShader.js';
+import { OutputPass } from 'https://esm.sh/three@0.160.0/examples/jsm/postprocessing/OutputPass.js';
+import { RoundedBoxGeometry } from 'https://esm.sh/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js';
+
+// ===== MOBILE DETECTION =====
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+/* ============================================================ AUDIO & VOICE ============================================================ */
+let audioCtx;
+function initAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+function playBeep(freq=600, duration=0.1, type='sine', vol=0.05){
+    if(!audioCtx) return;
+    try {
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+        osc.type = type; osc.frequency.value = freq;
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+}
+function playChime(){ [440,660,880].forEach((f,i)=> setTimeout(()=> playBeep(f, 0.5, 'sine', 0.045), i*120)); }
+
+const synth = window.speechSynthesis; let voices = [];
+function loadVoices(){ try { voices = synth.getVoices(); } catch(e){} }
+loadVoices(); if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = loadVoices;
+function jarvisSpeak(text){
+    try {
+        if(!synth) return; synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'es-ES'; utter.rate = 1.05; utter.pitch = 1.0;
+        const spanishVoices = voices.filter(v => v.lang.startsWith('es'));
+        const maleVoice = spanishVoices.find(v => v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('jorge') || v.name.toLowerCase().includes('diego')) || spanishVoices[0];
+        if(maleVoice) utter.voice = maleVoice;
+        synth.speak(utter);
+    } catch(e) { console.error("Speech error", e); }
+}
+
+/* ============================================================ BOOT SEQUENCE ============================================================ */
+const bootLines = ["> INICIANDO J.A.R.V.I.S CNP SYSTEM...", "> VERIFICANDO BASE DE DATOS JURÍDICAS...", "> 45 TEMAS DETECTADOS EN EL NÚCLEO.", "> CALIBRANDO INTERFAZ HOLOGRÁFICA 3D...", "> NEURAL LINK ESTABLECIDO.", "> BIENVENIDO."];
+let bootIndex = 0;
+function typeBoot(){
+    if(bootIndex < bootLines.length){
+        const line = document.createElement('div'); line.className = 'boot-line'; line.textContent = bootLines[bootIndex];
+        document.getElementById('boot-terminal').appendChild(line);
+        playBeep(800 + Math.random()*400, 0.05, 'square', 0.02); bootIndex++;
+        setTimeout(typeBoot, 400);
+    } else {
+        setTimeout(()=>{
+            document.getElementById('boot-screen').style.opacity = '0';
+            setTimeout(()=>{ document.getElementById('boot-screen').style.display = 'none'; initAudio(); jarvisSpeak("Sistema inicializado. Pulse el núcleo para comenzar."); }, 1000);
+        }, 800);
+        window.dispatchEvent(new Event('app:booted'));
+    }
+}
+window.onload = typeBoot;
+
+/* ============================================================ DATA (TEMA 1 COMPLETO) ============================================================ */
+const TEMAS = [
+ {num:1, title:'El Derecho. Las normas jurídicas', ready:true},
+ {num:2, title:'Derecho Constitucional', ready:false}, {num:3, title:'La Corona y los Poderes del Estado', ready:false},
+ {num:4, title:'Derecho Comunitario', ready:false}, {num:5, title:'Régimen Jurídico del Sector Público', ready:false},
+ {num:6, title:'El TREBEP y la Función Pública', ready:false}, {num:7, title:'Ministerio del Interior: Estructura Orgánica', ready:false},
+ {num:8, title:'Dirección General de la Policía', ready:false}, {num:9, title:'Ingreso a Escala Básica', ready:false},
+ {num:10, title:'De los Extranjeros', ready:false}, {num:11, title:'Infracciones en Materia de Extranjería', ready:false},
+ {num:12, title:'Protección Internacional', ready:false}, {num:13, title:'Ley 5/2014, de Seguridad Privada', ready:false},
+ {num:14, title:'Seguridad Ciudadana', ready:false}, {num:15, title:'Planificación y Ciberseguridad', ready:false},
+ {num:16, title:'Teoría del Delito', ready:false}, {num:17, title:'Delitos contra las Personas', ready:false},
+ {num:18, title:'Delitos contra el Patrimonio', ready:false}, {num:19, title:'Ingreso a Escala Básica', ready:false},
+ {num:20, title:'Delitos Informáticos y la Intimidad', ready:false}, {num:21, title:'Derecho Penal Procesal', ready:false},
+ {num:22, title:'Derecho Procesal (continuación)', ready:false}, {num:23, title:'Derecho Procesal (continuación)', ready:false},
+ {num:24, title:'Procedimiento Administrativo', ready:false}, {num:25, title:'Procedimiento Administrativo (continuación)', ready:false},
+ {num:26, title:'Protección de Datos de Carácter Personal', ready:false}, {num:27, title:'Derechos Humanos', ready:false},
+ {num:28, title:'Ingreso a Escala Básica', ready:false}, {num:29, title:'Sociología General', ready:false},
+ {num:30, title:'Principios Éticos de la Sociedad Actual', ready:false}, {num:31, title:'Migraciones y Sociedad', ready:false},
+ {num:32, title:'Sociología Aplicada', ready:false}, {num:33, title:'Teorías Psicosociales', ready:false},
+ {num:34, title:'Sociología (continuación)', ready:false}, {num:35, title:'Desarrollo Sostenible', ready:false},
+ {num:36, title:'Gramática de la Lengua Española', ready:false}, {num:37, title:'Ortografía de la Lengua Española', ready:false},
+ {num:38, title:'Lengua Española (continuación)', ready:false}, {num:39, title:'Lengua Española (continuación)', ready:false},
+ {num:40, title:'Matemáticas / Razonamiento', ready:false}, {num:41, title:'Razonamiento (continuación)', ready:false},
+ {num:42, title:'Actualidad y Geografía', ready:false}, {num:43, title:'Actualidad (continuación)', ready:false},
+ {num:44, title:'Actualidad (continuación)', ready:false}, {num:45, title:'Actualidad (continuación)', ready:false},
+];
+
+const TEMA1_THEORY = `<h3>TEMA 1-EL DERECHO. LAS NORMAS JURÍDICAS.</h3><h4>ORDENAMIENTO JURÍDICO:</h4><p>Conjunto de reglas escritas, principios y valores que regulan la organización del poder, las relaciones con los ciudadanos, las garantías de los derechos y las relaciones entre estos, que rigen en un determinado lugar y momento. Los ciudadanos y los poderes públicos están sujetos a la CE y al resto del ordenamiento jurídico (art. 9.1 CE).</p><h4>DERECHO</h4><p>Conjunto de normas jurídicas, legal y legítimamente aprobadas, que regulan la convivencia humana en sociedad y rigen con carácter colectivo. España se constituye en un Estado social y democrático de Derecho, que propugna como valores superiores de su ordenamiento jurídico la libertad, la justicia, la igualdad y el pluralismo político (art. 1.1 CE).</p><h3>ACEPCIONES DEL DERECHO</h3><ul><li><p><strong>Positivo:</strong> Conjunto de normas jurídicas que se aplican en un territorio y que se encuentran recogidos en su normativa. Es dinámico, escrito, mutable y nacional.</p></li><li><p><strong>Natural:</strong> Derecho que nace y se fundamenta en la naturaleza humana, sin que deba ser reconocido en los OJ. Es universal, racional, inalienable, inmutable como reflejo de la naturaleza humana y objetivo. Representa la justicia perfecta.</p></li><li><p><strong>Objetivo:</strong> Norma jurídica que impone una obligación.</p></li><li><p><strong>Subjetivo:</strong> Facultad o atributo de actuar en defensa de sus intereses frente a los demás.</p></li><li><p><strong>Sustantivo:</strong> Dº de fondo (derechos y obligaciones de las personas). Ej.: Código Penal y Código Civil.</p></li><li><p><strong>Adjetivo:</strong> Dº de forma (leyes procedimentales y de enjuiciamiento). Ej.: LECrim y LEC.</p></li><li><p><strong>Público:</strong> Relaciones jurídicas del Estado con los particulares.</p></li><li><p><strong>Privado:</strong> Relaciones jurídicas entre particulares.</p></li></ul><h4>NORMA JURÍDICA POSITIVA</h4><p>Todo precepto general cuyo fin es la convivencia de la comunidad y cuya observancia puede ser impuesta coactivamente por el poder directivo de aquella.</p><ul><li><p><strong>Mensaje:</strong> Primario dirigido al ciudadano, secundario dirigido al juez para que aplique la sanción prevista.</p></li><li><p><strong>Definición:</strong> Conjunto de normas por las que se rige y se ordena la convivencia de una comunidad.</p></li><li><p><strong>Estructura:</strong> Las normas jurídicas se estructuran en: <strong>Supuesto de hecho</strong> (hipótesis de la conducta) y <strong>Consecuencia jurídica</strong> (respuesta jurídica al supuesto de hecho).</p></li><li><p><strong>Características de la norma jurídica:</strong> Generalidad, abstracción, legitimidad, coercitividad/coactividad, obligatoriedad/imperatividad y bilateralidad.</p></li></ul><p><strong>TIPOS DE NORMAS JURÍDICAS</strong></p><ul><li><h3>Por el Territorio:</h3><ul><li><p>Comunes: todo el territorio.</p></li><li><p>Particulares: parte del territorio.</p></li></ul></li><li><h3>Por la Aplicación a la Persona:</h3><ul><li><p>Generales: todas las personas.</p></li><li><p>Especiales: personas determinadas.</p></li></ul></li><li><h3>Por la Obligatoriedad:</h3><ul><li><p>Necesarias o imperativas: Preceptivas (la acción es necesaria) o Prohibitivas (no se puede realizar).</p></li><li><p>Supletorias o dispositivas: Voluntaria por las partes.</p></li></ul></li><li><h3>Por los Principios:</h3><ul><li><p>Regulares: <strong>establecen</strong> la regla general.</p></li><li><p>Excepcionales: excepción a la norma general.</p></li></ul></li><li><h3>Por su Estructura:</h3><ul><li><p>Rígida o estricta: supuesto de hecho y consecuencia jurídica tasados.</p></li><li><p>Elásticas, equitativas o flexibles: aplicable a supuestos distintos a los contenidos en ella.</p></li><li><p>Completa: no se apoya en otra.</p></li><li><p>Incompleta: se apoya en otra norma.</p></li></ul></li></ul><h3>INTERPRETACIÓN</h3><ul><li><p>Según el sentido propio de sus palabras (gramatical/exegética/literal).</p></li><li><p>En relación con el contexto (sistemática).</p></li><li><p>Antecedentes históricos y legislativos (histórica).</p></li><li><p>Realidad social del momento de ser aplicadas (sociología).</p></li><li><p>Atendiendo fundamentalmente al espíritu (genética).</p></li><li><p>Finalidad de aquellas (teleológica).</p></li></ul><h3>EFECTOS JURÍDICOS</h3><ul><li><p><strong>Eficacia motivadora/obligatoria:</strong> Deber jurídico de cumplir la norma. Positiva: ciudadano reconoce su legitimidad y es interiorizada. Negativa: se abstiene de incumplirla por vía de la intimidación (sanción).</p></li><li><p><strong>Eficacia sancionadora</strong>.</p></li><li><p><strong>Eficacia constitutiva:</strong> Crea una situación jurídica en la realidad social existente.</p></li><li><p>La ignorancia de las leyes no excusa de su cumplimiento.</p></li><li><p>El error de derecho producirá únicamente aquellos efectos que las leyes determinen (art 6.1 CC).</p></li><li><p>Exclusión voluntaria de la ley aplicable y la renuncia a los derechos en ella reconocidos sólo serán válidas cuando no contraríen el interés o el orden público ni perjudiquen a terceros.</p></li><li><p><strong>Contravención de ley:</strong> Los actos contrarios a las normas imperativas y a las prohibitivas son nulos de pleno derecho, salvo que en ellas se establezcan un efecto distinto para el caso de contravención.</p></li><li><p><strong>Fraude de ley:</strong> Los actos realizados al amparo del texto de una norma que persigan un resultado prohibido por el ordenamiento jurídico, o contrario a él, se considerarán ejecutados en fraude de ley y no impedirán la debida aplicación de la norma que se hubiere tratado de eludir.</p></li><li><p><strong>Simulación:</strong> Ocultar el acto prohibido bajo la apariencia de otro.</p></li></ul><h4>LAS FUENTES DEL DERECHO</h4><p>Las fuentes del ordenamiento jurídico español son la ley, la costumbre y los principios generales del derecho. Los jueces tienen el deber inexcusable de resolver los asuntos que conozcan, ateniéndose al anterior sistema de fuentes (art. 1 CC).</p><p><strong>Clasificación de fuentes:</strong></p><ul><li><p><strong>Primarias / Materiales:</strong> Son los factores que provocan la aparición y determinan el contenido de estas. Normas producidas por los órganos que tienen el poder legislativo (Cortes Generales y Asambleas Legislativas). Atienden al órgano o grupo al que se le otorga la facultad de dictar normas jurídicas, según la doctrina.</p></li><li><p><strong>Secundarias:</strong> Normas producidas por otros órganos con capacidad para dictarla (delegada).</p></li></ul><p><strong>FUENTES DEL DERECHO</strong></p><h3>CLASIFICACIÓN:</h3><h3>Directas:</h3><ul><li><p><strong>Primaria o Principal:</strong> LEY (se alega). Elemento material, emanado por órgano legislativo o Administrativo.</p></li><li><p><strong>Subsidiaria o Secundaria:</strong></p><ul><li><strong>COSTUMBRE:</strong> (se prueba). Actos repetidos de manera constante y uniforme (elemento material) repetidos por los miembros de una comunidad, con la convicción de que responde a una necesidad jurídica (elemento "opinio iuris", psicológica o espiritual). Sólo regirá en defecto de ley aplicable, siempre que no sea contraria a la moral o al orden público, y que resulte probada (elemento normativo). Los usos jurídicos que no sean meramente interpretativos de una declaración de voluntad, tendrán la consideración de costumbre.</li></ul></li><li><h4>PRINCIPIOS GENERALES DEL DERECHO:</h4><p>Se aplicarán en defecto de ley o costumbre, sin perjuicio de su carácter informador del ordenamiento jurídico.</p></li></ul><h3>Indirectas:</h3><ul><li><p>Se manifiestan por la jurisprudencia.</p></li><li><p><strong>Jurisprudencia:</strong> Complementará el ordenamiento jurídico con la doctrina que, de modo reiterado, establezca el Tribunal Supremo (TS) al interpretar y aplicar la ley, la costumbre y los principios generales del derecho. Existe jurisprudencia cuando hay 2 o más sentencias que interpretan una norma en el mismo sentido. No será equiparable al concepto de jurisprudencia en el ámbito internacional.</p></li><li><p><strong>Doctrina:</strong> Opiniones y estudios de juristas y académicos.</p></li></ul><p><strong>CONCEPTOS COMPLEMENTARIOS:</strong></p><ul><li><p><strong>Analogía legis (de la ley):</strong> Procederá la aplicación analógica de las normas cuando éstas no contemplen un supuesto específico, pero regulen otro semejante entre los que se aprecie identidad de razón. Las leyes penales, las excepcionales y las de ámbito temporal no se aplicarán a supuestos ni en momentos distintos de los comprendidos expresamente en ellas. Las disposiciones del CC se aplicarán como supletorias en las materias regidas por otras leyes.</p></li><li><p><strong>Analogía iuris (del sistema jurídico):</strong> Parte de un conjunto de normas para tratar de deducir un principio general del derecho.</p></li><li><p><strong>Equidad:</strong> Habrá de ponderarse en la aplicación de las normas, si bien las resoluciones de los Tribunales sólo podrán descansar de manera exclusiva en ella cuando la ley expresamente lo permita (equidad = imparcialidad, ámbito subjetivo del juez).</p></li></ul><p><strong>JERARQUÍA NORMATIVA</strong></p><ol><li><h3>CONSTITUCIÓN</h3></li><li><h4>TRATADOS INTERNACIONALES:</h4><p>Aplicación directa cuando formen parte del ordenamiento interno mediante su publicación íntegra en el BOE.</p></li><li><h4>LEY ORGÁNICA:</h4><p>Relativas al desarrollo de los Derechos Fundamentales y Libertades Públicas, Estatutos de Autonomía y régimen electoral y lo que prevea CE. La aprobación, modificación o derogación de las LO exigirá MA (Mayoría Absoluta) del CD (Congreso), en una votación final sobre el conjunto del proyecto.</p><ul><li><em>Ley transferencia o delegación:</em> El Estado transfiere a la CC.AA., mediante LO la facultad de titularidad estatal que por su propia naturaleza sean transferibles o delegables.</li></ul></li><li><h4>LEY ORDINARIA:</h4><p>Cuyo ámbito comprende todas las materias no reservadas a la LO. Su aprobación requiere MS (Mayoría Simple: mitad más uno de los presentes en la Cámara).</p><ul><li><p><em>Ley delegada:</em> En Comisiones Legislativas Permanentes por las Cámaras. Exc.: reforma CE, cuestiones internacionales, LO y de bases y Presupuestos Gen. del Estado.</p></li><li><p><em>Ley marco:</em> Las Cortes permiten a las CC.AA, mediante Ley ordinaria, dictar normas legislativas en el marco de los principios establecidos en dicha ley.</p></li><li><p><em>Ley armonización:</em> El Estado puede armonizar las normas de las CCAA incluso en competencias autonómicas si lo exige el interés general, requiere MA de cada Cámara.</p></li></ul></li></ol><h3>PROCEDIMIENTO LEGISLATIVO (Esquema de flujo):</h3><ul><li><h3>Inicio:</h3><ul><li><p><strong>Proyecto de Ley:</strong> Por el Consejo de Ministros (CM). Se envía con una Exposición de Motivos.</p></li><li><p><strong>Proposición de Ley:</strong> Iniciativa del Congreso, Senado, Asambleas CCAA o Iniciativa Popular.</p></li></ul></li><li><p><strong>Trámite en Congreso:</strong> Es remitido al Congreso -> La mesa ordena su publicación en el BO de las Cortes -> Se abre plazo para presentar enmiendas (15 días) -> Deliberación del pleno.</p></li><li><p><strong>Paso al Senado:</strong> Si es aprobado por el Congreso pasa al Senado. Recibido en el Senado: plazo de 2 meses (20 días urgente) para: aprobarlo, vetarlo o introducir enmiendas.</p><ul><li><em>Si hay veto (MA) o enmiendas (MS) en el Senado:</em> Se vuelve a someter al Congreso. Ante el veto del Senado, se precisará MA del Congreso 1ª votación, o MS en 2ª votación, pasados 2 meses. Ante enmiendas por parte del Senado, el Congreso las aceptará o rechazará por MS.</li></ul></li><li><p><strong>Fase Final:</strong> El Proyecto de Ley es remitido al Rey para que lo sancione (15 días) y promulgue.</p></li><li><p><strong>Publicación y Vigor:</strong> Publicación en el BOE. Entrada en vigor cuando indique la norma o a los 20 días de su completa publicación (vacatio legis).</p></li></ul><p><em>Nota sobre Iniciativa legislativa:</em> Corresponde al Gobierno (proyecto ley), al Congreso y al Senado, a la Asamblea de las CCAA e Iniciativa Popular (no menos de 500.000 firmas acreditadas; no puede afectar a LO, tributaria, leyes de naturaleza Internacional ni prerrogativa de gracia).</p><p><strong>NORMAS RANGO DE LEY:</strong></p><ul><li><p><strong>Decreto ley:</strong> En caso extraordinaria y urgente necesidad, es provisional. No puede afectar a Inst. básicas del Estado, Derechos, Deberes y Libertades Fundamentales, T1º (CE), régimen de CC.AA., y al derecho electoral. Inmediatamente sometidos a debate, el CD deberá convalidarlo o derogarlo dentro de los 30 días siguientes a su promulgación.</p></li><li><p><strong>Delegación legislativa:</strong> Las Cortes podrán delegar al Gobierno la potestad de dictar normas mediante: ley de bases para texto articulado o en ley ordinaria para texto refundido.</p></li></ul><h4>REGLAMENTO:</h4><p>Norma inferior a la ley.</p><ul><li><p><strong>Clases:</strong> Ejecutivos (secundum legem), independientes (extra legem), de necesidad o excepción (contra legem) u organizativos o estructurales (praeter legem).</p></li><li><p><strong>Según el sujeto del que provengan:</strong></p><ul><li><p><em>Del Poder Ejecutivo:</em> Real Decreto (RD) del Presidente Gobierno; RD del Consejo de Ministros; Acuerdo del CM; Acuerdo en Comisión Delegada del Gobierno; Orden ministerial.</p></li><li><p><em>Jerarquía:</em> 1.º Disposiciones aprobadas por RD del Presidente del Gobierno o acordado en el CM. 2.º Disposiciones aprobadas por Orden Ministerial.</p></li><li><p><em>Autonómicos:</em> Decreto del Presidente, Decreto del Consejo Gobierno, Orden Consejería.</p></li><li><p><em>Locales:</em> Ordenanza (ayuntamiento en pleno), reglamento y bando del alcalde.</p></li></ul></li></ul><h3>PERSONA FÍSICA</h3><ul><li><p><strong>Personalidad:</strong> Aptitud para ser sujeto activo o pasivo de relaciones jurídicas.</p></li><li><p><strong>Nacimiento:</strong> El nacimiento determina la personalidad: pero el concebido se tiene por nacido para todos los efectos que le sean favorables, siempre que nazca con las condiciones que expresa el artículo siguiente (art. 29 CC). La personalidad se adquiere en el momento del nacimiento con vida, una vez producido el entero desprendimiento del seno materno (art. 30 CC).</p></li><li><p><strong>Teorías del nacimiento</strong></p><ul><li><p>Concepción: en el momento de la concepción. Feto es sujeto de derechos.</p></li><li><p>Nacimiento: se es persona desde el nacimiento.</p></li><li><p>Ecléctica o intermedia: la personalidad comienza en el nacimiento si bien debe reconocerse una serie de derechos al concebido, retrayendo los efectos del nacimiento al momento de la concepción. Esta teoría es la seguida por nuestro CC.</p></li><li><p>Viabilidad: exige nacer con vida y vivir fuera del seno materno.</p></li></ul></li><li><p><strong>Extinción:</strong> La personalidad se extingue con la muerte de la persona (art. 32 CC).</p></li></ul><p><strong>PERSONA JURÍDICA</strong></p><ul><li><p><strong>Personalidad Jurídica:</strong> (cuando se constituye legalmente): tienen capacidad para adquirir derechos y obligaciones.</p></li><li><p><strong>Tipos de personas jurídicas:</strong></p><ul><li><p><em>Personas Jurídicas de D.º público:</em> Las corporaciones, asociaciones y fundaciones de interés público reconocidas por la ley. Su personalidad empieza desde el instante mismo en que, con arreglo a derecho, hubiesen quedado válidamente constituidas (R. Genérico) (art. 35.1° CC).</p></li><li><p><em>Personas Jurídicas de D.º privado:</em> Las asociaciones de interés particular. Quedan sujetas al requisito de establecerse su creación en documento público seguida de su inscripción en registro público (R. Específico).</p></li></ul></li></ul><h4>EMANCIPACIÓN</h4><p>La emancipación habilitará a disponer de sus bienes y personas como si fuera mayor de edad. El menor emancipado podrá por sí solo comparecer en juicio. La concesión de la emancipación habrá de inscribirse en el Registro Civil, no produciendo entre tanto efectos contra terceros. Concedida la emancipación no podrá ser revocada (excepto vida independiente revocable por los progenitores/tutores).</p><h3>NACIONALIDAD</h3><h3>ORIGEN (AUTOMÁTICA)</h3><ul><li><p><strong>Por Filiación (ius sanguinis):</strong> Nacidos de padre o madre españoles.</p></li><li><p><strong>Por Nacimiento en España (ius soli):</strong> De padres extranjeros, si alguno también hubiese nacido en España (exc. hijos de los diplomáticos o cónsul acreditado en España).</p></li><li><p>De padres extranjeros, si ambos no tienen nacionalidad o si la legislación de ambos no le atribuye al hijo nacionalidad.</p></li></ul><p><strong>OBTENCIÓN / DERIVATIVA</strong></p><ul><li><h3>Por Opción:</h3><ul><li><p>Si la ejerce el interesado, caduca a los 20 años o a los 2 años a partir de la emancipación.</p></li><li><p>Los que su nacimiento/filiación se determine después de los 18 años (2 años a partir de la determinación para optar).</p></li></ul></li><li><p><strong>Por Carta de Naturaleza:</strong> La otorga discrecionalmente el Gobierno mediante Real Decreto, a propuesta del MJ y previo expediente, cuando concurran circunstancias excepcionales. Caduca a los 180 días desde la notificación.</p></li><li><p><strong>Por Residencia:</strong> Residencia legal, continuada e inmediatamente anterior a la petición. Se adquiere:</p><ul><li><p><em>10 años:</em> Plazo general.</p></li><li><p><em>5 años:</em> Refugiados.</p></li><li><p><em>2 años:</em> Países iberoamericanos, Andorra, Filipinas, Guinea Ecuatorial, Portugal y Sefardíes.</p></li><li><p><em>1 año:</em> Nacido en España; el que no haya ejercido opción ; el sujeto a tutela, curatela, guarda o acogimiento de un ciudadano o inst. española durante 2 años consecutivos ; viudo de español no separado; el que llevara 1 año casado con un español y el nacido fuera de España de ascendientes (padres/abuelos) originarios españoles.</p></li></ul></li></ul><p><strong>PÉRDIDA DE LA NACIONALIDAD</strong></p><ul><li><p><strong>Españoles de origen:</strong> No se pierde la nacionalidad española si España se hallare en guerra. Los emancipados que, residiendo habitualmente en el extranjero adquieran voluntariamente otra nacionalidad o utilicen exclusivamente la nacionalidad extranjera que tuvieran atribuida antes de la emancipación. La pérdida se producirá transcurrido 3 años. Pueden evitar la pérdida si dentro de este plazo declaran su voluntad de conservar la nacionalidad española al encargado del Registro Civil.</p></li></ul><h3>EL DOMICILIO Y VECINDAD CIVIL</h3><h4>EL DOMICILIO</h4><h3>Tipos:</h3><ul><li><p><strong>Real o Voluntario:</strong> El domicilio de las personas naturales es el lugar de residencia habitual, y en su caso, el que determine la LEC (art. 40 CC).</p></li><li><p><strong>Legal o Necesario:</strong> Lo impone la ley y se deriva de la subordinación a la persona con la que se vive o de la que se depende.</p></li><li><p><strong>Electivo o Convencional:</strong> Aquel, distinto de la residencia habitual, que la persona designa como domicilio para todas sus relaciones jurídicas, actos, contratos u obligaciones concretas.</p></li><li><p><strong>Domicilio de Personas Jurídicas (art. 41 CC):</strong> Se aplican criterios sucesivos: El que figura en su norma constitutiva -> El lugar de su representación legal -> El lugar donde ejerce sus funciones principales.</p></li></ul><h4>VECINDAD CIVIL</h4><p>La sujeción al derecho civil común o especial/foral es determinada por la vecindad civil. En caso de duda prevalecerá la que corresponda al lugar de nacimiento. La vecindad civil está ligada a la nacionalidad. Si deja de ser español, pierde también la vecindad civil.</p>`;
+
+/* ============================================================ THREE.JS SCENE — CINEMATOGRAPHIC BOOK ============================================================ */
+const wrap = document.getElementById('canvas-wrap');
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x00050a);
+scene.fog = new THREE.FogExp2(0x00050a, 0.018);
+const camera = new THREE.PerspectiveCamera(isMobile ? 60 : 42, innerWidth/innerHeight, 0.1, 1000);
+camera.position.set(0, 1.6, 6.4);
+camera.lookAt(0,0.3,0);
+const renderer = new THREE.WebGLRenderer({
+    antialias: true, // Activado para móvil y escritorio
+    powerPreference: 'high-performance',
+    alpha: false
+});
+renderer.setSize(innerWidth, innerHeight);
+// Mejoramos el pixel ratio en móvil para mayor nitidez
+const pr = Math.min(window.devicePixelRatio, 1.5);
+renderer.setPixelRatio(pr);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+renderer.shadowMap.enabled = false;
+wrap.appendChild(renderer.domElement);
+
+// ===== GRUPO PRINCIPAL PARA INERCIA DEL MOUSE =====
+const mainGroup = new THREE.Group();
+scene.add(mainGroup);
+
+// ===== SHADER: HEXAGONAL GRID (Solo en PC) =====
+let hexGridMaterial, pMat, customPostPass, fogParticles;
+if (!isMobile) {
+    const hexGridGeometry = new THREE.PlaneGeometry(200, 200, 1, 1);
+    hexGridMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+            uTime: { value: 0.0 }, uMouse: { value: new THREE.Vector2(0, 0) },
+            uColorA: { value: new THREE.Color(0x00f0ff) }, uColorB: { value: new THREE.Color(0xff5500) }
+        },
+        vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `
+            varying vec2 vUv; uniform float uTime; uniform vec2 uMouse; uniform vec3 uColorA; uniform vec3 uColorB;
+            vec2 hash2( vec2 p ) { return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453); }
+            float perlin(vec2 p) { vec2 i = floor(p); vec2 f = fract(p); vec2 u = f*f*(3.0-2.0*f); return mix(mix(dot(hash2(i+vec2(0,0)), f-vec2(0,0)), dot(hash2(i+vec2(1,0)), f-vec2(1,0)), u.x), mix(dot(hash2(i+vec2(0,1)), f-vec2(0,1)), dot(hash2(i+vec2(1,1)), f-vec2(1,1)), u.x), u.y); }
+            float hexDist(vec2 p) { p = abs(p); return max(dot(p, normalize(vec2(1.0, 1.73))), dot(p, vec2(1.0, 0.0))); }
+            vec4 hexCoords(vec2 uv) { vec2 r = vec2(1.0, 1.73); vec2 h = r * 0.5; vec2 a = mod(uv, r) - h; vec2 b = mod(uv - h, r) - h; vec2 gv = dot(a,a) < dot(b,b) ? a : b; float x = atan(gv.x, gv.y); float y = 0.5 - hexDist(gv); vec2 id = uv - gv; return vec4(x, y, id.x, id.y); }
+            void main() {
+                vec2 uv = vUv * 20.0; float n = perlin(uv * 0.5 + uTime * 0.1); uv += n * 0.5;
+                vec4 hc = hexCoords(uv); float mouseDist = length(vUv - uMouse);
+                float pulse = sin(uTime * 2.0 + hc.z * 5.0 + hc.w * 5.0) * 0.5 + 0.5;
+                float mouseGlow = smoothstep(0.3, 0.0, mouseDist) * 2.0;
+                float hexLine = smoothstep(0.04, 0.0, hc.y);
+                vec3 col = uColorA * hexLine * (0.1 + pulse * 0.2); col += uColorB * hexLine * mouseGlow;
+                float rand = fract(sin(dot(hc.zw, vec2(12.9898, 78.233))) * 43758.5453);
+                if(rand > 0.98) col += uColorA * pulse * hc.y * 2.0;
+                gl_FragColor = vec4(col, hexLine * 0.6);
+            }
+        `,
+        transparent: true, side: THREE.DoubleSide
+    });
+    const hexGrid = new THREE.Mesh(hexGridGeometry, hexGridMaterial);
+    hexGrid.position.z = -30; mainGroup.add(hexGrid);
+
+    // ===== NIEBLA VOLUMÉTRICA =====
+    const fogGeo = new THREE.BufferGeometry();
+    const fogCount = 600; const fogPos = new Float32Array(fogCount*3);
+    for(let i=0;i<fogCount;i++){ fogPos[i*3] = (Math.random()-0.5)*24; fogPos[i*3+1] = (Math.random()-0.5)*10; fogPos[i*3+2] = (Math.random()-0.5)*16; }
+    fogGeo.setAttribute('position', new THREE.BufferAttribute(fogPos,3));
+    fogParticles = new THREE.Points(fogGeo, new THREE.PointsMaterial({ color: 0x00f0ff, size: 0.18, transparent: true, opacity: 0.03, blending: THREE.AdditiveBlending, depthWrite: false }));
+    mainGroup.add(fogParticles);
+}
+
+// ===== PARTÍCULAS HOLOGRÁFICAS =====
+const pCount = isMobile ? 400 : 5000;
+const pGeo = new THREE.BufferGeometry();
+const positions = new Float32Array(pCount*3);
+for(let i=0;i<pCount;i++){
+    positions[i*3]=(Math.random()-0.5)*40;
+    positions[i*3+1]=(Math.random()-0.5)*20;
+    positions[i*3+2]=(Math.random()-0.5)*20;
+}
+pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+
+if (!isMobile) {
+    const randomness = new Float32Array(pCount*3); const colors = new Float32Array(pCount*3);
+    for(let i=0;i<pCount;i++){
+        randomness[i*3] = Math.random()*2; randomness[i*3+1] = Math.random()*2; randomness[i*3+2] = Math.random()*2;
+        if(Math.random() > 0.9) { colors[i*3]=1.0; colors[i*3+1]=0.33; colors[i*3+2]=0.0; }
+        else { colors[i*3]=0.0; colors[i*3+1]=0.94; colors[i*3+2]=1.0; }
+    }
+    pGeo.setAttribute('aRandom', new THREE.BufferAttribute(randomness,3));
+    pGeo.setAttribute('aColor', new THREE.BufferAttribute(colors,3));
+    pMat = new THREE.ShaderMaterial({
+        uniforms: { uTime: { value: 0.0 }, uMouse: { value: new THREE.Vector3(0, 0, 0) }, uSize: { value: 8.0 } },
+        vertexShader: `attribute vec3 aRandom; attribute vec3 aColor; uniform float uTime; uniform vec3 uMouse; uniform float uSize; varying vec3 vColor; varying float vAlpha;
+            void main() { vec3 pos = position; pos.x += sin(uTime * 0.5 + aRandom.x * 6.28) * 2.0; pos.y += cos(uTime * 0.4 + aRandom.y * 6.28) * 2.0; pos.z += sin(uTime * 0.3 + aRandom.z * 6.28) * 2.0;
+                float dist = distance(pos, uMouse); if(dist < 5.0) { vec3 dir = normalize(pos - uMouse); pos += dir * (5.0 - dist) * 0.5; }
+                vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0); gl_Position = projectionMatrix * mvPosition; gl_PointSize = uSize * (1.0 / -mvPosition.z);
+                vColor = aColor; vAlpha = smoothstep(50.0, 10.0, -mvPosition.z); }`,
+        fragmentShader: `varying vec3 vColor; varying float vAlpha; void main() { float d = length(gl_PointCoord - vec2(0.5)); if(d > 0.5) discard; float alpha = (1.0 - d * 2.0) * vAlpha; gl_FragColor = vec4(vColor, alpha * 0.8); }`,
+        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+    });
+} else {
+    pMat = new THREE.PointsMaterial({ color: 0x00f0ff, size: 0.05, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false });
+}
+const particles = new THREE.Points(pGeo, pMat);
+mainGroup.add(particles);
+
+// ===== ANILLOS DE ENERGÍA =====
+const ringGroup = new THREE.Group();
+mainGroup.add(ringGroup);
+const rings = [];
+for(let i=0; i<3; i++){
+    const radius = 1.0 + i*0.5;
+    const geo = new THREE.RingGeometry(radius-0.015, radius+0.015, 80);
+    const mat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.AdditiveBlending });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = -Math.PI/2; mesh.position.y = -0.7 + i*0.2;
+    ringGroup.add(mesh); rings.push(mesh);
+}
+for(let i=0; i<2; i++){
+    const geo = new THREE.TorusGeometry(1.2 + i*0.6, 0.006, 24, 64);
+    const mat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = Math.PI/2; mesh.position.y = 0.2 + i*0.6;
+    ringGroup.add(mesh); rings.push(mesh);
+}
+
+// ===== LIBRO DE ALTA DEFINICIÓN =====
+const bookGroup = new THREE.Group();
+bookGroup.visible = false;
+mainGroup.add(bookGroup);
+const W = 1.6, H = 2.1, THICK = 0.32;
+
+const coverMaterial = isMobile ? new THREE.MeshStandardMaterial({
+    color: 0x0a1420, metalness: 0.8, roughness: 0.3, emissive: 0x001824, emissiveIntensity: 0.2
+}) : new THREE.MeshPhysicalMaterial({
+    color: 0x0a1420, metalness: 0.95, roughness: 0.15, clearcoat: 1.0, clearcoatRoughness: 0.08,
+    emissive: 0x001824, emissiveIntensity: 0.2, reflectivity: 0.8, sheen: 1.0, sheenColor: new THREE.Color(0x00f0ff), sheenRoughness: 0.25, envMapIntensity: 1.5
+});
+
+const spineGeo = isMobile ? new THREE.BoxGeometry(0.12, H, THICK) : new RoundedBoxGeometry(0.12, H, THICK, 4, 0.02);
+const spine = new THREE.Mesh(spineGeo, coverMaterial);
+bookGroup.add(spine);
+
+const spineLine = new THREE.Mesh(new THREE.BoxGeometry(0.02, H*0.94, THICK*1.02), new THREE.MeshBasicMaterial({color:0x00f0ff, transparent:true, opacity:0.8}));
+bookGroup.add(spineLine);
+
+for(let i=-1;i<=1;i++){
+    const nervGeo = new THREE.CylinderGeometry(0.07, 0.07, THICK*1.04, 12);
+    const nervMat = new THREE.MeshStandardMaterial({ color: 0x3a5a7a, metalness: 0.9, roughness: 0.3 });
+    const nerv = new THREE.Mesh(nervGeo, nervMat);
+    nerv.rotation.z = Math.PI/2; nerv.position.set(0, i*0.55, 0);
+    bookGroup.add(nerv);
+}
+
+const rightPivot = new THREE.Object3D(); rightPivot.position.set(0.06,0,0); bookGroup.add(rightPivot);
+const leftPivot = new THREE.Object3D(); leftPivot.position.set(-0.06,0,0); bookGroup.add(leftPivot);
+
+const coverGeo = isMobile ? new THREE.BoxGeometry(W, H, 0.05) : new RoundedBoxGeometry(W, H, 0.05, 6, 0.025);
+const rightCover = new THREE.Mesh(coverGeo, coverMaterial); rightCover.position.set(W/2, 0, THICK/2); rightPivot.add(rightCover);
+const leftCover = new THREE.Mesh(coverGeo, coverMaterial); leftCover.position.set(-W/2, 0, THICK/2); leftPivot.add(leftCover);
+leftPivot.rotation.y = Math.PI;
+
+const triShape = new THREE.Shape();
+const r0 = 0.32;
+for(let i=0;i<3;i++){const a=-Math.PI/2+i*(Math.PI*2/3); const x=Math.cos(a)*r0, y=Math.sin(a)*r0; if(i===0) triShape.moveTo(x,y); else triShape.lineTo(x,y);}
+triShape.closePath();
+const emblemMat = new THREE.MeshBasicMaterial({color:0xffd700, transparent:true, opacity:0.95});
+const emblem = new THREE.Mesh(new THREE.ShapeGeometry(triShape), emblemMat);
+emblem.position.set(0,0,0.03); rightCover.add(emblem);
+const emblemRing = new THREE.Mesh(new THREE.RingGeometry(0.38, 0.41, 48), new THREE.MeshBasicMaterial({color:0xffd700, transparent:true, opacity:0.6, side:THREE.DoubleSide}));
+emblemRing.position.set(0,0,0.025); rightCover.add(emblemRing);
+
+const pageLayerCount = isMobile ? 4 : 20;
+const pageLayers = [];
+const pageStack = new THREE.Group(); bookGroup.add(pageStack);
+for(let i=0;i<pageLayerCount;i++){
+    const tpos = i/(pageLayerCount-1);
+    const mat = isMobile ? new THREE.MeshStandardMaterial({ color: 0x0d2530, emissive: 0x00f0ff, emissiveIntensity: 0.06, transparent: true, opacity: 0.96 }) : new THREE.MeshPhysicalMaterial({ color: 0x0d2530, emissive: 0x00f0ff, emissiveIntensity: 0.06, metalness: 0.02, roughness: 0.9, transparent: true, opacity: 0.96, clearcoat: 0.1 });
+    const layerGeo = isMobile ? new THREE.BoxGeometry(W*0.94, H*0.92, (THICK*0.78)/pageLayerCount*0.92) : new RoundedBoxGeometry(W*0.94, H*0.92, (THICK*0.78)/pageLayerCount*0.92, 4, 0.01);
+    const layer = new THREE.Mesh(layerGeo, mat);
+    layer.position.z = -THICK*0.35 + tpos*THICK*0.7;
+    pageStack.add(layer); pageLayers.push(layer);
+}
+
+const lightBeam = new THREE.Mesh(new THREE.PlaneGeometry(W*0.9, H*0.9), new THREE.MeshBasicMaterial({color:0x00f0ff, transparent:true, opacity:0, side:THREE.DoubleSide, blending:THREE.AdditiveBlending}));
+lightBeam.position.set(0,0,THICK/2); lightBeam.rotation.x = Math.PI/2; bookGroup.add(lightBeam);
+
+const godRay = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 1.2, 7, 32, 1, true), new THREE.MeshBasicMaterial({color:0x00f0ff, transparent:true, opacity:0, side:THREE.DoubleSide, blending:THREE.AdditiveBlending}));
+godRay.position.set(0,2.5,0); mainGroup.add(godRay);
+
+bookGroup.position.y = 0.2;
+bookGroup.scale.set(0.001,0.001,0.001);
+
+// ===== CILINDRO ÍNDICE =====
+const cylGroup = new THREE.Group();
+cylGroup.visible = false; mainGroup.add(cylGroup);
+const CYL_R = 9.2;
+const plateMeshes = [];
+
+function wrapText(ctx,text,x,y,maxW,lh){ const words = text.split(' '); let line=''; let ly=y; for(let w of words){ const test = line+w+' '; if(ctx.measureText(test).width>maxW && line!==''){ ctx.fillText(line,x,ly); line=w+' '; ly+=lh; } else line=test; } ctx.fillText(line,x,ly); }
+function makePlateTexture(tema){
+    const cnv = document.createElement('canvas');
+    // Aumentamos resolución para móvil: 768x510 (antes 512x340)
+    cnv.width = isMobile ? 768 : 1024;
+    cnv.height = isMobile ? 510 : 680;
+    const ctx = cnv.getContext('2d');
+    const grad = ctx.createRadialGradient(cnv.width/2, cnv.height/2, 100, cnv.width/2, cnv.height/2, 500);
+    grad.addColorStop(0, '#0a1520'); grad.addColorStop(1, '#05080f');
+    ctx.fillStyle = grad; ctx.fillRect(0,0,cnv.width,cnv.height);
+    ctx.strokeStyle = tema.ready ? '#00f0ff' : 'rgba(0,240,255,0.3)';
+    ctx.lineWidth = isMobile ? 6 : 8; // un poco más grueso en móvil
+    ctx.strokeRect(6,6,cnv.width-12,cnv.height-12);
+    ctx.fillStyle = tema.ready ? '#00f0ff' : 'rgba(0,240,255,0.5)';
+    const fontSizeTitulo = isMobile ? 48 : 70;
+    ctx.font = '700 '+fontSizeTitulo+'px Orbitron, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('TEMA '+String(tema.num).padStart(2,'0'), cnv.width/2, cnv.height/2 - 60);
+    ctx.fillStyle = tema.ready ? '#ffffff' : 'rgba(255,255,255,0.5)';
+    const fontSizeSubt = isMobile ? 28 : 48;
+    ctx.font = '500 '+fontSizeSubt+'px Rajdhani, sans-serif';
+    wrapText(ctx, tema.title.toUpperCase(), cnv.width/2, cnv.height/2 + 20, isMobile ? 600 : 800, isMobile ? 34 : 56);
+    ctx.font = '600 '+(isMobile?24:36)+'px Orbitron, sans-serif';
+    ctx.fillStyle = tema.ready ? '#2ef0ac' : '#ff4d6d';
+    ctx.fillText(tema.ready ? '● CARGADO' : '○ PENDIENTE', cnv.width/2, cnv.height/2 + 140);
+    return new THREE.CanvasTexture(cnv);
+}
+
+const N = TEMAS.length;
+TEMAS.forEach((tema,i)=>{
+    const angle = (i/N)*Math.PI*2;
+    const geo = new THREE.PlaneGeometry(1.6, 1.0);
+    const tex = makePlateTexture(tema);
+    const mat = new THREE.MeshBasicMaterial({map:tex, transparent:true});
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(Math.sin(angle)*CYL_R, 0, Math.cos(angle)*CYL_R);
+    mesh.rotation.y = angle;
+    mesh.userData.tema = tema;
+    cylGroup.add(mesh); plateMeshes.push(mesh);
+});
+
+const lineMat = new THREE.LineBasicMaterial({color:0x00f0ff, transparent:true, opacity:0.12});
+for(let i=0; i<5; i++){
+    const yPos = -1.0 + i*0.5; const points = [];
+    for(let j=0; j<=(isMobile?30:80); j++){
+        const theta = (j/(isMobile?30:80))*Math.PI*2;
+        points.push(new THREE.Vector3(Math.sin(theta)*CYL_R, yPos, Math.cos(theta)*CYL_R));
+    }
+    cylGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), lineMat));
+}
+
+const cylParticlesGeo = new THREE.BufferGeometry();
+const cylPCount = isMobile ? 100 : 600;
+const cylPos = new Float32Array(cylPCount*3);
+for(let i=0;i<cylPCount;i++){
+    const theta = Math.random()*Math.PI*2; const r = CYL_R + (Math.random()-0.5)*1.5; const y = (Math.random()-0.5)*2.6;
+    cylPos[i*3] = Math.sin(theta)*r; cylPos[i*3+1] = y; cylPos[i*3+2] = Math.cos(theta)*r;
+}
+cylParticlesGeo.setAttribute('position', new THREE.BufferAttribute(cylPos,3));
+const cylParticles = new THREE.Points(cylParticlesGeo, new THREE.PointsMaterial({color:0x00f0ff, size:0.05, transparent:true, opacity:0.25, blending:THREE.AdditiveBlending}));
+cylGroup.add(cylParticles);
+
+/* ============================================================ POST-PROCESSING ============================================================ */
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+
+const bloom = new UnrealBloomPass(new THREE.Vector2(isMobile ? Math.floor(innerWidth/2) : innerWidth, isMobile ? Math.floor(innerHeight/2) : innerHeight), isMobile ? 0.5 : 1.0, 0.4, 0.15);
+composer.addPass(bloom);
+
+if (!isMobile) {
+    customPostPass = new ShaderPass({
+        uniforms: { tDiffuse: { value: null }, uTime: { value: 0.0 }, uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) } },
+        vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime; uniform vec2 uResolution; varying vec2 vUv;
+            float random(vec2 st) { return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123); }
+            void main() {
+                vec2 uv = vUv; vec2 center = vec2(0.5); float dist = length(uv - center); float aberration = 0.004 * dist;
+                vec2 dir = normalize(uv - center);
+                float r = texture2D(tDiffuse, uv + dir * aberration).r; float g = texture2D(tDiffuse, uv).g; float b = texture2D(tDiffuse, uv - dir * aberration).b;
+                vec3 color = vec3(r, g, b);
+                float scanline = sin(uv.y * uResolution.y * 1.5 + uTime * 10.0) * 0.02; color -= scanline;
+                float grain = random(uv + uTime) * 0.04; color += grain;
+                gl_FragColor = vec4(color, 1.0);
+            }`
+    });
+    composer.addPass(customPostPass);
+    const fxaaPass = new ShaderPass(FXAAShader);
+    fxaaPass.uniforms['resolution'].value.set(1 / innerWidth, 1 / innerHeight);
+    composer.addPass(fxaaPass);
+}
+composer.addPass(new OutputPass());
+
+scene.add(new THREE.AmbientLight(0x2a4a6a, 0.6));
+const keyLight = new THREE.DirectionalLight(0x00f0ff, 1.8); keyLight.position.set(2, 5, 4); scene.add(keyLight);
+const fillLight = new THREE.DirectionalLight(0x0066cc, 0.6); fillLight.position.set(-3, 1, 2); scene.add(fillLight);
+
+/* ============================================================ STATE & EVENTS ============================================================ */
+let state = 'closed'; let materializeProgress = 0; let openingProgress = 0;
+let isMaterializing = false; let isOpening = false;
+let cylRotation = 0, cylTargetRotation = 0, dragging = false, lastX = 0, dragVel = 0;
+let pointerDownPos = {x:0,y:0}, totalDragDist = 0; let currentTema = null;
+
+const mouse = new THREE.Vector2(0, 0); const targetMouse = new THREE.Vector2(0, 0);
+const mouse3D = new THREE.Vector3(0, 0, 0); const targetMouse3D = new THREE.Vector3(0, 0, 0);
+
+window.addEventListener('mousemove', (e) => {
+    targetMouse.x = (e.clientX / window.innerWidth) - 0.5; targetMouse.y = -((e.clientY / window.innerHeight) - 0.5);
+    targetMouse3D.x = targetMouse.x * 30; targetMouse3D.y = targetMouse.y * 15; targetMouse3D.z = 5;
+});
+
+const raycaster = new THREE.Raycaster(); const pointer = new THREE.Vector2();
+
+function handlePointerDown(e) {
+    e.preventDefault(); initAudio();
+    pointerDownPos = { x: e.clientX, y: e.clientY }; totalDragDist = 0;
+    
+    // CON UN SOLO TOQUE: si está cerrado, materializa. Al terminar de materializar, abriré automáticamente.
+    if (state === 'closed') {
+        if (!isMaterializing && !isOpening) startMaterialization();
+        return;
+    }
+    if (state === 'index') { dragging = true; lastX = e.clientX; }
+}
+function handlePointerMove(e) {
+    if (!dragging || state !== 'index') return;
+    e.preventDefault();
+    const dx = e.clientX - lastX; lastX = e.clientX;
+    cylTargetRotation += dx * 0.006; dragVel = dx * 0.006; totalDragDist += Math.abs(dx);
+    if (totalDragDist > 5) document.getElementById('sysStatus').textContent = "GIRANDO BASE DE DATOS...";
+}
+function handlePointerUp(e) {
+    if (state === 'index' && totalDragDist < 20) {
+        pointer.x = (e.clientX / innerWidth) * 2 - 1; pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+        raycaster.setFromCamera(pointer, camera);
+        const hits = raycaster.intersectObjects(plateMeshes);
+        if (hits.length > 0) { const tema = hits[0].object.userData.tema; if (tema) { playBeep(1000, 0.08, 'sine', 0.05); enterModule(tema); } }
+    }
+    dragging = false;
+}
+
+renderer.domElement.addEventListener('pointerdown', handlePointerDown, { passive: false });
+renderer.domElement.addEventListener('pointermove', handlePointerMove, { passive: false });
+renderer.domElement.addEventListener('pointerup', handlePointerUp);
+renderer.domElement.addEventListener('pointercancel', () => { dragging = false; });
+renderer.domElement.addEventListener('touchmove', (e) => { e.preventDefault(); }, { passive: false });
+
+document.getElementById('jumpBtn').addEventListener('click', jumpToTema);
+document.getElementById('jumpInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') jumpToTema(); });
+function jumpToTema(){
+  const n = parseInt(document.getElementById('jumpInput').value);
+  if(!n || n<1 || n>45) return;
+  const idx = n-1; const angle = (idx/N)*Math.PI*2;
+  cylTargetRotation = -angle; playBeep(700,0.08,'sine',0.04);
+}
+
+document.addEventListener('keydown', (e) => { if(document.activeElement.tagName === 'INPUT') return; if(e.key === 'Escape' && state === 'module') goBack(); });
+document.getElementById('backBtn').addEventListener('pointerup', (e) => { e.stopPropagation(); if(state === 'module') goBack(); });
+
+function startMaterialization() {
+    if (isMaterializing || isOpening) return;
+    isMaterializing = true; state = 'materializing'; materializeProgress = 0;
+    bookGroup.visible = true; bookGroup.scale.set(0.001, 0.001, 0.001);
+    playBeep(200, 0.2, 'sawtooth', 0.03);
+    setTimeout(()=> playBeep(400, 0.15, 'sawtooth', 0.03), 300);
+    setTimeout(()=> playBeep(600, 0.1, 'sawtooth', 0.03), 600);
+    jarvisSpeak("Materializando el núcleo...");
+    document.getElementById('hint').style.opacity = '0';
+    document.getElementById('sysStatus').textContent = "MATERIALIZANDO...";
+    rings.forEach(r => r.material.opacity = 0.6);
+    if (!isMobile) gsap.to('#radial-hud', { opacity: 0.6, duration: 1, ease: 'power2.inOut' });
+}
+
+function updateMaterialization(dt) {
+    if (!isMaterializing) return;
+    materializeProgress += dt * 0.32;
+    if (materializeProgress >= 1) {
+        materializeProgress = 1;
+        isMaterializing = false;
+        // AUTOMÁTICO: transición directa a apertura sin esperar segundo toque
+        startOpening(); 
+        return;
+    }
+    const scale = 0.001 + (1 - 0.001) * Math.pow(materializeProgress, 1.5);
+    bookGroup.scale.set(scale, scale, scale);
+    bookGroup.rotation.y = Math.sin(materializeProgress * Math.PI * 2) * 0.15;
+    bookGroup.rotation.x = Math.sin(materializeProgress * Math.PI * 1.3) * 0.04;
+    if (!isMobile) pMat.uniforms.uTime.value += dt;
+    rings.forEach((r, i) => {
+        const phase = i * 0.7;
+        r.material.opacity = 0.2 + 0.6 * (0.5 + 0.5 * Math.sin(materializeProgress * 18 + phase));
+        r.scale.setScalar(1 + 0.1 * Math.sin(materializeProgress * 12 + i));
+    });
+    const targetZ = 6.4 - materializeProgress * 2.0;
+    camera.position.z += (targetZ - camera.position.z) * 0.02;
+    camera.position.y += (1.6 - materializeProgress * 0.4 - camera.position.y) * 0.02;
+    camera.lookAt(0, 0.2, 0);
+    lightBeam.material.opacity = materializeProgress * 0.3;
+    godRay.material.opacity = materializeProgress * 0.12;
+    emblem.material.opacity = 0.6 + 0.4 * Math.sin(materializeProgress * 28);
+}
+
+function startOpening() {
+    if (isOpening || state === 'opening') return;
+    isOpening = true; state = 'opening'; openingProgress = 0;
+    playChime(); jarvisSpeak("Abriendo núcleo...");
+    document.getElementById('sysStatus').textContent = "ABRIENDO NÚCLEO...";
+    rings.forEach(r => r.material.opacity = 0.8);
+    setTimeout(() => playBeep(1200, 0.1, 'sine', 0.06), 1000);
+    setTimeout(() => playBeep(1500, 0.1, 'sine', 0.06), 1400);
+    setTimeout(() => playBeep(1800, 0.1, 'sine', 0.06), 1800);
+    if (!isMobile) gsap.to('#radial-hud', { opacity: 0.2, duration: 1.5, ease: 'power2.inOut' });
+}
+
+function updateOpening(dt) {
+    if (!isOpening) return;
+    openingProgress += dt * 0.26;
+    if (openingProgress >= 1) {
+        openingProgress = 1; isOpening = false; state = 'index';
+        cylGroup.visible = true; bookGroup.visible = false;
+        rings.forEach(r => r.material.opacity = 0);
+        godRay.material.opacity = 0; lightBeam.material.opacity = 0;
+        document.getElementById('index-layer').classList.add('show');
+        document.getElementById('kbdHints').style.display = 'block';
+        document.getElementById('sysStatus').textContent = "SISTEMA ACTIVO";
+        jarvisSpeak("Índice cargado. Navegue por los temas.");
+        updateCylHud();
+        return;
+    }
+    const ease = 1 - Math.pow(1 - openingProgress, 3);
+    rightPivot.rotation.y = -ease * (Math.PI * 0.78);
+    leftPivot.rotation.y = Math.PI - ease * (Math.PI * 0.22);
+    pageLayers.forEach((layer, i) => {
+        const stagger = Math.max(0, Math.min(1, (openingProgress * 1.6) - (i / pageLayerCount) * 0.5));
+        layer.material.emissiveIntensity = 0.06 + stagger * 2.8;
+        layer.rotation.y = stagger * 0.06 * Math.sin(i * 1.3);
+    });
+    lightBeam.material.opacity = ease * 0.55;
+    lightBeam.scale.set(0.6 + ease * 0.7, 0.6 + ease * 0.7, 1);
+    godRay.material.opacity = ease * 0.18; godRay.scale.y = 0.4 + ease * 0.9;
+    rings.forEach((r, i) => {
+        const phase = i * 0.5;
+        r.material.opacity = 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(openingProgress * 28 + phase));
+        r.scale.setScalar(1 + 0.15 * Math.sin(openingProgress * 18 + i));
+    });
+    const angle = openingProgress * Math.PI * 0.8; const radius = 6.0 - openingProgress * 2.0;
+    camera.position.x = Math.sin(angle) * radius * 0.4;
+    camera.position.z = 4.5 + Math.cos(angle) * radius * 0.6;
+    camera.position.y = 1.6 - openingProgress * 0.3;
+    camera.lookAt(0, 0.2, 0);
+    bloom.strength = 1.15 + ease * 1.4;
+}
+
+function showJarvisOverlay(text){ document.getElementById('jarvis-overlay-text').textContent = text; document.getElementById('jarvis-overlay').classList.add('active'); }
+function hideJarvisOverlay(){ document.getElementById('jarvis-overlay').classList.remove('active'); }
+
+function enterModule(tema){
+  document.getElementById('index-layer').classList.remove('show');
+  document.getElementById('kbdHints').style.display='none';
+  if (!isMobile) gsap.to('#radial-hud', { opacity: 0, duration: 0.5, ease: 'power2.out' });
+  if(tema.ready){
+      showJarvisOverlay("DESCIFRANDO TEMA " + tema.num);
+      jarvisSpeak("Cargando tema " + tema.num + ": " + tema.title + ". Procesando datos.");
+      playBeep(1200, 0.1, 'sawtooth', 0.03);
+      setTimeout(()=>{
+          document.getElementById('moduleTitle').textContent = 'TEMA '+String(tema.num).padStart(2,'0');
+          document.getElementById('moduleSub').textContent = tema.title;
+          buildTema1(document.getElementById('mBody'));
+          hideJarvisOverlay();
+          setTimeout(()=> document.getElementById('module-layer').classList.add('show'), 100);
+          state='module';
+      }, 1500);
+  } else {
+      showJarvisOverlay("CONTENIDO EN CIFRADO");
+      jarvisSpeak("El tema " + tema.num + " aún no ha sido procesado. Contenido pendiente de carga.");
+      playBeep(200, 0.5, 'square', 0.05);
+      setTimeout(()=>{
+          document.getElementById('moduleTitle').textContent = 'TEMA '+String(tema.num).padStart(2,'0');
+          document.getElementById('moduleSub').textContent = tema.title;
+          document.getElementById('mBody').innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:15px;"><h3 style="color:var(--red);font-family:Orbitron;letter-spacing:2px;">⚠ CONTENIDO PENDIENTE</h3><p style="color:var(--text-dim);max-width:400px;text-align:center;">Este tema aún no ha sido procesado en el núcleo.</p></div>`;
+          hideJarvisOverlay();
+          setTimeout(()=> document.getElementById('module-layer').classList.add('show'), 100);
+          state='module';
+      }, 2000);
+  }
+}
+
+function goBack(){
+  document.getElementById('module-layer').classList.remove('show');
+  playBeep(300, 0.1, 'sine', 0.05);
+  document.getElementById('kbdHints').style.display='block';
+  if (!isMobile) gsap.to('#radial-hud', { opacity: 0.2, duration: 0.8, ease: 'power2.in' });
+  setTimeout(()=>{ document.getElementById('index-layer').classList.add('show'); state='index'; jarvisSpeak("Volviendo al índice principal."); }, 300);
+}
+
+function updateCylHud(){
+  let best=null, bestDot=-2; const camDir = new THREE.Vector3(0,0,1);
+  plateMeshes.forEach(m=>{ const worldPos = new THREE.Vector3(); m.getWorldPosition(worldPos); const dir = worldPos.clone().normalize(); const dot = dir.dot(camDir); if(dot>bestDot){bestDot=dot; best=m;} });
+  if(best){
+    const tema = best.userData.tema; currentTema = tema;
+    document.getElementById('cylNum').textContent = 'TEMA '+String(tema.num).padStart(2,'0');
+    document.getElementById('cylTitle').textContent = tema.title;
+    document.getElementById('cylFill').style.width = (tema.ready? 100:0)+'%';
+    document.getElementById('cylStatus').textContent = tema.ready? 'CONTENIDO CARGADO — TOCA PARA ENTRAR' : 'PENDIENTE DE CARGA';
+  }
+}
+
+function buildTema1(body){
+  body.innerHTML = `
+    <div class="tab-panel active" id="panel-teoria" style="display:flex;">
+      <div class="read-progress" id="readProgress"></div>
+      <div style="position:relative; width:250px; flex-shrink:0; min-width:0;" class="toc-wrap">
+        <div class="toc-toggle" id="tocToggle">ÍNDICE DEL TEMA</div>
+        <div class="toc" id="toc"><div class="toc-label">CONTENIDO DEL TEMA</div><div id="tocList"></div></div>
+      </div>
+      <div class="theory-scroll" id="theoryScroll"><div class="theory-body" id="theoryBody">${TEMA1_THEORY}</div></div>
+    </div>
+  `;
+  const theoryBody = document.getElementById('theoryBody');
+  const theoryScroll = document.getElementById('theoryScroll');
+  const headers = theoryBody.querySelectorAll('h3');
+  const tocList = document.getElementById('tocList');
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
+  const tocToggle = document.getElementById('tocToggle'); const toc = document.getElementById('toc');
+  if(tocToggle) tocToggle.addEventListener('click', ()=>{ toc.classList.toggle('collapsed'); tocToggle.classList.toggle('collapsed'); playBeep(600, 0.04, 'sine', 0.03); });
+  headers.forEach((h,i)=>{ h.id = 'sec-'+i; const item = document.createElement('div'); item.className='toc-item'; item.textContent = h.textContent.replace(/:$/,''); item.addEventListener('click', ()=> { playBeep(800, 0.05, 'sine', 0.03); h.scrollIntoView({behavior:'smooth', block:'start'}); }); tocList.appendChild(item); });
+  theoryScroll.addEventListener('scroll', ()=>{
+    let current=0; headers.forEach((h,i)=>{ if(h.offsetTop - theoryScroll.offsetTop <= theoryScroll.scrollTop+40) current=i; });
+    document.querySelectorAll('.toc-item').forEach((it,i)=> it.classList.toggle('on', i===current));
+    const scrollMax = theoryScroll.scrollHeight - theoryScroll.clientHeight;
+    const progress = scrollMax>0 ? (theoryScroll.scrollTop / scrollMax) * 100 : 0;
+    document.getElementById('readProgress').style.width = progress + '%';
+    if(theoryScroll.scrollTop > 400) scrollTopBtn.classList.add('show'); else scrollTopBtn.classList.remove('show');
+  });
+  const searchBox = document.getElementById('searchBox'); const searchCnt = document.getElementById('searchCnt');
+  searchBox.addEventListener('input', (e)=>{
+    const term = e.target.value.trim(); const original = theoryBody.dataset.raw || (theoryBody.dataset.raw = theoryBody.innerHTML);
+    if(!term){ theoryBody.innerHTML = original; rebindToc(); searchCnt.textContent=''; return; }
+    const re = new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+    const matches = (original.match(re)||[]).length;
+    theoryBody.innerHTML = original.replace(re, '<mark>$1</mark>'); rebindToc();
+    searchCnt.textContent = matches ? matches+' resultado(s)' : 'sin resultados';
+    const first = theoryBody.querySelector('mark'); if(first) first.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  function rebindToc(){ theoryBody.querySelectorAll('h3').forEach((h,i)=> h.id='sec-'+i); }
+}
+
+/* ============================================================ GSAP ANIMATIONS UI ============================================================ */
+if (!isMobile) {
+    const radialRings = document.querySelectorAll('.radial-ring');
+    const radialBracket = document.getElementById('radial-bracket');
+    gsap.to(radialRings[0], { rotation: 360, duration: 20, repeat: -1, ease: 'none' });
+    gsap.to(radialRings[1], { rotation: -360, duration: 15, repeat: -1, ease: 'none' });
+    gsap.to(radialRings[2], { rotation: 360, duration: 10, repeat: -1, ease: 'none' });
+    gsap.to(radialRings[3], { scale: 1.1, duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    for(let i=0; i<4; i++) {
+        const arm = document.createElement('div'); arm.className = 'bracket-arm';
+        arm.style.top = '0'; arm.style.left = '50%'; arm.style.transformOrigin = '50% 500%';
+        arm.style.transform = `translateX(-50%) rotate(${i*90}deg)`;
+        radialBracket.appendChild(arm);
+    }
+    gsap.to(radialBracket, { rotation: 360, duration: 30, repeat: -1, ease: 'none' });
+}
+
+/* ============================================================ BUCLE PRINCIPAL ============================================================ */
+const clock2 = new THREE.Clock();
+function animate(){
+  const dt = clock2.getDelta(); const t = clock2.getElapsedTime();
+
+  mouse.x += (targetMouse.x - mouse.x) * 0.05; mouse.y += (targetMouse.y - mouse.y) * 0.05;
+  mouse3D.lerp(targetMouse3D, 0.05);
+
+  mainGroup.rotation.y += (mouse.x * 0.3 - mainGroup.rotation.y) * 0.05;
+  mainGroup.rotation.x += (mouse.y * 0.2 - mainGroup.rotation.x) * 0.05;
+
+  if (!isMobile) {
+      hexGridMaterial.uniforms.uTime.value = t; hexGridMaterial.uniforms.uMouse.value = mouse;
+      pMat.uniforms.uTime.value = t; pMat.uniforms.uMouse.value.copy(mouse3D);
+      customPostPass.uniforms.uTime.value = t;
+  }
+
+  if (isMaterializing) updateMaterialization(dt);
+  else if (isOpening) updateOpening(dt);
+  else if (state === 'closed') {
+    bookGroup.rotation.y = Math.sin(t * 0.3) * 0.12;
+    bookGroup.rotation.x = Math.sin(t * 0.2) * 0.04;
+    bookGroup.position.y = 0.2 + Math.sin(t * 0.5) * 0.03;
+    if (!isMobile) fogParticles.rotation.y += dt * 0.005;
+    rings.forEach((r, i) => { r.material.opacity = 0.05 + 0.05 * Math.sin(t * 1.5 + i); });
+    camera.position.z += (6.4 - camera.position.z) * 0.01;
+    camera.position.y += (1.6 - camera.position.y) * 0.01;
+    camera.lookAt(0, 0.2, 0);
+    bloom.strength += (0.6 - bloom.strength) * 0.01;
+  } else if (state === 'index') {
+    camera.position.z += ((isMobile ? 16 : 13.2) - camera.position.z) * 0.03;
+    camera.position.y += (1.3 - camera.position.y) * 0.03;
+    camera.position.x += (0 - camera.position.x) * 0.05;
+    camera.lookAt(0, 0.2, 0);
+    if (!dragging) cylTargetRotation += dragVel;
+    dragVel *= 0.92; cylRotation += (cylTargetRotation - cylRotation) * 0.15;
+    cylGroup.rotation.y = cylRotation; updateCylHud();
+    cylParticles.rotation.y += dt * 0.02;
+    bloom.strength += (1.25 - bloom.strength) * 0.06;
+    plateMeshes.forEach(m => {
+        const worldPos = new THREE.Vector3(); m.getWorldPosition(worldPos);
+        const dir = worldPos.clone().normalize(); const dot = dir.dot(new THREE.Vector3(0,0,1));
+        const isFacing = dot > 0.7;
+        m.material.opacity = isFacing ? 1.0 : 0.6;
+        if (isFacing) m.scale.setScalar(1 + 0.04 * Math.sin(t * 3)); else m.scale.setScalar(1);
+    });
+  } else if (state === 'module') {
+    bloom.strength += (0.45 - bloom.strength) * 0.06;
+  }
+
+  composer.render();
+  requestAnimationFrame(animate);
+}
+animate();
+
+function tickClock(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-ES'); }
+setInterval(tickClock,1000); tickClock();
+
+window.addEventListener('resize', ()=>{
+    const w = innerWidth, h = innerHeight;
+    camera.aspect = w/h; camera.updateProjectionMatrix();
+    renderer.setSize(w, h); composer.setSize(w, h);
+    if (!isMobile && typeof fxaaPass !== 'undefined' && fxaaPass.uniforms && fxaaPass.uniforms['resolution']) fxaaPass.uniforms['resolution'].value.set(1/w, 1/h);
+    if (!isMobile && typeof customPostPass !== 'undefined') customPostPass.uniforms.uResolution.value.set(w, h);
+});
+window.addEventListener('orientationchange', () => setTimeout(() => window.dispatchEvent(new Event('resize')), 100));
+
+renderer.domElement.addEventListener('wheel', (e) => {
+    if (state === 'index') { e.preventDefault(); const delta = Math.sign(e.deltaY) * 0.03; cylTargetRotation += delta; playBeep(300 + Math.abs(delta)*200, 0.03, 'sine', 0.02); }
+}, {passive: false});
+
+document.getElementById('scrollTopBtn').addEventListener('pointerup', (e) => { e.stopPropagation(); document.querySelector('.theory-scroll')?.scrollTo({top:0, behavior:'smooth'}); });
+
+setTimeout(() => { document.getElementById('hint').style.display = 'block'; }, 2000);
+
+document.addEventListener('visibilitychange', () => { if (document.hidden && synth) synth.cancel(); });
+
+if (window.CSS && CSS.supports('padding-top', 'env(safe-area-inset-top)')) {
+    const tb = document.querySelector('.topbar');
+    if (tb) tb.style.paddingTop = 'calc(20px + env(safe-area-inset-top))';
+}
+</script>
+</body>
+</html>

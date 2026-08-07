@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Código de Fronteras Schengen, explicado fácil</title>
+<style>
+  :root{
+    --ink:#0b1f33;
+    --ink-deep:#071522;
+    --paper:#f3ede1;
+    --stamp:#c65d2e;
+    --stamp-dark:#9c431c;
+    --gold:#c9a15a;
+    --line:#2c4257;
+    --ok:#4a7c59;
+    --alert:#b3452f;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink-deep);
+    color:var(--paper);
+    font-family:'Iowan Old Style','Palatino Linotype', Georgia, serif;
+    line-height:1.65;
+  }
+  .display{
+    font-family:'Futura','Trebuchet MS', sans-serif;
+    letter-spacing:0.02em;
+  }
+  .mono{
+    font-family:'Courier New', monospace;
+    letter-spacing:0.03em;
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:6vh 6vw;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(201,161,90,0.18), transparent 60%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 60px),
+      var(--ink-deep);
+    border-bottom:2px solid var(--line);
+  }
+  .hero .eyebrow{
+    color:var(--gold);
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.35em;
+    margin-bottom:1.6rem;
+    opacity:0.9;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    margin:0;
+    font-weight:700;
+    max-width:16ch;
+    line-height:1.05;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--stamp);
+  }
+  .hero p.sub{
+    max-width:56ch;
+    margin-top:1.8rem;
+    font-size:1.15rem;
+    color:#d7cdb8;
+  }
+  .stamp-mark{
+    margin-top:3rem;
+    display:inline-flex;
+    align-items:center;
+    gap:0.7rem;
+    border:2px solid var(--stamp);
+    color:var(--stamp);
+    padding:0.6rem 1.4rem;
+    border-radius:100px;
+    font-size:0.85rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    transform:rotate(-2deg);
+  }
+  .scroll-cue{
+    position:absolute;
+    bottom:2.4rem;
+    font-size:0.75rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:#83a0b8;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.4rem;
+  }
+  .scroll-cue span{
+    width:1px; height:34px;
+    background:linear-gradient(var(--gold), transparent);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+  /* SECTION SHELL */
+  section{
+    padding:7vh 6vw;
+    max-width:920px;
+    margin:0 auto;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:1rem;
+    margin-bottom:2.2rem;
+    border-bottom:1px solid var(--line);
+    padding-bottom:1rem;
+  }
+  .section-head .num{
+    font-family:'Courier New', monospace;
+    color:var(--stamp);
+    font-size:1rem;
+    opacity:0.85;
+  }
+  .section-head h2{
+    font-size:clamp(1.5rem, 3.4vw, 2.1rem);
+    margin:0;
+    font-weight:700;
+  }
+  .lede{
+    font-size:1.05rem;
+    color:#dcd3bf;
+    margin-bottom:2rem;
+  }
+
+  p{ font-size:1.02rem; color:#e5ddc9; margin:0 0 1.2rem 0;}
+  strong{ color:var(--gold); font-weight:700;}
+
+  .callout{
+    background:rgba(201,161,90,0.08);
+    border-left:3px solid var(--gold);
+    padding:1.1rem 1.4rem;
+    border-radius:0 8px 8px 0;
+    margin:1.6rem 0;
+    font-size:0.98rem;
+  }
+  .callout .tag{
+    display:block;
+    font-family:'Courier New', monospace;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.15em;
+    color:var(--gold);
+    margin-bottom:0.4rem;
+  }
+  .example{
+    background:rgba(11,31,51,0.5);
+    border:1px dashed var(--line);
+    padding:1.1rem 1.4rem;
+    border-radius:10px;
+    margin:1.4rem 0;
+    font-size:0.96rem;
+    color:#c9c0aa;
+  }
+  .example .tag{
+    display:block;
+    font-family:'Courier New', monospace;
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.15em;
+    color:#8ba3b8;
+    margin-bottom:0.4rem;
+  }
+
+  /* passport gate visual for section 1 */
+  .gate-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1.2rem;
+    margin:2rem 0;
+  }
+  @media (max-width:640px){ .gate-row{grid-template-columns:1fr;} }
+  .gate-card{
+    border-radius:14px;
+    padding:1.6rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .gate-card.open{
+    background:linear-gradient(160deg, rgba(74,124,89,0.18), rgba(74,124,89,0.03));
+    border:1px solid rgba(74,124,89,0.5);
+  }
+  .gate-card.closed{
+    background:linear-gradient(160deg, rgba(179,69,47,0.18), rgba(179,69,47,0.03));
+    border:1px solid rgba(179,69,47,0.5);
+  }
+  .gate-card h3{
+    margin:0 0 0.6rem 0;
+    font-size:1.1rem;
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+  }
+  .gate-card p{ font-size:0.92rem; margin:0;}
+  .gate-icon{ font-size:1.3rem; }
+
+  /* checklist for section 2 */
+  .checklist{
+    list-style:none;
+    padding:0;
+    margin:1.6rem 0;
+    counter-reset:req;
+  }
+  .checklist li{
+    counter-increment:req;
+    position:relative;
+    padding:0.9rem 0 0.9rem 3rem;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    font-size:0.98rem;
+    color:#e5ddc9;
+  }
+  .checklist li::before{
+    content:counter(req);
+    position:absolute;
+    left:0; top:0.8rem;
+    width:1.7rem; height:1.7rem;
+    border:1px solid var(--gold);
+    color:var(--gold);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Courier New', monospace;
+    font-size:0.85rem;
+  }
+  .checklist li strong{ display:block; color:#f3ede1; margin-bottom:0.15rem;}
+
+  .pill-row{
+    display:flex; flex-wrap:wrap; gap:0.6rem; margin:1.4rem 0 1.8rem;
+  }
+  .pill{
+    border:1px solid var(--line);
+    color:#cdd8e2;
+    padding:0.45rem 0.9rem;
+    border-radius:100px;
+    font-size:0.85rem;
+  }
+
+  /* face-off cards section 3 */
+  .faceoff{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:1.4rem;
+    align-items:stretch;
+    margin:2rem 0;
+  }
+  @media (max-width:680px){ .faceoff{grid-template-columns:1fr;} .faceoff .vs{margin:0.4rem auto;} }
+  .faceoff .vs{
+    align-self:center;
+    font-family:'Courier New', monospace;
+    color:var(--stamp);
+    font-weight:700;
+    font-size:0.95rem;
+  }
+  .power-card{
+    background:var(--ink);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1.6rem;
+  }
+  .power-card .who{
+    font-family:'Courier New', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    font-size:0.75rem;
+    color:var(--gold);
+    margin-bottom:0.5rem;
+  }
+  .power-card h3{ margin:0 0 0.8rem 0; font-size:1.15rem;}
+  .power-card ul{ margin:0.8rem 0 0 1.1rem; padding:0; font-size:0.92rem; color:#d7cdb8;}
+  .power-card li{ margin-bottom:0.4rem; }
+
+  /* timeline section 5 */
+  .timeline{
+    position:relative;
+    margin:2.4rem 0;
+    padding-left:2rem;
+    border-left:2px solid var(--line);
+  }
+  .timeline .step{
+    position:relative;
+    margin-bottom:2.2rem;
+  }
+  .timeline .step::before{
+    content:'';
+    position:absolute;
+    left:-2.09rem;
+    top:0.2rem;
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--stamp);
+    border:3px solid var(--ink-deep);
+    box-shadow:0 0 0 2px var(--stamp);
+  }
+  .timeline .step h4{
+    margin:0 0 0.3rem 0;
+    font-size:1.05rem;
+    color:var(--paper);
+  }
+  .timeline .step .duration{
+    display:inline-block;
+    font-family:'Courier New', monospace;
+    font-size:0.78rem;
+    color:var(--gold);
+    background:rgba(201,161,90,0.1);
+    padding:0.2rem 0.6rem;
+    border-radius:6px;
+    margin-bottom:0.5rem;
+  }
+  .timeline .step p{ font-size:0.94rem; margin:0;}
+
+  /* summary map */
+  .summary-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:0.9rem;
+    margin:2rem 0;
+  }
+  .summary-row{
+    display:grid;
+    grid-template-columns:2fr auto 3fr;
+    gap:1rem;
+    align-items:center;
+    background:rgba(255,255,255,0.02);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:1rem 1.2rem;
+  }
+  @media (max-width:680px){
+    .summary-row{grid-template-columns:1fr; text-align:left;}
+    .summary-row .arrow{display:none;}
+  }
+  .summary-row .cause{ font-size:0.92rem; color:#e5ddc9; font-weight:600;}
+  .summary-row .arrow{ color:var(--stamp); font-size:1.2rem; text-align:center;}
+  .summary-row .effect{ font-size:0.9rem; color:#b9c6d1;}
+
+  footer{
+    text-align:center;
+    padding:5vh 6vw 8vh;
+    color:#6f889e;
+    font-size:0.85rem;
+    border-top:1px solid var(--line);
+    margin-top:2rem;
+  }
+  footer .sources{
+    max-width:640px;
+    margin:1.4rem auto 0;
+    font-size:0.8rem;
+    color:#556e83;
+    line-height:1.8;
+  }
+
+  .divider-stamp{
+    display:flex;
+    justify-content:center;
+    margin:4rem 0;
+    opacity:0.35;
+  }
+  .divider-stamp svg{ width:60px; height:60px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .scroll-cue span{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow display">Reglamento (UE) 2016/399</div>
+  <h1 class="display">El Código de Fronteras <em>Schengen</em>, explicado fácil</h1>
+  <p class="sub">Quién puede cruzar, quién puede pararte, y qué pasa cuando un país decide cerrar la puerta. Sin tecnicismos, sin perderte ni una coma del original.</p>
+  <div class="stamp-mark mono">Entrada autorizada</div>
+  <div class="scroll-cue">Desliza<span></span></div>
+</div>
+
+<section id="intro">
+  <p class="lede">Antes de nada, una aclaración que conviene tener clara: este tema mezcla <strong>dos leyes distintas</strong>. Por un lado está el Reglamento (UE) 2016/399, el llamado Código de Fronteras Schengen (CFS), que es la ley europea y regula cómo se cruzan las fronteras exteriores e interiores del espacio Schengen. Por otro lado está la LOEX (Ley Orgánica 4/2000) y su reglamento de desarrollo, que es la ley española que aplica esas reglas europeas y añade figuras propias, como la CGEF, el Ministro del Interior o el Ministerio de la Presidencia. Desde el 20 de mayo de 2025, el reglamento español en vigor es el Real Decreto 1155/2024, que sustituyó al anterior Real Decreto 557/2011. Cuando aquí se cite un artículo del RD 1155/2024, se indicará entre paréntesis su número equivalente en el RD 557/2011, por si tu material antiguo todavía usa esa numeración.</p>
+</section>
+
+<section id="s1">
+  <div class="section-head">
+    <span class="num">01</span>
+    <h2 class="display">Frontera interior y frontera exterior</h2>
+  </div>
+
+  <p><strong>La frontera interior</strong> es la que separa a dos países que ambos forman parte del espacio Schengen: sus fronteras terrestres, marítimas, fluviales y lacustres, y también los aeropuertos y puertos que reciben vuelos o trayectos entre esos países. La regla de oro aquí es sencilla: entre dos Estados Schengen no existe ningún control fronterizo. Es libre circulación pura, sin filtros.</p>
+
+  <div class="example">
+    <span class="tag">Ejemplo</span>
+    Un vuelo de París a Madrid no pasa ningún control fronterizo, porque Francia y España son ambos países Schengen. Un parisino que aterriza en Madrid no pasa ningún filtro de fronteras. Eso sí, puede haber controles policiales aleatorios, pero técnicamente esos no cuentan como "controles fronterizos".
+  </div>
+
+  <p>Hay un matiz importante: si un extranjero de un país que no es de la Unión Europea vive en otro país Schengen y viaja a España, no tendrá control fronterizo al llegar, pero sí está obligado a hacer una "declaración de entrada" avisando de que se encuentra en territorio español. Este trámite, regulado en los artículos 13 y 14 del RD 1155/2024 (antes artículo 22 del Convenio de Aplicación del Acuerdo de Schengen, en el RD 557/2011), debe hacerse dentro de los 3 días hábiles siguientes a la entrada, en cualquier Comisaría del Cuerpo Nacional de Policía o en una Oficina de Extranjería, salvo que ya se haya hecho en el mismo momento de entrar.</p>
+
+  <p><strong>La frontera exterior</strong>, en cambio, es la que un país Schengen comparte con un país que no forma parte del espacio Schengen, sea o no miembro de la Unión Europea. Incluye fronteras terrestres, marítimas, fluviales, lacustres, puertos y aeropuertos. Aquí sí existen controles: vigilancia e inspección real.</p>
+
+  <p>Dentro de la frontera exterior hay que distinguir dos tipos de viajero, porque el nivel de control cambia mucho según quién sea:</p>
+
+  <div class="gate-row">
+    <div class="gate-card open">
+      <h3><span class="gate-icon">🛂</span>Ciudadano de la UE</h3>
+      <p>Viene de un país de la Unión Europea que todavía no aplica del todo las reglas Schengen. El control es rápido: se revisa el pasaporte o documento de identidad, la nacionalidad y el visado si hiciera falta, y se consulta la base de datos SIS solo para comprobar que no representa una amenaza. No se revisan a fondo el resto de requisitos.</p>
+    </div>
+    <div class="gate-card closed">
+      <h3><span class="gate-icon">🛃</span>Nacional de un tercer país</h3>
+      <p>No tiene derecho a la libre circulación europea. Aquí se aplica la inspección minuciosa (artículo 8 del CFS), tanto al entrar como al salir: se revisa todo, documento de viaje, visado, motivo y duración de la estancia, medios económicos, que no figure en el SIS y que no sea una amenaza.</p>
+    </div>
+  </div>
+
+  <div class="example">
+    <span class="tag">Ejemplo — ciudadano UE</span>
+    Un vuelo de Chipre a Madrid cruza una frontera exterior Schengen, aunque el viajero sea ciudadano de la Unión Europea, porque Chipre todavía no aplica el conjunto de reglas Schengen en materia de fronteras.
+  </div>
+  <div class="example">
+    <span class="tag">Ejemplo — tercer país</span>
+    Un vuelo de Colombia a Madrid sí se somete a la inspección minuciosa, porque el viajero no goza de la libre circulación europea.
+  </div>
+
+  <p>Por último, un <strong>vuelo interior</strong> es cualquier vuelo cuyo origen y destino están exclusivamente en territorio de países miembros, sin aterrizar en ningún país que no lo sea. Se trata igual que un cruce de frontera interior, aunque sobrevuele espacio aéreo internacional por el camino.</p>
+</section>
+
+<div class="divider-stamp">
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" stroke="#c9a15a" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="50" cy="50" r="30" stroke="#c65d2e" stroke-width="2"/>
+  </svg>
+</div>
+
+<section id="s2">
+  <div class="section-head">
+    <span class="num">02</span>
+    <h2 class="display">Qué te pueden pedir al entrar</h2>
+  </div>
+  <p class="lede">Artículo 6 del CFS y artículos 4 a 9 del RD 1155/2024. Cuando un nacional de un tercer país llega a un puesto habilitado, debe poder demostrar lo siguiente:</p>
+
+  <ul class="checklist">
+    <li><strong>Documento de identidad</strong>DNI, cédula de identificación u otro documento que acredite quién eres, un título de viaje o un salvoconducto.</li>
+    <li><strong>Pasaporte válido y en vigor</strong>Un hijo menor de 16 años puede figurar en el pasaporte de sus padres, si comparte su nacionalidad. Se estampa el sello de entrada en el documento, salvo que el Sistema de Entradas y Salidas (SES) ya sustituya el sellado físico, algo que ocurre progresivamente desde octubre de 2025.</li>
+    <li><strong>Visado, cuando se exija</strong>La estancia máxima es de 90 días dentro de cualquier periodo de 180 días. Es el límite clásico de "estancia de corta duración" en el espacio Schengen: 90 sobre 180, sin excepciones al alza.</li>
+  </ul>
+
+  <p>No hace falta visado si el extranjero puede mostrar cualquiera de estos documentos:</p>
+  <div class="pill-row">
+    <span class="pill">TIE en vigor</span>
+    <span class="pill">Tarjeta de identificación diplomática</span>
+    <span class="pill">TIE de trabajador transfronterizo</span>
+    <span class="pill">Autorización de regreso</span>
+    <span class="pill">Solicitante de protección internacional</span>
+  </div>
+
+  <p>La autorización de regreso, por ejemplo, se usa cuando la Tarjeta de Identidad de Extranjero está caducada y su renovación ya está en trámite. La concede el Delegado o Subdelegado del Gobierno, el Comisario General de Extranjería y Fronteras, o los responsables de comisarías y puestos fronterizos del Cuerpo Nacional de Policía; tiene una validez máxima de 90 días. Y si el extranjero es solicitante de protección internacional, se le concede un visado especial en frontera para poder tramitar su solicitud de asilo.</p>
+
+  <p>Además de todo lo anterior, en cualquier caso, la persona debe justificar el motivo de su estancia, con un billete de vuelta, una invitación de empresa, una entrada a una feria o congreso, una carta de invitación o una reserva de alojamiento, y también debe acreditar que tiene medios económicos suficientes para el tiempo que va a estar, para regresar o para continuar su viaje, y que ese dinero lo ha conseguido de forma lícita.</p>
+</section>
+
+<div class="divider-stamp">
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" stroke="#c9a15a" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="50" cy="50" r="30" stroke="#c65d2e" stroke-width="2"/>
+  </svg>
+</div>
+
+<section id="s3">
+  <div class="section-head">
+    <span class="num">03</span>
+    <h2 class="display">Dos poderes que no hay que confundir</h2>
+  </div>
+  <p class="lede">Son dos figuras excepcionales que suelen mezclarse por error en un examen, precisamente porque son poderes opuestos, ejercidos por autoridades distintas.</p>
+
+  <div class="faceoff">
+    <div class="power-card">
+      <div class="who mono">CGEF</div>
+      <h3>Puede dejar entrar a quien no cumple los requisitos</h3>
+      <p style="font-size:0.92rem;">La Comisaría General de Extranjería y Fronteras, dependiente de la Dirección General de la Policía, puede autorizar de forma excepcional la entrada en España de un extranjero que no reúna los requisitos, si concurre alguna de estas causas (artículo 4.3 del RD 1155/2024):</p>
+      <ul>
+        <li>Razones excepcionales de índole humanitaria</li>
+        <li>Interés público</li>
+        <li>Cumplimiento de compromisos adquiridos por España</li>
+      </ul>
+      <p style="font-size:0.9rem;">Se le entrega al extranjero una resolución que acredita esa autorización. Si figuraba como "no admisible" en el SIS, se informa de la excepción a los demás países. Los casos típicos son solicitantes de asilo y estudiantes que no cumplen algún requisito formal pero cuya situación justifica igualmente dejarles entrar.</p>
+    </div>
+
+    <div class="vs mono">VS</div>
+
+    <div class="power-card">
+      <div class="who mono">Ministro del Interior</div>
+      <h3>Puede impedir salir a quien ya está en España</h3>
+      <p style="font-size:0.92rem;">Es el poder inverso: no se trata de dejar entrar a quien no cumple requisitos, sino de impedir que salga alguien que ya está en territorio español. Según el artículo 28.2 de la LOEX, desarrollado en el artículo 22 del RD 1155/2024, el Ministro del Interior puede prohibir la salida de un extranjero solo por dos razones:</p>
+      <ul>
+        <li>Seguridad nacional</li>
+        <li>Salud pública</li>
+      </ul>
+      <p style="font-size:0.9rem;">Esta prohibición siempre es individual, nunca colectiva, y se notifica formalmente a la persona afectada. Puede decidirla el propio Ministro, o proponerla la Secretaría de Estado de Migraciones, la Secretaría de Estado de Seguridad, el Delegado o Subdelegado del Gobierno, las autoridades sanitarias, o incluso ciudadanos españoles o extranjeros residentes legales que puedan verse perjudicados por esa salida.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="tag">No confundir</span>
+    Esta prohibición de salida es distinta de la obligación de salida forzosa por expulsión judicial o administrativa, o por denegación de solicitudes de permanencia (artículo 28.3 de la LOEX). Esa otra obligación no es "excepcional", sino que está reglada, es decir, se aplica siguiendo un procedimiento fijo.
+  </div>
+</section>
+
+<div class="divider-stamp">
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" stroke="#c9a15a" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="50" cy="50" r="30" stroke="#c65d2e" stroke-width="2"/>
+  </svg>
+</div>
+
+<section id="s4">
+  <div class="section-head">
+    <span class="num">04</span>
+    <h2 class="display">Cómo y cuándo puede entrar el extranjero</h2>
+  </div>
+
+  <p>La entrada solo es válida si se cumplen a la vez estas dos condiciones: primero, que se realice por un puesto fronterizo habilitado y dentro de su horario de apertura; y segundo, que el extranjero no suponga un peligro para el orden público, la salud, la seguridad, o las relaciones internacionales de España o de otros países con los que España tenga un convenio en ese sentido.</p>
+
+  <p><strong>Cierre de los puestos habilitados.</strong> Aunque un puesto esté habilitado, puede cerrarse, de forma temporal o indefinida, mediante una Orden del Ministerio de la Presidencia, Justicia y Relaciones con las Cortes (artículo 3 del RD 1155/2024), a propuesta de los Ministerios competentes, cuando lo exijan algunas de estas circunstancias: las disposiciones de un estado de alarma, excepción o sitio; la aplicación de leyes especiales en supuestos que lo requieran; los intereses de la defensa nacional; la seguridad del Estado; la protección de la salud y seguridad de los ciudadanos; o situaciones de elevada presión migratoria irregular.</p>
+
+  <div class="callout">
+    <span class="tag">Dato curioso</span>
+    Aunque lo intuitivo sería pensar en el Ministerio del Interior, la competencia formal para cerrar un paso fronterizo recae en el Ministerio de la Presidencia, precisamente porque reúne propuestas de varios departamentos, como Interior, Exteriores y Hacienda. Así lo confirma el propio RD 1155/2024.
+  </div>
+
+  <p><strong>Cuándo se impide la entrada aunque el puesto esté abierto.</strong> Además de no cumplir los requisitos generales ya mencionados, se deniega o se impide especialmente la entrada a quienes padezcan una enfermedad contagiosa con potencial epidémico según la Organización Mundial de la Salud, u otras enfermedades infecciosas o parasitarias transmisibles; a quienes estén condenados por delitos con pena de cárcel; y a quienes estén reclamados, por ejemplo en búsqueda y captura internacional, y sean detenidos en el mismo puesto fronterizo con vistas a su expulsión.</p>
+</section>
+
+<div class="divider-stamp">
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" stroke="#c9a15a" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="50" cy="50" r="30" stroke="#c65d2e" stroke-width="2"/>
+  </svg>
+</div>
+
+<section id="s5">
+  <div class="section-head">
+    <span class="num">05</span>
+    <h2 class="display">Cuando vuelven los controles entre países Schengen</h2>
+  </div>
+
+  <p class="lede">La regla general es que no hay controles entre países Schengen. Pero el Código de Fronteras Schengen permite, de forma excepcional, volver a ponerlos. Es una de las partes más técnicas del tema.</p>
+
+  <p><strong>Las causas (artículo 25 del CFS).</strong> Tiene que existir una amenaza grave para el orden público o la seguridad interior de un país miembro. La ley da cuatro ejemplos típicos, sin que la lista sea cerrada: actos o amenazas terroristas y amenazas de delincuencia organizada grave; emergencias migratorias a gran escala; una situación excepcional de movimientos repentinos y masivos de nacionales de terceros países entre países miembros, que genere una presión fuerte sobre los recursos de las autoridades competentes, comprobada con datos e información disponible, incluida la de agencias de la Unión Europea; y acontecimientos internacionales de gran magnitud o relevancia. En todos los casos, volver a poner controles es siempre la última opción, y su duración y alcance deben limitarse a lo estrictamente necesario.</p>
+
+  <p><strong>El procedimiento (artículo 25 bis)</strong> cambia según lo previsible y lo persistente que sea la amenaza. Hay cuatro escenarios posibles:</p>
+
+  <div class="timeline">
+    <div class="step">
+      <span class="duration mono">Duración: 1 mes · prorrogable hasta 3 meses</span>
+      <h4>1 · Amenaza imprevisible que exige actuar de inmediato</h4>
+      <p>Se notifica al Parlamento Europeo, al Consejo, a la Comisión y a los demás países miembros en el mismo momento en que se restablece el control.</p>
+    </div>
+    <div class="step">
+      <span class="duration mono">Duración: hasta 6 meses · prorrogable hasta 2 años en total</span>
+      <h4>2 · Amenaza previsible</h4>
+      <p>Se notifica con al menos 4 semanas de antelación, o lo antes posible si se conoce con menos margen, y se puede renovar en periodos de hasta 6 meses.</p>
+    </div>
+    <div class="step">
+      <span class="duration mono">Prórroga adicional de hasta 6 meses</span>
+      <h4>3 · La amenaza grave persiste más allá de los 2 años</h4>
+      <p>Se notifica con al menos 4 semanas de antelación. La Comisión Europea, en un plazo de 3 meses desde el aviso, emite un nuevo dictamen sobre si sigue siendo necesario y proporcionado.</p>
+    </div>
+    <div class="step">
+      <span class="duration mono">Otra prórroga adicional de hasta 6 meses</span>
+      <h4>4 · La necesidad continúa, y los 6 meses del punto anterior no bastan</h4>
+      <p>El país miembro informa a la Comisión, y puede obtener otra prórroga de hasta 6 meses. Es decir, en total se puede llegar a 2 años más 6 meses más otros 6 meses.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="tag">La lógica del sistema</span>
+    Cuanto menos previsible y más reciente es la amenaza, más corto es el plazo inicial (solo 1 mes) y más vigilancia estricta hay. Cuanto más previsible y documentada está, más margen de maniobra se concede: hasta 6 meses, prorrogable hasta 2 años, y en situaciones excepcionales que persisten, incluso más allá.
+  </div>
+
+  <p><strong>El artículo 28: emergencias de salud pública a gran escala.</strong> Cuando la amenaza es una emergencia de salud pública que pone en peligro el funcionamiento general del espacio sin controles interiores, como ocurrió con la COVID-19, que motivó este tipo de restablecimiento en la frontera entre España y Francia y entre España y Portugal en marzo de 2020, la duración es de hasta 6 meses, renovable por hasta 6 meses adicionales, pero a propuesta de la Comisión Europea. A diferencia del artículo 25 bis, aquí la prórroga no depende solo de la decisión del país, sino que necesita el impulso de la Comisión, dado el carácter transnacional de una emergencia sanitaria.</p>
+
+  <p>Una última precisión: en versiones anteriores del Código de Fronteras Schengen, antes de la reforma de 2024, el artículo 28 se usaba de forma genérica para "casos que requieran actuación inmediata". Ese supuesto ya no existe como tal, porque quedó absorbido y renumerado dentro del actual artículo 25 bis, apartado 1, es decir, dentro del escenario de "amenaza imprevisible" visto más arriba. Conviene no confundir ambas referencias.</p>
+</section>
+
+<div class="divider-stamp">
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" stroke="#c9a15a" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="50" cy="50" r="30" stroke="#c65d2e" stroke-width="2"/>
+  </svg>
+</div>
+
+<section id="s6">
+  <div class="section-head">
+    <span class="num">06</span>
+    <h2 class="display">Todo el mapa, de un vistazo</h2>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-row">
+      <div class="cause">Frontera interior (Schengen–Schengen)</div>
+      <div class="arrow">→</div>
+      <div class="effect">Sin control, salvo la declaración de entrada en 3 días para nacionales de terceros países.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Frontera exterior (Schengen–UE no Schengen)</div>
+      <div class="arrow">→</div>
+      <div class="effect">Control sistemático, simple y rápido, para ciudadanos comunitarios.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Frontera exterior (Schengen–tercer país)</div>
+      <div class="arrow">→</div>
+      <div class="effect">Inspección minuciosa y exhaustiva.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Requisitos de entrada no cumplidos</div>
+      <div class="arrow">→</div>
+      <div class="effect">La CGEF puede autorizar la entrada igualmente, por motivos humanitarios, interés público o compromisos adquiridos.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Extranjero ya en España</div>
+      <div class="arrow">→</div>
+      <div class="effect">El Ministro del Interior puede prohibirle salir, por seguridad nacional o salud pública.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Puesto habilitado</div>
+      <div class="arrow">→</div>
+      <div class="effect">Puede cerrarse por Orden del Ministerio de la Presidencia: estado de alarma, excepción o sitio, defensa, seguridad del Estado, salud o seguridad ciudadana, o presión migratoria irregular.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Amenaza grave al orden público (art. 25) — imprevisible</div>
+      <div class="arrow">→</div>
+      <div class="effect">1 mes, con prórrogas hasta 3 meses.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Amenaza grave al orden público (art. 25) — previsible</div>
+      <div class="arrow">→</div>
+      <div class="effect">6 meses, con prórrogas hasta 2 años.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Amenaza excepcional persistente</div>
+      <div class="arrow">→</div>
+      <div class="effect">6 meses más, y otros 6 meses más si aún no es suficiente.</div>
+    </div>
+    <div class="summary-row">
+      <div class="cause">Emergencia de salud pública a gran escala (art. 28)</div>
+      <div class="arrow">→</div>
+      <div class="effect">6 meses, más 6 meses adicionales, a propuesta de la Comisión Europea.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="mono" style="letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.6rem;">Fuentes normativas utilizadas</div>
+  <div class="sources">
+    Reglamento (UE) 2016/399 (Código de Fronteras Schengen), en su versión consolidada tras el Reglamento (UE) 2024/1717.<br>
+    Ley Orgánica 4/2000, de 11 de enero (LOEX), artículos 25 a 28.<br>
+    Real Decreto 1155/2024, de 19 de noviembre, por el que se aprueba el Reglamento de la LOEX, vigente desde el 20/05/2025, artículos 1 a 22.
+  </div>
+</footer>
+
+</body>
+</html>

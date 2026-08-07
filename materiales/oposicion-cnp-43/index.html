@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expediente de Oposición</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=PT+Serif:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="expediente-header">
+  <div class="folio">Expediente Nº 2026 · Preparación de oposición</div>
+  <h1>Mi temario, por tema y expediente</h1>
+  <p class="subtitulo">Todos los esquemas, tests y planes, buscables en un solo lugar.</p>
+</header>
+
+<div class="controles">
+  <div class="buscador">
+    <input type="text" id="buscador-input" placeholder="Buscar por título…" aria-label="Buscar material">
+  </div>
+  <div class="filtros-tipo" role="group" aria-label="Filtrar por tipo de material">
+    <button class="chip" data-tipo="esquema" aria-pressed="true">Esquema</button>
+    <button class="chip" data-tipo="test" aria-pressed="true">Test</button>
+    <button class="chip" data-tipo="plan" aria-pressed="true">Plan</button>
+    <button class="chip" data-tipo="otro" aria-pressed="true">Otro</button>
+  </div>
+  <button class="chip chip-admin" id="btn-admin" type="button" aria-pressed="false">⚙ Administrar</button>
+  <a class="chip chip-refrescar" href="https://github.com/rafabg77/mi-oposicion/actions/workflows/sync-repos.yml" target="_blank" rel="noopener">🔄 Sincronizar ahora</a>
+</div>
+
+<main id="lista-contenedor" aria-live="polite">
+  <p class="sin-resultados">Cargando expediente…</p>
+</main>
+
+<footer>
+  Portal estático · el contenido se gestiona editando <code>data/temario.json</code>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

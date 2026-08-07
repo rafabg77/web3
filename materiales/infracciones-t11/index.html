@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Test · Clasificación de Infracciones · Tema 11</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f1f38; --navy-2:#16294a; --gold:#b8933f; --gold-light:#e8d6a8;
+  --garnet:#7a1f2b; --garnet-light:#a8323f; --green:#3d6b5c;
+  --paper:#faf7f0; --paper-2:#f1ebdc; --ink:#1c1c1c; --ink-soft:#4a4a4a; --line:#d8cdb0;
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif;}
+h1,h2,h3{font-family:'Fraunces',serif; margin:0;}
+.header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%); color:#fff;
+  padding:34px 20px 26px; text-align:center; border-bottom:6px solid var(--gold);
+}
+.header .kicker{letter-spacing:3px; text-transform:uppercase; font-size:11px; color:var(--gold-light); font-weight:600; margin-bottom:8px;}
+.header h1{font-size:clamp(20px,3.4vw,30px); font-weight:700;}
+.wrap{max-width:720px; margin:0 auto; padding:20px 18px 60px;}
+
+.hud{
+  display:flex; justify-content:space-between; align-items:center; gap:10px; margin:18px 0 14px;
+  background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 16px;
+  box-shadow:0 2px 8px rgba(15,31,56,.06); flex-wrap:wrap;
+}
+.hud .stat{text-align:center;}
+.hud .stat .n{font-family:'Fraunces',serif; font-weight:700; font-size:19px; color:var(--navy);}
+.hud .stat .l{font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--ink-soft);}
+.progress-bar{height:8px; background:var(--paper-2); border-radius:5px; overflow:hidden; margin-bottom:22px; border:1px solid var(--line);}
+.progress-fill{height:100%; background:linear-gradient(90deg,var(--gold),var(--garnet)); width:0%; transition:width .35s ease;}
+
+.qcard{
+  background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px 24px;
+  box-shadow:0 6px 20px rgba(15,31,56,.08); min-height:260px; display:flex; flex-direction:column;
+}
+.qnum{font-size:12px; text-transform:uppercase; letter-spacing:1.5px; color:var(--gold); font-weight:700; margin-bottom:10px;}
+.qtext{font-size:16.5px; line-height:1.55; color:var(--ink); margin-bottom:22px; flex-grow:1;}
+.qtext .art{color:var(--garnet); font-weight:600;}
+
+.options{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+@media(max-width:560px){.options{grid-template-columns:1fr;}}
+.opt{
+  padding:14px 10px; border-radius:10px; border:2px solid var(--line); background:var(--paper);
+  font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px; cursor:pointer; color:var(--navy);
+  transition:all .15s ease; text-align:center;
+}
+.opt:hover{border-color:var(--gold); background:#fff9ee;}
+.opt.correct{background:var(--green); border-color:var(--green); color:#fff;}
+.opt.wrong{background:var(--garnet); border-color:var(--garnet); color:#fff;}
+.opt.disabled{pointer-events:none;}
+.opt.dim{opacity:.45;}
+
+.feedback{
+  margin-top:16px; padding:12px 16px; border-radius:8px; font-size:13.5px; display:none; line-height:1.5;
+}
+.feedback.show{display:block;}
+.feedback.ok{background:#eaf4ee; border:1px solid var(--green); color:#1f3d31;}
+.feedback.bad{background:#fdecec; border:1px solid var(--garnet-light); color:#5a1420;}
+.feedback strong{display:block; margin-bottom:3px;}
+
+.nextbtn{
+  margin-top:18px; align-self:flex-end; background:var(--navy); color:var(--gold-light);
+  border:none; padding:11px 24px; border-radius:8px; font-family:'Inter',sans-serif; font-weight:600;
+  font-size:13.5px; cursor:pointer; display:none; letter-spacing:.5px;
+}
+.nextbtn.show{display:inline-block;}
+.nextbtn:hover{background:var(--navy-2);}
+
+.result{
+  text-align:center; padding:40px 24px; background:#fff; border-radius:14px; border:1px solid var(--line);
+  box-shadow:0 6px 20px rgba(15,31,56,.08);
+}
+.result .score{font-family:'Fraunces',serif; font-size:56px; font-weight:900; color:var(--navy); margin:10px 0;}
+.result .score span{font-size:26px; color:var(--ink-soft);}
+.result p{color:var(--ink-soft); font-size:14px; margin:6px 0;}
+.result .msg{font-family:'Fraunces',serif; font-size:20px; color:var(--garnet); margin:14px 0;}
+.retrybtn{
+  margin-top:18px; background:var(--gold); color:var(--navy); border:none; padding:13px 30px;
+  border-radius:8px; font-weight:700; font-size:14px; cursor:pointer; letter-spacing:.5px;
+}
+.retrybtn:hover{background:var(--gold-light);}
+.fail-list{text-align:left; margin-top:20px; padding-top:16px; border-top:1px solid var(--line);}
+.fail-list h3{font-size:14px; color:var(--navy); margin-bottom:10px;}
+.fail-item{font-size:13px; color:var(--ink-soft); padding:8px 0; border-bottom:1px dashed var(--line);}
+.fail-item b{color:var(--garnet);}
+footer{text-align:center; padding:24px; color:var(--ink-soft); font-size:11.5px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="kicker">CNP · Escala Básica · Práctica rápida</div>
+  <h1>Test de clasificación de infracciones — Tema 11</h1>
+</div>
+
+<div class="wrap">
+  <div class="hud">
+    <div class="stat"><div class="n" id="statNum">1/28</div><div class="l">Pregunta</div></div>
+    <div class="stat"><div class="n" id="statOk" style="color:var(--green);">0</div><div class="l">Aciertos</div></div>
+    <div class="stat"><div class="n" id="statBad" style="color:var(--garnet);">0</div><div class="l">Fallos</div></div>
+    <div class="stat"><div class="n" id="statPct">0%</div><div class="l">Precisión</div></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div id="quizArea"></div>
+  <div id="resultArea"></div>
+</div>
+
+<footer>Tema 11 — Infracciones en materia de extranjería · 28 supuestos · Orden aleatorio en cada intento</footer>
+
+<script>
+const QUESTIONS = [
+  {t:"Omisión o retraso en comunicar a las autoridades cambios de nacionalidad, estado civil o domicilio.", art:"Art. 52.a", level:"leve"},
+  {t:"Retraso en solicitar la renovación de una autorización ya caducada, hasta 3 meses.", art:"Art. 52.b", level:"leve"},
+  {t:"Trabajar en España por cuenta propia sin haberlo solicitado, teniendo autorización de residencia temporal.", art:"Art. 52.c", level:"leve"},
+  {t:"Trabajar en ocupación, sector o ámbito geográfico distinto al autorizado por el permiso de residencia y trabajo.", art:"Art. 52.d", level:"leve"},
+  {t:"Contratar trabajadores cuya autorización no les habilita para esa ocupación o ámbito geográfico (una infracción por cada trabajador).", art:"Art. 52.e", level:"leve"},
+  {t:"No avisar a las autoridades de la presencia de menores extranjeros no acompañados, por quien los atiende.", art:"Art. 52.f", level:"leve"},
+  {t:"Estar irregularmente en España: sin prórroga de estancia, sin autorización de residencia, o con ella caducada más de 3 meses sin haber pedido renovación.", art:"Art. 53.1.a", level:"grave"},
+  {t:"Trabajar sin haber obtenido autorización de trabajo, careciendo además de autorización de residencia válida.", art:"Art. 53.1.b", level:"grave"},
+  {t:"Ocultación dolosa o falsedad grave al comunicar cambios de nacionalidad, estado civil o domicilio, o falsedad en el empadronamiento (sin llegar a delito).", art:"Art. 53.1.c", level:"grave"},
+  {t:"Incumplir medidas de seguridad pública: presentación periódica, o alejamiento de fronteras o núcleos de población.", art:"Art. 53.1.d", level:"grave"},
+  {t:"Cometer una 3ª infracción leve de la misma naturaleza en el plazo de 1 año, habiendo sido sancionado por las dos anteriores.", art:"Art. 53.1.e", level:"grave"},
+  {t:"Participar en actividades contrarias al orden público, tipificadas como graves en la LOPSC.", art:"Art. 53.1.f", level:"grave"},
+  {t:"Salir de España por puestos no habilitados, sin exhibir documentación o contraviniendo prohibiciones.", art:"Art. 53.1.g", level:"grave"},
+  {t:"Incumplir la obligación de obtener la TIE (Tarjeta de Identidad de Extranjero).", art:"Art. 53.1.h", level:"grave"},
+  {t:"No dar de alta en la Seguridad Social ni registrar el contrato, sabiendo el empresario que el trabajador está habilitado legalmente.", art:"Art. 53.2.a", level:"grave"},
+  {t:"Contraer matrimonio, simular pareja de hecho, o constituirse en tutor legal de un menor, con ánimo de lucro para obtener indebidamente residencia (sin llegar a delito).", art:"Art. 53.2.b", level:"grave"},
+  {t:"Promover la permanencia irregular de un extranjero cuya entrada legal contó con invitación expresa del infractor, manteniéndolo a su cargo tras vencer el visado.", art:"Art. 53.2.c", level:"grave"},
+  {t:"Consentir el empadronamiento de un extranjero en una vivienda que no es su domicilio real, siendo titular de la vivienda (una infracción por persona indebidamente inscrita).", art:"Art. 53.2.d", level:"grave"},
+  {t:"Participar en actividades contra la seguridad nacional, o contra las relaciones de España con otros países, o en actividades contra el orden público tipificadas como muy graves en la LOPSC.", art:"Art. 54.1.a", level:"muy grave"},
+  {t:"Inducir, promover, favorecer o facilitar con ánimo de lucro la inmigración clandestina de personas hacia España o su permanencia (sin llegar a delito).", art:"Art. 54.1.b", level:"muy grave"},
+  {t:"Realizar conductas de discriminación por motivos raciales, étnicos, nacionales o religiosos (sin llegar a delito).", art:"Art. 54.1.c", level:"muy grave"},
+  {t:"Contratar trabajadores extranjeros sin haber obtenido la autorización de residencia y trabajo (una infracción por cada trabajador).", art:"Art. 54.1.d", level:"muy grave"},
+  {t:"Realizar, con ánimo de lucro, la inscripción de un extranjero en el Padrón Municipal.", art:"Art. 54.1.e", level:"muy grave"},
+  {t:"Simular una relación laboral con un extranjero con ánimo de lucro o para obtener indebidamente derechos reconocidos por la ley (sin llegar a delito).", art:"Art. 54.1.f", level:"muy grave"},
+  {t:"Cometer una 3ª infracción grave de la misma naturaleza en el plazo de 1 año, habiendo sido sancionado por las dos anteriores.", art:"Art. 54.1 (reincidencia)", level:"muy grave"},
+  {t:"Incumplir la obligación de remitir a las autoridades de control de entrada la información de pasajeros trasladados o el número de billetes de vuelta no utilizados.", art:"Art. 54.2.a", level:"muy grave"},
+  {t:"Transportar extranjeros hasta España sin haber comprobado la validez y vigencia de pasaportes, títulos de viaje, documentos de identidad o visado.", art:"Art. 54.2.b", level:"muy grave"},
+  {t:"No hacerse cargo sin pérdida de tiempo del extranjero transportado con deficiencias documentales o no autorizado a entrar, incluyendo los gastos de manutención y, en su caso, de transporte.", art:"Art. 54.2.c", level:"muy grave"},
+];
+
+const LEVELS = [
+  {key:"leve", label:"LEVE"},
+  {key:"grave", label:"GRAVE"},
+  {key:"muy grave", label:"MUY GRAVE"}
+];
+
+let order = [];
+let current = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let fails = [];
+let answered = false;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function initQuiz(){
+  order = shuffle(QUESTIONS.map((q,i)=>i));
+  current = 0; correctCount = 0; wrongCount = 0; fails = []; answered = false;
+  document.getElementById('resultArea').innerHTML = '';
+  document.getElementById('quizArea').style.display = 'block';
+  renderQuestion();
+  updateHud();
+}
+
+function updateHud(){
+  document.getElementById('statNum').textContent = (current+1) + "/" + QUESTIONS.length;
+  document.getElementById('statOk').textContent = correctCount;
+  document.getElementById('statBad').textContent = wrongCount;
+  const total = correctCount + wrongCount;
+  const pct = total ? Math.round((correctCount/total)*100) : 0;
+  document.getElementById('statPct').textContent = pct + "%";
+  document.getElementById('progressFill').style.width = (current/QUESTIONS.length*100) + "%";
+}
+
+function renderQuestion(){
+  answered = false;
+  const q = QUESTIONS[order[current]];
+  const levelOrder = shuffle(LEVELS);
+  const html = `
+    <div class="qcard">
+      <div class="qnum">Supuesto ${current+1} de ${QUESTIONS.length}</div>
+      <div class="qtext">${q.t}</div>
+      <div class="options" id="optsRow">
+        ${levelOrder.map(l => `<div class="opt" data-level="${l.key}" onclick="selectOption('${l.key}')">${l.label}</div>`).join('')}
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <button class="nextbtn" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
+    </div>
+  `;
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function selectOption(chosen){
+  if(answered) return;
+  answered = true;
+  const q = QUESTIONS[order[current]];
+  const opts = document.querySelectorAll('#optsRow .opt');
+  const fb = document.getElementById('feedback');
+  const nextBtn = document.getElementById('nextBtn');
+
+  opts.forEach(o=>{
+    o.classList.add('disabled');
+    if(o.dataset.level === q.level) o.classList.add('correct');
+    if(o.dataset.level === chosen && chosen !== q.level) o.classList.add('wrong');
+    if(o.dataset.level !== q.level && o.dataset.level !== chosen) o.classList.add('dim');
+  });
+
+  if(chosen === q.level){
+    correctCount++;
+    fb.className = 'feedback show ok';
+    fb.innerHTML = `<strong>✓ Correcto — ${q.art}</strong>Esta infracción es ${q.level.toUpperCase()}.`;
+  } else {
+    wrongCount++;
+    fails.push(q);
+    fb.className = 'feedback show bad';
+    fb.innerHTML = `<strong>✗ No es correcto — ${q.art}</strong>La respuesta correcta es ${q.level.toUpperCase()}, no ${chosen.toUpperCase()}.`;
+  }
+  nextBtn.classList.add('show');
+  updateHud();
+}
+
+function nextQuestion(){
+  if(current < QUESTIONS.length - 1){
+    current++;
+    renderQuestion();
+    updateHud();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('progressFill').style.width = '100%';
+  const total = QUESTIONS.length;
+  const pct = Math.round((correctCount/total)*100);
+  let msg = "";
+  if(pct === 100) msg = "Pleno. Ni un fallo.";
+  else if(pct >= 85) msg = "Muy sólido. Repasa solo los fallos.";
+  else if(pct >= 60) msg = "Vas bien, pero aún se confunden niveles.";
+  else msg = "Toca repasar el cuadro de infracciones con calma.";
+
+  let failsHtml = "";
+  if(fails.length){
+    failsHtml = `<div class="fail-list"><h3>Para repasar (${fails.length})</h3>` +
+      fails.map(f => `<div class="fail-item"><b>${f.art}</b> — ${f.t} <br><em>Correcta: ${f.level.toUpperCase()}</em></div>`).join('') +
+      `</div>`;
+  }
+
+  document.getElementById('resultArea').innerHTML = `
+    <div class="result">
+      <div style="font-size:13px; text-transform:uppercase; letter-spacing:1.5px; color:var(--ink-soft);">Resultado final</div>
+      <div class="score">${correctCount}<span>/${total}</span></div>
+      <p>${pct}% de precisión</p>
+      <div class="msg">${msg}</div>
+      <button class="retrybtn" onclick="initQuiz()">Repetir con orden nuevo</button>
+      ${failsHtml}
+    </div>
+  `;
+}
+
+initQuiz();
+</script>
+
+</body>
+</html>

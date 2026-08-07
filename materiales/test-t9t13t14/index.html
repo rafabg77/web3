@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CNP Oposición — 117 preguntas de examen: T9 · Seguridad Privada · T14">
+<title>CNP · Preguntas de Examen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+   Fondo: blanco cálido casi imperceptible
+   Respuesta correcta: verde institucional profundo
+   Respuesta incorrecta: rojo sello
+   T9: azul CNP (marino)    SP: violeta   T14: teal
+   ══════════════════════════════════════════ */
+:root{
+  --bg:#F6F5F1;
+  --surface:#FFFFFF;
+  --surface-2:#F0EFEB;
+  --border:#E2E0D8;
+  --border-2:#CCCAB9;
+  --text:#1A1A1A;
+  --text-2:#4A4945;
+  --text-3:#888680;
+  --ok:#1A6E3C;
+  --ok-bg:#EAF5EE;
+  --ok-border:#A8D5B8;
+  --bad:#B92A2A;
+  --bad-bg:#FDEFEF;
+  --bad-border:#F0AAAA;
+  --t9:#1A4F8B;   --t9-bg:rgba(26,79,139,0.08);   --t9-dot:#1A4F8B;
+  --sp:#5E3D9E;   --sp-bg:rgba(94,61,158,0.08);   --sp-dot:#5E3D9E;
+  --t14:#1B6B6B;  --t14-bg:rgba(27,107,107,0.08);  --t14-dot:#1B6B6B;
+  --r:10px; --r-lg:16px; --r-xl:22px;
+  --sh:0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+  --sh-lg:0 8px 32px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.04);
+  --tr:0.18s cubic-bezier(0.4,0,0.2,1);
+  --tr-spring:0.4s cubic-bezier(0.16,1,0.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  line-height:1.55;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ══ BARRA PROGRESS SEGMENTADA (arriba) ══ */
+#meterWrap{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:none;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px 10px;
+}
+#meterMeta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;font-weight:600;letter-spacing:.04em;
+  color:var(--text-3);text-transform:uppercase;
+  margin-bottom:6px;
+}
+#meterTrack{
+  display:flex;gap:2px;height:6px;border-radius:100px;overflow:hidden;
+}
+.meter-seg{
+  flex:1;border-radius:100px;
+  background:var(--border);
+  transition:background var(--tr);
+}
+.meter-seg.t9.done{ background:var(--t9); }
+.meter-seg.sp.done{ background:var(--sp); }
+.meter-seg.t14.done{ background:var(--t14); }
+.meter-seg.current.t9{ background:var(--t9);opacity:.5; }
+.meter-seg.current.sp{ background:var(--sp);opacity:.5; }
+.meter-seg.current.t14{ background:var(--t14);opacity:.5; }
+
+/* ══ CONTENEDOR PRINCIPAL ══ */
+main{
+  display:flex;flex-direction:column;align-items:center;
+  min-height:100vh;padding:24px 16px 48px;
+}
+.view{ width:100%;max-width:640px; }
+
+/* ══ INTRO / PORTADA ══ */
+#introView{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  gap:0;
+}
+.intro-logo{
+  width:52px;height:52px;border-radius:14px;
+  background:var(--t9);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+  box-shadow:0 4px 16px rgba(26,79,139,0.25);
+}
+.intro-logo svg{ fill:white; }
+.intro-title{
+  font-size:clamp(26px,5vw,34px);font-weight:800;
+  letter-spacing:-0.025em;line-height:1.2;
+  text-align:center;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.intro-sub{
+  font-size:14px;color:var(--text-3);
+  text-align:center;margin-bottom:32px;
+}
+.topic-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;width:100%;margin-bottom:24px;
+}
+.topic-card{
+  background:var(--surface);
+  border:2px solid var(--border);
+  border-radius:var(--r-lg);
+  padding:16px 12px;
+  cursor:pointer;
+  transition:all var(--tr);
+  text-align:center;
+  user-select:none;
+  outline:none;
+}
+.topic-card .n{
+  font-size:26px;font-weight:800;letter-spacing:-0.03em;
+  margin-bottom:4px;color:var(--text-3);
+  transition:color var(--tr);
+}
+.topic-card .l{
+  font-size:10px;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--text-3);
+  transition:color var(--tr);
+}
+.topic-card.active.t9{ border-color:var(--t9);background:var(--t9-bg); }
+.topic-card.active.t9 .n{ color:var(--t9); }
+.topic-card.active.t9 .l{ color:var(--t9); }
+.topic-card.active.sp{ border-color:var(--sp);background:var(--sp-bg); }
+.topic-card.active.sp .n{ color:var(--sp); }
+.topic-card.active.sp .l{ color:var(--sp); }
+.topic-card.active.t14{ border-color:var(--t14);background:var(--t14-bg); }
+.topic-card.active.t14 .n{ color:var(--t14); }
+.topic-card.active.t14 .l{ color:var(--t14); }
+.topic-card:focus-visible{ box-shadow:0 0 0 3px rgba(26,79,139,0.35); }
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 28px;border-radius:var(--r-lg);
+  font-family:inherit;font-size:15px;font-weight:700;
+  cursor:pointer;border:none;outline:none;
+  transition:all var(--tr);
+  text-decoration:none;
+}
+.btn:focus-visible{ box-shadow:0 0 0 3px rgba(26,79,139,0.35); }
+.btn-primary{
+  background:var(--t9);color:#fff;
+  box-shadow:0 2px 12px rgba(26,79,139,0.3);
+  width:100%;
+}
+.btn-primary:hover{ background:#153E70;box-shadow:0 4px 20px rgba(26,79,139,0.4); }
+.btn-primary:active{ transform:scale(0.98); }
+
+/* ══ QUIZ VIEW ══ */
+#quizView{ display:none;padding-top:72px; }
+#quizView.active{ display:block; }
+
+#qcard{
+  background:var(--surface);
+  border-radius:var(--r-xl);
+  box-shadow:var(--sh-lg);
+  overflow:hidden;
+  animation:slideIn var(--tr-spring) both;
+}
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(18px) scale(0.98);}
+  to{opacity:1;transform:none;}
+}
+
+.qcard-header{
+  padding:16px 20px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+}
+.q-tag{
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:6px;
+}
+.q-tag.t9{ background:var(--t9-bg);color:var(--t9); }
+.q-tag.sp{ background:var(--sp-bg);color:var(--sp); }
+.q-tag.t14{ background:var(--t14-bg);color:var(--t14); }
+#qPosLabel{
+  font-size:12px;font-weight:600;color:var(--text-3);
+  white-space:nowrap;
+}
+
+.qcard-body{ padding:24px 24px 20px; }
+#qText{
+  font-family:'Lora',Georgia,serif;
+  font-size:17px;font-weight:500;line-height:1.65;
+  color:var(--text);
+  margin-bottom:22px;
+}
+
+#qOpts{ display:flex;flex-direction:column;gap:8px; }
+.opt{
+  display:flex;align-items:flex-start;gap:12px;
+  width:100%;text-align:left;
+  background:var(--surface-2);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:13px 14px;
+  cursor:pointer;
+  font-family:inherit;font-size:14px;font-weight:500;line-height:1.5;
+  color:var(--text);
+  transition:all var(--tr);
+  outline:none;
+  position:relative;overflow:hidden;
+}
+.opt:focus-visible{ box-shadow:0 0 0 3px rgba(26,79,139,0.3); }
+.opt:not(:disabled):hover{
+  border-color:var(--border-2);
+  background:var(--surface);
+  box-shadow:var(--sh);
+}
+.opt:not(:disabled):active{ transform:scale(0.99); }
+.opt-letter{
+  flex-shrink:0;
+  width:22px;height:22px;
+  border-radius:6px;
+  background:var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--text-2);
+  transition:all var(--tr);
+  margin-top:1px;
+}
+.opt-text{ flex:1; }
+.opt-icon{
+  flex-shrink:0;margin-left:auto;
+  opacity:0;transition:opacity var(--tr);
+  color:var(--text-3);margin-top:2px;
+}
+
+/* Estados de respuesta */
+.opt.correct{
+  background:var(--ok-bg);
+  border-color:var(--ok-border);
+  color:var(--ok);
+}
+.opt.correct .opt-letter{ background:var(--ok);color:#fff; }
+.opt.correct .opt-icon{ opacity:1;color:var(--ok); }
+.opt.wrong{
+  background:var(--bad-bg);
+  border-color:var(--bad-border);
+  color:var(--bad);
+}
+.opt.wrong .opt-letter{ background:var(--bad);color:#fff; }
+.opt.wrong .opt-icon{ opacity:1;color:var(--bad); }
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-5px);}
+  40%{transform:translateX(5px);}
+  60%{transform:translateX(-4px);}
+  80%{transform:translateX(4px);}
+}
+.opt.shake{ animation:shake 0.38s ease; }
+
+/* Feedback + explicación */
+.feedback-row{
+  display:none;align-items:center;gap:8px;
+  margin:16px 0 0;
+  padding:11px 14px;
+  border-radius:var(--r);
+  font-size:14px;font-weight:600;
+}
+.feedback-row.show{ display:flex; }
+.feedback-row.ok{ background:var(--ok-bg);color:var(--ok); }
+.feedback-row.bad{ background:var(--bad-bg);color:var(--bad); }
+.feedback-icon{ font-size:16px;flex-shrink:0; }
+
+.q-exp{
+  display:none;
+  margin-top:12px;
+  padding:14px 16px;
+  background:var(--surface-2);
+  border-left:3px solid var(--border-2);
+  border-radius:0 var(--r) var(--r) 0;
+  font-size:13px;line-height:1.65;color:var(--text-2);
+}
+.q-exp.show{ display:block; }
+.q-exp b{ color:var(--text);font-weight:700; }
+
+.qcard-actions{
+  display:none;
+  padding:16px 24px 20px;
+  border-top:1px solid var(--border);
+}
+.qcard-actions.show{ display:flex;justify-content:flex-end; }
+
+.btn-next{
+  background:var(--t9);color:#fff;
+  padding:10px 22px;
+  border-radius:var(--r);
+  font-size:14px;font-weight:700;
+  border:none;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;gap:7px;
+  transition:all var(--tr);outline:none;
+}
+.btn-next:hover{ background:#153E70; }
+.btn-next:focus-visible{ box-shadow:0 0 0 3px rgba(26,79,139,0.35); }
+.btn-next svg{ transition:transform var(--tr); }
+.btn-next:hover svg{ transform:translateX(3px); }
+
+/* Foot score */
+#footScore{
+  text-align:center;margin-top:14px;
+  font-size:12px;color:var(--text-3);font-weight:500;
+}
+
+/* ══ EMPTY MSG ══ */
+#emptyMsg{
+  display:none;text-align:center;padding:60px 20px;
+}
+#emptyMsg.show{ display:block; }
+#emptyMsg p{ color:var(--text-2);margin-bottom:20px; }
+
+/* ══ RESULT VIEW ══ */
+#resultView{ display:none;padding-top:40px; }
+#resultView.active{ display:block; }
+
+.res-card{
+  background:var(--surface);
+  border-radius:var(--r-xl);
+  box-shadow:var(--sh-lg);
+  overflow:hidden;
+  animation:slideIn var(--tr-spring) both;
+}
+.res-top{
+  padding:36px 28px 28px;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+#resGrade{
+  font-size:64px;font-weight:800;letter-spacing:-0.04em;
+  line-height:1;
+  color:var(--t9);margin-bottom:4px;
+}
+#resMsg{ font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px; }
+#resSub{ font-size:13px;color:var(--text-3); }
+.res-bar-wrap{
+  width:100%;height:6px;background:var(--border);
+  border-radius:100px;margin:20px 0 0;overflow:hidden;
+}
+#resBar{
+  height:100%;border-radius:100px;
+  background:linear-gradient(90deg,var(--t14),var(--t9));
+  width:0;transition:width 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.res-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-bottom:1px solid var(--border);
+}
+.stat{
+  padding:20px 16px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.stat:last-child{ border-right:none; }
+.stat-n{ font-size:28px;font-weight:800;letter-spacing:-0.03em; }
+.stat-n.ok{ color:var(--ok); }
+.stat-n.bad{ color:var(--bad); }
+.stat-n.neutral{ color:var(--text-2); }
+.stat-l{ font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-top:2px; }
+.res-actions{
+  padding:20px 24px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.btn-res{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 20px;border-radius:var(--r);
+  font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;border:1.5px solid transparent;
+  transition:all var(--tr);outline:none;
+}
+.btn-res:focus-visible{ box-shadow:0 0 0 3px rgba(26,79,139,0.35); }
+.btn-res-primary{
+  background:var(--t9);color:#fff;border-color:var(--t9);
+}
+.btn-res-primary:hover{ background:#153E70; }
+.btn-res-primary:disabled{ opacity:.45;cursor:not-allowed; }
+.btn-res-secondary{
+  background:transparent;color:var(--text-2);border-color:var(--border);
+}
+.btn-res-secondary:hover{ background:var(--surface-2);border-color:var(--border-2); }
+
+/* ══ NOTICE ══ */
+#notice{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  padding:9px 18px;border-radius:100px;
+  font-size:13px;font-weight:600;
+  background:var(--text);color:var(--bg);
+  opacity:0;pointer-events:none;
+  transition:all 0.25s;
+  z-index:200;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+}
+#notice.show{ opacity:1;transform:translateX(-50%) translateY(0); }
+
+/* ══ KEYBOARD HINT ══ */
+.kbd-hint{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+  font-size:11px;color:var(--text-3);
+}
+kbd{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--surface-2);border:1px solid var(--border-2);
+  border-radius:5px;padding:1px 6px;
+  font-family:inherit;font-size:10px;font-weight:700;
+  color:var(--text-2);
+}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:500px){
+  .topic-grid{ grid-template-columns:1fr; }
+  .qcard-body{ padding:18px 16px 14px; }
+  #qText{ font-size:15px; }
+  .qcard-actions{ padding:12px 16px 16px; }
+  .res-top{ padding:24px 20px 20px; }
+}
+
+/* ══ REDUCED MOTION ══ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:0.001ms!important;transition-duration:0.001ms!important; }
+}
+</style>
+</head>
+<body>
+
+<!-- BARRA SEGMENTADA -->
+<div id="meterWrap" role="progressbar" aria-label="Progreso del test">
+  <div id="meterMeta">
+    <span>Pregunta <b id="meterPos">1</b> de <b id="meterTotal">—</b></span>
+    <span>✓ <b id="meterScore">0</b> aciertos</span>
+  </div>
+  <div id="meterTrack"></div>
+</div>
+
+<main>
+
+<!-- ══ PORTADA ══ -->
+<div id="introView" class="view">
+  <div class="intro-logo" aria-hidden="true">
+    <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 2L5 7v8c0 5.25 3.85 10.15 9 11.35C19.15 25.15 23 20.25 23 15V7L14 2z"/></svg>
+  </div>
+  <h1 class="intro-title">Preguntas CNP</h1>
+  <p class="intro-sub">117 preguntas · T9 · Seguridad Privada · T14</p>
+  <div class="topic-grid" id="topicGrid" role="group" aria-label="Selección de temas"></div>
+  <button class="btn btn-primary" id="startBtn">Empezar test</button>
+  <div class="kbd-hint" style="margin-top:16px;">
+    <span><kbd>1</kbd>–<kbd>4</kbd> responder</span>
+    <span><kbd>Enter</kbd> siguiente</span>
+  </div>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div id="quizView" class="view" aria-live="polite">
+  <div id="qcard" role="main">
+    <div class="qcard-header">
+      <span id="qTag" class="q-tag"></span>
+      <span id="qPosLabel" aria-label="posición actual"></span>
+    </div>
+    <div class="qcard-body">
+      <p id="qText" role="heading" aria-level="2"></p>
+      <div id="qOpts" role="group" aria-label="Opciones de respuesta"></div>
+      <div id="feedbackRow" class="feedback-row" aria-live="assertive" role="status"></div>
+      <div id="qExp" class="q-exp"></div>
+    </div>
+    <div id="qActions" class="qcard-actions">
+      <button class="btn-next" id="nextBtn" aria-label="Siguiente pregunta">
+        Siguiente
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <p id="footScore" aria-live="polite"></p>
+</div>
+
+<!-- ══ SIN PREGUNTAS ══ -->
+<div id="emptyMsg" class="view" role="alert">
+  <p>No hay preguntas disponibles con la selección actual.</p>
+  <button class="btn btn-primary" id="emptyBackBtn" style="max-width:240px;">Volver a la portada</button>
+</div>
+
+<!-- ══ RESULTADO ══ -->
+<div id="resultView" class="view" role="main" aria-label="Resultado del test">
+  <div class="res-card">
+    <div class="res-top">
+      <div id="resGrade">—%</div>
+      <div id="resMsg">—</div>
+      <div id="resSub">—</div>
+      <div class="res-bar-wrap"><div id="resBar"></div></div>
+    </div>
+    <div class="res-stats">
+      <div class="stat"><div class="stat-n ok" id="resCorrect">—</div><div class="stat-l">Correctas</div></div>
+      <div class="stat"><div class="stat-n bad" id="resWrong">—</div><div class="stat-l">Incorrectas</div></div>
+      <div class="stat"><div class="stat-n neutral" id="resTotal">—</div><div class="stat-l">Total</div></div>
+    </div>
+    <div class="res-actions">
+      <button class="btn-res btn-res-primary" id="reviewWrongBtn">Repasar fallos</button>
+      <button class="btn-res btn-res-secondary" id="restartBtn">Nuevo test completo</button>
+      <button class="btn-res btn-res-secondary" id="changeSetBtn">Cambiar temas</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<div id="notice" aria-live="assertive" role="status"></div>
+
+<script>
+const QS = [
+  // ── T9 ──
+  {
+    t:"t9",
+    q:"El art. 104 CE establece que las FCS están bajo dependencia del Gobierno. ¿Cuál de los siguientes aspectos NO recoge expresamente dicho artículo?",
+    opts:["Misión de proteger el libre ejercicio de los derechos y libertades","Garantizar la seguridad ciudadana","Una LO determinará las funciones y principios básicos de actuación","Los principios de jerarquía y subordinación dentro de las FCS"],
+    a:3,
+    e:"El art. 104 CE solo establece: dependencia del Gobierno, misión (proteger DDLL y garantizar SC) y remisión a LO para funciones y principios. Los principios de jerarquía y subordinación los recoge la LO 2/1986, no la CE."
+  },
+  {
+    t:"t9",
+    q:"La seguridad pública es competencia exclusiva del Estado (art. 1 LO 2/1986). ¿A quién corresponde su mantenimiento?",
+    opts:["Al Ministerio del Interior","Al Gobierno de la Nación","Al Secretario de Estado de Seguridad","A las FCSE conjuntamente"],
+    a:1,
+    e:"Art. 1 LO 2/1986: la seguridad pública es competencia exclusiva del Estado; su mantenimiento corresponde al Gobierno de la Nación. Las CCAA y Corporaciones Locales participan en ese mantenimiento."
+  },
+  {
+    t:"t9",
+    q:"Respecto a la Guardia Civil, ¿de qué ministerios depende en tiempo de paz?",
+    opts:["Solo del Ministerio del Interior","Solo del Ministerio de Defensa","Del Ministerio del Interior (funciones) y del Ministerio de Defensa (misiones militares y régimen de personal)","Del Ministerio del Interior y de la Secretaría de Estado de Seguridad"],
+    a:2,
+    e:"La GC en tiempo de paz depende del MI para funciones de seguridad y del MD para misiones militares y régimen de personal. En guerra o estado de sitio pasa solo al MD."
+  },
+  {
+    t:"t9",
+    q:"¿Cuáles son las CCAA que tienen cuerpo de policía propio conforme a la LO 2/1986?",
+    opts:["Andalucía, Cataluña, País Vasco y Navarra","Cataluña, País Vasco, Navarra y Canarias","Cataluña, País Vasco, Galicia y Navarra","Cataluña, País Vasco, Navarra, Canarias y Aragón"],
+    a:1,
+    e:"Tienen cuerpo propio: Mossos d'Esquadra (Cataluña), Ertzaintza (País Vasco), Policía Foral de Navarra y Policía Canaria. Galicia, Aragón, Valencia y Andalucía NO tienen cuerpo propio, solicitan adscripción de unidades del CNP."
+  },
+  {
+    t:"t9",
+    q:"Las unidades del CNP adscritas a CCAA sin cuerpo propio dependen orgánicamente de:",
+    opts:["La comunidad autónoma solicitante","El Delegado del Gobierno en la CCAA","El Ministerio del Interior","La Delegación del Gobierno y funcionalmente de la CCAA"],
+    a:2,
+    e:"Las unidades adscritas dependen orgánicamente del MI (a través del CNP) y funcionalmente de la CCAA correspondiente. Se adscriben unidades completas, NO miembros individuales. Andalucía, Aragón, Galicia y Valencia tienen esta fórmula."
+  },
+  {
+    t:"t9",
+    q:"En caso de conflicto de competencias entre CNP y GC, ¿quién resuelve y qué cuerpo actúa mientras tanto?",
+    opts:["Resuelve el MI; mientras, actúa el CNP","Resuelve el Subdelegado del Gobierno; mientras, actúa el cuerpo que realizó primeras actuaciones","Resuelve el SES; mientras, actúan ambos conjuntamente","Resuelve el juez competente; mientras, se suspende la actuación"],
+    a:1,
+    e:"En conflictos de competencias territorial: se hace cargo el cuerpo que haya realizado las primeras actuaciones, hasta que resuelva el Subdelegado del Gobierno (o Delegado en CCAA uniprovinciales)."
+  },
+  {
+    t:"t9",
+    q:"La expedición de DNI y Pasaporte es competencia exclusiva de:",
+    opts:["Guardia Civil","Policía Nacional (CNP)","Cualquier FCSE según disponibilidad","El Ministerio de Asuntos Exteriores en el extranjero"],
+    a:1,
+    e:"Es función EXCLUSIVA del CNP (art. 12.A LO 2/1986), que opera en capitales de provincia y núcleos urbanos. No confundir con la GC, cuyas exclusivas incluyen armas, explosivos, tráfico interurbano y contrabando."
+  },
+  {
+    t:"t9",
+    q:"¿Cuál de las siguientes es función EXCLUSIVA de la Guardia Civil (art. 12.B LO 2/1986)?",
+    opts:["Control de entrada y salida del territorio","Extranjería, refugio y asilo","Resguardo fiscal y contrabando","Normativa de juego"],
+    a:2,
+    e:"Las exclusivas de GC incluyen: armas/explosivos, resguardo fiscal/contrabando, tráfico interurbano, custodia vías terrestres, costas/fronteras/puertos/aeropuertos, naturaleza y conducción interurbana de presos. El control de extranjería y juego son del CNP."
+  },
+  {
+    t:"t9",
+    q:"El Consejo de Policía de la LO 2/1986 tiene como función principal:",
+    opts:["Ejercer el mando superior sobre las FCSE","Ser órgano de representación colectiva de la Policía Nacional para negociación sindical","Ser órgano paritario de representación del personal del CNP ante la Administración","Coordinar la actuación de todas las FCSE en operaciones conjuntas"],
+    a:2,
+    e:"El Consejo de Policía es el órgano paritario de representación del personal del CNP. Está integrado por representantes de la Administración y de las organizaciones sindicales. Es el interlocutor para negociación colectiva, no de mando operativo."
+  },
+  {
+    t:"t9",
+    q:"Los miembros del CNP pueden afiliarse a partidos políticos y sindicatos con las siguientes restricciones:",
+    opts:["Pueden afiliarse a sindicatos pero no a partidos políticos","Pueden afiliarse a partidos pero no sindicarse","Pueden constituir organizaciones sindicales de ámbito nacional formadas exclusivamente por miembros del CNP; no pueden federarse con otras organizaciones ajenas al Cuerpo","Sin ninguna restricción, iguales que cualquier trabajador"],
+    a:2,
+    e:"Los miembros del CNP pueden constituir organizaciones sindicales de ámbito nacional exclusivamente de miembros del CNP. No pueden federarse con organizaciones ajenas al Cuerpo, aunque sí pueden integrarse en organizaciones internacionales de igual carácter."
+  },
+  {
+    t:"t9",
+    q:"El principio de actuación de las FCS que establece que la obediencia debida NO ampara órdenes que constituyan manifiestamente un delito se encuadra en:",
+    opts:["Principio de proporcionalidad","Principio de adecuación al ordenamiento jurídico (sujeción a jerarquía)","Principio de relaciones con la comunidad","Principio de congruencia y oportunidad"],
+    a:1,
+    e:"Dentro del principio de adecuación al ordenamiento jurídico, la LO 2/1986 establece la sujeción a los principios de jerarquía y subordinación, pero con la excepción expresa de que la obediencia debida no ampara órdenes que constituyan manifiestamente un delito."
+  },
+  {
+    t:"t9",
+    q:"Las Juntas de Seguridad previstas en la LO 2/1986 se constituyen entre:",
+    opts:["El Delegado del Gobierno y los alcaldes de los municipios afectados","El Estado y las CCAA que tengan cuerpo policial propio","El CNP y la Guardia Civil para coordinación operativa","El Ministerio del Interior y los Ministerios de Defensa y Justicia"],
+    a:1,
+    e:"Las Juntas de Seguridad se constituyen entre el Estado y las CCAA que tengan cuerpo policial propio (Cataluña, País Vasco, Navarra, Canarias). Son el órgano de coordinación entre FCSE y policías autonómicas."
+  },
+  {
+    t:"t9",
+    q:"Según la LO 2/1986, la función de colaboración con las policías de otros países, especialmente en la represión del tráfico de drogas, el terrorismo y la delincuencia organizada, corresponde exclusivamente a:",
+    opts:["Guardia Civil","CNP (Policía Nacional)","Cualquiera de las dos FCSE","Solo al CNP cuando actúe en coordinación con Interpol"],
+    a:1,
+    e:"La colaboración con policías extranjeras en narcotráfico, terrorismo y crimen organizado es función EXCLUSIVA del CNP (art. 12.A). La GC tiene funciones de coordinación de salvamento en costas pero no esta colaboración internacional."
+  },
+  {
+    t:"t9",
+    q:"Las Policías Locales actúan dentro de su término municipal. Donde no exista policía municipal, sus funciones son ejercidas por:",
+    opts:["Guardia Civil","CNP","Guardas, vigilantes o alguaciles del municipio","Depende del convenio entre el Ayuntamiento y la Delegación del Gobierno"],
+    a:2,
+    e:"Donde no exista cuerpo de policía municipal, las funciones son desempeñadas por guardas, vigilantes o alguaciles del propio municipio. No se establece subsidiariedad de GC o CNP en este punto concreto de la norma."
+  },
+  {
+    t:"t9",
+    q:"El principio de actuación que exige de las FCS actuar 'con decisión y sin demora' ante situaciones de daño grave, inmediato e irreparable, pertenece al bloque de:",
+    opts:["Adecuación al ordenamiento jurídico","Relaciones con la comunidad","Tratamiento de detenidos","Dedicación profesional"],
+    a:1,
+    e:"El principio de 'Relaciones con la comunidad' incluye: impedir prácticas abusivas, trato correcto, actuar con decisión sin demora ante daño grave e inmediato e irreparable, y regirse por congruencia, oportunidad y proporcionalidad."
+  },
+
+  // ── SEGURIDAD PRIVADA ──
+  {
+    t:"sp",
+    q:"La Comisión Nacional de Seguridad Privada (art. 16 Ley 5/2014) está adscrita a:",
+    opts:["Dirección General de la Policía","Ministerio del Interior directamente","Secretaría de Estado de Seguridad (SES)","Delegaciones del Gobierno en las CCAA"],
+    a:2,
+    e:"La Comisión Nacional de SP está adscrita a la SES, con copresidencia del DGP y el DGGC. Su secretario es el Jefe de la Sección de la Unidad Orgánica Central de SP del CNP. Las Comisiones Provinciales se adscriben a las Delegaciones/Subdelegaciones del Gobierno."
+  },
+  {
+    t:"sp",
+    q:"¿Quién ostenta la Secretaría de la Comisión Nacional de Seguridad Privada y tiene voz y voto?",
+    opts:["Jefe de la Unidad Provincial de SP del CNP","Jefe de la Sección de la Unidad Orgánica Central de SP del CNP","El Director General de la Policía","Un funcionario del SES designado por el Secretario de Estado"],
+    a:1,
+    e:"El Secretario de la Comisión Nacional de SP es el Jefe de la Sección de la Unidad Orgánica Central de SP del CNP, con voz y voto. No confundir: en las Comisiones Provinciales, el secretario es el Jefe de la Unidad Provincial de SP del CNP."
+  },
+  {
+    t:"sp",
+    q:"La Tarjeta de Identidad Profesional (TIP) del personal de seguridad privada tiene una validez de:",
+    opts:["5 años, renovable por otros 5","10 años","3 años","Indefinida, salvo revocación"],
+    a:1,
+    e:"La TIP es el documento público de acreditación del personal SP, expedida por el MI. Tiene validez de 10 años. Se porta SIEMPRE durante el servicio. No confundir con la autorización de empresas SP, que es INDEFINIDA."
+  },
+  {
+    t:"sp",
+    q:"Para habilitarse como Vigilante de Explosivos, ¿qué habilitación previa se exige?",
+    opts:["Ninguna, basta con la formación específica","Escolta Privado","Vigilante de Seguridad","Jefe de Seguridad"],
+    a:2,
+    e:"El Vigilante de Explosivos requiere habilitación previa como Vigilante de Seguridad (art. 26 Ley 5/2014). Otras especialidades con prerequisito: Guarda de Caza y Guardapesca Marítimo requieren previa habilitación como Guarda Rural."
+  },
+  {
+    t:"sp",
+    q:"Los Guardas Rurales, Guardas de Caza y Guardapesca Marítimo son habilitados por:",
+    opts:["DGP (Dirección General de Policía)","DGGC (Dirección General de la Guardia Civil)","SES (Secretaría de Estado de Seguridad)","Delegaciones del Gobierno en las CCAA"],
+    a:1,
+    e:"La DGGC habilita exclusivamente a: Guarda Rural, Guarda de Caza y Guardapesca Marítimo. TODOS los demás profesionales de SP (Vigilante, Escolta, Jefe, Director, Detective) los habilita la DGP. Esta es una de las trampas más frecuentes en examen."
+  },
+  {
+    t:"sp",
+    q:"La validez de la autorización de las empresas de seguridad privada inscritas en el Registro Nacional de SP es:",
+    opts:["5 años, renovables","10 años, renovables","Indefinida","3 años, renovables a solicitud del titular"],
+    a:2,
+    e:"La autorización de las empresas de SP tiene validez INDEFINIDA (art. 20 Ley 5/2014). Igualmente, la declaración responsable para instalación/mantenimiento de sistemas de seguridad tiene validez INDEFINIDA. No confundir con la TIP personal (10 años)."
+  },
+  {
+    t:"sp",
+    q:"Según la Ley 5/2014, la inscripción en el Registro Nacional de SP de las Centrales Receptoras de Alarmas de uso propio se realiza:",
+    opts:["A solicitud del interesado, previo pago de tasa","De oficio, automáticamente","Mediante declaración responsable previa","No se inscriben; solo las empresas que prestan servicio a terceros"],
+    a:1,
+    e:"La inscripción de oficio se aplica a: empresas SP, personal SP, despachos de detectives, centros de formación y centrales receptoras de alarma de uso propio. El registro es automático una vez cumplidos los requisitos."
+  },
+  {
+    t:"sp",
+    q:"Un Vigilante de Seguridad intercepta a alguien que se niega a mostrar su documentación en el acceso a un inmueble. ¿Qué puede hacer el vigilante?",
+    opts:["Retener la documentación e identificar a la persona","Detenerla e interrogarla para esclarecer los hechos","Impedirle el acceso u ordenarle que abandone el inmueble, pero NO puede retener su documentación","Solicitar la presencia de las FCS de forma obligatoria"],
+    a:2,
+    e:"Art. 32 Ley 5/2014: los vigilantes de seguridad NO pueden retener documentación personal (sí comprobarla). Ante la negativa a exhibirla pueden impedir el acceso u ordenar el abandono del inmueble. Tampoco pueden interrogar a los detenidos."
+  },
+  {
+    t:"sp",
+    q:"El Escolta Privado, a diferencia del Vigilante de Seguridad, NO puede realizar:",
+    opts:["Detener a quien agreda al protegido y ponerlo a disposición de las FCS","Acompañar y proteger a grupos de personas determinadas","Verificaciones de identidad o detenciones (salvo agresión o intento manifiesto al protegido)","Llevar arma de fuego durante el servicio"],
+    a:2,
+    e:"El Escolta Privado NO puede realizar identificaciones ni detenciones, EXCEPTO cuando haya agresión o intento manifiesto de agresión a la persona protegida. En ese caso, detiene y pone INMEDIATAMENTE a disposición de las FCS, sin poder interrogar al detenido."
+  },
+  {
+    t:"sp",
+    q:"Los Detectives Privados pueden investigar delitos:",
+    opts:["De cualquier naturaleza cuando son contratados por el perjudicado","Solo perseguibles a instancia de parte (delitos privados y semipúblicos)","De oficio cuando detecten indicios de actividad criminal en su investigación","Cualquier delito, pero deben comunicarlo al CNP previamente"],
+    a:1,
+    e:"Art. 37 Ley 5/2014: los Detectives Privados solo pueden investigar delitos perseguibles a INSTANCIA DE PARTE. Si en su investigación detectan delitos de oficio (perseguibles públicamente), deben denunciarlo de inmediato y entregar la información. NO pueden investigar la vida íntima en domicilios."
+  },
+  {
+    t:"sp",
+    q:"Los Guardas Rurales tienen una característica diferenciadora respecto al resto del personal de SP armado. ¿Cuál es?",
+    opts:["Pueden portar armas sin necesidad de licencia de armas","Pueden prestar servicios SIN constituir ni integrarse en empresa de seguridad privada","Su habilitación la concede el Delegado del Gobierno, no la DGP","Solo pueden actuar en zonas rurales, no en núcleos urbanos"],
+    a:1,
+    e:"Los Guardas Rurales PUEDEN prestar servicios directamente a los titulares de bienes y derechos, SIN necesidad de constituirse ni integrarse en empresa de seguridad privada. El resto del personal armado DEBE estar integrado en una empresa."
+  },
+  {
+    t:"sp",
+    q:"Según la Ley 5/2014, ¿cuántos informes de investigación puede emitir un Detective por servicio contratado?",
+    opts:["Tantos como solicite el cliente","Uno por cada diligencia de investigación realizada","Un único informe por servicio contratado","Uno mensual hasta la finalización del servicio"],
+    a:2,
+    e:"Art. 49 Ley 5/2014: se elabora UN ÚNICO informe por servicio contratado. Debe conservarse archivado al menos 3 años. Solo incluye información relacionada con el objeto de la investigación. Contiene: nº registro, datos contratante, objeto, medios, resultados y detectives intervinientes."
+  },
+  {
+    t:"sp",
+    q:"Los servicios con armas de fuego son obligatorios o permitidos por la Ley 5/2014 en determinados supuestos. ¿Cuál de los siguientes NO es uno de ellos?",
+    opts:["Transporte de dinero, valores y objetos valiosos","Fábricas y transporte de armas, cartuchería y explosivos","Vigilancia perimetral de centros penitenciarios y establecimientos militares","Vigilancia de centros comerciales de más de 10.000 m²"],
+    a:3,
+    e:"Los supuestos de servicio con arma son: transporte de valores, fábricas/transporte de armas/explosivos, buques en aguas de grave riesgo, y vigilancia perimetral de centros penitenciarios, CIE, establecimientos militares e infraestructuras críticas. Los centros comerciales NO están incluidos."
+  },
+  {
+    t:"sp",
+    q:"¿Qué tipo de medidas de seguridad regula la Ley 5/2014 como 'organizativas'?",
+    opts:["Barreras físicas que impidan o dificulten el acceso a lugares o bienes","Dispositivos para detectar amenazas mediante sistemas electrónicos","Disposición, programación o planificación de cometidos formalizados por personas","Confidencialidad, integridad y disponibilidad de sistemas de información"],
+    a:2,
+    e:"Los 5 tipos de medidas de seguridad (art. 52 Ley 5/2014): Físicas (barreras), Electrónicas (detección electrónica), Informáticas (confidencialidad/integridad/disponibilidad), Organizativas (disposición y planificación humana) y Personales (servicios regulados en la ley). La informática se confunde a menudo con la organizativa."
+  },
+  {
+    t:"sp",
+    q:"El Director de Seguridad (art. 36 Ley 5/2014), a diferencia del Jefe de Seguridad, ¿puede compatibilizar sus funciones con las de Jefe de Seguridad?",
+    opts:["No, son funciones incompatibles por definición","Sí, puede compatibilizar ambas funciones en las empresas de SP","Solo con autorización expresa del MI","Solo si la empresa tiene menos de 50 trabajadores"],
+    a:1,
+    e:"El Director de Seguridad puede compatibilizar sus funciones con las de Jefe de Seguridad en las propias empresas de SP. El Director de Seguridad es obligatorio cuando lo exija la ley, por dimensión del servicio, por decisión gubernativa o por disposición especial."
+  },
+  {
+    t:"sp",
+    q:"Un representante legal de una empresa de SP no puede haber sido administrador en empresa condenada por determinados delitos en los:",
+    opts:["5 años anteriores","8 años anteriores","10 años anteriores","2 años anteriores"],
+    a:2,
+    e:"Art. 22 Ley 5/2014: el representante legal no puede haber sido administrador de empresa condenada por insolvencia, delitos contra la Hacienda Pública o la SS, contra los derechos de los trabajadores o intromisión en DDFF en los 10 AÑOS anteriores. Los plazos de sanción SP son 2 años (grave) o 4 años (muy grave)."
+  },
+  {
+    t:"sp",
+    q:"Las medidas provisionales del art. 55 Ley 5/2014 son acordadas inicialmente por:",
+    opts:["La autoridad competente (SES, Delegados del Gobierno)","Los Jefes de Seguridad de las empresas afectadas","Los miembros de las FCS, dando cuenta inmediata a la autoridad competente","El Jefe de la Unidad Provincial de SP del CNP"],
+    a:2,
+    e:"Las medidas provisionales (ocupación, suspensión, cese, desconexión y retirada) son acordadas por miembros de las FCS, que dan cuenta inmediata a la autoridad competente. Esta debe ratificarlas, modificarlas o revocarlas en máximo 15 días. Su duración máxima es de 6 meses."
+  },
+  {
+    t:"sp",
+    q:"¿A qué plazo deben ratificarse, modificarse o revocarse las medidas provisionales de la Ley 5/2014?",
+    opts:["7 días","10 días hábiles","15 días","30 días"],
+    a:2,
+    e:"Las medidas provisionales deben ser ratificadas, modificadas o revocadas en el plazo máximo de 15 días. Si no se incoa procedimiento sancionador en ese plazo, quedan sin efecto. La duración máxima de estas medidas es de 6 meses. Trampa habitual: confundir 15 días con 10."
+  },
+  {
+    t:"sp",
+    q:"Las inspecciones planificadas anuales de los servicios de SP son realizadas, con carácter general, por:",
+    opts:["La Comisión Nacional de SP","La DGGC para todas las categorías","El CNP con carácter general; la GC para guardas rurales y centros de formación relacionados","El SES directamente a través de sus unidades especializadas"],
+    a:2,
+    e:"Art. 53-54 Ley 5/2014: inspecciones anuales planificadas. Las realiza el CNP con carácter general; la GC para guardas rurales y centros de formación relacionados con guardas rurales; la policía autonómica en su CCAA. Al finalizar se extiende acta."
+  },
+  {
+    t:"sp",
+    q:"El Plan Red Azul-SEGURPRI define los principios rectores de la colaboración entre CNP y SP. ¿Cuáles son?",
+    opts:["Legalidad, Proporcionalidad y Eficacia","Legalidad, Seguridad y Relación","Cooperación, Seguridad e Información","Legalidad, Coordinación y Subsidiariedad"],
+    a:1,
+    e:"El Plan Integral de Colaboración Policía Nacional-Seguridad Privada (SEGURPRI) se rige por los principios de Legalidad, Seguridad y Relación. Los grupos SEGURPRI son el canal de transmisión entre CNP y SP."
+  },
+  {
+    t:"sp",
+    q:"Están obligadas a adoptar medidas de seguridad privada las joyerías, platerías y galerías de arte. ¿Cuál de los siguientes establecimientos NO está incluido expresamente en el art. 51 Ley 5/2014?",
+    opts:["Entidades de crédito","Gasolineras y farmacias","Locales de juego y apuestas","Supermercados con facturación superior a 1 millón de euros"],
+    a:3,
+    e:"El art. 51 Ley 5/2014 obliga a: entidades de crédito, joyerías/platerías/galerías/antigüedades, gasolineras, farmacias, lotería, apuestas, mutuas, locales de juego, centrales de alarmas, fábricas de explosivos/armas/sustancias peligrosas, y grandes eventos. Los supermercados por facturación NO están previstos."
+  },
+  {
+    t:"sp",
+    q:"El contrato de servicios de SP debe comunicarse al MI o CA con:",
+    opts:["Inmediatamente después de la firma","Antelación al inicio del servicio","En los 10 días siguientes al inicio del servicio","Solo si el contrato supera 6 meses de duración"],
+    a:1,
+    e:"Art. 9 Ley 5/2014: la contratación de SP debe hacerse siempre por ESCRITO y comunicarse al MI o CCAA con antelación al inicio. En investigación privada, el contrato solo puede contener datos para identificar a las partes, sin datos personales de terceros."
+  },
+  {
+    t:"sp",
+    q:"Un Vigilante de Seguridad detecta durante su servicio que alguien está cometiendo un delito. ¿Qué debe hacer?",
+    opts:["Detenerlo, interrogarlo para recabar información y luego entregarlo a las FCS","Detenerlo y ponerlo inmediatamente a disposición de las FCS, sin interrogarlo","Avisar a las FCS y no intervenir en ningún caso","Detenerlo y elaborar un atestado completo para entregarlo al juzgado"],
+    a:1,
+    e:"El personal SP puede detener (art. 32 Ley 5/2014) pero debe poner INMEDIATAMENTE a disposición de las FCS. NO pueden interrogar al detenido. No pueden elaborar atestados (función exclusiva de las FCS). Tampoco pueden simultanear funciones de seguridad con otras actividades."
+  },
+  {
+    t:"sp",
+    q:"La contratación de investigación privada tiene una restricción específica respecto a los datos personales. ¿Cuál?",
+    opts:["Está prohibido recopilar cualquier dato personal del investigado","El contrato solo puede contener los datos necesarios para identificar a las partes, sin datos personales de terceros","Se requiere autorización judicial para iniciar cualquier investigación privada","Los datos recogidos deben depositarse en el RNSP en 24 horas"],
+    a:1,
+    e:"En investigación privada (art. 9 Ley 5/2014): el contrato solo puede contener los datos precisos para identificar a las partes y el objeto de la investigación, sin incluir datos personales de los terceros investigados. Esto protege la privacidad antes de iniciarse la investigación."
+  },
+  {
+    t:"sp",
+    q:"La denominación de una empresa de SP NO puede inscribirse en el Registro Nacional si:",
+    opts:["Es igual o similar a otra empresa ya existente en el sector","Coincide exactamente con otra empresa ya inscrita, o induce a confusión con órganos de la AP, o coincide con marca registrada sin consentimiento","Utiliza el término 'nacional' o 'española' en su denominación","Tiene más de 3 palabras en su denominación"],
+    a:1,
+    e:"No puede inscribirse: empresa cuya denominación coincida exactamente con otra ya inscrita; que induzca a error con órganos de la Administración Pública; que coincida con marca registrada salvo consentimiento del titular. La mera similitud no basta: debe ser coincidencia exacta o inducción a error."
+  },
+  {
+    t:"sp",
+    q:"Para habilitarse como personal de SP, entre los requisitos del art. 28 Ley 5/2014, ¿cuánto tiempo debe haber transcurrido desde la separación del servicio en FCS o FFAA?",
+    opts:["Al menos 1 año","Al menos 2 años","Al menos 4 años","Sin límite temporal, basta con no estar en activo"],
+    a:1,
+    e:"Art. 28 Ley 5/2014: no puede habilitarse quien haya sido separado del servicio en las FCS o FFAA en los 2 años anteriores. Este mismo plazo rige para no estar sancionado por infracción GRAVE en materia SP (4 años para muy grave). Trampa: confundir el plazo de separación del servicio (2 años) con el de sanción muy grave (4 años)."
+  },
+
+  // ── T14 ──
+  {
+    t:"t14",
+    q:"¿A partir de qué edad es obligatorio tener el Documento Nacional de Identidad (DNI)?",
+    opts:["16 años","18 años","14 años","12 años"],
+    a:2,
+    e:"El DNI es obligatorio a partir de los 14 años (art. 9 LO 4/2015). Es personal e intransferible. Es el único documento que tiene suficiente valor por sí solo para acreditar la identidad. Su sustracción o extravío debe denunciarse."
+  },
+  {
+    t:"t14",
+    q:"Según la LO 4/2015, las FCS pueden requerir la identificación de personas en vía pública en dos supuestos: cuando haya indicios de que han podido participar en una infracción y cuando:",
+    opts:["Sean extranjeras y no puedan acreditar situación regular","Sea razonablemente necesario para prevenir la comisión de un delito","Presenten actitud sospechosa a juicio del agente","Se encuentren en las proximidades de una zona declarada de especial vigilancia"],
+    a:1,
+    e:"Los dos únicos supuestos del art. 16 LO 4/2015 para requerir identificación son: (1) indicios de participación en infracción, y (2) cuando sea razonablemente necesario para PREVENIR la comisión de un delito. No basta la mera actitud sospechosa ni la condición de extranjero."
+  },
+  {
+    t:"t14",
+    q:"Si una persona se niega a identificarse in situ ante la Policía, puede ser trasladada a dependencias policiales. ¿Cuánto tiempo máximo puede permanecer allí?",
+    opts:["3 horas máximo","6 horas máximo","Hasta que se identifique, sin límite temporal","24 horas como en la detención policial"],
+    a:1,
+    e:"Art. 16 LO 4/2015: el tiempo en dependencias policiales a los SOLOS EFECTOS DE IDENTIFICACIÓN no puede superar en ningún caso las 6 HORAS. Este traslado NO es una detención. Trampa clásica: confundir con las 72 horas de detención preventiva o las 24 horas de detención policial."
+  },
+  {
+    t:"t14",
+    q:"Las diligencias practicadas durante las identificaciones en dependencias policiales (libro-registro) se comunican únicamente a:",
+    opts:["El Ministerio del Interior y el Ministerio Fiscal","La autoridad judicial y el Ministerio Fiscal","El Delegado del Gobierno y el Ministerio Fiscal","Solo al Ministerio Fiscal"],
+    a:1,
+    e:"El libro-registro de identificaciones solo se comunica a la AUTORIDAD JUDICIAL y al MINISTERIO FISCAL. Mensualmente se envía al MF un extracto con las diligencias practicadas indicando el tiempo empleado en cada caso. Al finalizar, se entrega al interesado un volante con tiempo, causa y agentes."
+  },
+  {
+    t:"t14",
+    q:"Los asientos del libro-registro de diligencias de identificación se cancelan de oficio a los:",
+    opts:["1 año","2 años","3 años","6 meses"],
+    a:2,
+    e:"Los asientos en el registro de identificaciones se cancelan de oficio a los 3 AÑOS. No confundir: la prescripción de infracciones leves de la LO 4/2015 es 6 meses; la cancelación de asientos del RCISC para infracciones graves es 2 años, y muy graves 3 años."
+  },
+  {
+    t:"t14",
+    q:"El registro corporal externo (art. 20 LO 4/2015), si exige dejar a la vista partes del cuerpo normalmente cubiertas, debe realizarse:",
+    opts:["Preferentemente por agente del mismo sexo y en lugar reservado","Obligatoriamente por agente del mismo sexo y en lugar reservado fuera de vista de terceros","Por cualquier agente si hay urgencia justificada, con constancia escrita","Siempre requiere autorización judicial previa"],
+    a:1,
+    e:"Art. 20 LO 4/2015: el registro corporal externo debe realizarse por agente del MISMO SEXO. Si exige dejar a la vista partes normalmente cubiertas: en LUGAR RESERVADO y FUERA DE VISTA DE TERCEROS. EXCEPCIÓN: si hay riesgo grave e inminente para los agentes, puede omitirse estas condiciones. Se puede realizar contra la voluntad del afectado con compulsión indispensable."
+  },
+  {
+    t:"t14",
+    q:"La proyección de haces de luz sobre miembros de las FCS para impedir o dificultar sus funciones constituye, según la LO 4/2015:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","Delito de atentado a la autoridad (no es infracción administrativa)"],
+    a:2,
+    e:"Art. 37 LO 4/2015: proyectar haces de luz sobre miembros de FCS para impedir/dificultar sus funciones es infracción LEVE. Distinto de proyectar haces sobre pilotos/conductores que pueda deslumbrar y provocar accidentes, que es infracción MUY GRAVE (art. 35). La clasificación del haz de luz depende de la víctima y el propósito."
+  },
+  {
+    t:"t14",
+    q:"La presencia de reuniones o manifestaciones no comunicadas en infraestructuras de servicios básicos que generen riesgo para la vida o integridad de las personas constituye, según la LO 4/2015:",
+    opts:["Infracción leve de los organizadores","Infracción grave de todos los participantes","Infracción muy grave de los organizadores","Delito contra el orden público, no infracción administrativa"],
+    a:2,
+    e:"Art. 35 LO 4/2015: infracción MUY GRAVE. La responsabilidad recae sobre los ORGANIZADORES (no en los participantes). Se exige que sean NO COMUNICADAS, que afecten a infraestructuras de servicios básicos (incluyendo sobrevuelo) y que generen riesgo para vida/integridad."
+  },
+  {
+    t:"t14",
+    q:"Perturbar gravemente la seguridad ciudadana en reuniones o manifestaciones frente al Congreso, Senado o Asambleas de las CCAA, incluso cuando NO estuvieran reunidas, es:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","Solo delito, no infracción administrativa"],
+    a:1,
+    e:"Art. 36 LO 4/2015: es infracción GRAVE. La expresión 'aunque no estuvieran reunidas' es clave: la protección del edificio y del entorno es permanente, no solo cuando funcione la institución. Esta matización aparece habitualmente en examen."
+  },
+  {
+    t:"t14",
+    q:"¿Cuál de los siguientes comportamientos constituye una infracción GRAVE conforme al art. 36 LO 4/2015?",
+    opts:["Consumir bebidas alcohólicas en vía pública perturbando la tranquilidad ciudadana","Ocupar un inmueble ajeno contra la voluntad del propietario","Negarse a identificarse ante requerimiento de autoridad o agentes","Escalar edificios sin autorización con riesgo de daños"],
+    a:2,
+    e:"La negativa a identificarse ante requerimiento es infracción GRAVE. Las otras opciones son infracciones LEVES (art. 37): consumo de alcohol perturbador, ocupación de inmueble ajeno y escalada sin autorización. La alerta trampa: la resistencia/desobediencia a agentes en ejercicio de funciones (cuando no sea delito) también es GRAVE."
+  },
+  {
+    t:"t14",
+    q:"El consumo o tenencia de drogas en la vía pública (TESP) aunque no sea para tráfico es, según la LO 4/2015:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","No es infracción administrativa, solo penal"],
+    a:1,
+    e:"Art. 36.16 LO 4/2015: infracción GRAVE. Incluye el consumo o tenencia ilícita de drogas en lugares, vías, establecimientos públicos o transportes colectivos, aunque no estén destinadas al tráfico, y el abandono de los instrumentos utilizados en dichos lugares."
+  },
+  {
+    t:"t14",
+    q:"Según la Instrucción 7/2025 de la SES, el consumo o mera tenencia de drogas en un vehículo ESTACIONADO:",
+    opts:["Es siempre infracción grave del art. 36 LO 4/2015","Es infracción muy grave si se consume en zona escolar","NO constituye infracción administrativa de la LO 4/2015, salvo indicios de tráfico o comercio","Es infracción leve que puede derivar en grave si hay reincidencia"],
+    a:2,
+    e:"Instrucción 7/2025 SES: el consumo o mera tenencia de drogas en vehículo ESTACIONADO NO es infracción administrativa de la LO 4/2015, salvo que haya indicios de tráfico o comercio. Si el vehículo está EN MOVIMIENTO puede tipificarse como delito contra la salud pública o seguridad vial."
+  },
+  {
+    t:"t14",
+    q:"Las sanciones pecuniarias por infracciones GRAVES de la LO 4/2015 oscilan entre:",
+    opts:["100 y 600 euros","601 y 30.000 euros","30.001 y 300.000 euros","30.001 y 600.000 euros"],
+    a:1,
+    e:"Tabla de sanciones: LEVES 100-600€ (Delegados del Gobierno), GRAVES 601-30.000€ (Delegados del Gobierno), MUY GRAVES 30.001-600.000€ (SES en grado mínimo y medio; MI en grado máximo de 410.001-600.000€). Los Alcaldes pueden sancionar cuando las infracciones se cometan en espacios públicos municipales."
+  },
+  {
+    t:"t14",
+    q:"¿Quién es competente para imponer sanciones por infracciones MUY GRAVES en su grado MÁXIMO según la LO 4/2015?",
+    opts:["La Secretaría de Estado de Seguridad","El Delegado del Gobierno","El Ministro del Interior","El Director General de la Policía"],
+    a:2,
+    e:"MI: grado máximo de muy graves (410.001-600.000€). SES: grado mínimo (30.001-220.000€) y medio (220.001-410.000€) de muy graves. Delegados del Gobierno: infracciones graves y leves. Trampa: el SES sanciona los grados inferiores de las muy graves, pero el máximo corresponde al MI."
+  },
+  {
+    t:"t14",
+    q:"La prescripción de una infracción LEVE de la LO 4/2015 es de:",
+    opts:["3 meses","6 meses","1 año","2 años"],
+    a:1,
+    e:"Prescripción de INFRACCIONES: Leves 6 meses, Graves 1 año, Muy graves 2 años. Prescripción de SANCIONES: Leves 1 año, Graves 2 años, Muy graves 3 años. Cancelación RCISC: Leves 1 año, Graves 2 años, Muy graves 3 años. Trampa: la prescripción de infracción leve (6 meses) se confunde con la de sanción leve (1 año)."
+  },
+  {
+    t:"t14",
+    q:"La cancelación de asientos en el RCISC (Registro Central de Infracciones a la Seguridad Ciudadana) para infracciones MUY GRAVES se produce a los:",
+    opts:["1 año de la firmeza","2 años de la firmeza","3 años de la firmeza","5 años de la firmeza"],
+    a:2,
+    e:"Cancelación RCISC (desde firmeza en vía administrativa): Leves 1 año, Graves 2 años, MUY GRAVES 3 años. La prescripción de sanciones sigue los mismos plazos: Leves 1 año, Graves 2 años, Muy graves 3 años. Coinciden exactamente para facilitar memoria."
+  },
+  {
+    t:"t14",
+    q:"La reincidencia que lleva a aplicar el grado MEDIO de sanción se aprecia cuando:",
+    opts:["Se comete más de una infracción de cualquier tipo en 2 años con resolución firme","Se comete más de una infracción de la MISMA NATURALEZA en 2 años con resolución firme en vía administrativa","Se comete más de una infracción en 1 año con cualquier resolución","Se comete más de una infracción muy grave en 3 años"],
+    a:1,
+    e:"Reincidencia = comisión en el término de 2 años de más de 1 infracción de LA MISMA NATURALEZA con resolución firme en vía administrativa. Es uno de los cuatro supuestos del grado MEDIO (junto a daño considerable, riesgo grave y perjuicio a muchas personas)."
+  },
+  {
+    t:"t14",
+    q:"En el procedimiento abreviado de la LO 4/2015, el pago voluntario en el plazo de 15 días:",
+    opts:["Reduce la multa en un 25% y permite formular alegaciones","Reduce la multa en un 30%","Reduce la multa en un 50%, implica renuncia a formular alegaciones y pone fin al procedimiento","Extingue la infracción sin inscripción en el RCISC"],
+    a:2,
+    e:"El procedimiento abreviado solo aplica a infracciones graves y leves. Pago voluntario en 15 días: reducción del 50% de la multa, renuncia a formular alegaciones y terminación del procedimiento. Trampa: NO extingue la inscripción en RCISC, aunque sí termina el expediente."
+  },
+  {
+    t:"t14",
+    q:"Tolerar el consumo ilegal o el tráfico de drogas en locales públicos, siendo el propietario o encargado, constituye:",
+    opts:["Infracción muy grave del establecimiento","Infracción grave del propietario, administrador o encargado","Infracción leve, salvo reincidencia","Solo es delito, no cabe infracción administrativa"],
+    a:1,
+    e:"Art. 36 LO 4/2015: infracción GRAVE. Responsables: propietarios, administradores o encargados de los locales que toleren el consumo ilegal o el tráfico de drogas en sus locales. Esta regla de responsabilidad indirecta es trampa frecuente en examen."
+  },
+  {
+    t:"t14",
+    q:"El uso de imágenes de autoridades o FCS que pueda poner en peligro la seguridad de los agentes o el éxito de una operación constituye, según la LO 4/2015:",
+    opts:["Infracción leve, salvo que cause perjuicio real","Infracción grave","Infracción muy grave","No está tipificada en la LO 4/2015"],
+    a:1,
+    e:"Art. 36.23 LO 4/2015: infracción GRAVE. Requisito: que el uso de las imágenes PUEDA PONER EN PELIGRO (no es necesario que lo haga efectivamente) la seguridad personal o familiar de los agentes, las instalaciones protegidas o el éxito de una operación."
+  },
+  {
+    t:"t14",
+    q:"Solicitar o aceptar servicios sexuales retribuidos en zonas de tránsito público próximas a lugares destinados a menores es, según la LO 4/2015:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","No está regulado en la LO 4/2015"],
+    a:1,
+    e:"Art. 36 LO 4/2015: infracción GRAVE. Los tres supuestos son: (1) en zonas de tránsito público, (2) en proximidades de lugares destinados a menores, o (3) generando riesgo para la seguridad vial. La mera solicitud o aceptación es suficiente, no requiere que se realice el servicio."
+  },
+  {
+    t:"t14",
+    q:"Las multas a menores de edad por consumo/tenencia ilícita de drogas pueden suspenderse según la Disposición Adicional 5ª LO 4/2015 si:",
+    opts:["La multa es inferior a 600 euros","El menor accede a tratamiento/rehabilitación a solicitud propia y de sus representantes","Los padres abonan la multa en el plazo de 15 días","El juez de menores autoriza la suspensión"],
+    a:1,
+    e:"DA 5ª LO 4/2015: la multa a menores puede SUSPENDERSE si el menor (a solicitud propia y de sus representantes legales) accede a tratamiento o reeducación. Si abandonan el tratamiento, se ejecuta la sanción económica. Esta es una medida de política de salud pública, no de responsabilidad penal."
+  },
+  {
+    t:"t14",
+    q:"La obligación de registro documental del art. 25 LO 4/2015 alcanza a los titulares de embarcaciones de alta velocidad y aeronaves ligeras. ¿Cuál de los siguientes establecimientos también está incluido?",
+    opts:["Gasolineras","Farmacias","Establecimientos de cerrajería de seguridad","Bancos y cajas de ahorro"],
+    a:2,
+    e:"Art. 25 LO 4/2015 obliga a mantener registro documental: hospedaje, transporte de personas, cerrajería de seguridad, comercio/reparación de objetos usados, alquiler/desguace de vehículos, objetos de arte, joyería/metales, chatarra, venta de productos químicos peligrosos a particulares, acceso comercial a servicios telemáticos en lugar público, y embarcaciones/aeronaves ligeras."
+  },
+  {
+    t:"t14",
+    q:"El parte de entrada en establecimientos de hospedaje debe ser firmado por toda persona:",
+    opts:["Mayor de 16 años","Mayor de 18 años","Mayor de 14 años (para menores de 14, los datos los facilita el adulto acompañante)","Que pernocte más de una noche"],
+    a:2,
+    e:"Art. 25 LO 4/2015: debe firmarlo toda persona mayor de 14 años. Para menores de 14, los datos son facilitados por el adulto acompañante. Trampa: la obligación del DNI empieza a los 14 años; la del parte de hospedaje también. No confundir con la mayoría de edad (18) ni con los 16 años."
+  },
+  {
+    t:"t14",
+    q:"La disolución de reuniones o manifestaciones por las FCS (art. 23 LO 4/2015) requiere previo aviso EXCEPTO cuando:",
+    opts:["Los asistentes incumplan el orden establecido por los organizadores","La reunión no haya sido comunicada previamente","La alteración se produzca con armas, artefactos explosivos, objetos contundentes u otro modo peligroso","Haya riesgo de que la reunión genere tráfico que dificulte la circulación"],
+    a:2,
+    e:"Art. 23 LO 4/2015 en relación con art. 5 LO 9/1983: las FCS deben avisar PREVIAMENTE antes de disolver (puede ser verbal si hay urgencia). EXCEPCIÓN: si la alteración del orden se produce CON ARMAS, ARTEFACTOS EXPLOSIVOS, OBJETOS CONTUNDENTES u otro modo peligroso, se puede actuar sin previo aviso."
+  },
+  {
+    t:"t14",
+    q:"¿Cuáles son las cuatro causas que permiten la suspensión o disolución de una reunión según el art. 5 LO 9/1983 de Reunión?",
+    opts:["Ilicitud penal, alteración del orden con peligro para personas/bienes, uniformes paramilitares de asistentes, organización por militares o GC","Ausencia de comunicación, alteración del tráfico, ruido excesivo y bloqueo de infraestructuras básicas","Presencia de menores de edad, incumplimiento de la ruta autorizada, negativa a identificarse y presencia de pancartas ofensivas","Participación de extranjeros sin residencia legal, obstrucción de edificios públicos, desobediencia al agente y duración superior a 4 horas"],
+    a:0,
+    e:"Art. 5 LO 9/1983: causas de disolución/suspensión: (1) reunión ilícita conforme al CP, (2) alteración del orden público con peligro para personas o bienes, (3) uniformes paramilitares de asistentes, (4) organización o asistencia de miembros de las FFAA o GC en uniforme o con armas."
+  },
+  // ── más T9 ──
+  {
+    t:"t9",
+    q:"La obediencia debida en la LO 2/1986, ¿qué mando exime de responsabilidad al subordinado que sigue una orden?",
+    opts:["Toda orden de superior jerárquico, sin excepción","Las órdenes que no constituyan manifiestamente un delito","Las órdenes escritas y firmadas por el mando que las emite","Las órdenes relacionadas con el servicio de seguridad, no con actuaciones personales"],
+    a:1,
+    e:"La LO 2/1986 establece sujeción a jerarquía y subordinación, PERO la obediencia debida no ampara el cumplimiento de órdenes que constituyan manifiestamente un delito. Este límite es absoluto independientemente del rango del mando que las emita."
+  },
+  {
+    t:"t9",
+    q:"¿Qué organismo planifica la inspección anual de los servicios de SP cuando estos pertenecen a una CCAA con policía propia?",
+    opts:["El CNP, con carácter siempre exclusivo","La DGGC para todo el ámbito nacional","La policía autonómica en su CA","La Comisión Nacional de SP conjuntamente con la policía autonómica"],
+    a:2,
+    e:"Las inspecciones las realiza: CNP (carácter general), GC (guardas rurales y centros formativos relacionados) y POLICÍA AUTONÓMICA en su ámbito territorial cuando tenga competencia. Esta atribución a la policía autonómica opera en las CCAA con cuerpo policial propio."
+  },
+  {
+    t:"t9",
+    q:"Según la LO 2/1986, la conducción interurbana de presos y detenidos es función exclusiva de:",
+    opts:["CNP (Policía Nacional)","Guardia Civil","Cualquiera de las dos FCSE, según disponibilidad","Fuerzas del Ejército cuando sea necesario"],
+    a:1,
+    e:"La conducción interurbana de presos y detenidos es función exclusiva de la GUARDIA CIVIL (art. 12.B LO 2/1986). La vigilancia perimetral de centros penitenciarios puede ser prestada por personal de SP (ley 5/2014), pero la conducción interurbana corresponde a la GC."
+  },
+  {
+    t:"t9",
+    q:"Las organizaciones sindicales constituidas por miembros del CNP, ¿pueden afiliarse a confederaciones sindicales generales (UGT, CCOO, etc.)?",
+    opts:["Sí, sin ninguna restricción","Sí, si lo autoriza el Consejo de Policía","No pueden federarse con organizaciones ajenas al Cuerpo; sí pueden integrarse en organizaciones internacionales de igual carácter","No pueden afiliarse a ninguna organización externa bajo ninguna circunstancia"],
+    a:2,
+    e:"LO 2/1986: las organizaciones sindicales del CNP son de ámbito nacional y exclusivamente de miembros del CNP. NO pueden federarse con organizaciones ajenas al Cuerpo (prohibición de afiliarse a UGT, CCOO, etc.), pero sí pueden integrarse en organizaciones INTERNACIONALES de igual carácter policial."
+  },
+  {
+    t:"t9",
+    q:"El principio de 'relaciones con los ciudadanos' de la LO 2/1986 exige que los agentes actúen con decisión sin demora cuando:",
+    opts:["Exista cualquier infracción penal, aunque sea leve","Exista daño grave, inmediato e irreparable, con la menor perturbación de la vida ciudadana","Se supere el umbral de violencia establecido en el protocolo de actuación","Siempre que el superior jerárquico lo autorice expresamente"],
+    a:1,
+    e:"El principio de relaciones con la comunidad exige actuar con decisión y sin demora cuando haya daño grave, inmediato e irreparable para ciudadanos, con la MENOR PERTURBACIÓN de la vida ciudadana. Los principios de congruencia, oportunidad y proporcionalidad rigen el uso de medios y métodos."
+  },
+  // ── más SP ──
+  {
+    t:"sp",
+    q:"La Comisión Provincial de SP (art. 16 Ley 5/2014) está presidida por:",
+    opts:["El DGP y el DGGC conjuntamente (copresidencia)","El Delegado del Gobierno en CCAA uniprovinciales, o el Subdelegado en las demás","El Jefe de la Unidad Provincial de SP del CNP","El Gobernador Civil de la provincia"],
+    a:1,
+    e:"Presidencia de la Comisión Provincial: el DELEGADO DEL GOBIERNO en CCAA uniprovinciales, y el SUBDELEGADO DEL GOBIERNO en el resto. La copresidencia DGP+DGGC es de la Comisión NACIONAL. El secretario provincial es el Jefe de la Unidad Provincial de SP del CNP."
+  },
+  {
+    t:"sp",
+    q:"Las Comisiones Mixtas de SP (tanto la Nacional como la Provincial) tienen carácter:",
+    opts:["Ejecutivo y vinculante para las empresas de SP","Consultivo y de colaboración, con reuniones anuales","Ejecutivo para sancionar y consultivo para autorizar actividades","Legislativo en materia de SP de sus respectivos ámbitos"],
+    a:1,
+    e:"Tanto la Comisión Nacional como las Comisiones Provinciales de SP tienen carácter CONSULTIVO Y DE COLABORACIÓN. Sus reuniones son ANUALES. No tienen carácter ejecutivo ni vinculante. Son órganos de coordinación, no de mando."
+  },
+  {
+    t:"sp",
+    q:"El Jefe de Seguridad (art. 35 Ley 5/2014) tiene entre sus funciones la custodia y traslado de armas de la empresa. ¿Cuál de las siguientes NO es función del Jefe de Seguridad?",
+    opts:["Análisis de riesgo y planificación de actuaciones","Organización, dirección e inspección del personal","Elaborar informes de investigación privada y ratificarlos ante autoridades","Coordinación con protección civil en emergencias"],
+    a:2,
+    e:"La elaboración de informes de investigación privada es función EXCLUSIVA del Detective Privado (art. 37 Ley 5/2014), NO compatible con funciones del resto del personal SP. El Jefe de Seguridad (art. 35) realiza: análisis de riesgo, organización, propuesta de sistemas, formación, coordinación PC y colaboración con FCS."
+  },
+  {
+    t:"sp",
+    q:"El Detective Privado (art. 37 Ley 5/2014) tiene una incompatibilidad expresa con:",
+    opts:["Trabajar para más de una empresa a la vez","Las funciones del resto del personal de SP (Vigilante, Escolta, Jefe, Director de Seguridad)","La investigación en otras CCAA sin autorización del Delegado del Gobierno","Utilizar medios electrónicos de seguimiento sin autorización judicial"],
+    a:1,
+    e:"El ejercicio de funciones de Detective Privado es incompatible con las funciones del resto del personal de SP. NO puede ser simultáneamente Vigilante, Escolta, Jefe o Director de Seguridad. Además, no puede investigar la vida íntima en domicilios ni delitos perseguibles de oficio."
+  },
+  {
+    t:"sp",
+    q:"Según la Ley 5/2014, ¿qué tipo de formación previa requiere el Director de Seguridad para habilitarse?",
+    opts:["Certificado de profesionalidad o Ciclo Formativo de FP","Título de grado universitario o superación del curso MIR del MI","Solo experiencia acreditada de 5 años en el sector","No se requiere formación específica, solo superar las pruebas de aptitud"],
+    a:1,
+    e:"El Director de Seguridad, junto con el Jefe de Seguridad y el Detective Privado, requiere TÍTULO DE GRADO UNIVERSITARIO o superación del CURSO MIR (Máster de Investigación y Responsabilidad en SP). En cambio, Vigilante, Escolta, Guarda Rural y sus especialidades requieren Certificado de Profesionalidad o FP."
+  },
+  // ── más T14 ──
+  {
+    t:"t14",
+    q:"Las sanciones accesorias para infracciones MUY GRAVES de la LO 4/2015 incluyen suspensión temporal de actividad de:",
+    opts:["Hasta 6 meses","6 meses y 1 día a 2 años (reincidencia hasta 6 años)","3 meses a 1 año","Hasta 3 años"],
+    a:1,
+    e:"Sanciones accesorias: GRAVES → suspensión hasta 6 meses, clausura hasta 2 años. MUY GRAVES → suspensión de 6 meses y 1 día a 2 años (con reincidencia hasta 6 años), clausura de 2 años y 1 día a 6 años. Trampa: para graves el máximo de suspensión es 6 meses, y las muy graves empiezan desde 6 meses y 1 día."
+  },
+  {
+    t:"t14",
+    q:"La prescripción de una sanción MUY GRAVE de la LO 4/2015 empieza a computarse:",
+    opts:["Desde el día de la comisión de la infracción","Desde la notificación de la resolución sancionadora","Desde el día siguiente a la firmeza en vía administrativa","Desde que se archiva el expediente sancionador"],
+    a:2,
+    e:"La prescripción de SANCIONES se computa desde el día siguiente a la FIRMEZA EN VÍA ADMINISTRATIVA. La prescripción de INFRACCIONES se computa desde el día de la comisión (o desde la última infracción si es continuada, o desde que se eliminó la situación ilícita si hay efectos permanentes)."
+  },
+  {
+    t:"t14",
+    q:"Dañar o deslucir bienes de uso o servicio público o bienes privados en vía pública (cuando no sea infracción penal) constituye:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","No está tipificado en la LO 4/2015"],
+    a:2,
+    e:"Art. 37 LO 4/2015: es infracción LEVE. No confundir con causar desórdenes en vías o espacios públicos obstaculizando gravemente la SC (infracción GRAVE, art. 36). La clave es la gravedad del impacto en la seguridad ciudadana, no solo el acto material."
+  },
+  {
+    t:"t14",
+    q:"Celebrar espectáculos públicos quebrantando una prohibición o suspensión ordenada por la autoridad por razones de seguridad ciudadana es:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve de los organizadores","Delito contra el orden público"],
+    a:0,
+    e:"Art. 35 LO 4/2015: es infracción MUY GRAVE. Tres supuestos muy graves: (1) reuniones no comunicadas en infraestructuras críticas con riesgo, (2) celebrar espectáculos quebrantando prohibición/suspensión, (3) fabricar/circular armas/explosivos con perjuicios muy graves, (4) proyectar haces de luz sobre pilotos/conductores."
+  },
+  {
+    t:"t14",
+    q:"¿Cuál de las siguientes conductas constituye una infracción MUY GRAVE en la LO 4/2015?",
+    opts:["Negarse a identificarse ante la Policía","Consumo de drogas en vía pública","Proyección de haces de luz sobre pilotos o conductores que pueda deslumbrar y provocar accidentes","Desobedecer una orden de disolución de una reunión"],
+    a:2,
+    e:"Proyectar haces de luz sobre PILOTOS O CONDUCTORES que pueda deslumbrar y provocar accidentes es MUY GRAVE. Proyectarlos sobre FCS para dificultar sus funciones es LEVE. Negarse a identificarse o desobedecer la disolución son GRAVES. Consumo de drogas en vía pública es GRAVE."
+  },
+  // ── más T9 y cruces ──
+  {
+    t:"t9",
+    q:"El control de la seguridad privada (inspección y régimen sancionador) es competencia exclusiva del:",
+    opts:["CNP (Policía Nacional)","Estado, a través del CNP con carácter general y la GC para guardas rurales","Las CCAA en su territorio, sin intervención del Estado","La Comisión Nacional de SP"],
+    a:1,
+    e:"El control de SP corresponde al ESTADO. La DGP habilita a casi todo el personal de SP; la DGGC habilita a Guardas Rurales y sus especialidades. Las inspecciones las realiza el CNP (general), la GC (guardas rurales) y la policía autonómica en su CA. Las CCAA pueden sancionar e inspeccionar actividades realizadas en su territorio."
+  },
+  {
+    t:"t9",
+    q:"La Unidad Central de Seguridad Privada del CNP tiene competencia para:",
+    opts:["Solo las empresas de ámbito local","Las empresas con actividad en más de una CCAA y habilitaciones del personal en todo el territorio","Solo las infracciones muy graves","Las inspecciones rutinarias de todas las empresas sin distinción de ámbito"],
+    a:1,
+    e:"La Unidad Orgánica Central de SP del CNP (en la DGP) es competente para las empresas con actividad en más de una CCAA y para la habilitación del personal en todo el territorio nacional. Las Unidades Provinciales actúan en su demarcación."
+  },
+  {
+    t:"sp",
+    q:"Un escolta privado, durante su servicio, detecta que alguien va a agredir al protegido. ¿Puede detener al agresor?",
+    opts:["No, los escoltas nunca pueden detener a nadie","Sí, puede detenerlo, interrogarlo y entregarlo luego a las FCS","Sí, puede detenerlo en caso de agresión o intento manifiesto de agresión al protegido, poniéndolo INMEDIATAMENTE a disposición de las FCS, sin interrogarlo","Solo puede detenerlo si el agresor está en posesión de un arma"],
+    a:2,
+    e:"La regla general es que el Escolta Privado NO puede realizar detenciones. EXCEPCIÓN: ante agresión o intento manifiesto de agresión a la persona protegida, SÍ puede detener, pero debe poner INMEDIATAMENTE a disposición de las FCS y NO puede interrogar al detenido."
+  },
+  {
+    t:"t14",
+    q:"¿Qué entidad recibe mensualmente el extracto de las diligencias de identificación practicadas por las FCS?",
+    opts:["El Ministerio del Interior","El Ministerio Fiscal","La autoridad judicial competente","El Defensor del Pueblo"],
+    a:1,
+    e:"Art. 16 LO 4/2015: el extracto de las diligencias de identificación se envía MENSUALMENTE al MINISTERIO FISCAL, con indicación del tiempo empleado en cada caso. El libro-registro completo solo se comunica a la autoridad judicial y al MF. El Defensor del Pueblo no está en la cadena de control de estas diligencias."
+  },
+  {
+    t:"t9",
+    q:"Según la LO 2/1986, el deber de los ciudadanos de prestar auxilio a las FCSE está regulado en el art. 4. Las personas y entidades de seguridad privada tienen una obligación:",
+    opts:["Igual a la de cualquier ciudadano corriente","Especial de colaboración con las FCS","Exenta de colaborar cuando comprometa la confidencialidad del cliente","Limitada a colaborar solo con el CNP, no con la GC"],
+    a:1,
+    e:"Art. 4 LO 2/1986: los ciudadanos tienen el deber genérico de prestar auxilio. Las personas y entidades de SEGURIDAD PRIVADA tienen una ESPECIAL obligación de colaboración. Esta obligación especial también está recogida en la Ley 5/2014 como principio rector de la SP."
+  },
+  {
+    t:"t14",
+    q:"La intrusión en infraestructuras de servicios básicos con interferencia grave en su funcionamiento constituye:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","Delito, no cabe infracción administrativa simultánea"],
+    a:1,
+    e:"Art. 36 LO 4/2015: es infracción GRAVE. No confundir con las REUNIONES NO COMUNICADAS en dichas infraestructuras que generen riesgo vital (infracción MUY GRAVE). La intrusión individual (física, sin organizarse en manifestación) que interfiere en el funcionamiento es GRAVE."
+  },
+  {
+    t:"sp",
+    q:"¿Qué función del Jefe de Seguridad está directamente relacionada con la gestión del personal armado de la empresa de SP?",
+    opts:["Coordinar con protección civil","Proponer los sistemas de seguridad más adecuados","La custodia y traslado de armas de la empresa","Garantizar la colaboración con las FCS"],
+    a:2,
+    e:"Una de las funciones específicas del Jefe de Seguridad (art. 35 Ley 5/2014) es la CUSTODIA Y TRASLADO DE ARMAS de la empresa. No es función del Director de Seguridad ni del Vigilante individualmente. El Jefe es el responsable del armamento como parte de la dirección del servicio."
+  },
+  {
+    t:"t14",
+    q:"El principio de proporcionalidad en el uso de medios y métodos policiales está vinculado en la LO 4/2015 al principio de:",
+    opts:["Legalidad y tipicidad","Congruencia y oportunidad","Adecuación al ordenamiento jurídico","No discriminación"],
+    a:1,
+    e:"Los principios de actuación de las FCS incluyen congruencia, oportunidad y proporcionalidad de forma conjunta. La proporcionalidad exige que el medio empleado sea adecuado y no excesivo respecto al fin perseguido. La LO 4/2015 recoge estos principios en el marco de la actuación policial ordinaria."
+  },
+  {
+    t:"sp",
+    q:"¿Puede un Vigilante de Seguridad prestar servicios simultáneamente como portero de un local nocturno?",
+    opts:["Sí, si el local ha contratado también servicios de seguridad con empresa autorizada","Sí, fuera del horario de servicio de seguridad privada","No, solo puede realizar funciones de seguridad; NO puede simultanear otras funciones","Solo si tiene autorización expresa del Jefe de Seguridad de la empresa"],
+    a:2,
+    e:"Art. 32 Ley 5/2014: los Vigilantes de Seguridad solo pueden realizar sus funciones de seguridad privada y NO pueden simultanear otras actividades mientras están de servicio. Esta prohibición de simultaneidad de funciones es uno de los puntos más preguntados del personal de SP."
+  },
+  {
+    t:"t9",
+    q:"Cuando se comete una infracción en un espacio público municipal, ¿qué autoridad local puede imponer la sanción prevista en la LO 4/2015?",
+    opts:["Ninguna; la competencia es siempre del Delegado del Gobierno","Los Alcaldes cuando las infracciones afecten a espacios o bienes de titularidad local o municipal","Los Concejales delegados de seguridad","La Junta de Seguridad Local"],
+    a:1,
+    e:"Los ALCALDES son competentes para sancionar infracciones de la LO 4/2015 cuando estas se cometan en espacios públicos municipales o afecten a bienes de titularidad local. Esta es la excepción a la regla general de que las sanciones corresponden a los Delegados del Gobierno o al SES/MI."
+  },
+  {
+    t:"t14",
+    q:"¿Cuándo se computa el inicio de la prescripción de una infracción CONTINUADA según la LO 4/2015?",
+    opts:["Desde el inicio de la conducta infractora","Desde la ÚLTIMA infracción cometida","Desde que las FCS tienen conocimiento de los hechos","Desde la primera actuación del procedimiento sancionador"],
+    a:1,
+    e:"Para infracciones continuadas, la prescripción se computa desde la ÚLTIMA infracción. Si la infracción produce efectos permanentes, desde que SE ELIMINÓ la situación ilícita. Para infracciones instantáneas, desde el día de la comisión. Estos tres supuestos deben dominarse perfectamente."
+  },
+  {
+    t:"sp",
+    q:"La habilitación de los profesionales de SP que expira (TIP caducada), ¿implica que el trabajador puede seguir prestando servicios mientras tramita la renovación?",
+    opts:["Sí, durante un período de gracia de 3 meses","Sí, comunicándolo al Jefe de Seguridad","No; la habilitación es condición necesaria para prestar el servicio; sin TIP vigente no puede ejercer","Solo si la caducidad es de menos de 30 días"],
+    a:2,
+    e:"La TIP es condición necesaria y previa para el ejercicio de las funciones de SP. Sin habilitación vigente (TIP caducada o revocada), el trabajador NO puede prestar servicios de SP. Prestar servicios sin habilitación constituye infracción grave tanto para el trabajador como para la empresa."
+  },
+  {
+    t:"t14",
+    q:"La negativa a colaborar con las FCS en la averiguación de delitos o prevención de riesgos cuando existe obligación legal de hacerlo (art. 7 LO 4/2015) es:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","No está tipificada en la LO 4/2015"],
+    a:1,
+    e:"Art. 36 LO 4/2015: la falta de colaboración con las FCS en averiguación de delitos o prevención de SC cuando se tiene obligación legal (art. 7) es infracción GRAVE. Esta obligación de colaboración es especialmente intensa para el personal de seguridad privada (art. 4 LO 2/1986 y Ley 5/2014)."
+  },
+  {
+    t:"t9",
+    q:"La adscripción de unidades del CNP a una CCAA sin cuerpo propio (Andalucía, Aragón, Galicia, Valencia) implica que se adscriben:",
+    opts:["Miembros individuales seleccionados por la CCAA","Unidades completas; no miembros individuales","Miembros voluntarios que solicitan el traslado","Cualquier miembro disponible de las plantillas provinciales"],
+    a:1,
+    e:"LO 2/1986: la adscripción a CCAA sin cuerpo propio se hace de UNIDADES COMPLETAS del CNP, no de miembros individuales. Estas unidades dependen orgánicamente del MI y funcionalmente de la CCAA. Las CCAA no pueden seleccionar individualmente a los agentes adscritos."
+  },
+  {
+    t:"sp",
+    q:"Una empresa de SP solicita inscribir su denominación 'Seguridad Nacional 24H, S.L.' en el RNSP. ¿Puede denegarse la inscripción?",
+    opts:["No, la empresa tiene libertad para elegir su nombre comercial","Sí, porque la denominación puede inducir a error con órganos de la Administración Pública","Solo si otra empresa ya tiene exactamente esa denominación","Solo si el MI lo considera inapropiado por criterios de imagen institucional"],
+    a:1,
+    e:"Una denominación que incorpore 'Nacional' puede inducir a error con órganos de la AP y ser denegada. Los motivos de denegación son: (1) coincidencia exacta con otra empresa inscrita, (2) inducción a error con órganos de la AP, (3) coincidencia con marca registrada sin consentimiento del titular."
+  },
+  {
+    t:"t14",
+    q:"El derecho a recibir información comprensible sobre los motivos de una identificación en la vía pública es:",
+    opts:["Un derecho que solo asiste a ciudadanos españoles","Un derecho que nace solo si el ciudadano pregunta expresamente","Un derecho que debe satisfacerse de forma INMEDIATA y comprensible desde que se produce el requerimiento","Un derecho que puede posponerse hasta que finalice la actuación policial"],
+    a:2,
+    e:"Art. 16 LO 4/2015: la información sobre los motivos de identificación (y del posible traslado a dependencias) debe darse de forma INMEDIATA y COMPRENSIBLE. No es un derecho condicionado a que el ciudadano lo solicite. Al finalizar también se entrega un volante con tiempo de permanencia, causa y agentes actuantes."
+  },
+  {
+    t:"t9",
+    q:"¿Puede el CNP denegar la mediación del Consejo de Policía en materias de derecho individual de los funcionarios?",
+    opts:["No, el Consejo de Policía es competente para todas las materias laborales","Sí, las materias de derecho individual quedan fuera de su ámbito de representación colectiva","Solo si la materia está regulada en la LO 2/1986","Depende de si afecta a más de 50 funcionarios"],
+    a:1,
+    e:"El Consejo de Policía es el órgano de representación COLECTIVA para negociación de condiciones de trabajo generales. Las materias de derecho individual (reclamaciones individuales, recursos de empleados concretos) quedan fuera de su ámbito y se tramitan por los canales habituales de recursos administrativos."
+  },
+  {
+    t:"t14",
+    q:"La LO 4/2015 establece en su art. 25 que los establecimientos que prestan acceso comercial a servicios telefónicos o telemáticos en lugar público deben mantener registro documental. ¿Qué otra obligación tienen respecto a las FCS?",
+    opts:["Comunicar mensualmente las personas que han usado sus servicios","Facilitar la información requerida por las FCS cuando sea necesario para averiguación de delitos o prevención de riesgos","Conservar las comunicaciones privadas de los usuarios durante 6 meses","Someter sus equipos a inspección técnica anual por parte del CNP"],
+    a:1,
+    e:"Art. 25 LO 4/2015: los establecimientos sujetos a registro documental deben FACILITAR LA INFORMACIÓN requerida por las FCS cuando sea necesario para la averiguación de delitos o la prevención de riesgos para la seguridad ciudadana. Esta obligación de colaboración no requiere autorización judicial previa para el registro en sí, pero sí para acceder a contenidos privados."
+  },
+  {
+    t:"sp",
+    q:"Los informes de investigación elaborados por un Detective Privado deben conservarse durante al menos:",
+    opts:["1 año","2 años","3 años","5 años"],
+    a:2,
+    e:"Art. 49 Ley 5/2014: los informes de investigación deben conservarse archivados al menos 3 AÑOS. Un único informe por servicio contratado. Contiene: nº registro, datos del contratante, objeto, medios, resultados, detectives intervinientes y actuaciones. Solo incluye info relacionada con el objeto de la investigación."
+  },
+  {
+    t:"t14",
+    q:"La faltas de respeto y consideración a un miembro de las FCS en ejercicio de sus funciones (cuando no constituya infracción penal) es:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","No está tipificada en la LO 4/2015"],
+    a:2,
+    e:"Art. 37 LO 4/2015: infracción LEVE. La condición 'cuando no constituya infracción penal' es clave: si el comportamiento alcanza el umbral del delito de atentado o resistencia, deja de ser infracción administrativa y es delito. El personal de SP que falta al respeto a la dignidad de las personas incurre en infracción grave de la Ley 5/2014."
+  },
+  {
+    t:"t9",
+    q:"La Policía Local, según la LO 2/1986, ¿puede realizar funciones de Policía Judicial?",
+    opts:["No en ningún caso; es función exclusiva de la GC y el CNP","Sí, en la modalidad de Policía Judicial genérica por mandato judicial o del Ministerio Fiscal","Sí, en toda su amplitud igual que las FCSE","Solo para delitos de tráfico cometidos en el término municipal"],
+    a:1,
+    e:"La Policía Local puede actuar como Policía Judicial genérica (PJ ordinaria) a requerimiento del juez o MF, pero no como PJ específica (que requiere adscripción a los juzgados). Sus funciones propias de PJ se circunscriben al término municipal y a los delitos de su competencia ordinaria."
+  },
+  {
+    t:"sp",
+    q:"¿En qué supuesto puede un Vigilante de Seguridad prestar servicios fuera de las instalaciones objeto de protección?",
+    opts:["Nunca; los vigilantes solo pueden actuar en el interior de las instalaciones","Solo con autorización del Jefe de Seguridad de la empresa","En los supuestos excepcionales previstos en la normativa de SP (como perimetral de infraestructuras críticas)","Siempre que el cliente así lo requiera por contrato escrito"],
+    a:2,
+    e:"La regla general es que los vigilantes actúan en el INTERIOR de inmuebles y sus accesos. Los supuestos EXCEPCIONALES de actuación exterior incluyen: vigilancia perimetral de centros penitenciarios, CIE, establecimientos militares e infraestructuras críticas. También pueden actuar en polígonos industriales y urbanizaciones."
+  },
+  {
+    t:"t14",
+    q:"La ocupación o permanencia en inmueble, vivienda o edificio ajeno contra la voluntad de su propietario o arrendatario (cuando no sea delito) constituye:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","No está tipificada en la LO 4/2015"],
+    a:2,
+    e:"Art. 37 LO 4/2015: es infracción LEVE. La expresión 'cuando no sea delito' es relevante porque la ocupación puede ser constitutiva de allanamiento de morada (art. 202 CP) si concurren los elementos del tipo penal. La tipificación administrativa solo aplica cuando la conducta no alcanza el umbral penal."
+  },
+  {
+    t:"t9",
+    q:"Asturias y Madrid, a diferencia de Andalucía, Aragón, Galicia y Valencia, tienen respecto al CNP:",
+    opts:["Cuerpo policial propio con competencias limitadas","Unidades adscritas del CNP con dependencia funcional de la CA","Acuerdos de cooperación específicos (ni cuerpo propio ni adscripción de unidades)","La misma fórmula que Andalucía: adscripción de unidades del CNP"],
+    a:2,
+    e:"LO 2/1986: Asturias y Madrid tienen ACUERDOS DE COOPERACIÓN ESPECÍFICOS con el Estado, sin cuerpo policial propio y sin adscripción formal de unidades del CNP. Andalucía, Aragón, Galicia y Valencia solicitan adscripción de unidades del CNP. Cataluña, País Vasco, Navarra y Canarias tienen cuerpo propio."
+  },
+  {
+    t:"sp",
+    q:"¿Qué función de SP está reservada exclusivamente a las empresas de seguridad, siendo vedada a los profesionales independientes?",
+    opts:["La investigación privada mediante detectives","La vigilancia y protección de bienes con armas","El asesoramiento en materia de seguridad a empresas privadas","Todas las anteriores pueden ser prestadas por profesionales independientes"],
+    a:1,
+    e:"La vigilancia con armas de fuego SOLO puede prestarse integrado en una empresa de seguridad privada. Los Guardas Rurales son la excepción: pueden prestar servicios directamente sin integrarse en empresa. Los Detectives pueden ejercer de forma independiente si cumplen requisitos del art. 23 Ley 5/2014."
+  },
+  {
+    t:"t14",
+    q:"Carecer de los registros previstos en la LO 4/2015 para actividades con trascendencia para la seguridad ciudadana y omitir comunicaciones obligatorias es:",
+    opts:["Infracción muy grave","Infracción grave","Infracción leve","No está tipificado; solo es un incumplimiento civil"],
+    a:1,
+    e:"Art. 36 LO 4/2015: infracción GRAVE. Los establecimientos del art. 25 (hostelería, cerrajería, alquiler de vehículos, etc.) que omitan llevar los registros obligatorios o no realicen las comunicaciones debidas a las FCS incurren en infracción GRAVE, no solo leve."
+  },
+  {
+    t:"sp",
+    q:"El personal de SP que falte al respeto a la dignidad o al honor de las personas en el ejercicio de sus funciones incurre en:",
+    opts:["Infracción leve de la Ley 5/2014","Infracción grave de la Ley 5/2014","Infracción leve de la LO 4/2015","Solo responsabilidad civil extracontractual"],
+    a:1,
+    e:"Ley 5/2014: el personal de SP que falte al respeto a la dignidad o al honor de las personas incurre en infracción GRAVE de la Ley 5/2014 (no leve). Este es el examen real XLII 2025 (pregunta 29). Distinto: la falta de respeto a un miembro de las FCS por un ciudadano es infracción LEVE de la LO 4/2015."
+  },
+  {
+    t:"t14",
+    q:"¿Cuántos grados tiene la graduación de sanciones por infracciones graves según la LO 4/2015?",
+    opts:["2 grados: mínimo y máximo","3 grados: mínimo, medio y máximo","4 grados: leve, intermedio, grave y muy grave","Solo se aplica directamente sin grados"],
+    a:1,
+    e:"Las infracciones GRAVES tienen 3 GRADOS (mínimo 601-10.400€, medio 10.401-20.200€, máximo 20.201-30.000€), que son competencia de los Delegados del Gobierno. Las muy graves también tienen 3 grados pero distribuidos entre SES y MI. Las leves se aplican directamente sin grados."
+  },
+  {
+    t:"t9",
+    q:"¿Cuántos principios básicos de actuación recoge la LO 2/1986 para todos los miembros de las FCS?",
+    opts:["4 principios","5 principios","6 principios","8 principios"],
+    a:2,
+    e:"La LO 2/1986 establece 6 principios básicos de actuación: (1) Adecuación al ordenamiento jurídico, (2) Relaciones con la comunidad, (3) Tratamiento de detenidos, (4) Dedicación profesional, (5) Secreto profesional, (6) Responsabilidad personal y profesional. Estos principios vinculan a TODOS los miembros de las FCS sin distinción."
+  },
+  {
+    t:"sp",
+    q:"La Comisión Nacional de SP, según la Ley 5/2014, celebra reuniones con carácter:",
+    opts:["Mensual","Trimestral","Semestral","Anual"],
+    a:3,
+    e:"Tanto la Comisión Nacional como las Comisiones Provinciales de SP celebran reuniones con carácter ANUAL. Tienen carácter consultivo y de colaboración. Trampa: no son mensuales ni trimestrales, aunque puedan reunirse de forma extraordinaria cuando sea necesario."
+  },
+  {
+    t:"t14",
+    q:"La prescripción de la sanción por una infracción GRAVE de la LO 4/2015 es de:",
+    opts:["6 meses","1 año","2 años","3 años"],
+    a:2,
+    e:"Prescripción de SANCIONES: Leves 1 año, GRAVES 2 años, Muy graves 3 años. Prescripción de INFRACCIONES: Leves 6 meses, Graves 1 año, Muy graves 2 años. Cancelación RCISC: igual que prescripción de sanciones (Leves 1, Graves 2, Muy graves 3 años). Hay que dominar estas tres tablas simultáneamente."
+  },
+  {
+    t:"sp",
+    q:"Según la Ley 5/2014, la DGP (Dirección General de la Policía) tiene competencias en SP de ámbito nacional. ¿Cuál es la principal competencia que NO tiene la DGP respecto a los Guardas Rurales?",
+    opts:["La inspección de los Guardas Rurales en su actividad","El régimen sancionador por infracciones de los Guardas Rurales","La habilitación (TIP) de los Guardas Rurales y sus especialidades","La coordinación de los Guardas Rurales con las FCS"],
+    a:2,
+    e:"La DGP NO habilita a los Guardas Rurales (ni a sus especialidades: Guarda de Caza y Guardapesca Marítimo). La habilitación de estos tres perfiles corresponde a la DGGC. Es la única excepción al monopolio habilitador de la DGP en materia de personal de SP."
+  },
+  {
+    t:"t9",
+    q:"La regulación del secreto profesional como principio de actuación de las FCS (LO 2/1986) implica que los agentes:",
+    opts:["No pueden revelar ninguna información de servicio a sus familias","Están obligados a guardar estricto secreto de las informaciones reservadas que conozcan por razón de su cargo, aunque hayan cesado en el servicio","Solo deben guardar secreto sobre operaciones en curso, no sobre las finalizadas","El secreto solo aplica a investigaciones relacionadas con el crimen organizado"],
+    a:1,
+    e:"El principio de secreto profesional (LO 2/1986) obliga a guardar estricto secreto sobre las informaciones reservadas que se conozcan por razón del cargo. Esta obligación se mantiene AUNQUE SE HAYA CESADO EN EL SERVICIO. No se limita a operaciones en curso ni a ciertos delitos."
+  },
+  {
+    t:"t14",
+    q:"Si se impone una infracción muy grave en grado MÍNIMO según la LO 4/2015, la multa oscila entre:",
+    opts:["601 y 30.000 euros","30.001 y 220.000 euros","220.001 y 410.000 euros","410.001 y 600.000 euros"],
+    a:1,
+    e:"Las infracciones muy graves tienen 3 grados: MÍNIMO 30.001-220.000€ (SES), MEDIO 220.001-410.000€ (SES), MÁXIMO 410.001-600.000€ (MI). Trampa: el grado mínimo de las muy graves lo sanciona el SES, no el MI. El MI solo interviene en el grado máximo."
+  },
+  {
+    t:"sp",
+    q:"¿Con qué autorización opera un buque bajo bandera española en aguas de grave riesgo cuando lleva Vigilantes de Seguridad armados?",
+    opts:["Requiere autorización judicial específica para cada viaje","Está incluido en los supuestos de servicio con armas de la Ley 5/2014, sin autorización adicional por viaje","Requiere acuerdo entre el MI y el Ministerio de Defensa","Solo se autoriza con carácter de emergencia, nunca como servicio regular"],
+    a:1,
+    e:"Art. 40 Ley 5/2014: la vigilancia de buques bajo bandera española en aguas con GRAVE RIESGO para personas o bienes es uno de los supuestos legales de servicio con armas. No requiere autorización judicial por viaje; es una actividad contemplada en la ley, sujeta a los requisitos generales de la Ley 5/2014."
+  }
+];
+
+// ══════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════
+const TOPICS = {
+  t9:  { label: 'LO 2/1986 (T9)',    short: 'T9'  },
+  sp:  { label: 'Seguridad Privada', short: 'SP'  },
+  t14: { label: 'LO 4/2015 (T14)',   short: 'T14' }
+};
+const TOTAL = QS.length;
+
+let state = {
+  selectedTopics: new Set(['t9', 'sp', 't14']),
+  queue: [],
+  pos: 0,
+  answers: new Array(TOTAL).fill(null),
+  reviewMode: false
+};
+
+function topicCount(t){ return QS.filter(q => q.t === t).length; }
+
+// ══════════════════════════════════════
+//  PORTADA
+// ══════════════════════════════════════
+function renderTopicGrid(){
+  const grid = document.getElementById('topicGrid');
+  grid.innerHTML = Object.keys(TOPICS).map(t => `
+    <div class="topic-card active ${t}" data-t="${t}" tabindex="0" role="checkbox" aria-checked="true">
+      <div class="n">${topicCount(t)}</div>
+      <div class="l">${TOPICS[t].label}</div>
+    </div>
+  `).join('');
+  grid.querySelectorAll('.topic-card').forEach(card => {
+    const t = card.dataset.t;
+    const toggle = () => {
+      if(state.selectedTopics.has(t)){
+        if(state.selectedTopics.size === 1){ showNotice('Deja al menos un tema activo'); return; }
+        state.selectedTopics.delete(t);
+      } else {
+        state.selectedTopics.add(t);
+      }
+      card.classList.toggle('active');
+      card.setAttribute('aria-checked', state.selectedTopics.has(t));
+    };
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+  });
+}
+
+document.getElementById('startBtn').addEventListener('click', () => startQuiz(false));
+document.getElementById('changeSetBtn').addEventListener('click', goToIntro);
+document.getElementById('emptyBackBtn').addEventListener('click', goToIntro);
+
+function goToIntro(){
+  document.getElementById('quizView').style.display = 'none';
+  document.getElementById('resultView').classList.remove('active');
+  document.getElementById('emptyMsg').classList.remove('show');
+  document.getElementById('introView').style.display = 'flex';
+  document.getElementById('meterWrap').style.display = 'none';
+}
+
+// ══════════════════════════════════════
+//  BUILD QUEUE
+// ══════════════════════════════════════
+function buildQueue(filterWrongOnly){
+  return QS.map((_,i) => i).filter(i => {
+    if(!state.selectedTopics.has(QS[i].t)) return false;
+    if(filterWrongOnly){
+      const a = state.answers[i];
+      return a !== null && a.chosen !== QS[i].a;
+    }
+    return true;
+  });
+}
+
+function startQuiz(reviewWrongOnly){
+  state.reviewMode = reviewWrongOnly;
+  state.queue = buildQueue(reviewWrongOnly);
+  if(!reviewWrongOnly) state.answers = new Array(TOTAL).fill(null);
+  state.pos = 0;
+
+  const introEl = document.getElementById('introView');
+  const quizEl  = document.getElementById('quizView');
+  const resEl   = document.getElementById('resultView');
+  const emptyEl = document.getElementById('emptyMsg');
+
+  introEl.style.display = 'none';
+  resEl.classList.remove('active');
+
+  if(state.queue.length === 0){
+    quizEl.style.display = 'none';
+    emptyEl.classList.add('show');
+    document.getElementById('meterWrap').style.display = 'none';
+    return;
+  }
+
+  emptyEl.classList.remove('show');
+  quizEl.style.display = 'block';
+  document.getElementById('meterWrap').style.display = 'block';
+
+  buildMeter();
+  renderCurrentQuestion();
+}
+
+// ══════════════════════════════════════
+//  METER
+// ══════════════════════════════════════
+function buildMeter(){
+  const track = document.getElementById('meterTrack');
+  track.innerHTML = state.queue.map(qi =>
+    `<div class="meter-seg ${QS[qi].t}" data-qi="${qi}"></div>`
+  ).join('');
+  document.getElementById('meterTotal').textContent = state.queue.length;
+  updateMeter();
+}
+
+function updateMeter(){
+  document.querySelectorAll('.meter-seg').forEach((seg,i) => {
+    const qi = Number(seg.dataset.qi);
+    seg.classList.remove('current','done');
+    if(state.answers[qi] !== null) seg.classList.add('done');
+    if(i === state.pos) seg.classList.add('current');
+  });
+  document.getElementById('meterPos').textContent = Math.min(state.pos+1, state.queue.length);
+  const correct = state.answers.filter((a,i) => a!==null && a.chosen===QS[i].a).length;
+  document.getElementById('meterScore').textContent = correct;
+  document.getElementById('footScore').innerHTML = `Aciertos acumulados: <b>${correct}</b>`;
+}
+
+// ══════════════════════════════════════
+//  RENDER PREGUNTA
+// ══════════════════════════════════════
+function renderCurrentQuestion(){
+  const qi   = state.queue[state.pos];
+  const item = QS[qi];
+
+  const tagEl = document.getElementById('qTag');
+  tagEl.textContent = TOPICS[item.t].label;
+  tagEl.className   = 'q-tag ' + item.t;
+  document.getElementById('qPosLabel').textContent = `${state.pos+1} / ${state.queue.length}`;
+  document.getElementById('qText').textContent = item.q;
+
+  const optsEl = document.getElementById('qOpts');
+  optsEl.innerHTML = item.opts.map((o,oi) => `
+    <button class="opt" id="opt${oi}" data-oi="${oi}" aria-label="Opción ${String.fromCharCode(65+oi)}: ${o}">
+      <span class="opt-letter" aria-hidden="true">${String.fromCharCode(65+oi)}</span>
+      <span class="opt-text">${o}</span>
+      <span class="opt-icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path class="icon-path" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+  `).join('');
+  optsEl.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => selectOption(qi, Number(btn.dataset.oi)));
+  });
+
+  const fb = document.getElementById('feedbackRow');
+  fb.className = 'feedback-row';
+  fb.innerHTML = '';
+  document.getElementById('qExp').className = 'q-exp';
+  document.getElementById('qExp').innerHTML = `<b>Explicación:</b> ${item.e}`;
+  document.getElementById('qActions').className = 'qcard-actions';
+
+  const prev = state.answers[qi];
+  if(prev !== null) applyAnswerVisuals(qi, prev.chosen, prev.correct, false);
+
+  // re-animar la tarjeta
+  const card = document.getElementById('qcard');
+  card.style.animation = 'none';
+  requestAnimationFrame(() => { card.style.animation = ''; });
+
+  updateMeter();
+}
+
+const CHECK_PATH = 'M3 9.5 7 13.5 15 4.5';
+const CROSS_PATH = 'M4 4 L14 14 M14 4 L4 14';
+
+function selectOption(qi, chosen){
+  if(state.answers[qi] !== null) return;
+  const correct = QS[qi].a;
+  state.answers[qi] = { chosen, correct };
+  applyAnswerVisuals(qi, chosen, correct, true);
+  updateMeter();
+}
+
+function applyAnswerVisuals(qi, chosen, correct, animate){
+  document.querySelectorAll('.opt').forEach((b,i) => {
+    b.disabled = true;
+    const path = b.querySelector('.icon-path');
+    if(i === correct){
+      b.classList.add('correct');
+      path.setAttribute('d', CHECK_PATH);
+    } else if(i === chosen){
+      b.classList.add('wrong');
+      path.setAttribute('d', CROSS_PATH);
+      if(animate) b.classList.add('shake');
+    }
+  });
+
+  const fb = document.getElementById('feedbackRow');
+  const isRight = chosen === correct;
+  fb.classList.add('show', isRight ? 'ok' : 'bad');
+  fb.innerHTML = isRight
+    ? '<span class="feedback-icon">✓</span> Correcto'
+    : '<span class="feedback-icon">✗</span> Incorrecto — revisa la explicación';
+
+  document.getElementById('qExp').classList.add('show');
+  document.getElementById('qActions').classList.add('show');
+
+  if(animate) showNotice(isRight ? 'Correcto' : 'Incorrecto');
+}
+
+document.getElementById('nextBtn').addEventListener('click', goNext);
+
+function goNext(){
+  if(state.pos + 1 >= state.queue.length){ showResult(); return; }
+  state.pos++;
+  renderCurrentQuestion();
+}
+
+// ══════════════════════════════════════
+//  TECLADO
+// ══════════════════════════════════════
+document.addEventListener('keydown', e => {
+  const quizEl = document.getElementById('quizView');
+  if(quizEl.style.display !== 'block') return;
+  const qi = state.queue[state.pos];
+  if(['1','2','3','4'].includes(e.key) && state.answers[qi] === null){
+    const btn = document.getElementById('opt' + (Number(e.key)-1));
+    if(btn) btn.click();
+  } else if((e.key==='Enter'||e.key==='ArrowRight') && state.answers[qi] !== null){
+    e.preventDefault(); goNext();
+  }
+});
+
+// ══════════════════════════════════════
+//  RESULTADO
+// ══════════════════════════════════════
+function showResult(){
+  document.getElementById('quizView').style.display = 'none';
+  document.getElementById('meterWrap').style.display = 'none';
+  document.getElementById('resultView').classList.add('active');
+
+  const answered = state.queue.filter(i => state.answers[i] !== null);
+  const correct  = answered.filter(i => state.answers[i].chosen === QS[i].a).length;
+  const wrong    = answered.length - correct;
+  const total    = state.queue.length;
+  const pct      = total ? Math.round((correct/total)*100) : 0;
+
+  document.getElementById('resGrade').textContent   = pct + '%';
+  document.getElementById('resCorrect').textContent = correct;
+  document.getElementById('resWrong').textContent   = wrong;
+  document.getElementById('resTotal').textContent   = total;
+
+  let msg, sub;
+  if(pct >= 90){ msg='Dominio de élite'; sub='Rendimiento excepcional.'; }
+  else if(pct >= 80){ msg='Nivel excelente'; sub='Superas el umbral con holgura.'; }
+  else if(pct >= 65){ msg='Bien — repasa los fallos'; sub='Estás cerca. Refuerza los puntos débiles.'; }
+  else if(pct >= 50){ msg='Nivel intermedio'; sub='Hay margen de mejora.'; }
+  else { msg='Necesitas más estudio'; sub='Repite el bloque con más errores.'; }
+
+  document.getElementById('resMsg').textContent = msg;
+  document.getElementById('resSub').textContent = sub;
+
+  const reviewBtn = document.getElementById('reviewWrongBtn');
+  reviewBtn.disabled = wrong === 0;
+
+  setTimeout(() => { document.getElementById('resBar').style.width = pct + '%'; }, 80);
+}
+
+document.getElementById('reviewWrongBtn').addEventListener('click', () => startQuiz(true));
+document.getElementById('restartBtn').addEventListener('click',     () => startQuiz(false));
+
+// ══════════════════════════════════════
+//  NOTICE
+// ══════════════════════════════════════
+let noticeTimer;
+function showNotice(msg){
+  const n = document.getElementById('notice');
+  n.textContent = msg;
+  n.classList.add('show');
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => n.classList.remove('show'), 1600);
+}
+
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+renderTopicGrid();
+</script>
+</body>
+</html>

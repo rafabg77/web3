@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 16 · Derecho Penal: Parte General — CNP Escala Básica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bone:#F7F3EA;
+  --bone-deep:#EFE8D8;
+  --ink:#1B1812;
+  --navy:#0F1B2D;
+  --navy-soft:#1B2940;
+  --garnet:#8B2635;
+  --garnet-deep:#6B1C28;
+  --brass:#B8893E;
+  --green:#2D5043;
+  --green-soft:#E4ECE6;
+  --garnet-soft:#F3DEE0;
+  --brass-soft:#F2E6CC;
+  --line:#D8CCAE;
+  --shadow: 0 1px 0 rgba(27,24,18,0.05);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  margin:0;
+  background:var(--bone);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(27,24,18,0.035) 1px, transparent 0);
+  background-size:22px 22px;
+  z-index:0;
+}
+
+.wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 24px 120px;}
+
+/* PORTADA */
+.cover{padding:64px 0 40px;text-align:center;position:relative;}
+.cover .stamp{
+  width:128px;height:128px;margin:0 auto 28px;border-radius:50%;
+  border:3px solid var(--garnet);display:flex;align-items:center;justify-content:center;
+  position:relative;transform:rotate(-6deg);
+}
+.cover .stamp::before{content:"";position:absolute;inset:8px;border:1.5px dashed var(--garnet);border-radius:50%;}
+.cover .stamp-text{font-family:'Fraunces',serif;font-weight:700;font-size:13px;letter-spacing:0.08em;color:var(--garnet);text-align:center;line-height:1.3;}
+.cover .stamp-text .big{display:block;font-size:30px;font-weight:900;}
+.cover .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--garnet);margin-bottom:18px;}
+.cover h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,6vw,56px);line-height:1.04;margin:0 0 14px;color:var(--navy);}
+.cover h1 em{font-style:italic;color:var(--garnet);font-weight:600;}
+.cover .sub{font-size:16.5px;color:#48433a;max-width:580px;margin:0 auto 30px;}
+.cover .meta-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.meta-chip{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.04em;border:1px solid var(--line);background:#fff;padding:6px 13px;border-radius:100px;color:#5a5446;}
+.meta-chip b{color:var(--ink);}
+.cover-divider{height:1px;background:repeating-linear-gradient(90deg, var(--garnet) 0 8px, transparent 8px 16px);margin:42px 0 0;opacity:0.55;}
+
+/* ÍNDICE */
+.toc{margin:46px 0 70px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:8px;box-shadow:0 18px 38px -22px rgba(15,27,45,0.25);}
+.toc-inner{border:1px dashed var(--line);border-radius:2px;padding:30px 26px;}
+.toc-title{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--garnet);margin-bottom:18px;font-weight:700;}
+.toc-list{list-style:none;margin:0;padding:0;}
+.toc-list li{display:flex;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--bone-deep);font-size:15px;}
+.toc-list li:last-child{border-bottom:none;}
+.toc-num{font-family:'Fraunces',serif;font-weight:700;color:var(--garnet);font-size:18px;min-width:30px;}
+.toc-text{flex:1;color:var(--navy);font-weight:600;}
+.toc-page{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9a9180;}
+
+/* CABECERA DE BLOQUE */
+.block{margin-bottom:6px;}
+.block-head{position:relative;background:var(--navy);border-radius:6px;padding:38px 34px 32px;margin:64px 0 36px;overflow:hidden;box-shadow:0 24px 48px -28px rgba(15,27,45,0.55);}
+.block-head::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;border:1px solid rgba(255,255,255,0.08);border-radius:50%;}
+.block-head::before{content:"";position:absolute;right:10px;top:30px;width:120px;height:120px;border:1px solid rgba(255,255,255,0.06);border-radius:50%;}
+.block-eyebrow{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--brass);margin-bottom:14px;position:relative;z-index:1;}
+.block-eyebrow .seal{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--brass);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:13px;color:var(--brass);flex-shrink:0;}
+.block-head h2{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(24px,3.6vw,32px);color:#fff;margin:0 0 10px;line-height:1.16;position:relative;z-index:1;}
+.block-head .hook{color:#C9D2DF;font-size:14.5px;font-style:italic;font-family:'Fraunces',serif;font-weight:500;max-width:560px;position:relative;z-index:1;}
+.block-head .pageref{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--brass);margin-top:14px;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.15);padding-top:12px;display:inline-block;}
+
+/* SECCIONES */
+.sec{margin:34px 0;}
+.sec-title{display:flex;align-items:baseline;gap:12px;font-family:'Fraunces',serif;font-weight:700;font-size:21px;color:var(--navy);margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid var(--navy);}
+.sec-title .tag{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--garnet);font-weight:700;}
+.subsec{margin:20px 0 20px 2px;padding-left:16px;border-left:2px solid var(--line);}
+.subsec-title{font-style:italic;font-weight:600;font-size:15.5px;color:var(--garnet-deep);margin-bottom:6px;font-family:'Fraunces',serif;}
+p{margin:0 0 13px;font-size:15.3px;color:#2b2720;}
+.sec p:last-child, .subsec p:last-child{margin-bottom:0;}
+
+.art{font-weight:700;color:var(--garnet);font-family:'Inter',sans-serif;background:var(--garnet-soft);padding:1px 7px;border-radius:4px;font-size:0.92em;white-space:nowrap;}
+.plazo{font-family:'JetBrains Mono',monospace;font-weight:700;color:#7a5a16;background:var(--brass-soft);padding:1.5px 8px;border-radius:4px;font-size:0.86em;letter-spacing:0.01em;}
+.nuevo{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--green);color:#fff;padding:2px 8px;border-radius:4px;letter-spacing:0.04em;}
+
+ul.clean, ol.clean{margin:10px 0 16px;padding-left:0;list-style:none;}
+ul.clean li, ol.clean li{position:relative;padding-left:22px;margin-bottom:9px;font-size:15.2px;}
+ul.clean li::before{content:"—";position:absolute;left:0;color:var(--garnet);font-weight:700;}
+ol.clean{counter-reset:item;}
+ol.clean li{counter-increment:item;}
+ol.clean li::before{content:counter(item);position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;}
+
+/* CUADRO DESTACADO / REGLA DE ORO */
+.gold-box{background:var(--navy);color:#fff;border-radius:6px;padding:22px 26px;margin:26px 0;position:relative;border-left:5px solid var(--brass);}
+.gold-box .label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--brass);margin-bottom:8px;font-weight:700;}
+.gold-box p{color:#EDEFF3;margin:0;font-size:15px;}
+.gold-box strong{color:#fff;}
+
+/* CASO PRÁCTICO */
+.case{background:#fff;border:1px solid var(--line);border-radius:6px;margin:24px 0;overflow:hidden;box-shadow:var(--shadow);}
+.case-h{background:var(--garnet-soft);color:var(--garnet-deep);font-weight:700;font-size:13px;padding:10px 18px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;letter-spacing:0.03em;}
+.case-b{padding:16px 18px;}
+.case-b p{margin-bottom:8px;}
+.case-sol{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);}
+.case-sol .lbl{font-weight:700;color:var(--green);font-size:13px;display:block;margin-bottom:4px;}
+
+/* ALERTA / EXCEPCIÓN */
+.alert{background:var(--brass-soft);border-left:4px solid var(--brass);border-radius:4px;padding:14px 18px;margin:18px 0;font-size:14.6px;}
+.alert .lbl{font-weight:700;color:#7a5a16;display:block;margin-bottom:3px;font-size:12.5px;letter-spacing:0.03em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+
+/* TABLAS */
+.tbl-wrap{margin:22px 0;overflow-x:auto;border-radius:6px;border:1px solid var(--line);}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:14px;min-width:480px;}
+thead th{background:var(--navy);color:#fff;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.04em;text-transform:uppercase;padding:12px 14px;text-align:left;font-weight:700;}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--bone-deep);vertical-align:top;color:#2b2720;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:nth-child(even){background:var(--bone);}
+tbody td:first-child{font-weight:700;color:var(--navy);}
+
+/* VS COMPARATIVA */
+.vs-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:24px 0;}
+.vs-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px;}
+.vs-card h4{margin:0 0 10px;font-family:'Fraunces',serif;font-size:16px;color:var(--garnet-deep);border-bottom:1px solid var(--bone-deep);padding-bottom:8px;}
+.vs-card ul{margin:0;padding-left:18px;font-size:13.8px;}
+.vs-card li{margin-bottom:6px;}
+.vs-mid{font-family:'Fraunces',serif;font-weight:900;font-style:italic;color:var(--brass);font-size:15px;}
+@media (max-width:640px){.vs-wrap{grid-template-columns:1fr;}.vs-mid{text-align:center;}}
+
+/* CIERRE DE BLOQUE */
+.closing{margin-top:46px;border-top:3px double var(--navy);padding-top:6px;}
+.panel{background:#fff;border:1px solid var(--line);border-radius:6px;margin:24px 0;padding:24px 26px;box-shadow:var(--shadow);}
+.panel-h{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:var(--navy);margin-bottom:16px;}
+.panel-h .ico{font-size:19px;}
+
+.resumen-list{list-style:none;margin:0;padding:0;}
+.resumen-list li{position:relative;padding:9px 0 9px 26px;border-bottom:1px solid var(--bone-deep);font-size:14.8px;}
+.resumen-list li:last-child{border-bottom:none;}
+.resumen-list li::before{content:"✓";position:absolute;left:0;top:9px;color:var(--green);font-weight:900;}
+
+.claves-list{list-style:none;margin:0;padding:0;}
+.claves-list li{padding:11px 0;border-bottom:1px solid var(--bone-deep);font-size:14.8px;}
+.claves-list li:last-child{border-bottom:none;}
+.claves-list .intro{color:var(--garnet);font-weight:700;}
+
+.errores-grid{display:grid;gap:14px;}
+.error-item{background:var(--bone);border-radius:6px;padding:14px 16px;border:1px solid var(--bone-deep);}
+.error-item .x{color:#A23B3B;font-weight:700;font-size:14.5px;}
+.error-item .ok{color:var(--green);font-weight:700;font-size:14.5px;display:block;margin-top:6px;}
+
+.quiz-item{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--bone-deep);}
+.quiz-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.quiz-q{font-weight:700;color:var(--navy);margin-bottom:10px;font-size:15px;}
+.quiz-opts{list-style:none;margin:0;padding:0;}
+.quiz-opts li{padding:7px 10px 7px 30px;position:relative;font-size:14.3px;border-radius:4px;margin-bottom:4px;}
+.quiz-opts li::before{content:attr(data-letter);position:absolute;left:6px;top:6px;font-family:'JetBrains Mono',monospace;font-weight:700;color:#9a9180;font-size:12.5px;}
+.quiz-opts li.correct{background:var(--green-soft);color:var(--green);font-weight:700;}
+.quiz-opts li.correct::before{color:var(--green);}
+.quiz-explain{margin-top:10px;font-size:13.6px;color:#5a5446;background:var(--bone);border-radius:5px;padding:10px 14px;}
+.quiz-explain b{color:var(--navy);}
+
+.dev-q{margin-bottom:14px;}
+.dev-q .q{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:14.8px;}
+.dev-q .a{font-size:14.3px;color:#48433a;font-style:italic;}
+
+.mnemo-box{background:linear-gradient(135deg, var(--garnet) 0%, var(--garnet-deep) 100%);color:#fff;border-radius:8px;padding:26px 28px;margin:0;}
+.mnemo-box .panel-h{color:#fff;}
+.mnemo-box .acronym{font-family:'Fraunces',serif;font-weight:900;font-size:30px;letter-spacing:0.05em;margin-bottom:14px;}
+.mnemo-box p{color:#F6E4E6;margin:0;font-size:14.6px;}
+.mnemo-box strong{color:#fff;}
+
+.bridge{background:var(--navy-soft);color:#D7DEE8;border-radius:8px;padding:22px 26px;margin:24px 0 0;font-size:14.6px;font-style:italic;font-family:'Fraunces',serif;font-weight:500;}
+.bridge .panel-h{color:var(--brass);font-style:normal;}
+
+.end-block{text-align:center;margin:36px 0 0;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--garnet);font-weight:700;}
+.end-block .line{height:1px;background:repeating-linear-gradient(90deg, var(--garnet) 0 6px, transparent 6px 12px);margin:14px 0;opacity:0.5;}
+
+.final-foot{margin-top:90px;padding:40px 0 0;text-align:center;border-top:1px solid var(--line);}
+.final-foot .stamp-text{font-size:12px;color:#9a9180;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--garnet);z-index:50;width:0%;transition:width 0.1s;}
+
+strong{color:var(--navy);}
+
+@media (max-width:600px){
+  .block-head{padding:28px 22px 24px;}
+  .panel{padding:20px 18px;}
+  .wrap{padding:0 16px 100px;}
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="wrap">
+
+<div class="cover">
+  <div class="stamp">
+    <div class="stamp-text">CNP<span class="big">16</span>EB</div>
+  </div>
+  <div class="eyebrow">Cuerpo Nacional de Policía · Escala Básica</div>
+  <h1>Derecho Penal: <em>Parte General</em></h1>
+  <p class="sub">Lo esencial de la teoría del delito, la responsabilidad criminal y el catálogo de penas — explicado para entenderlo y recordarlo, no solo para leerlo.</p>
+  <div class="meta-row">
+    <span class="meta-chip">Norma base: <b>LO 10/1995, CP</b></span>
+    <span class="meta-chip">Bloques: <b>8</b></span>
+    <span class="meta-chip">Examen: <b>CNP Escala Básica</b></span>
+  </div>
+</div>
+
+<div class="cover-divider"></div>
+
+<div class="toc">
+  <div class="toc-inner">
+    <div class="toc-title">Índice del expediente</div>
+    <ul class="toc-list">
+      <li><span class="toc-num">01</span><span class="toc-text">Concepto de Derecho Penal y principios informadores</span><span class="toc-page">p. 1-3</span></li>
+      <li><span class="toc-num">02</span><span class="toc-text">La infracción penal y la Teoría del delito</span><span class="toc-page">p. 3-5</span></li>
+      <li><span class="toc-num">03</span><span class="toc-text">Elementos del delito y bienes jurídicos protegidos</span><span class="toc-page">p. 5-7</span></li>
+      <li><span class="toc-num">04</span><span class="toc-text">El dolo, el error y la imprudencia</span><span class="toc-page">p. 7-8</span></li>
+      <li><span class="toc-num">05</span><span class="toc-text">Iter criminis: el camino del delito</span><span class="toc-page">p. 8-9</span></li>
+      <li><span class="toc-num">06</span><span class="toc-text">Autoría, participación y responsabilidad de las personas jurídicas</span><span class="toc-page">p. 9-10</span></li>
+      <li><span class="toc-num">07</span><span class="toc-text">Las penas: catálogo y clasificación por gravedad</span><span class="toc-page">p. 10-12</span></li>
+      <li><span class="toc-num">08</span><span class="toc-text">Aplicación de la ley penal, menores, extinción y circunstancias modificativas</span><span class="toc-page">p. 12-13</span></li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ===================== BLOQUE 1 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">1</span> Bloque 1 de 8</div>
+    <h2>Concepto de Derecho Penal y principios informadores</h2>
+    <p class="hook">Antes de memorizar artículos, entiende para qué sirve el Derecho Penal y qué límites tiene el Estado para castigar. Esto es la "constitución" del resto del tema.</p>
+    <p class="pageref">Temario original: p. 1-3</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">1.1 Qué es el Derecho Penal <span class="tag">[concepto]</span></div>
+    <p>El Derecho Penal regula qué conductas son delito y qué pena corresponde a cada una. En el fondo cumple dos funciones: protege a la sociedad (bienes jurídicos) y limita el poder del Estado para castigar — eso es el <strong>ius puniendi</strong>.</p>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>El Derecho Penal es la "última frontera": castiga, pero también <strong>limita</strong> ese castigo. Cada principio que viene a continuación es, en realidad, un límite al poder de castigar del Estado.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">1.2 Estructura del Código Penal <span class="tag">[LO 10/1995]</span></div>
+    <p>Piensa en el CP como un libro con tres partes: las <strong>reglas del juego</strong> (Título preliminar, <span class="art">art. 1-9</span>), la <strong>teoría general</strong> aplicable a todos los delitos (Libro I, <span class="art">art. 10-137</span>) y el <strong>catálogo de delitos concretos</strong> (Libro II, <span class="art">art. 138-616 quáter</span>, 24 títulos).</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Parte del CP</th><th>Contenido</th><th>Carácter</th></tr></thead>
+        <tbody>
+          <tr><td>Título preliminar</td><td>Garantías penales y aplicación de la ley penal</td><td>General</td></tr>
+          <tr><td>Libro I</td><td>Personas responsables, penas, medidas de seguridad</td><td>General</td></tr>
+          <tr><td>Libro II</td><td>Delitos concretos y sus penas (24 títulos)</td><td>Específico</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">1.3 Los principios informadores <span class="tag">[lo más preguntado]</span></div>
+    <div class="subsec">
+      <div class="subsec-title">— Principio de legalidad</div>
+      <p>Nadie puede ser condenado por algo que, cuando lo hizo, no estaba previsto como delito (<span class="art">art. 25.1 CE</span>, <span class="art">art. 9.3 CE</span>). Se concreta en 4 garantías que conviene tener clarísimas porque el examen las confunde entre sí:</p>
+      <ul class="clean">
+        <li><strong>Criminal</strong> (nullum crimen sine lege): no hay delito si la ley no lo define antes.</li>
+        <li><strong>Penal</strong> (nullum poena sine lege): no hay pena si la ley no la prevé antes.</li>
+        <li><strong>Procesal</strong> (nullum poena sine iudicio): no hay condena sin juicio previo.</li>
+        <li><strong>De ejecución</strong>: la pena se cumple en la forma que diga la ley y el reglamento.</li>
+      </ul>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Principio de culpabilidad</div>
+      <p>No hay pena sin dolo o imprudencia (<span class="art">art. 5 CP</span>). Solo se castiga lo que el sujeto quiso o pudo evitar, nunca un resultado puramente casual.</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Intervención mínima ("última ratio")</div>
+      <p>El Derecho Penal es el último recurso. Solo debe proteger los bienes jurídicos más importantes (carácter fragmentario) y solo cuando no hay otra herramienta menos lesiva (carácter subsidiario).</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Otros principios que aparecen sueltos en examen</div>
+      <ul class="clean">
+        <li><strong>Proporcionalidad</strong>: la pena debe ser proporcional a la gravedad del hecho.</li>
+        <li><strong>Igualdad</strong>: prohibición de trato desigual (<span class="art">art. 14 CE</span>).</li>
+        <li><strong>Resocialización</strong>: fin de las penas y medidas de seguridad (<span class="art">art. 25.2 CE</span>).</li>
+        <li><strong>Non bis in idem</strong>: no se puede juzgar ni sancionar dos veces por el mismo hecho.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Garantía criminal</h4>
+      <ul><li>Mira a si existe el <strong>delito</strong>.</li><li>"No hay delito sin ley previa".</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Garantía penal</h4>
+      <ul><li>Mira a si existe la <strong>pena</strong>.</li><li>"No hay pena sin ley previa".</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>El Derecho Penal regula el ius puniendi del Estado: castiga pero también limita el castigo.</li>
+        <li>El CP se estructura en Título preliminar, Libro I (general) y Libro II (delitos concretos).</li>
+        <li>El principio de legalidad se concreta en 4 garantías: criminal, penal, procesal y de ejecución.</li>
+        <li>El principio de culpabilidad exige siempre dolo o imprudencia: no hay responsabilidad objetiva.</li>
+        <li>La intervención mínima convierte al Derecho Penal en la "última ratio".</li>
+        <li>Proporcionalidad, igualdad, resocialización y non bis in idem son principios complementarios muy preguntados de forma suelta.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> "nullum crimen sine lege" es la garantía CRIMINAL, no la penal: el examen las intercambia a propósito.</li>
+        <li><span class="intro">En examen, recuerda que</span> el Libro I del CP es GENERAL (aplicable a todos los delitos) y el Libro II es ESPECÍFICO (delitos concretos).</li>
+        <li><span class="intro">En examen, recuerda que</span> la intervención mínima va dirigida al LEGISLADOR, no al juez.</li>
+        <li><span class="intro">En examen, recuerda que</span> non bis in idem prohíbe juzgar Y sancionar dos veces, no solo una de las dos cosas.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Confundir garantía criminal con garantía penal.</span><span class="ok">✅ Criminal = existencia del delito; Penal = existencia de la pena.</span></div>
+        <div class="error-item"><span class="x">❌ Pensar que intervención mínima se dirige al juez.</span><span class="ok">✅ Se dirige al Legislador, que decide qué tipificar.</span></div>
+        <div class="error-item"><span class="x">❌ Creer que el Libro II del CP es general.</span><span class="ok">✅ El Libro II contiene los delitos concretos: es ESPECÍFICO.</span></div>
+        <div class="error-item"><span class="x">❌ Olvidar que la culpabilidad exige dolo O imprudencia.</span><span class="ok">✅ Basta cualquiera de los dos; lo que no cabe es la responsabilidad puramente objetiva.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. La garantía penal (nullum poena sine lege) significa que:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">No hay delito sin ley previa.</li>
+          <li data-letter="B" class="correct">No se puede imponer una pena no prevista por ley previa.</li>
+          <li data-letter="C">Nadie puede ser condenado sin juicio.</li>
+          <li data-letter="D">La pena se ejecuta según la ley y el reglamento.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe la garantía criminal; C la garantía procesal; D la garantía de ejecución. Solo B habla específicamente de la pena prevista por ley.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. El Libro I del Código Penal regula:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Los delitos contra las personas.</li>
+          <li data-letter="B" class="correct">Disposiciones generales sobre delitos, personas responsables, penas y medidas de seguridad.</li>
+          <li data-letter="C">Los 24 títulos de delitos concretos.</li>
+          <li data-letter="D">Las disposiciones adicionales y transitorias.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A y C describen el Libro II (específico); D son disposiciones finales, no el Libro I. El Libro I es la parte general (art. 10-137).</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. El principio de intervención mínima va dirigido a:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">El juez, al imponer la pena.</li>
+          <li data-letter="B">El penado, al cumplir condena.</li>
+          <li data-letter="C" class="correct">El Legislador, al decidir qué conductas tipificar.</li>
+          <li data-letter="D">El Ministerio Fiscal, al acusar.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A, B y D son actores de la aplicación de la norma ya creada; la intervención mínima opera antes, en el momento de crear la norma, función del Legislador.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. El carácter fragmentario del Derecho Penal implica que:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Solo se aplica cuando no hay otro mecanismo menos lesivo.</li>
+          <li data-letter="B" class="correct">Solo debe proteger los bienes jurídicos más fundamentales.</li>
+          <li data-letter="C">Las penas se fragmentan en varios tramos.</li>
+          <li data-letter="D">Se aplica el principio de oportunidad.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe el carácter subsidiario (la otra cara de la intervención mínima), no el fragmentario; C y D no corresponden a ningún concepto de este apartado.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. El principio de non bis in idem prohíbe:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Aplicar dos penas distintas a un mismo delito.</li>
+          <li data-letter="B">Juzgar dos veces por delitos distintos.</li>
+          <li data-letter="C" class="correct">Juzgar y sancionar dos veces por el mismo hecho delictivo.</li>
+          <li data-letter="D">Recurrir una sentencia firme.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es demasiado restrictivo (habla solo de penas, no de juzgar); B exige que sean delitos distintos, cuando el principio exige que sea el MISMO hecho; D no tiene relación con este principio.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">¿Por qué se dice que el Derecho Penal es de "última ratio"?</div>
+        <div class="a">Porque solo debe intervenir cuando no existen otros mecanismos del ordenamiento jurídico (civil, administrativo) capaces de resolver el conflicto de forma menos lesiva. Es la herramienta más invasiva del Estado frente al ciudadano, por lo que el Legislador debe reservarla para proteger únicamente los bienes jurídicos más esenciales (carácter fragmentario) y solo cuando no exista alternativa menos gravosa (carácter subsidiario).</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Explica la diferencia entre garantía criminal y garantía penal.</div>
+        <div class="a">La garantía criminal exige que la ley defina previamente la conducta como delito para poder castigarla (nullum crimen sine lege); si la conducta no estaba tipificada en el momento de cometerse, no hay delito. La garantía penal, en cambio, exige que la pena concreta que se vaya a imponer esté también prevista por ley previa (nullum poena sine lege); aunque exista delito, no se puede imponer una sanción no contemplada legalmente.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">C-P-P-E</div>
+      <p>Las 4 garantías del principio de legalidad, en el orden en que actúan en un proceso real: primero hace falta el delito (<strong>C</strong>riminal), luego la pena prevista (<strong>P</strong>enal), después el juicio (<strong>P</strong>rocesal) y por último la forma de cumplirla (de <strong>E</strong>jecución). Si lo memorizas como una línea temporal, no las confundirás.</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Conexión con el bloque siguiente</div>
+      <p>Ya sabes qué límites tiene el Estado para castigar. El siguiente paso es entender qué es exactamente "un delito": cómo se construye paso a paso (acción, tipicidad, antijuridicidad, culpabilidad, punibilidad) y qué hace que, a pesar de cometerse un hecho, alguien quede exento de responsabilidad.</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del bloque 1 — continúa en el bloque 2 ]<div class="line"></div></div>
+</div>
+
+<!-- ===================== BLOQUE 2 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">2</span> Bloque 2 de 8</div>
+    <h2>La infracción penal y la Teoría del delito</h2>
+    <p class="hook">El esqueleto de todo el Derecho Penal: cuatro filtros que un hecho debe superar, en orden, para convertirse en un delito castigable.</p>
+    <p class="pageref">Temario original: p. 3-5</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">2.1 Qué es un delito <span class="tag">[concepto]</span></div>
+    <p>"Son delitos las acciones y omisiones dolosas o imprudentes penadas por la ley" (<span class="art">art. 10 CP</span>). Hay dos formas de entenderlo: en sentido <strong>formal</strong> (lo que dice la ley) y en sentido <strong>material</strong> (una conducta contraria a derecho realizada en condiciones de motivación normal).</p>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>Piensa en el delito como un filtro de 4 pasos en cascada: <strong>acción → tipicidad → antijuridicidad → culpabilidad</strong>. Si falla cualquiera, no hay delito. La punibilidad es un quinto requisito adicional, pero solo se exige en algunos casos.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">2.2 Los cuatro elementos del delito</div>
+    <div class="subsec">
+      <div class="subsec-title">— Acción</div>
+      <p>Todo comportamiento depende de la voluntad humana. Dos teorías clásicas: la <strong>causal</strong> (Von Liszt: causar o no evitar un resultado mediante conducta voluntaria) y la <strong>finalista</strong> (Welzel: toda acción busca un fin, importa el "dominio del hecho").</p>
+      <p>No hay acción (y por tanto no hay delito) en: vis absoluta (fuerza física irresistible), movimientos reflejos y estados de inconsciencia no buscados.</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Tipicidad</div>
+      <p>Es que el hecho coincida exactamente con lo que describe la ley. Tiene una parte <strong>objetiva</strong> (bien jurídico protegido, sujetos, conducta, resultado) y una <strong>subjetiva</strong> (si hubo dolo o imprudencia).</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Antijuridicidad</div>
+      <p>El hecho es contrario a Derecho. Existe en sentido <strong>formal</strong> (contradice el ordenamiento) y <strong>material</strong> (lesiona o pone en peligro el bien jurídico). Desaparece cuando concurre una causa de justificación.</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Culpabilidad</div>
+      <p>El sujeto debe ser imputable: capaz de entender que su conducta es ilícita y de actuar conforme a esa comprensión. Si no puede motivarse por la norma, es inimputable.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">2.3 Causas que excluyen la responsabilidad por elemento <span class="tag">[lo más preguntado]</span></div>
+    <p>Esto es lo que más se pregunta de este bloque: para cada elemento del delito existe una "puerta de salida" que excluye la responsabilidad.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Elemento que falta</th><th>Causa</th><th>Artículo</th></tr></thead>
+        <tbody>
+          <tr><td>Acción</td><td>Vis absoluta, movimientos reflejos, inconsciencia no buscada</td><td>—</td></tr>
+          <tr><td>Tipicidad</td><td>Error de tipo invencible</td><td><span class="art">art. 14.1</span></td></tr>
+          <tr><td>Antijuridicidad</td><td>Legítima defensa, estado de necesidad justificante, cumplimiento de un deber</td><td><span class="art">art. 20.4, 20.5, 20.7</span></td></tr>
+          <tr><td>Culpabilidad</td><td>Error de prohibición invencible, inimputabilidad (minoría de edad, anomalía psíquica, intoxicación plena, alteraciones de la percepción)</td><td><span class="art">art. 14.3, 19, 20.1º-3º</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert">
+      <span class="lbl">Trampa habitual</span>
+      Las causas de "inculpabilidad por no exigibilidad de otra conducta" (miedo insuperable, estado de necesidad exculpante, encubrimiento entre parientes) son distintas de la inimputabilidad: aquí el sujeto SÍ comprende la ilicitud, pero no se le puede exigir otro comportamiento.
+    </div>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Error de tipo</h4>
+      <ul><li>Excluye el <strong>dolo</strong> (problema de tipicidad).</li><li>No se sabe lo que se está haciendo.</li><li>Vencible → se castiga como imprudente.</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Error de prohibición</h4>
+      <ul><li>Excluye la <strong>culpabilidad</strong>.</li><li>Se sabe lo que se hace, pero no que es ilícito.</li><li>Vencible → pena inferior en 1 o 2 grados.</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>El delito es una acción típica, antijurídica, culpable y, en su caso, punible (art. 10 CP).</li>
+        <li>Son cuatro filtros en cascada: si falla uno, ya no hay delito y no se analizan los siguientes.</li>
+        <li>La acción puede faltar por vis absoluta, reflejos o inconsciencia no buscada.</li>
+        <li>La tipicidad tiene parte objetiva (BJP, sujetos, conducta) y subjetiva (dolo/imprudencia).</li>
+        <li>La antijuridicidad desaparece con causas de justificación (legítima defensa, estado de necesidad, cumplimiento de un deber).</li>
+        <li>La culpabilidad exige imputabilidad: capacidad de entender la ilicitud y actuar conforme a ella.</li>
+        <li>El error de tipo afecta a la tipicidad; el error de prohibición afecta a la culpabilidad.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> el error de tipo excluye el DOLO (tipicidad); el error de prohibición excluye la CULPABILIDAD.</li>
+        <li><span class="intro">En examen, recuerda que</span> el error vencible de tipo se castiga como imprudente; el vencible de prohibición rebaja la pena en 1 o 2 grados, no la elimina.</li>
+        <li><span class="intro">En examen, recuerda que</span> la legítima defensa y el estado de necesidad justificante excluyen la ANTIJURIDICIDAD, no la culpabilidad.</li>
+        <li><span class="intro">En examen, recuerda que</span> miedo insuperable y estado de necesidad exculpante son causas de INCULPABILIDAD, distintas de la inimputabilidad.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Pensar que el error de tipo y el de prohibición afectan al mismo elemento.</span><span class="ok">✅ Tipo → tipicidad/dolo; Prohibición → culpabilidad.</span></div>
+        <div class="error-item"><span class="x">❌ Creer que legítima defensa excluye la culpabilidad.</span><span class="ok">✅ Excluye la antijuridicidad: es una causa de justificación.</span></div>
+        <div class="error-item"><span class="x">❌ Confundir inimputabilidad con inculpabilidad por no exigibilidad.</span><span class="ok">✅ En la primera no se comprende la ilicitud; en la segunda sí se comprende, pero no es exigible otra conducta.</span></div>
+        <div class="error-item"><span class="x">❌ Aplicar la teoría finalista y causal como si fueran lo mismo.</span><span class="ok">✅ Causal (Von Liszt) mira el resultado causado; finalista (Welzel) mira el fin perseguido ("dominio del hecho").</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. El error de tipo invencible:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Excluye la culpabilidad.</li>
+          <li data-letter="B" class="correct">Excluye la tipicidad, al excluir el dolo.</li>
+          <li data-letter="C">Reduce la pena en 1 o 2 grados.</li>
+          <li data-letter="D">Solo se aplica a menores de edad.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe el error de prohibición; C describe el error de prohibición vencible; D no tiene relación con el error de tipo.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. La legítima defensa es una causa que excluye:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">La acción.</li>
+          <li data-letter="B">La tipicidad.</li>
+          <li data-letter="C" class="correct">La antijuridicidad.</li>
+          <li data-letter="D">La punibilidad.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A y B son elementos anteriores que ya se habrían cumplido; D es un elemento posterior y distinto. La legítima defensa (art. 20.4 CP) es una causa de justificación, que opera sobre la antijuridicidad.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. Según la teoría finalista de Welzel, lo relevante en la acción es:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">La causación o no evitación de un resultado.</li>
+          <li data-letter="B" class="correct">El dominio del hecho y la conciencia del fin perseguido.</li>
+          <li data-letter="C">El movimiento físico objetivamente observable.</li>
+          <li data-letter="D">La existencia de dolo o imprudencia exclusivamente.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe la teoría causal de Von Liszt; C es una visión incompleta sin elemento subjetivo; D es simplificación errónea, Welzel habla de "dominio del hecho", no solo dolo/imprudencia.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. El miedo insuperable (art. 20.6 CP) es una causa de:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Justificación.</li>
+          <li data-letter="B">Atipicidad.</li>
+          <li data-letter="C" class="correct">Inculpabilidad por no exigibilidad de otra conducta.</li>
+          <li data-letter="D">Inimputabilidad.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A se refiere a hechos que dejan de ser antijurídicos, no es el caso; D implica incapacidad de comprender la ilicitud, mientras que en el miedo insuperable el sujeto comprende perfectamente lo que hace, pero no se le puede exigir otra conducta.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. Si el error de prohibición es vencible, la consecuencia es:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Exclusión total de la responsabilidad criminal.</li>
+          <li data-letter="B">Se castiga como delito imprudente.</li>
+          <li data-letter="C" class="correct">Se impone la pena inferior en 1 o 2 grados.</li>
+          <li data-letter="D">No tiene ninguna consecuencia jurídica.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es la consecuencia del error INVENCIBLE, no del vencible; B confunde con la consecuencia del error de TIPO vencible; D es falso, sí tiene efecto atenuante.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Explica los cuatro elementos del delito y qué ocurre si falta cada uno.</div>
+        <div class="a">El delito requiere, en cascada: acción (comportamiento voluntario humano; si falta —vis absoluta, reflejos, inconsciencia— no hay delito), tipicidad (adecuación a lo descrito por la ley; si falta por error de tipo invencible, se excluye el dolo y por tanto el delito), antijuridicidad (contrariedad a Derecho; si concurre una causa de justificación como la legítima defensa, el hecho deja de ser antijurídico) y culpabilidad (imputabilidad del sujeto; si falta por inimputabilidad o error de prohibición invencible, no hay responsabilidad penal aunque el hecho sea típico y antijurídico).</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Diferencia entre causas de justificación y causas de inculpabilidad.</div>
+        <div class="a">Las causas de justificación (legítima defensa, estado de necesidad justificante, cumplimiento de un deber) hacen que el hecho deje de ser antijurídico: el Derecho aprueba o tolera la conducta en esas circunstancias, por lo que ni siquiera hay un hecho contrario a derecho. Las causas de inculpabilidad (miedo insuperable, estado de necesidad exculpante) no eliminan la antijuridicidad —el hecho sigue siendo contrario a Derecho— pero excluyen la culpabilidad porque, dadas las circunstancias extremas, no se puede exigir al sujeto un comportamiento distinto.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">A-T-A-C</div>
+      <p>Los cuatro elementos del delito en orden de análisis: <strong>A</strong>cción, <strong>T</strong>ipicidad, <strong>A</strong>ntijuridicidad, <strong>C</strong>ulpabilidad. "ATAC-as" el problema paso a paso: si uno de los cuatro falla, el ataque (la imputación penal) se detiene ahí.</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Conexión con el bloque siguiente</div>
+      <p>Ya tienes el esqueleto del delito. Ahora toca ponerle "personajes": quién comete el delito, quién lo sufre, y qué es exactamente lo que se protege (el bien jurídico). También verás cómo se clasifican los hechos delictivos según su gravedad y forma de perseguirse.</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del bloque 2 — continúa en el bloque 3 ]<div class="line"></div></div>
+</div>
+
+<!-- ===================== BLOQUE 3 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">3</span> Bloque 3 de 8</div>
+    <h2>Elementos del delito y bienes jurídicos protegidos</h2>
+    <p class="hook">Quién hace el delito, quién lo sufre y qué se protege exactamente: la gramática básica para entender cualquier supuesto práctico de examen.</p>
+    <p class="pageref">Temario original: p. 5-7</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">3.1 Los sujetos del delito <span class="tag">[muy preguntado]</span></div>
+    <p>El examen distingue cuatro figuras que se confunden con facilidad:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Figura</th><th>Definición</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>Sujeto activo</td><td>Quien realiza la conducta descrita en el tipo</td><td>El que roba</td></tr>
+          <tr><td>Sujeto pasivo</td><td>Titular del bien jurídico protegido</td><td>El dueño del bar en un robo</td></tr>
+          <tr><td>Ofendido</td><td>Quien sufre directamente la acción</td><td>El empleado al que apuntan con un arma</td></tr>
+          <tr><td>Perjudicado</td><td>Quien sufre el delito (patrimonialmente)</td><td>El dueño del bar, que pierde el dinero</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert">
+      <span class="lbl">Excepción</span>
+      Las personas jurídicas no son sujetos activos del delito como tal, pero sí son penalmente responsables (art. 31 bis). Los animales y los cadáveres nunca son sujeto pasivo.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">3.2 Objeto material y objeto jurídico</div>
+    <p>El <strong>objeto jurídico</strong> es el valor que se protege (equivale al bien jurídico). El <strong>objeto material</strong> es la persona o cosa concreta sobre la que recae la acción, y solo existe en los delitos de resultado.</p>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>En un robo: el objeto material es la cosa sustraída; el objeto jurídico es el patrimonio. Memoriza siempre con este ejemplo para no confundirlos.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">3.3 El bien jurídico protegido (BJP) <span class="tag">[Birnbaum]</span></div>
+    <p>Son los bienes y valores con interés tutelado por el Estado. Se clasifican en:</p>
+    <ul class="clean">
+      <li><strong>Individuales</strong>: materiales (vida, patrimonio), inmateriales (honor, libertad), personalísimos (vida).</li>
+      <li><strong>Colectivos o supraindividuales</strong>: generales (medio ambiente), difusos (consumidores), institucionales (fe pública), de control.</li>
+    </ul>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">3.4 Clasificación del hecho delictivo por gravedad y perseguibilidad <span class="tag">[lo más preguntado]</span></div>
+    <div class="subsec">
+      <div class="subsec-title">— Según su gravedad (art. 13 y 33 CP)</div>
+      <p>Delitos graves, menos graves y leves, según la pena que llevan asociada (ver tabla completa en el bloque 7).</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Según su perseguibilidad</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tipo</th><th>Cómo se persigue</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Públicos</td><td>De oficio, sin denuncia ni querella</td><td>Homicidio</td></tr>
+            <tr><td>Semipúblicos</td><td>Requiere denuncia previa</td><td>Injurias leves</td></tr>
+            <tr><td>Semiprivados</td><td>Denuncia previa, pero el perdón extingue la responsabilidad</td><td>Lesiones imprudentes (art. 152.2)</td></tr>
+            <tr><td>Privados</td><td>Solo por querella del ofendido</td><td>Injuria (art. 208)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Semipúblicos</h4>
+      <ul><li>Necesitan <strong>denuncia previa</strong>.</li><li>El perdón NO extingue la responsabilidad.</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Semiprivados</h4>
+      <ul><li>Necesitan <strong>denuncia previa</strong>.</li><li>El perdón SÍ extingue la responsabilidad.</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>Sujeto activo realiza la conducta; sujeto pasivo es el titular del bien jurídico lesionado.</li>
+        <li>Ofendido sufre la acción; perjudicado sufre el delito (no siempre coinciden).</li>
+        <li>Objeto material = cosa concreta afectada; objeto jurídico = valor protegido (equivale a BJP).</li>
+        <li>Las personas jurídicas no son sujeto activo "clásico", pero sí responsables penalmente.</li>
+        <li>Los animales y cadáveres nunca son sujeto pasivo.</li>
+        <li>Los delitos se clasifican por gravedad (graves/menos graves/leves) y por perseguibilidad (públicos/semipúblicos/semiprivados/privados).</li>
+        <li>Solo en los semiprivados el perdón del ofendido extingue la responsabilidad criminal.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> en un robo, el objeto material es la cosa robada y el objeto jurídico es el patrimonio: este ejemplo aparece literalmente en preguntas tipo test.</li>
+        <li><span class="intro">En examen, recuerda que</span> ofendido y perjudicado pueden ser personas distintas: el empleado al que roban (ofendido) y el dueño del negocio (perjudicado).</li>
+        <li><span class="intro">En examen, recuerda que</span> solo los delitos SEMIPRIVADOS se extinguen por perdón; los semipúblicos solo necesitan denuncia, pero el perdón no los extingue.</li>
+        <li><span class="intro">En examen, recuerda que</span> los delitos PRIVADOS exigen querella, no basta una simple denuncia.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Confundir ofendido con perjudicado.</span><span class="ok">✅ Ofendido sufre la acción directa; perjudicado sufre el daño/delito.</span></div>
+        <div class="error-item"><span class="x">❌ Pensar que el perdón extingue siempre la responsabilidad en delitos perseguibles por denuncia.</span><span class="ok">✅ Solo en los SEMIPRIVADOS; en los semipúblicos no.</span></div>
+        <div class="error-item"><span class="x">❌ Creer que cualquier cosa puede ser objeto material.</span><span class="ok">✅ Solo existe en delitos de RESULTADO, no en los de mera actividad.</span></div>
+        <div class="error-item"><span class="x">❌ Pensar que un animal puede ser sujeto pasivo.</span><span class="ok">✅ Nunca: ni animales ni cadáveres son sujeto pasivo.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. En un delito de robo, el objeto jurídico es:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">La cosa sustraída.</li>
+          <li data-letter="B" class="correct">El patrimonio.</li>
+          <li data-letter="C">El sujeto pasivo.</li>
+          <li data-letter="D">El sujeto activo.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es el objeto MATERIAL; C y D son sujetos, no objetos del delito.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. Un delito semiprivado se caracteriza porque:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Se persigue de oficio.</li>
+          <li data-letter="B">Solo se persigue por querella.</li>
+          <li data-letter="C" class="correct">Requiere denuncia previa y el perdón extingue la responsabilidad.</li>
+          <li data-letter="D">Requiere denuncia previa pero el perdón no tiene efecto.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe los públicos; B describe los privados; D describe los semipúblicos.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. El objeto material de un delito:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Existe siempre, en todos los delitos.</li>
+          <li data-letter="B" class="correct">Solo existe en los delitos de resultado.</li>
+          <li data-letter="C">Equivale al bien jurídico protegido.</li>
+          <li data-letter="D">Es siempre una persona.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es falso, en los de mera actividad no existe; C describe el objeto JURÍDICO; D es falso, puede ser persona o cosa.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. ¿Quién puede ser sujeto pasivo de un delito?</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Únicamente una persona física.</li>
+          <li data-letter="B" class="correct">Una persona física, jurídica, la sociedad o el Estado.</li>
+          <li data-letter="C">Un animal en delitos de maltrato.</li>
+          <li data-letter="D">Un cadáver en delitos contra el honor.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es incompleto; C y D son incorrectos, los animales y cadáveres nunca son sujeto pasivo del delito.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. La injuria del art. 208 CP es un delito:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Público.</li>
+          <li data-letter="B">Semipúblico.</li>
+          <li data-letter="C">Semiprivado.</li>
+          <li data-letter="D" class="correct">Privado.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A, B y C requieren actuación de oficio o denuncia; la injuria exige querella del ofendido, lo que la sitúa en la categoría de privados.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Explica la diferencia entre ofendido y perjudicado con un ejemplo distinto al del temario.</div>
+        <div class="a">El ofendido es quien sufre directamente la acción delictiva, mientras que el perjudicado es quien soporta las consecuencias o el daño derivado del delito, y no siempre coinciden en la misma persona. Por ejemplo, en una estafa cometida contra el cajero de un banco que entrega el dinero engañado, el cajero sería el ofendido (sobre quien recae el engaño), mientras que el banco, titular del dinero sustraído, sería el perjudicado.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">¿Por qué es importante distinguir entre delitos semipúblicos y semiprivados?</div>
+        <div class="a">Porque, aunque ambos comparten el requisito de denuncia previa del ofendido para poder iniciar el procedimiento, sus efectos posteriores son distintos: en los semipúblicos, una vez iniciado el proceso, el perdón posterior del ofendido no tiene efecto extintivo sobre la responsabilidad criminal, mientras que en los semiprivados el perdón de la persona ofendida sí extingue dicha responsabilidad. Confundirlos lleva a errores en supuestos prácticos sobre la actuación policial tras una denuncia retirada.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">P-S-S-P</div>
+      <p>Orden de "menos a más control del ofendido" en la perseguibilidad: <strong>P</strong>úblico (nadie pregunta) → <strong>S</strong>emipúblico (hace falta denuncia, pero ya no hay vuelta atrás) → <strong>S</strong>emiprivado (denuncia, pero el perdón SÍ perdona) → <strong>P</strong>rivado (todo el peso está en manos del ofendido, hace falta querella).</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Conexión con el bloque siguiente</div>
+      <p>Ya sabes quién interviene y qué se protege. Ahora hay que entrar en la cabeza del sujeto activo: qué quería hacer (dolo), qué error pudo cometer, y si actuó con la diligencia debida o no (imprudencia). Es la parte más conceptual, pero también la más preguntada en preguntas de matiz.</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del bloque 3 — continúa en el bloque 4 ]<div class="line"></div></div>
+</div>
+
+<!-- ===================== BLOQUE 4 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">4</span> Bloque 4 de 8</div>
+    <h2>El dolo, el error y la imprudencia</h2>
+    <p class="hook">"No hay pena sin dolo o imprudencia". Aquí se decide si alguien actuó queriendo, sabiendo el riesgo, o simplemente sin el cuidado debido.</p>
+    <p class="pageref">Temario original: p. 7-8</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">4.1 El dolo <span class="tag">[art. 5 CP]</span></div>
+    <p>Es la voluntad consciente de realizar un hecho prohibido por la ley. Tiene dos elementos: <strong>intelectual</strong> (conocer los elementos del tipo) y <strong>volitivo</strong> (querer realizarlo).</p>
+    <div class="subsec">
+      <div class="subsec-title">— Clases de dolo, de más a menos intención directa</div>
+      <ul class="clean">
+        <li><strong>Directo de 1er grado</strong>: el sujeto busca directamente el resultado (dispara para matar).</li>
+        <li><strong>Directo de 2º grado</strong>: no busca el resultado, pero lo prevé como consecuencia necesaria y lo acepta (coloca una bomba sabiendo que habrá víctimas).</li>
+        <li><strong>Eventual</strong>: prevé la posibilidad del resultado y, con indiferencia, decide actuar asumiendo el riesgo (acelerar en zona escolar).</li>
+      </ul>
+    </div>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>La diferencia entre dolo directo de 2º grado y dolo eventual es el grado de certeza: en el 2º grado el resultado es <strong>seguro</strong> (aunque no se busque); en el eventual solo es <strong>posible</strong>.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">4.2 El error <span class="tag">[art. 14 CP — lo más preguntado]</span></div>
+    <p>Ya lo viste en el bloque 2, pero aquí va el resumen comparativo que el examen exige dominar de memoria:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th></th><th>Error de tipo (art. 14.1-2)</th><th>Error de prohibición (art. 14.3)</th></tr></thead>
+        <tbody>
+          <tr><td>Qué desconoce</td><td>Un hecho constitutivo de la infracción</td><td>Que el hecho es ilícito</td></tr>
+          <tr><td>Afecta a</td><td>Dolo / tipicidad</td><td>Culpabilidad</td></tr>
+          <tr><td>Invencible</td><td>Excluye la responsabilidad criminal</td><td>Excluye la responsabilidad criminal</td></tr>
+          <tr><td>Vencible</td><td>Se castiga como imprudente (si existe esa modalidad)</td><td>Pena inferior en 1 o 2 grados</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert">
+      <span class="lbl">Ejemplo para fijar la diferencia</span>
+      Error de tipo: el cazador que dispara a una persona creyendo que es un animal (no sabe lo que hace). Error de prohibición: quien viene de un país donde la poligamia es legal y no sabe que en España es delito (sabe lo que hace, no sabe que está prohibido aquí).
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">4.3 La imprudencia <span class="tag">[art. 12 CP]</span></div>
+    <p>Solo se castiga cuando la ley lo dice expresamente. Es la infracción del deber objetivo de cuidado.</p>
+    <ul class="clean">
+      <li><strong>Consciente</strong>: el sujeto sabe que su acción es peligrosa, pero confía en que no pasará nada.</li>
+      <li><strong>Inconsciente</strong>: no conoce la peligrosidad, pero debía haberla conocido.</li>
+      <li><strong>Clases por gravedad</strong>: grave, menos grave y profesional (la leve va por vía civil, no penal).</li>
+    </ul>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Dolo eventual</h4>
+      <ul><li>Prevé el resultado como <strong>posible</strong>.</li><li>Actúa con indiferencia, asume el riesgo.</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Culpa consciente</h4>
+      <ul><li>Prevé el resultado como <strong>posible</strong>.</li><li>Pero CONFÍA en que no se producirá.</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>El dolo exige conocer (elemento intelectual) y querer (elemento volitivo) el hecho típico.</li>
+        <li>Dolo directo 1er grado: se busca el resultado. 2º grado: se prevé como seguro y se acepta.</li>
+        <li>Dolo eventual: se prevé como posible y se actúa con indiferencia hacia el resultado.</li>
+        <li>Error de tipo afecta al dolo/tipicidad; error de prohibición afecta a la culpabilidad.</li>
+        <li>Error invencible (de cualquier tipo) excluye la responsabilidad; vencible la atenúa o reconduce a imprudencia.</li>
+        <li>La imprudencia solo se castiga si la ley lo prevé expresamente (numerus clausus).</li>
+        <li>La diferencia clave entre dolo eventual y culpa consciente es si el sujeto acepta el riesgo o confía en evitarlo.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> el dolo directo de 2º grado implica certeza del resultado; el eventual solo posibilidad.</li>
+        <li><span class="intro">En examen, recuerda que</span> el error de tipo VENCIBLE se castiga como imprudente; el de prohibición VENCIBLE solo rebaja la pena.</li>
+        <li><span class="intro">En examen, recuerda que</span> la imprudencia LEVE no se castiga penalmente, va por vía civil.</li>
+        <li><span class="intro">En examen, recuerda que</span> en la culpa consciente el sujeto confía en que el resultado no se produzca; en el dolo eventual, le es indiferente.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Confundir dolo directo de 2º grado con dolo eventual.</span><span class="ok">✅ 2º grado = certeza del resultado; eventual = mera posibilidad asumida con indiferencia.</span></div>
+        <div class="error-item"><span class="x">❌ Pensar que el error vencible siempre exime de responsabilidad.</span><span class="ok">✅ Solo el INVENCIBLE exime; el vencible atenúa o reconduce a imprudencia.</span></div>
+        <div class="error-item"><span class="x">❌ Creer que toda imprudencia se castiga penalmente.</span><span class="ok">✅ Solo si la ley lo prevé expresamente, y la leve va por vía civil.</span></div>
+        <div class="error-item"><span class="x">❌ Confundir culpa consciente con dolo eventual.</span><span class="ok">✅ En la culpa consciente el sujeto confía en evitar el resultado; en el dolo eventual, no le importa.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. Un sujeto coloca una bomba para destruir documentos sabiendo que morirán personas. Actúa con:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Dolo eventual.</li>
+          <li data-letter="B" class="correct">Dolo directo de 2º grado.</li>
+          <li data-letter="C">Culpa consciente.</li>
+          <li data-letter="D">Dolo directo de 1er grado.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A exige que el resultado sea solo posible, aquí es seguro; C excluye la voluntad de causar el resultado; D exige que el resultado sea el fin buscado, aquí el fin es destruir documentos, no matar.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. El error sobre un hecho constitutivo de la infracción penal se denomina:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Error de prohibición.</li>
+          <li data-letter="B" class="correct">Error de tipo.</li>
+          <li data-letter="C">Error de derecho.</li>
+          <li data-letter="D">Dolo eventual.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A y C se refieren al desconocimiento de la ilicitud, no del hecho mismo; D no es una clase de error.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. Un error de prohibición vencible tiene como consecuencia:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Exclusión total de responsabilidad.</li>
+          <li data-letter="B">Castigo como delito imprudente.</li>
+          <li data-letter="C" class="correct">Pena inferior en 1 o 2 grados.</li>
+          <li data-letter="D">No tiene relevancia penal.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es la consecuencia del invencible; B es la consecuencia del error de TIPO vencible; D es falso, sí afecta a la pena.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. La imprudencia leve, conforme al sistema actual del CP:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Se castiga siempre como delito leve.</li>
+          <li data-letter="B" class="correct">No se castiga penalmente, va por vía civil.</li>
+          <li data-letter="C">Equivale a la imprudencia profesional.</li>
+          <li data-letter="D">Excluye siempre la responsabilidad civil.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es incorrecto tras la reforma que despenalizó la imprudencia leve; C confunde dos categorías distintas; D es justo lo contrario, sí hay responsabilidad civil.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. La diferencia entre dolo eventual y culpa consciente radica en que:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">En la culpa consciente no se prevé el resultado.</li>
+          <li data-letter="B" class="correct">En el dolo eventual el sujeto asume el riesgo con indiferencia; en la culpa consciente confía en evitarlo.</li>
+          <li data-letter="C">El dolo eventual no requiere previsión del resultado.</li>
+          <li data-letter="D">Ambos producen las mismas consecuencias penales.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es falso, en la culpa consciente sí se prevé el resultado como posible; C es falso, el dolo eventual exige previsión; D es falso, dolo e imprudencia tienen penas distintas.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Explica con un ejemplo propio la diferencia entre dolo directo de 1er grado y dolo eventual.</div>
+        <div class="a">El dolo directo de 1er grado existe cuando el sujeto busca directamente el resultado, como quien dispara un arma con la intención específica de matar a otra persona. El dolo eventual, en cambio, aparece cuando el sujeto no busca el resultado pero prevé su posibilidad y decide actuar igualmente con indiferencia hacia esa consecuencia: por ejemplo, quien conduce a gran velocidad en una calle muy concurrida sabiendo que podría atropellar a alguien, y aun así continúa porque le da igual lo que pueda ocurrir.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">¿Por qué es relevante distinguir si un error es vencible o invencible?</div>
+        <div class="a">Porque determina si hay o no responsabilidad penal y, en su caso, cuánta. El error invencible (tanto de tipo como de prohibición) excluye totalmente la responsabilidad criminal, porque ni siquiera con la diligencia debida el sujeto habría podido evitarlo. El error vencible, en cambio, sí permite imputar responsabilidad: en el error de tipo se reconduce a un delito imprudente (si existe esa modalidad); en el error de prohibición se mantiene el dolo pero se aplica una pena inferior en uno o dos grados, ya que la culpabilidad está disminuida, no eliminada.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">QUIERO · PREVEO · ME DA IGUAL</div>
+      <p>Escala mental del dolo: "lo quiero" (directo 1er grado) → "sé que pasará, lo acepto" (directo 2º grado) → "puede pasar, me da igual" (eventual). Si el sujeto en vez de "me da igual" piensa "seguro que no pasa", ya no es dolo: es culpa consciente.</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Conexión con el bloque siguiente</div>
+      <p>Ya sabes qué pasaba "dentro de la cabeza" del autor. Ahora toca ver el delito como un proceso en el tiempo: desde que se piensa hasta que se consuma, y qué fases de ese camino castiga la ley (iter criminis).</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del bloque 4 — continúa en el bloque 5 ]<div class="line"></div></div>
+</div>
+
+<!-- ===================== BLOQUE 5 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">5</span> Bloque 5 de 8</div>
+    <h2>Iter criminis: el camino del delito</h2>
+    <p class="hook">Desde que se piensa un delito hasta que se consuma hay un recorrido con paradas concretas. La ley solo castiga algunas de esas paradas, y el examen vive de esa frontera.</p>
+    <p class="pageref">Temario original: p. 8-9</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">5.1 Las dos fases del camino</div>
+    <p>El "iter criminis" tiene una <strong>fase interna</strong> (el pensamiento, que nunca se castiga: "pensamiento impune") y una <strong>fase externa</strong>, dividida en actos preparatorios y actos ejecutivos.</p>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>Pensar en cometer un delito jamás es delito. Solo se castiga a partir de que ese pensamiento se exterioriza, y solo en los actos preparatorios cuando la ley lo prevé expresamente para ese delito en concreto.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">5.2 Actos preparatorios <span class="tag">[art. 17-18 CP]</span></div>
+    <p>Solo se castigan cuando el tipo delictivo concreto lo prevé expresamente. Son tres figuras que se confunden mucho:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Figura</th><th>Definición</th><th>Detalle clave</th></tr></thead>
+        <tbody>
+          <tr><td>Conspiración (art. 17.1)</td><td>2 o más personas se conciertan para ejecutar un delito y resuelven ejecutarlo</td><td>Hace falta acuerdo previo (pactum sceleris) y decisión firme</td></tr>
+          <tr><td>Proposición (art. 17.2)</td><td>Quien ya ha resuelto cometer el delito invita a otros a participar</td><td>No requiere acuerdo, basta el ofrecimiento a alguien determinado</td></tr>
+          <tr><td>Provocación (art. 18)</td><td>Incitar a través de imprenta, radio u otro medio a una masa indeterminada</td><td>Si tras la provocación se comete el delito, se castiga como inducción</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La <strong>apología</strong> (ensalzar el delito o a su autor) solo es delictiva como forma de provocación, si supone incitación directa a cometer un delito.</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">5.3 Actos ejecutivos <span class="tag">[lo más preguntado]</span></div>
+    <div class="subsec">
+      <div class="subsec-title">— Tentativa (art. 16.1 CP)</div>
+      <p>El sujeto da principio a la ejecución por hechos exteriores, pero el resultado no se produce por causas independientes de su voluntad.</p>
+      <ul class="clean">
+        <li><strong>Inacabada</strong>: solo parte de los actos necesarios.</li>
+        <li><strong>Acabada</strong>: todos los actos necesarios, pero el resultado no se produce.</li>
+      </ul>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Desistimiento (art. 16.2-3 CP)</div>
+      <p>Queda exento de responsabilidad por el delito intentado quien evita VOLUNTARIAMENTE la consumación. Eso sí, responde de lo ya ejecutado si ya constituye otro delito (ej.: causó lesiones aunque evitó la muerte).</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Consumación</div>
+      <p>Formal: se realizan todos los elementos del tipo. Material o agotamiento: además se consigue el propósito buscado (ej.: vender el móvil hurtado).</p>
+    </div>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Conspiración</h4>
+      <ul><li>Necesita <strong>acuerdo</strong> entre 2 o más.</li><li>Decisión firme de ejecutar.</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Proposición</h4>
+      <ul><li>No hace falta acuerdo.</li><li>Basta con <strong>invitar</strong> a otro.</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>El pensamiento nunca es punible: solo cuenta a partir de la exteriorización del hecho.</li>
+        <li>Los actos preparatorios (conspiración, proposición, provocación, apología) solo se castigan si la ley lo prevé para ese delito en concreto.</li>
+        <li>La conspiración exige acuerdo previo y decisión firme entre 2 o más personas.</li>
+        <li>La proposición no exige acuerdo: basta con invitar a alguien determinado.</li>
+        <li>La provocación se dirige a una masa indeterminada y, si triunfa, se castiga como inducción.</li>
+        <li>La tentativa exige principio de ejecución sin consumación por causas ajenas a la voluntad del autor.</li>
+        <li>El desistimiento exige voluntariedad y exime del delito intentado, pero no de lo ya ejecutado si es delito autónomo.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> la conspiración exige ACUERDO ENTRE VARIOS; la proposición solo exige que UNO YA HAYA RESUELTO actuar e invite a otro.</li>
+        <li><span class="intro">En examen, recuerda que</span> si tras la provocación se comete el delito, se castiga como INDUCCIÓN, no como provocación.</li>
+        <li><span class="intro">En examen, recuerda que</span> el desistimiento debe ser VOLUNTARIO: si la policía interrumpe la acción, eso es tentativa, no desistimiento.</li>
+        <li><span class="intro">En examen, recuerda que</span> el desistimiento NO exime de lo ya ejecutado si constituye otro delito distinto (ej. lesiones causadas antes de desistir de matar).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Pensar que los actos preparatorios siempre se castigan.</span><span class="ok">✅ Solo si el tipo delictivo concreto los prevé expresamente.</span></div>
+        <div class="error-item"><span class="x">❌ Confundir conspiración con proposición.</span><span class="ok">✅ Conspiración = acuerdo entre varios; Proposición = invitación de quien ya decidió actuar.</span></div>
+        <div class="error-item"><span class="x">❌ Creer que el desistimiento exime de toda responsabilidad.</span><span class="ok">✅ Solo exime del delito intentado, no de lo ya ejecutado si es delito autónomo.</span></div>
+        <div class="error-item"><span class="x">❌ Confundir tentativa inacabada con acabada.</span><span class="ok">✅ Inacabada = faltan actos por hacer; acabada = se hicieron todos, pero el resultado no llegó.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. La conspiración para delinquir requiere:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Que una persona invite a otra a participar.</li>
+          <li data-letter="B" class="correct">Que 2 o más personas se concierten y resuelvan ejecutar el delito.</li>
+          <li data-letter="C">Incitación a una masa indeterminada.</li>
+          <li data-letter="D">El inicio de los actos ejecutivos.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe la proposición; C describe la provocación; D describe la tentativa, no un acto preparatorio.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. Si tras una provocación el delito se llega a cometer:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">El provocador queda impune.</li>
+          <li data-letter="B" class="correct">El provocador se castiga como inductor.</li>
+          <li data-letter="C">Se castiga solo por provocación.</li>
+          <li data-letter="D">Se aplica la conspiración.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es falso, sí hay responsabilidad; C es incorrecto porque la ley reconduce expresamente a la inducción; D no aplica, son figuras distintas.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. El desistimiento (art. 16.2 CP) exime de responsabilidad por:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Todos los actos realizados, sin excepción.</li>
+          <li data-letter="B" class="correct">El delito intentado, sin perjuicio de lo ya ejecutado si fuera otro delito.</li>
+          <li data-letter="C">Solo si el desistimiento es involuntario.</li>
+          <li data-letter="D">Únicamente en delitos leves.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es excesivo, sí responde de lo ya consumado como delito distinto; C es justo lo contrario, exige voluntariedad; D no tiene ese límite.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. La tentativa acabada se da cuando:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Solo se han realizado parte de los actos necesarios.</li>
+          <li data-letter="B" class="correct">Se han realizado todos los actos que debían producir el resultado, pero este no se produce.</li>
+          <li data-letter="C">El delito se consuma completamente.</li>
+          <li data-letter="D">El sujeto desiste antes de actuar.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe la tentativa INACABADA; C describe la consumación; D no es tentativa, es ausencia de ejecución.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. La apología solo es delictiva cuando:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Se ensalza cualquier delito.</li>
+          <li data-letter="B" class="correct">Constituye una forma de provocación con incitación directa a cometer un delito.</li>
+          <li data-letter="C">Se hace en privado.</li>
+          <li data-letter="D">Nunca es delictiva.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es excesivo, no toda apología es delito; C es lo contrario de su naturaleza pública; D es falso, sí puede serlo bajo ciertas condiciones.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Diferencia entre conspiración y proposición con ejemplos.</div>
+        <div class="a">En la conspiración, dos o más personas se ponen de acuerdo y deciden firmemente ejecutar un delito conjuntamente, como cuando tres personas planifican juntas un atraco y deciden llevarlo a cabo. En la proposición, en cambio, basta con que una sola persona, que ya ha decidido cometer el delito por su cuenta, invite a otra concreta a participar con ella, sin que sea necesario que esa otra persona acepte ni que exista un acuerdo previo entre ambas; por ejemplo, quien ya ha decidido atracar un banco y le propone a un conocido que le acompañe.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">¿Por qué el desistimiento exige voluntariedad y qué ocurre si la interrupción es por causas externas?</div>
+        <div class="a">El desistimiento exige voluntariedad porque su fundamento es premiar a quien, pudiendo consumar el delito, decide libremente no hacerlo, evitando así el resultado lesivo. Si la interrupción se debe a causas externas e independientes de la voluntad del autor —por ejemplo, la intervención policial o la resistencia inesperada de la víctima— no estamos ante un desistimiento, sino ante una tentativa, ya que el sujeto no evitó el resultado por su propia decisión, sino porque algo ajeno a él se lo impidió.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">C-P-P-A</div>
+      <p>Los actos preparatorios en orden de "cuántas personas hacen falta": <strong>C</strong>onspiración (acuerdo entre varios) → <strong>P</strong>roposición (uno invita a otro) → <strong>P</strong>rovocación (uno incita a una masa) → <strong>A</strong>pología (uno ensalza, sin invitar a nadie en concreto). Va de lo más concertado a lo más difuso.</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Conexión con el bloque siguiente</div>
+      <p>Ya sabes en qué fase está el delito. Toca ahora ver quién responde por él: no es lo mismo ser autor que cómplice, y las personas jurídicas tienen un régimen propio de responsabilidad penal que el examen pregunta cada vez más.</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del bloque 5 — continúa en el bloque 6 ]<div class="line"></div></div>
+</div>
+
+<!-- ===================== BLOQUE 6 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">6</span> Bloque 6 de 8</div>
+    <h2>Autoría, participación y responsabilidad de las personas jurídicas</h2>
+    <p class="hook">No todos los que intervienen en un delito responden igual. Y desde hace años, las empresas también pueden ser "delincuentes" a efectos penales.</p>
+    <p class="pageref">Temario original: p. 9-10</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">6.1 Autores <span class="tag">[art. 28-30 CP]</span></div>
+    <ul class="clean">
+      <li><strong>Directo (material o inmediato)</strong>: realiza el hecho por sí solo.</li>
+      <li><strong>Coautoría</strong>: lo realizan conjuntamente varias personas.</li>
+      <li><strong>Mediata</strong> ("hombre de atrás"): utiliza a otra persona como instrumento (que actúa sin libertad, sin conocimiento o engañada).</li>
+    </ul>
+    <div class="subsec">
+      <div class="subsec-title">— "Se consideran autores" (misma pena que el autor)</div>
+      <ul class="clean">
+        <li><strong>Inductor</strong>: induce directa y eficazmente a otro a ejecutar el delito.</li>
+        <li><strong>Cooperador necesario</strong>: coopera con un acto sin el cual el delito no se habría cometido (teoría de los bienes escasos).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">6.2 El cómplice <span class="tag">[no es autor]</span></div>
+    <p>Coopera a la ejecución, pero no con un acto imprescindible ("cooperador no necesario"). Actúa antes o de forma simultánea, nunca después (si actúa después, es encubridor). Su pena es la inferior en un grado a la del autor.</p>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>El momento de actuación marca la frontera con el encubrimiento: si la ayuda es ANTES o DURANTE, puede ser cooperador o cómplice; si es DESPUÉS, ya no es partícipe del delito, es encubridor (otra figura distinta).</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">6.3 Responsabilidad penal de las personas jurídicas <span class="tag">[art. 31 bis — lo más preguntado]</span></div>
+    <p>Las personas jurídicas pueden ser penalmente responsables en dos supuestos:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Supuesto</th><th>Quién comete el delito</th><th>Causa de exención principal</th></tr></thead>
+        <tbody>
+          <tr><td>1 (art. 31 bis.1.a)</td><td>Representantes legales o quienes deciden/controlan en nombre de la PJ</td><td>Modelo de organización y gestión (compliance) eficaz antes del delito</td></tr>
+          <tr><td>2 (art. 31 bis.1.b)</td><td>Empleados sometidos a esos superiores, por incumplimiento grave de supervisión</td><td>Modelo de organización adecuado para prevenir ese tipo de delito</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert">
+      <span class="lbl">Excepción</span>
+      No se aplica a: Estado, AAPP territoriales e institucionales, organismos reguladores, agencias públicas empresariales y organizaciones internacionales de Derecho Público.
+    </div>
+    <p>Atenuantes propias de la PJ: confesar antes de saber que se investiga, colaborar en la investigación, reparar el daño, y establecer medidas eficaces de prevención antes del juicio oral.</p>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Cooperador necesario</h4>
+      <ul><li>Se considera <strong>autor</strong>.</li><li>Misma pena que el autor.</li><li>Acto imprescindible.</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Cómplice</h4>
+      <ul><li><strong>No</strong> es autor.</li><li>Pena inferior en 1 grado.</li><li>Acto no imprescindible.</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>Autor directo realiza el hecho él mismo; coautoría lo realizan varios conjuntamente; autoría mediata usa a otro como instrumento.</li>
+        <li>Inductor y cooperador necesario se "consideran autores" y reciben la misma pena.</li>
+        <li>El cómplice no es autor: coopera con acto no imprescindible y su pena es inferior en un grado.</li>
+        <li>La ayuda posterior al delito no es complicidad, es encubrimiento.</li>
+        <li>Las personas jurídicas responden penalmente en dos supuestos: delitos de sus representantes, o de empleados por falta grave de supervisión.</li>
+        <li>El "compliance" (modelo de organización y prevención eficaz) es la principal causa de exención de responsabilidad de la PJ.</li>
+        <li>El Estado y las AAPP territoriales e institucionales quedan excluidos del régimen de responsabilidad penal de las PJ.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> el cooperador necesario es autor (misma pena); el cómplice NO es autor (pena inferior en 1 grado).</li>
+        <li><span class="intro">En examen, recuerda que</span> si la ayuda llega DESPUÉS del delito, ya no estamos ante complicidad, sino ante encubrimiento.</li>
+        <li><span class="intro">En examen, recuerda que</span> el modelo de compliance debe haberse adoptado ANTES de la comisión del delito para servir de causa de exención.</li>
+        <li><span class="intro">En examen, recuerda que</span> el Estado y las AAPP territoriales NO están sujetos al régimen de responsabilidad penal de las personas jurídicas.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Pensar que el cómplice recibe la misma pena que el autor.</span><span class="ok">✅ Recibe la pena inferior en 1 grado; solo inductor y cooperador necesario igualan al autor.</span></div>
+        <div class="error-item"><span class="x">❌ Confundir cooperador necesario con cómplice.</span><span class="ok">✅ Necesario = acto sin el cual no se habría cometido el delito (es autor); cómplice = acto no imprescindible (no es autor).</span></div>
+        <div class="error-item"><span class="x">❌ Creer que las personas jurídicas nunca responden penalmente.</span><span class="ok">✅ Sí responden desde la reforma del art. 31 bis, salvo las excepciones legales (Estado, AAPP, etc.).</span></div>
+        <div class="error-item"><span class="x">❌ Pensar que cualquier ayuda posterior al delito es complicidad.</span><span class="ok">✅ La ayuda posterior es ENCUBRIMIENTO, no complicidad.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. El cooperador necesario:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">No es autor y tiene pena inferior.</li>
+          <li data-letter="B" class="correct">Se considera autor y recibe la misma pena.</li>
+          <li data-letter="C">Solo responde si actúa después del delito.</li>
+          <li data-letter="D">Nunca responde penalmente.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe al cómplice; C describe al encubridor; D es falso, sí responde y con la misma pena que el autor.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. La autoría mediata se caracteriza porque:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Varias personas realizan el hecho conjuntamente.</li>
+          <li data-letter="B" class="correct">El autor utiliza a otra persona como instrumento sin libertad o conocimiento.</li>
+          <li data-letter="C">El autor induce a otro a delinquir.</li>
+          <li data-letter="D">El autor coopera con un acto imprescindible.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe la coautoría; C describe la inducción; D describe al cooperador necesario.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. Para que la persona jurídica quede exenta de responsabilidad en el supuesto 1 del art. 31 bis es necesario, entre otros requisitos:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Que el delito no se haya cometido.</li>
+          <li data-letter="B" class="correct">Que se haya adoptado y ejecutado eficazmente un modelo de organización antes del delito.</li>
+          <li data-letter="C">Que la empresa sea pequeña.</li>
+          <li data-letter="D">Que el autor individual no sea identificado.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A no tiene sentido, la exención opera respecto de un delito ya cometido; C es un factor distinto (gestión de la supervisión en PYME); D no exime a la PJ, de hecho la responsabilidad puede exigirse incluso sin individualizar al autor físico.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. El cómplice, a diferencia del cooperador necesario:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Actúa siempre después del delito.</li>
+          <li data-letter="B" class="correct">Coopera con un acto que no era imprescindible para la comisión del delito.</li>
+          <li data-letter="C">Recibe la misma pena que el autor.</li>
+          <li data-letter="D">Nunca es penalmente responsable.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describiría al encubridor; C es la consecuencia del cooperador necesario, no del cómplice; D es falso, sí responde, con pena inferior en grado.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. ¿Cuál de las siguientes entidades NO está sujeta al régimen de responsabilidad penal de las personas jurídicas?</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Una sociedad mercantil privada.</li>
+          <li data-letter="B" class="correct">El Estado y las Administraciones Públicas territoriales.</li>
+          <li data-letter="C">Una sociedad mercantil que ejerce políticas públicas.</li>
+          <li data-letter="D">Cualquier persona jurídica privada.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A y D sí pueden ser responsables; C, aunque ejerza políticas públicas, mantiene un régimen especial (multa e intervención judicial) pero no queda totalmente excluida como el Estado.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Explica la diferencia entre cooperador necesario y cómplice.</div>
+        <div class="a">Ambos prestan ayuda a la comisión del delito sin realizar directamente la acción típica, pero la diferencia está en la imprescindibilidad de su aportación: el cooperador necesario realiza un acto sin el cual el delito no se habría podido cometer (teoría de los bienes escasos), por lo que la ley lo equipara al autor y le impone la misma pena. El cómplice, en cambio, coopera con un acto que facilita la ejecución pero que no era imprescindible —de ahí que también se le llame "cooperador no necesario"— y por ello recibe una pena inferior en un grado respecto a la del autor.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">¿Cuáles son los dos supuestos de responsabilidad penal de las personas jurídicas del art. 31 bis CP?</div>
+        <div class="a">El primer supuesto se da cuando el delito lo comete un representante legal o una persona que, individualmente o como parte de un órgano de la entidad, está autorizada para tomar decisiones en su nombre u ostenta facultades de organización y control, actuando en nombre y beneficio de la persona jurídica. El segundo supuesto se da cuando el delito lo comete un empleado sometido a la autoridad de esas personas físicas, debido a que estas han incumplido gravemente sus deberes de supervisión, vigilancia y control sobre su actividad. En ambos casos, la existencia previa de un modelo de organización y prevención eficaz puede exonerar a la persona jurídica.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">A-I-C-C</div>
+      <p>Escala de "quién pena igual que el autor": <strong>A</strong>utor (directo/coautor/mediato) = pena del delito; <strong>I</strong>nductor = misma pena; <strong>C</strong>ooperador necesario = misma pena; <strong>C</strong>ómplice = pena inferior en 1 grado, el único "escalón hacia abajo" de la lista.</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Conexión con el bloque siguiente</div>
+      <p>Ya sabes quién responde. Ahora toca ver con qué se le castiga: el catálogo completo de penas, su duración y su clasificación por gravedad — la parte más "memorística" pero también la más rentable en número de preguntas.</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del bloque 6 — continúa en el bloque 7 ]<div class="line"></div></div>
+</div>
+
+<!-- ===================== BLOQUE 7 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">7</span> Bloque 7 de 8</div>
+    <h2>Las penas: catálogo y clasificación por gravedad</h2>
+    <p class="hook">El bloque más "de tabla": memoriza las duraciones clave y la lógica de la clasificación (grave/menos grave/leve), no cada cifra suelta.</p>
+    <p class="pageref">Temario original: p. 10-12</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">7.1 Penas privativas de libertad <span class="tag">[lo más preguntado]</span></div>
+    <div class="subsec">
+      <div class="subsec-title">— Prisión permanente revisable</div>
+      <p>Se revisa cuando el penado cumple <span class="plazo">25 años</span> de condena, está clasificado en 3er grado y tiene pronóstico favorable de reinserción. No podrá disfrutar de permisos de salida hasta cumplir <span class="plazo">12 años</span> (terrorismo) u <span class="plazo">8 años</span> (resto de casos).</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Prisión</div>
+      <p>De <span class="plazo">3 meses a 20 años</span> (excepcionalmente hasta 40). El 3er grado, si la condena supera 5 años, no podrá efectuarse hasta cumplir la mitad de la pena en ciertos delitos graves (terrorismo, organización criminal, trata, agresión sexual a menores de 16).</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— Localización permanente</div>
+      <p>De <span class="plazo">1 día a 6 meses</span>. Obliga a permanecer en el domicilio o lugar fijado por el juez.</p>
+    </div>
+    <div class="alert">
+      <span class="lbl">Excepción</span>
+      La responsabilidad subsidiaria por impago de multa tiene un máximo de 1 año, y NO se aplica si la pena privativa de libertad impuesta supera los 5 años.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">7.2 Tabla de clasificación de las penas según su gravedad <span class="tag">[muy preguntado]</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pena</th><th>Duración total</th><th>Grave</th><th>Menos grave</th></tr></thead>
+        <tbody>
+          <tr><td>Prisión</td><td>3 meses - 20 años</td><td>más de 5 años</td><td>3 meses - 5 años</td></tr>
+          <tr><td>Inhabilitación especial</td><td>3 meses - 20 años</td><td>más de 5 años</td><td>3 meses - 5 años</td></tr>
+          <tr><td>Suspensión de empleo</td><td>3 meses - 6 años</td><td>más de 5 años</td><td>3 meses - 5 años</td></tr>
+          <tr><td>Multa</td><td>10 días - 2 años</td><td>—</td><td>más de 3 meses</td></tr>
+          <tr><td>TBC</td><td>1 día - 1 año</td><td>—</td><td>31 días - 1 año</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>La frontera "5 años" es la más repetida del tema: en prisión e inhabilitación especial, hasta 5 años es menos grave y por encima de 5 es grave. Memoriza esa cifra antes que ninguna otra.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">7.3 Penas privativas de derechos y la multa</div>
+    <ul class="clean">
+      <li><strong>Inhabilitación absoluta</strong>: <span class="plazo">6 a 20 años</span>. Privación de todos los cargos públicos.</li>
+      <li><strong>Inhabilitación especial</strong>: <span class="plazo">3 meses a 20 años</span>. Solo del cargo/profesión concreto.</li>
+      <li><strong>Privación del derecho a conducir/armas</strong>: <span class="plazo">3 meses a 10 años</span>.</li>
+      <li><strong>Prohibición de aproximarse/comunicarse</strong>: <span class="plazo">1 mes a 10 años</span>.</li>
+      <li><strong>TBC</strong>: <span class="plazo">1 día a 1 año</span>, máximo 8 horas/día, exige consentimiento del condenado.</li>
+    </ul>
+    <p><strong>Multa por cuotas:</strong> personas físicas, <span class="plazo">10 días a 2 años</span>, cuota de 2€ a 400€. Personas jurídicas, hasta <span class="plazo">5 años</span>, cuota de 30€ a 5.000€.</p>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Inhabilitación absoluta</h4>
+      <ul><li>Afecta a <strong>todos</strong> los cargos públicos.</li><li>6 a 20 años.</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Inhabilitación especial</h4>
+      <ul><li>Afecta solo al cargo/profesión <strong>concreto</strong>.</li><li>3 meses a 20 años.</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>La prisión permanente revisable se revisa a los 25 años, con 3er grado y pronóstico favorable.</li>
+        <li>La prisión ordinaria va de 3 meses a 20 años (hasta 40 en casos excepcionales).</li>
+        <li>La frontera de los 5 años separa "menos grave" de "grave" en prisión e inhabilitación especial.</li>
+        <li>La inhabilitación absoluta afecta a todos los cargos públicos; la especial solo al cargo concreto.</li>
+        <li>La multa por cuotas tiene límites distintos para personas físicas (2-400€) y jurídicas (30-5.000€).</li>
+        <li>El TBC exige siempre el consentimiento del condenado y tiene un máximo de 8 horas diarias.</li>
+        <li>La responsabilidad subsidiaria por impago de multa no se aplica si la pena de prisión supera 5 años.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> el límite de 5 años en prisión e inhabilitación especial es la frontera grave/menos grave más preguntada.</li>
+        <li><span class="intro">En examen, recuerda que</span> la inhabilitación ABSOLUTA afecta a TODOS los cargos; la ESPECIAL solo al cargo concreto sobre el que recae.</li>
+        <li><span class="intro">En examen, recuerda que</span> el TBC nunca se impone sin el consentimiento del condenado.</li>
+        <li><span class="intro">En examen, recuerda que</span> las cuotas de multa para personas jurídicas (30-5.000€) son distintas a las de personas físicas (2-400€): el examen las intercambia.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Confundir inhabilitación absoluta con especial.</span><span class="ok">✅ Absoluta = todos los cargos; Especial = solo el cargo concreto relacionado con el delito.</span></div>
+        <div class="error-item"><span class="x">❌ Pensar que la prisión permanente revisable se revisa antes de los 25 años.</span><span class="ok">✅ Se exige el cumplimiento de 25 años como mínimo, además de 3er grado y pronóstico favorable.</span></div>
+        <div class="error-item"><span class="x">❌ Aplicar las cuotas de multa de personas físicas a las jurídicas.</span><span class="ok">✅ PF: 2-400€; PJ: 30-5.000€. Son escalas distintas.</span></div>
+        <div class="error-item"><span class="x">❌ Creer que el TBC puede imponerse sin consentimiento.</span><span class="ok">✅ Siempre requiere el consentimiento expreso del condenado.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. La prisión permanente revisable puede revisarse cuando el penado cumple:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">15 años de condena.</li>
+          <li data-letter="B">20 años de condena.</li>
+          <li data-letter="C" class="correct">25 años de condena, con 3er grado y pronóstico favorable.</li>
+          <li data-letter="D">30 años de condena.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A y B son plazos relacionados con la clasificación en 3er grado para delitos de terrorismo o resto de casos, no con la revisión de la PPR; D no corresponde a ningún plazo de este apartado.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. Una pena de prisión de 6 años se clasifica, según su gravedad, como:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Leve.</li>
+          <li data-letter="B" class="correct">Grave.</li>
+          <li data-letter="C">Menos grave.</li>
+          <li data-letter="D">No está clasificada.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A no existe esa categoría para prisión de esa duración; C correspondería a un máximo de 5 años, y aquí se superan; D es falso, todas las penas están clasificadas.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. La inhabilitación absoluta afecta a:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Solo al cargo público concreto sobre el que recae.</li>
+          <li data-letter="B" class="correct">A la totalidad de honores, empleos y cargos públicos.</li>
+          <li data-letter="C">Únicamente al derecho de sufragio pasivo.</li>
+          <li data-letter="D">Solo a profesiones liberales.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A describe la inhabilitación ESPECIAL; C es solo un efecto parcial de la especial; D no es el ámbito de la absoluta.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. El trabajo en beneficio de la comunidad (TBC):</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Puede imponerse sin consentimiento del condenado.</li>
+          <li data-letter="B" class="correct">Tiene una duración máxima de 8 horas diarias y exige consentimiento.</li>
+          <li data-letter="C">Es siempre incompatible con la Seguridad Social.</li>
+          <li data-letter="D">Su control corresponde al Ministerio Fiscal.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es justo lo contrario; C es falso, sí cotiza a Seguridad Social aunque no esté retribuido; D es incorrecto, el control corresponde al Juez de Vigilancia Penitenciaria.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. La cuota diaria de la multa por días, para una persona física, oscila entre:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">30€ y 5.000€.</li>
+          <li data-letter="B" class="correct">2€ y 400€.</li>
+          <li data-letter="C">10€ y 1.000€.</li>
+          <li data-letter="D">1€ y 200€.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es la escala correspondiente a las PERSONAS JURÍDICAS, no a las físicas; C y D no corresponden a ninguna escala legal del CP.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Explica la diferencia entre inhabilitación absoluta e inhabilitación especial.</div>
+        <div class="a">La inhabilitación absoluta priva al condenado de todos los honores, empleos y cargos públicos que tuviera, sea cual sea su naturaleza, e impide obtener otros nuevos durante el tiempo de la condena (6 a 20 años); es una pena de alcance general. La inhabilitación especial, en cambio, solo afecta al concreto empleo, cargo público, profesión, oficio o derecho sobre el que recae —por ejemplo, la patria potestad o el ejercicio de una profesión relacionada con el delito cometido— permitiendo al condenado seguir ejerciendo otras actividades no vinculadas con el hecho delictivo, y su duración oscila entre 3 meses y 20 años.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">¿Por qué es relevante la frontera de los 5 años en la clasificación de las penas?</div>
+        <div class="a">Porque, en penas como la prisión o la inhabilitación especial, el umbral de 5 años es precisamente el que separa la categoría de "menos grave" (hasta 5 años) de "grave" (más de 5 años), lo cual tiene consecuencias prácticas importantes: determina, entre otras cosas, si el delito en cuestión se clasifica como grave o menos grave a efectos procesales y de competencia, y condiciona también ciertos requisitos para la progresión a tercer grado penitenciario, que se endurecen precisamente cuando la pena impuesta supera los 5 años.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">5 AÑOS = LA BISAGRA</div>
+      <p>Imagina los 5 años como una bisagra que separa dos puertas: a un lado "menos grave", al otro "grave". En prisión e inhabilitación especial, esa bisagra está siempre en el mismo sitio: 5 años. Si memorizas solo una cifra de este bloque, que sea esta.</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Conexión con el bloque siguiente</div>
+      <p>Ya conoces el catálogo de penas. El último bloque cierra el círculo: cómo se aplican esas penas según las circunstancias del caso, qué son las medidas de seguridad, cómo se aplica la ley penal en el tiempo y el espacio, el régimen de menores, y cómo se extingue finalmente la responsabilidad criminal.</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del bloque 7 — continúa en el bloque 8 ]<div class="line"></div></div>
+</div>
+
+<!-- ===================== BLOQUE 8 ===================== -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-eyebrow"><span class="seal">8</span> Bloque 8 de 8</div>
+    <h2>Aplicación de la ley penal, menores, extinción y circunstancias modificativas</h2>
+    <p class="hook">El cierre del tema: cuándo y dónde se aplica la ley penal, qué pasa con los menores, cuándo se "borra" la responsabilidad criminal, y qué circunstancias agravan o atenúan la pena.</p>
+    <p class="pageref">Temario original: p. 12-13</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">8.1 Ley penal en el tiempo y en el espacio</div>
+    <div class="subsec">
+      <div class="subsec-title">— En el tiempo: irretroactividad</div>
+      <p>No se castiga ningún delito con pena no prevista por ley anterior a su comisión (<span class="art">art. 2.1 CP</span>). <strong>Excepción</strong>: las leyes penales que favorezcan al reo SÍ tienen efecto retroactivo, incluso con sentencia firme (<span class="art">art. 2.2 CP</span>).</p>
+    </div>
+    <div class="subsec">
+      <div class="subsec-title">— En el espacio: territorialidad</div>
+      <p>La jurisdicción española conoce de los delitos cometidos en territorio español o a bordo de buques/aeronaves españolas (<span class="art">art. 23.1 LOPJ</span>). Excepcionalmente, los principios de personalidad, real/de intereses y justicia universal permiten perseguir delitos cometidos fuera de España en determinados supuestos tasados.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">8.2 Edad penal y menores <span class="tag">[LORPM — muy preguntado]</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Edad</th><th>Régimen</th></tr></thead>
+        <tbody>
+          <tr><td>Menos de 14 años</td><td>Inimputable. No se le puede detener; solo protección administrativa del menor</td></tr>
+          <tr><td>14 a 18 años</td><td>Se aplica la LO 5/2000 (LORPM)</td></tr>
+          <tr><td>Más de 18 años</td><td>Se aplica el Código Penal</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="gold-box">
+      <div class="label">Regla de oro</div>
+      <p>Por debajo de 14 años no hay "responsabilidad", solo protección. La LORPM aplica medidas (no penas) entre 14 y 18 años, ordenadas según el grado de restricción de derechos: desde el internamiento en régimen cerrado hasta la simple amonestación.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">8.3 Extinción de la responsabilidad criminal y prescripción</div>
+    <p>La responsabilidad criminal se extingue por: muerte del reo, cumplimiento de condena, remisión definitiva de la pena, amnistía o indulto, perdón del ofendido (solo en delitos leves perseguibles a instancia de parte) y prescripción del delito o de la pena.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pena del delito</th><th>Plazo de prescripción</th></tr></thead>
+        <tbody>
+          <tr><td>Delitos leves, injurias y calumnias</td><td><span class="plazo">1 año</span></td></tr>
+          <tr><td>Resto de delitos (regla general)</td><td><span class="plazo">5 años</span></td></tr>
+          <tr><td>Prisión/inhabilitación +5 años</td><td><span class="plazo">10 años</span></td></tr>
+          <tr><td>Prisión/inhabilitación +10 años</td><td><span class="plazo">15 años</span></td></tr>
+          <tr><td>Prisión de 15 años o más</td><td><span class="plazo">20 años</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert">
+      <span class="lbl">Excepción</span>
+      Terrorismo con muerte, lesa humanidad, genocidio y delitos contra personas/bienes protegidos en conflicto armado NO prescriben nunca.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">8.4 Circunstancias modificativas de la responsabilidad <span class="tag">[art. 20-23 CP]</span></div>
+    <ul class="clean">
+      <li><strong>Eximentes (art. 20)</strong>: anomalía psíquica, intoxicación plena, alteración de la percepción, legítima defensa, estado de necesidad, miedo insuperable, cumplimiento de un deber.</li>
+      <li><strong>Atenuantes (art. 21)</strong>: eximente incompleta, grave adicción, estímulos poderosos (arrebato/obcecación), confesión, reparación del daño, dilación indebida.</li>
+      <li><strong>Agravantes (art. 22)</strong>: alevosía, disfraz/abuso de superioridad, precio/recompensa, discriminación, ensañamiento, abuso de confianza, reincidencia.</li>
+      <li><strong>Circunstancia mixta de parentesco (art. 23)</strong>: puede atenuar o agravar según el delito. Agrava en delitos contra las personas; atenúa en delitos patrimoniales.</li>
+    </ul>
+    <div class="alert">
+      <span class="lbl">Trampa habitual</span>
+      La reincidencia cualificada (condenado ejecutoriamente por al menos 3 delitos del mismo título) aplica la pena superior en grado, no solo la mitad superior como la reincidencia simple.
+    </div>
+  </div>
+
+  <div class="vs-wrap">
+    <div class="vs-card">
+      <h4>Parentesco como agravante</h4>
+      <ul><li>Delitos contra la <strong>vida</strong>.</li><li>Contra la integridad física.</li><li>Contra la libertad sexual.</li></ul>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card">
+      <h4>Parentesco como atenuante</h4>
+      <ul><li>Delitos <strong>no</strong> personales.</li><li>Ej.: delitos contra el patrimonio.</li></ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+      <ul class="resumen-list">
+        <li>La irretroactividad es la regla general, salvo cuando la nueva ley favorece al reo.</li>
+        <li>España aplica el principio de territorialidad, con excepciones tasadas (personalidad, real, justicia universal).</li>
+        <li>Menos de 14 años: inimputable y sin detención posible; 14-18: LORPM; más de 18: CP.</li>
+        <li>La responsabilidad criminal se extingue por muerte, cumplimiento, indulto/amnistía, perdón (solo leves) y prescripción.</li>
+        <li>Los delitos de terrorismo con muerte, lesa humanidad y genocidio nunca prescriben.</li>
+        <li>Eximentes excluyen totalmente la responsabilidad; atenuantes y agravantes solo la modulan.</li>
+        <li>El parentesco agrava en delitos contra las personas y atenúa en delitos no personales (patrimoniales).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+      <ul class="claves-list">
+        <li><span class="intro">En examen, recuerda que</span> las leyes penales favorables al reo SÍ tienen efecto retroactivo, incluso con sentencia firme en ejecución.</li>
+        <li><span class="intro">En examen, recuerda que</span> a un menor de 14 años NO se le puede detener bajo ningún concepto.</li>
+        <li><span class="intro">En examen, recuerda que</span> el perdón del ofendido solo extingue la responsabilidad en delitos LEVES perseguibles a instancia de parte, no en todos los delitos.</li>
+        <li><span class="intro">En examen, recuerda que</span> la reincidencia simple agrava (mitad superior); la reincidencia CUALIFICADA (3 delitos del mismo título) sube a la pena superior en grado.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones más frecuentes</div>
+      <div class="errores-grid">
+        <div class="error-item"><span class="x">❌ Pensar que la irretroactividad es absoluta.</span><span class="ok">✅ Las leyes favorables al reo se aplican retroactivamente (art. 2.2 CP).</span></div>
+        <div class="error-item"><span class="x">❌ Creer que a los menores de 14 se les puede detener en casos graves.</span><span class="ok">✅ Nunca: son inimputables, solo cabe protección administrativa.</span></div>
+        <div class="error-item"><span class="x">❌ Aplicar el perdón del ofendido como causa general de extinción.</span><span class="ok">✅ Solo opera en delitos leves perseguibles a instancia de la persona agraviada.</span></div>
+        <div class="error-item"><span class="x">❌ Pensar que el parentesco siempre agrava.</span><span class="ok">✅ Agrava en delitos contra las personas; atenúa en delitos no personales (patrimoniales).</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación</div>
+      <div class="quiz-item">
+        <div class="quiz-q">1. Una ley penal posterior más favorable para el reo:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Nunca puede aplicarse retroactivamente.</li>
+          <li data-letter="B" class="correct">Se aplica retroactivamente, incluso con sentencia firme en ejecución.</li>
+          <li data-letter="C">Solo se aplica si no hay sentencia firme.</li>
+          <li data-letter="D">Requiere autorización del Tribunal Constitucional.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es la regla general invertida (la excepción favorable sí permite la retroactividad); C es más restrictivo de lo que dice la ley, que permite la retroactividad incluso con condena en curso; D no es un requisito previsto.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">2. Un menor de 13 años que comete un hecho tipificado como delito:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Se le aplica la LORPM.</li>
+          <li data-letter="B">Se le aplica el Código Penal con atenuante.</li>
+          <li data-letter="C" class="correct">Es inimputable y no puede ser detenido bajo ningún concepto.</li>
+          <li data-letter="D">Queda sujeto a medidas de internamiento cerrado.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A se aplica entre 14 y 18 años, no antes; B no corresponde a menores de 14; D es una medida de la LORPM, inaplicable por debajo de los 14 años.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">3. ¿Cuál de los siguientes delitos NO prescribe nunca?</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Hurto agravado.</li>
+          <li data-letter="B">Lesiones graves.</li>
+          <li data-letter="C" class="correct">Genocidio.</li>
+          <li data-letter="D">Estafa.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A, B y D son delitos comunes sujetos a los plazos generales de prescripción; el genocidio, junto con terrorismo con muerte y lesa humanidad, está expresamente excluido de la prescripción.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">4. La circunstancia mixta de parentesco:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Siempre agrava la responsabilidad.</li>
+          <li data-letter="B">Siempre atenúa la responsabilidad.</li>
+          <li data-letter="C" class="correct">Puede atenuar o agravar según la naturaleza del delito.</li>
+          <li data-letter="D">Solo se aplica a delitos patrimoniales.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A y B son absolutas y, por tanto, incorrectas; D es incompleto, también se aplica a delitos contra las personas, donde agrava en vez de atenuar.</div>
+      </div>
+      <div class="quiz-item">
+        <div class="quiz-q">5. La reincidencia cualificada del art. 66.5 CP exige:</div>
+        <ul class="quiz-opts">
+          <li data-letter="A">Una condena ejecutoria anterior por cualquier delito.</li>
+          <li data-letter="B" class="correct">Condena ejecutoria por al menos 3 delitos del mismo título y naturaleza.</li>
+          <li data-letter="C">Dos condenas por delitos distintos.</li>
+          <li data-letter="D">Una condena no firme.</li>
+        </ul>
+        <div class="quiz-explain"><b>Por qué fallan las demás:</b> A es insuficiente, no basta cualquier delito; C exige delitos del MISMO título y naturaleza, no distintos; D exige que la condena sea EJECUTORIA (firme), no al contrario.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">Explica por qué la irretroactividad de la ley penal tiene una excepción a favor del reo.</div>
+        <div class="a">La irretroactividad busca proteger la seguridad jurídica del ciudadano, que debe poder conocer de antemano qué conductas son delito y con qué pena, evitando que se le aplique una ley más dura que no existía cuando actuó. Sin embargo, cuando la ley posterior es más favorable, ese fundamento de protección al ciudadano deja de operar en su contra: si el Estado decide que una conducta ya no merece tanta pena (o deja de ser delito), no tendría sentido mantener al penado sujeto a la norma más severa anterior, por lo que el art. 2.2 CP permite, excepcionalmente, aplicar la ley penal favorable de forma retroactiva, incluso a sentencias firmes en ejecución.</div>
+      </div>
+      <div class="dev-q">
+        <div class="q">¿Por qué se dice que el parentesco es una circunstancia "mixta"?</div>
+        <div class="a">Porque, a diferencia de las atenuantes y agravantes puras, el parentesco entre el agresor y la víctima (cónyuge, pareja estable, ascendientes, descendientes o hermanos) no tiene un efecto fijo predeterminado, sino que su efecto depende de la naturaleza del delito cometido. En los delitos contra las personas —vida, integridad física, libertad sexual— el vínculo de parentesco normalmente agrava la responsabilidad, ya que se entiende que existe un mayor reproche al atacar a quien debería recibir protección y confianza. En cambio, en delitos de naturaleza no personal, como los patrimoniales, ese mismo vínculo puede operar como atenuante, al entenderse que existe una mayor proximidad y, en ocasiones, un componente de comunidad de intereses entre las partes.</div>
+      </div>
+    </div>
+
+    <div class="mnemo-box">
+      <div class="panel-h"><span class="ico">🧠</span> Mnemotecnia</div>
+      <div class="acronym">14 - 18 - SIEMPRE</div>
+      <p>Para la edad penal: por debajo de <strong>14</strong> nunca hay responsabilidad (ni detención); entre 14 y <strong>18</strong> se aplica la LORPM (medidas, no penas); por encima, el CP de <strong>siempre</strong>. Tres tramos, tres regímenes, sin solapamientos.</p>
+    </div>
+
+    <div class="bridge">
+      <div class="panel-h">Síntesis integradora del tema</div>
+      <p>Has recorrido el tema completo en un solo hilo: primero los límites del Estado para castigar (principios), luego el filtro de cuatro pasos que convierte un hecho en delito (acción-tipicidad-antijuridicidad-culpabilidad), después qué pasaba en la cabeza del autor (dolo, error, imprudencia) y en qué fase del camino estaba (iter criminis), quién responde por ello (autoría y personas jurídicas), con qué se le castiga (penas) y, finalmente, cuándo y dónde se aplica esa ley y cómo se extingue la responsabilidad. Si conectas estos ocho bloques como una secuencia lógica —no como datos sueltos— el tema se vuelve mucho más fácil de recordar bajo presión de examen.</p>
+    </div>
+  </div>
+
+  <div class="end-block">[ Fin del Tema 16 — expediente completo ]<div class="line"></div></div>
+</div>
+
+<div class="final-foot">
+  <div class="stamp-text">— TEMA 16 · DERECHO PENAL: PARTE GENERAL · CNP ESCALA BÁSICA —</div>
+</div>
+
+</div>
+<script>
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement;
+    var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    document.getElementById('progressBar').style.width = scrolled + '%';
+  });
+</script>
+</body>
+</html>

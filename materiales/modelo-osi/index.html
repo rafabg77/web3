@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0A0E1A">
+<meta name="description" content="Test adaptativo OSI con BKT, SRS y grafo conceptual.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230A0E1A'/%3E%3Ctext x='50' y='64' font-size='54' text-anchor='middle' fill='%2345D6C8' font-family='monospace'%3EOSI%3C/text%3E%3C/svg%3E">
+<title>Test Adaptativo · Modelo OSI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0E1A;
+  --bg-soft:#0D1220;
+  --surface:#121729;
+  --surface-2:#1A2038;
+  --border:#232B45;
+  --border-soft:#1B2138;
+  --text:#EDF0F7;
+  --text-dim:#9099B0;
+  --text-faint:#5C6480;
+  --ok:#5FD8A6;
+  --bad:#F16C6C;
+
+  --l0:#C9CEDD;
+  --l1:#45D6C8;
+  --l2:#5AA9F2;
+  --l3:#7C90F5;
+  --l4:#B383F0;
+  --l5:#EB79C4;
+  --l6:#F2955E;
+  --l7:#7FDD8C;
+
+  --accent: var(--l1);
+  --radius: 18px;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(94,216,200,0.10), transparent 55%),
+    radial-gradient(900px 500px at 100% 10%, rgba(124,144,245,0.08), transparent 50%),
+    var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  min-height:100dvh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:'JetBrains Mono',monospace;}
+
+.circuit-bg{
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35;
+}
+
+#app{
+  position:relative; z-index:1;
+  max-width:520px; margin:0 auto;
+  min-height:100dvh;
+  padding: calc(var(--safe-t) + 14px) 16px calc(var(--safe-b) + 18px);
+  display:flex; flex-direction:column;
+}
+
+.screen{display:none; flex:1; flex-direction:column;}
+.screen.active{display:flex;}
+@keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+.screen.active{animation:fadeUp .38s ease both;}
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:18px;
+}
+.brand{display:flex; align-items:center; gap:10px;}
+.brand-mark{
+  width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(145deg, var(--l1), var(--l3));
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 22px rgba(94,216,200,0.35);
+  flex-shrink:0;
+}
+.brand-name{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:15px; letter-spacing:0.5px;}
+.brand-sub{font-size:10.5px; color:var(--text-faint); letter-spacing:1.5px; text-transform:uppercase; margin-top:1px;}
+
+.hero{
+  flex:1; display:flex; flex-direction:column; justify-content:center; gap:22px;
+  padding-bottom: 10px;
+}
+.hero-viz{
+  width:100%; aspect-ratio: 1.5/1; max-height:230px;
+  display:flex; align-items:center; justify-content:center;
+}
+.hero-eyebrow{
+  font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:3px;
+  color:var(--l1); text-transform:uppercase; font-weight:600;
+}
+.hero h1{
+  font-size:32px; line-height:1.12; margin:8px 0 0; font-weight:800; letter-spacing:-0.5px;
+}
+.hero h1 span{
+  background:linear-gradient(90deg, var(--l1), var(--l3) 40%, var(--l5) 75%, var(--l6));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero p{color:var(--text-dim); font-size:15px; line-height:1.55; margin:10px 0 0; max-width:44ch;}
+
+.stat-row{display:flex; gap:10px; margin-top:6px;}
+.stat-chip{
+  flex:1; background:var(--surface); border:1px solid var(--border-soft);
+  border-radius:14px; padding:12px 10px; text-align:center;
+}
+.stat-chip b{display:block; font-family:'JetBrains Mono',monospace; font-size:19px; font-weight:700;}
+.stat-chip span{display:block; font-size:10px; color:var(--text-faint); text-transform:uppercase; letter-spacing:1px; margin-top:2px;}
+
+.layer-legend{
+  display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-top:4px;
+}
+.legend-pill{
+  height:6px; border-radius:4px; opacity:0.9;
+}
+
+.btn-primary{
+  appearance:none; border:none; width:100%;
+  background:linear-gradient(90deg, var(--l1), var(--l3));
+  color:#04110E; font-weight:700; font-size:16px; font-family:'Inter',sans-serif;
+  padding:17px; border-radius:16px; margin-top:8px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  box-shadow:0 10px 30px -8px rgba(94,216,200,0.45);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn-primary:active{transform:scale(0.97); box-shadow:0 4px 14px -6px rgba(94,216,200,0.4);}
+
+.btn-ghost{
+  appearance:none; width:100%; background:var(--surface); color:var(--text);
+  border:1px solid var(--border); font-weight:600; font-size:14.5px;
+  padding:14px; border-radius:14px; margin-top:10px; font-family:'Inter',sans-serif;
+  transition: transform .15s ease, background .15s ease;
+}
+.btn-ghost:active{transform:scale(0.97); background:var(--surface-2);}
+
+.hint-line{
+  display:flex; align-items:center; gap:8px; color:var(--text-faint); font-size:12px;
+  justify-content:center; margin-top:14px;
+}
+.hint-line svg{flex-shrink:0;}
+
+.progress-wrap{margin-bottom:14px;}
+.progress-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;}
+.progress-label{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-dim); font-weight:600;}
+.progress-score{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ok); font-weight:600;}
+.progress-track{height:5px; background:var(--surface-2); border-radius:4px; overflow:hidden;}
+.progress-fill{height:100%; border-radius:4px; background:linear-gradient(90deg, var(--l1), var(--l3)); transition:width .4s cubic-bezier(.4,0,.2,1);}
+
+.osi-rail{
+  display:flex; gap:4px; margin: 14px 0 18px;
+}
+.rail-seg{
+  flex:1; height:34px; border-radius:8px; position:relative;
+  background:var(--surface); border:1px solid var(--border-soft);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
+  color:var(--text-faint);
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.rail-seg.lit{
+  color:#0A0E1A; transform:translateY(-3px);
+}
+.rail-seg.done{opacity:0.55;}
+.rail-seg .glow{
+  position:absolute; inset:0; opacity:0; transition:opacity .35s;
+}
+.rail-seg.lit .glow{opacity:1;}
+
+.layer-badge{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:6px 12px 6px 8px; border-radius:20px; margin-bottom:14px;
+  border:1px solid var(--border); background:var(--surface);
+  font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600;
+  letter-spacing:0.4px; align-self:flex-start;
+}
+.layer-badge .dot{width:9px; height:9px; border-radius:50%; flex-shrink:0;}
+.layer-badge .num{color:var(--text-faint);}
+.layer-badge.pending{opacity:0.55;}
+.layer-badge.pending .dot{background:var(--text-faint) !important;}
+
+.diff-badge{
+  display:inline-flex; align-items:center; padding:4px 8px; border-radius:6px;
+  background:var(--surface-2); border:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600;
+  color:var(--text-dim); margin-left:6px; vertical-align:middle;
+}
+
+.q-card{
+  background:var(--surface); border:1px solid var(--border-soft);
+  border-radius:var(--radius); padding:22px 18px 18px;
+  flex:1; display:flex; flex-direction:column;
+}
+.q-text{font-size:18.5px; line-height:1.42; font-weight:650; letter-spacing:-0.2px; margin:0 0 18px;}
+
+.options{display:flex; flex-direction:column; gap:10px;}
+.opt{
+  text-align:left; width:100%; background:var(--bg-soft);
+  border:1.5px solid var(--border); border-radius:14px;
+  padding:14px 14px; display:flex; gap:12px; align-items:flex-start;
+  font-family:'Inter',sans-serif; font-size:14.5px; line-height:1.4; color:var(--text);
+  transition: border-color .15s, background .15s, transform .1s;
+}
+.opt:active{transform:scale(0.985);}
+.opt .letter{
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12.5px;
+  width:24px; height:24px; border-radius:7px; flex-shrink:0;
+  background:var(--surface-2); color:var(--text-dim);
+  display:flex; align-items:center; justify-content:center;
+  transition: all .15s;
+}
+.opt.correct{border-color:var(--ok); background:rgba(95,216,166,0.08);}
+.opt.correct .letter{background:var(--ok); color:#06251A;}
+.opt.wrong{border-color:var(--bad); background:rgba(241,108,108,0.08);}
+.opt.wrong .letter{background:var(--bad); color:#2A0808;}
+.opt.disabled-not-picked{opacity:0.45;}
+.opt[disabled]{pointer-events:none;}
+
+.feedback{
+  margin-top:14px; padding:14px 14px; border-radius:14px;
+  display:none; gap:10px; font-size:13.5px; line-height:1.5;
+  border:1px solid var(--border-soft); background:var(--surface-2);
+}
+.feedback.show{display:flex; animation:fadeUp .3s ease both;}
+.feedback .fb-icon{flex-shrink:0; margin-top:1px;}
+.feedback .fb-title{font-weight:700; margin-bottom:3px;}
+.feedback.is-ok .fb-title{color:var(--ok);}
+.feedback.is-bad .fb-title{color:var(--bad);}
+.feedback p{margin:0; color:var(--text-dim);}
+
+.ai-panel{
+  margin-top:10px; padding:14px; border-radius:14px;
+  display:none; flex-direction:column; gap:8px; font-size:13.5px; line-height:1.55;
+  border:1px solid rgba(124,144,245,0.35); background:linear-gradient(160deg, rgba(124,144,245,0.09), rgba(94,216,200,0.05));
+}
+.ai-panel.show{display:flex; animation:fadeUp .3s ease both;}
+.ai-panel-head{display:flex; align-items:center; gap:7px; font-family:'JetBrains Mono',monospace; font-weight:700; font-size:11px; letter-spacing:0.8px; text-transform:uppercase; color:var(--l3);}
+.ai-panel-head svg{flex-shrink:0;}
+.ai-panel-body{color:var(--text-dim); white-space:pre-wrap;}
+
+.q-footer{display:flex; gap:10px; margin-top:16px;}
+.btn-next{
+  flex:1; appearance:none; border:none; background:var(--surface-2);
+  color:var(--text-faint); font-weight:700; font-size:15px; padding:15px;
+  border-radius:14px; opacity:0.5; pointer-events:none;
+  transition: all .25s; display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.btn-next.ready{
+  background:linear-gradient(90deg, var(--l1), var(--l3)); color:#04110E; opacity:1; pointer-events:auto;
+}
+.btn-next.ready:active{transform:scale(0.97);}
+
+.dotnav{display:flex; gap:4px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+.dotnav .d{width:6px; height:6px; border-radius:50%; background:var(--border);}
+.dotnav .d.answered{background:var(--text-faint);}
+.dotnav .d.current{background:var(--l1); width:16px; border-radius:3px;}
+
+.results-head{text-align:center; padding: 6px 0 10px;}
+.score-ring-wrap{position:relative; width:190px; height:190px; margin:6px auto 8px;}
+.score-ring-wrap svg{transform:rotate(-90deg);}
+.score-center{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.score-pct{font-family:'JetBrains Mono',monospace; font-size:38px; font-weight:800;}
+.score-frac{font-size:12.5px; color:var(--text-faint); margin-top:2px;}
+.results-title{font-size:19px; font-weight:800; margin:6px 0 4px;}
+.results-sub{color:var(--text-dim); font-size:13.5px; margin:0 0 8px;}
+
+.layer-breakdown{margin:18px 0 4px;}
+.section-label{
+  font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--text-faint); margin: 20px 0 10px; font-weight:600;
+}
+.lb-row{display:flex; align-items:center; gap:10px; margin-bottom:9px;}
+.lb-label{width:112px; font-size:12.5px; color:var(--text-dim); flex-shrink:0; font-weight:500;}
+.lb-track{flex:1; height:8px; background:var(--surface-2); border-radius:5px; overflow:hidden;}
+.lb-fill{height:100%; border-radius:5px; transition:width .6s cubic-bezier(.4,0,.2,1);}
+.lb-count{width:36px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--text-faint);}
+
+.review-list{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
+.review-item{
+  background:var(--surface); border:1px solid var(--border-soft); border-radius:14px; padding:14px;
+}
+.review-q{font-size:13.5px; font-weight:650; margin:0 0 8px; line-height:1.4;}
+.review-a{font-size:12.5px; line-height:1.5; margin:4px 0 0; display:flex; gap:6px;}
+.review-a.your{color:var(--bad);}
+.review-a.correct{color:var(--ok);}
+
+.toggle-row{display:flex; gap:8px; margin: 4px 0 12px;}
+.toggle-btn{
+  flex:1; padding:10px; border-radius:12px; border:1px solid var(--border);
+  background:var(--surface); color:var(--text-dim); font-size:12.5px; font-weight:600;
+  font-family:'Inter',sans-serif;
+}
+.toggle-btn.active{background:var(--surface-2); color:var(--text); border-color:var(--l1);}
+
+.results-actions{margin-top:20px; padding-bottom:6px;}
+.empty-errors{text-align:center; padding:30px 16px; color:var(--text-dim); font-size:13.5px;}
+::selection{background:rgba(94,216,200,0.3);}
+</style>
+</head>
+<body>
+
+<svg class="circuit-bg" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#45D6C8"/>
+      <stop offset="1" stop-color="#B383F0"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#cbg)" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M20 60 H120 V140 H220"/>
+    <path d="M380 30 V120 H300 V220"/>
+    <path d="M10 320 H90 V400 H180 V470"/>
+    <path d="M390 500 H310 V600 H240"/>
+    <path d="M30 650 H140 V720 H60 V800"/>
+    <path d="M370 750 V850 H260"/>
+  </g>
+  <g fill="#45D6C8" opacity="0.6">
+    <circle cx="120" cy="60" r="2.5"/>
+    <circle cx="220" cy="140" r="2.5"/>
+    <circle cx="300" cy="120" r="2.5"/>
+    <circle cx="90" cy="320" r="2.5"/>
+    <circle cx="180" cy="400" r="2.5"/>
+    <circle cx="310" cy="500" r="2.5"/>
+    <circle cx="140" cy="650" r="2.5"/>
+    <circle cx="60" cy="720" r="2.5"/>
+    <circle cx="260" cy="850" r="2.5"/>
+  </g>
+</svg>
+
+<div id="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19" stroke="#04110E" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">OSI // ADAPTIVE</div>
+        <div class="brand-sub">Grafo Neuronal · 20 Qs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- START SCREEN -->
+  <section id="screen-start" class="screen active">
+    <div class="hero">
+      <div class="hero-viz" id="heroViz"></div>
+      <div>
+        <div class="hero-eyebrow">Motor Adaptativo Inteligente</div>
+        <h1>Domina el <span>modelo OSI</span> de forma predictiva.</h1>
+        <p>Este sistema descarta los bancos estáticos fijados. Elige en tiempo real la dificultad (Nivel 1 a 5) y la capa exacta basándose en tu nivel de retención actual de memoria y conexiones conceptuales.</p>
+      </div>
+
+      <!-- MÓDULO SRS DASHBOARD -->
+      <div id="srsDashboard"></div>
+
+      <div class="stat-row">
+        <div class="stat-chip"><b>20</b><span>Qs por Bloque</span></div>
+        <div class="stat-chip"><b>1-5</b><span>Escala Dificultad</span></div>
+        <div class="stat-chip"><b>SRS</b><span>Seguimiento</span></div>
+      </div>
+      <div class="layer-legend" id="layerLegend"></div>
+      <div>
+        <button class="btn-primary" id="btnStart">
+          Iniciar sesión adaptativa
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#04110E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="hint-line">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tu progreso de retención bayesiana (BKT) y fechas de revisión se guardan automáticamente en tu navegador.
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ SCREEN -->
+  <section id="screen-quiz" class="screen">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="progLabel">PREGUNTA 1/20</span>
+        <span class="progress-score" id="progScore">0 aciertos</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="osi-rail" id="osiRail"></div>
+
+    <div class="layer-badge" id="layerBadge">
+      <span class="dot" id="layerDot"></span>
+      <span class="num" id="layerNum">CAPA —</span>
+      <span id="layerName">—</span>
+      <span class="diff-badge" id="diffBadge">NIVEL -</span>
+    </div>
+
+    <div class="q-card">
+      <p class="q-text" id="qText">Cargando…</p>
+      <div class="options" id="optionsWrap"></div>
+      <div class="feedback" id="feedback">
+        <div class="fb-icon" id="fbIcon"></div>
+        <div>
+          <div class="fb-title" id="fbTitle"></div>
+          <p id="fbText"></p>
+        </div>
+      </div>
+      <div class="ai-panel" id="aiPanel">
+        <div class="ai-panel-head">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" fill="currentColor"/></svg>
+          <span id="aiPanelLabel">Por qué has fallado</span>
+        </div>
+        <div class="ai-panel-body" id="aiPanelBody"></div>
+      </div>
+    </div>
+
+    <div class="q-footer">
+      <button class="btn-next" id="btnNext">
+        <span id="btnNextLabel">Siguiente</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="dotnav" id="dotnav"></div>
+  </section>
+
+  <!-- RESULTS SCREEN -->
+  <section id="screen-results" class="screen">
+    <div class="results-head">
+      <div class="score-ring-wrap">
+        <svg width="190" height="190" viewBox="0 0 190 190">
+          <circle cx="95" cy="95" r="82" fill="none" stroke="var(--surface-2)" stroke-width="12"/>
+          <circle id="ringFg" cx="95" cy="95" r="82" fill="none" stroke="var(--l1)" stroke-width="12" stroke-linecap="round" stroke-dasharray="515.2" stroke-dashoffset="515.2"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-pct" id="scorePct">0%</div>
+          <div class="score-frac" id="scoreFrac">0 / 20</div>
+        </div>
+      </div>
+      <div class="results-title" id="resultsTitle">Resultados del Bloque</div>
+      <p class="results-sub" id="resultsSub">Revisa tu árbol jerárquico detallado.</p>
+    </div>
+
+    <!-- REQUISITO 5: ÁRBOL JERÁRQUICO COMPLETO -->
+    <div class="layer-breakdown">
+      <div class="section-label">Perfil Conceptual Estructural</div>
+      <div id="conceptualProfileTree"></div>
+    </div>
+
+    <div class="ai-panel" id="aiDiagnosisPanel" style="margin-top:16px;">
+      <div class="ai-panel-head">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" fill="currentColor"/></svg>
+        <span>Diagnóstico Adaptativo Histórico</span>
+      </div>
+      <div class="ai-panel-body" id="aiDiagnosisBody"></div>
+    </div>
+
+    <div class="toggle-row" style="margin-top:20px;">
+      <button class="toggle-btn active" id="toggleAll">Ver planteadas</button>
+      <button class="toggle-btn" id="toggleErrors">Solo fallos</button>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+
+    <div class="results-actions">
+      <button class="btn-primary" id="btnRetryAll">Siguiente bloque adaptativo</button>
+      <button class="btn-ghost" id="btnRetryErrors">Repasar fallos de esta sesión</button>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+
+const LAYERS = {
+  0:{name:"Modelo OSI General", short:"General", color:"var(--l0)"},
+  1:{name:"Física", short:"Física", color:"var(--l1)"},
+  2:{name:"Enlace de datos", short:"Enlace", color:"var(--l2)"},
+  3:{name:"Red", short:"Red", color:"var(--l3)"},
+  4:{name:"Transporte", short:"Transporte", color:"var(--l4)"},
+  5:{name:"Sesión", short:"Sesión", color:"var(--l5)"},
+  6:{name:"Presentación", short:"Presentación", color:"var(--l6)"},
+  7:{name:"Aplicación", short:"Aplicación", color:"var(--l7)"}
+};
+
+// Grafo estructural relacional y agrupaciones por concepto raíz
+const CONCEPT_GRAPH = {
+  1: { name: "Capa 1: Física", sub: { "fisica": "Física Básica", "repetidor": "Repetidores y Hubs" } },
+  2: { name: "Capa 2: Enlace de datos", sub: { "enlace": "Enlace General", "switch": "Switches y Bridges", "mac": "Direcciones MAC", "ethernet": "Protocolo Ethernet" } },
+  3: { name: "Capa 3: Red", sub: { "red": "Red General", "ipv4": "Direccionamiento IPv4", "routing": "Routing / Enrutamiento", "gateway": "Gateways", "subnet": "Subredes / CIDR" } },
+  4: { name: "Capa 4: Transporte", sub: { "transporte": "Transporte General", "tcp": "Protocolo TCP", "udp": "Protocolo UDP", "puerto": "Puertos e Identificación", "conexion": "Control de Conexión" } },
+  5: { name: "Capa 5: Sesión", sub: { "sesion": "Diálogos de Sesión" } },
+  6: { name: "Capa 6: Presentación", sub: { "presentacion": "Formatos y Sintaxis", "cifrado": "Cifrado / Seguridad" } },
+  7: { name: "Capa 7: Aplicación", sub: { "aplicacion": "Servicios de Aplicación", "http": "Protocolo HTTP", "dns": "Servidores DNS", "dhcp": "Servidores DHCP", "ftp": "Protocolo FTP" } }
+};
+
+// Banco enriquecido con Difficulty (1-5) y Concept
+const QUESTIONS = [
+  {layer:1, difficulty:1, concept:"repetidor", q:"¿Qué dispositivo opera en la capa física y regenera señales para extender la distancia de transmisión?", opts:["Switch","Repetidor","Servidor DNS"], correct:1, exp:"El repetidor trabaja en la capa física: recibe una señal debilitada y la regenera para que viaje más lejos sin perder información."},
+  {layer:0, difficulty:1, concept:"fisica", q:"¿De cuántas capas se compone el modelo OSI?", opts:["6 (Aplicación, sesión, transporte, red, enlace de datos y físico)","7 (Aplicación, Presentación, sesión, transporte, red, enlace de datos, físico)","7 (Aplicación, Presentación, sesión, transporte, internet, red, físico)"], correct:1, exp:"El modelo OSI define 7 capas: Aplicación, Presentación, Sesión, Transporte, Red, Enlace de datos y Física."},
+  {layer:2, difficulty:1, concept:"switch", q:"¿En qué capa opera un switch tradicional?", opts:["En la de enlace de datos (capa 2)","En la capa física (capa 1)","En la capa de red (capa 3)"], correct:0, exp:"Un switch tradicional trabaja en la capa de enlace de datos, usando direcciones MAC para reenviar las tramas."},
+  {layer:0, difficulty:2, concept:"fisica", q:"El orden consecutivo de las capas OSI, enumeradas de abajo arriba, es:", opts:["Físico, enlace, red, transporte, comunicación, presentación y aplicación","Enlace, red, transporte, comunicación, presentación y aplicación","Físico, enlace, red, transporte, sesión, presentación y aplicación"], correct:2, exp:"De abajo hacia arriba: Física, Enlace, Red, Transporte, Sesión, Presentación y Aplicación."},
+  {layer:0, difficulty:2, concept:"fisica", q:"¿Cuál es el propósito principal del modelo OSI?", opts:["Reemplazar todos los protocolos de red existentes por un único sistema de comunicación cerrado","Estandarizar las funciones de comunicación entre sistemas, independientemente de la tecnología usada","Garantizar que solo los sistemas operativos modernos puedan comunicarse entre sí"], correct:1, exp:"El objetivo del modelo OSI es estandarizar cómo se comunican los sistemas, sin importar la tecnología subyacente."},
+  {layer:2, difficulty:2, concept:"ethernet", q:"¿En cuáles de las siguientes capas del modelo OSI funciona Ethernet?", opts:["Red – enlace de datos","Transporte – enlace de datos","Enlace de datos – física"], correct:2, exp:"Ethernet define aspectos de la capa de enlace de datos (tramas, MAC) y también de la capa física (cableado, señales)."},
+  {layer:5, difficulty:3, concept:"sesion", q:"Respecto al modelo OSI, señale la afirmación correcta:", opts:["En el nivel de transporte se determina la ruta e IP","En el nivel de sesión se produce la comunicación entre dispositivos de la red","En el nivel de enlace de datos se produce una conexión de extremo a extremo y la fiabilidad de los datos"], correct:1, exp:"La capa de sesión es la encargada de establecer, mantener y coordinar la comunicación entre dispositivos."},
+  {layer:6, difficulty:2, concept:"presentacion", q:"La capa del modelo OSI que traduce los datos entre el formato de la red y el formato comprensible por la aplicación, gestionando codificación, compresión y cifrado, es:", opts:["La capa de enlace de datos","La capa de transporte","La capa de presentación"], correct:2, exp:"La capa de presentación traduce, cifra y comprime los datos para que la aplicación pueda interpretarlos."},
+  {layer:4, difficulty:2, concept:"transporte", q:"La capa de transporte de OSI:", opts:["Divide los datos mandados por el emisor, controlando el flujo y asegurándose de que llega toda la información al destinatario, reenviando si es necesario","Proporciona conectividad y selección de ruta entre dos sistemas ubicados en redes geográficamente distintas","Proporciona tránsito de datos confiable a través de un enlace físico"], correct:0, exp:"La capa de transporte segmenta los datos, controla el flujo y garantiza —con protocolos como TCP— que todo llegue correctamente."},
+  {layer:7, difficulty:1, concept:"http", q:"¿Qué capa del modelo OSI utiliza HTTP para la comunicación entre cliente y servidor en aplicaciones web?", opts:["Capa de transporte, con protocolos como TCP","Capa de aplicación, con protocolos como HTTP","Capa de red, con protocolos como IPv4"], correct:1, exp:"HTTP es un protocolo de la capa de aplicación, la más cercana al usuario final."},
+  {layer:2, difficulty:2, concept:"switch", q:"El bridge o puente, ¿en qué capa del modelo OSI opera?", opts:["En la capa 2, nivel de enlace de datos","En la capa 4, nivel de transporte","En la capa 3, nivel de red"], correct:0, exp:"El bridge opera en la capa 2, filtrando y reenviando tramas según direcciones MAC."},
+  {layer:6, difficulty:1, concept:"cifrado", q:"¿Qué capa del modelo OSI tiene como función el cifrado?", opts:["La capa de presentación","La capa de aplicación","La capa de enlace"], correct:0, exp:"El cifrado de los datos es una función típica de la capa de presentación."},
+  {layer:0, difficulty:3, concept:"fisica", q:"Señale la afirmación correcta respecto al modelo OSI:", opts:["Su propósito era estandarizar las funciones de comunicación de los sistemas de telecomunicaciones y computación sin importar sus tecnologías subyacentes","El modelo OSI es el modelo \"práctico\" en torno al cual se ha desarrollado Internet","Es un modelo que no garantiza la entrega, adecuado para aplicaciones como el streaming"], correct:0, exp:"El propósito del modelo OSI fue estandarizar las funciones de comunicación, independientemente de la tecnología subyacente (el modelo práctico de Internet es en realidad TCP/IP)."},
+  {layer:4, difficulty:2, concept:"transporte", q:"En el modelo OSI, entre la capa de presentación y la de red encontramos:", opts:["La capa de aplicación","La capa de transporte","La capa de enlace de datos"], correct:1, exp:"Entre la capa de presentación (6) y la de red (3) se encuentra la capa de transporte (4)."},
+  {layer:4, difficulty:1, concept:"transporte", q:"Seleccione la unidad de datos de protocolo (PDU) utilizada en la capa de transporte del modelo OSI:", opts:["Trama","Bits","Segmento"], correct:2, exp:"La PDU de la capa de transporte se llama segmento."},
+  {layer:6, difficulty:3, concept:"cifrado", q:"Un usuario accede a una web por HTTP, pero la conexión no está cifrada. ¿Qué capa debería garantizar esa seguridad según el modelo OSI?", opts:["Aplicación","Presentación","Sesión"], correct:1, exp:"La seguridad mediante cifrado corresponde conceptualmente a la capa de presentación."},
+  {layer:4, difficulty:2, concept:"tcp", q:"Indique qué capa del modelo OSI proporciona transferencia fiable de datos entre nodos mediante segmentación y control de errores:", opts:["Capa de aplicación, que interactúa con software","Capa de transporte, que usa TCP y UDP","Capa de presentación, que gestiona formatos de datos"], correct:1, exp:"La capa de transporte, con TCP/UDP, segmenta los datos y controla errores para una entrega fiable."},
+  {layer:1, difficulty:1, concept:"repetidor", q:"¿Qué dispositivo opera en la capa física del modelo OSI y replica datos a todos los dispositivos conectados?", opts:["Switch","Hub","Router"], correct:1, exp:"El hub trabaja en la capa física: repite la señal hacia todos los puertos, sin ninguna inteligencia de direccionamiento."},
+  {layer:7, difficulty:1, concept:"aplicacion", q:"La capa de aplicación del modelo OSI:", opts:["Es la más cercana al usuario","Establece sesión para que dos hosts se comuniquen","Proporciona tránsito de datos a través de un enlace físico"], correct:0, exp:"La capa de aplicación es la más cercana al usuario, donde corren los programas que usamos a diario."},
+  {layer:6, difficulty:1, concept:"presentacion", q:"La capa de presentación de OSI:", opts:["Es un traductor o intérprete de la información mandada por la capa de aplicación, garantizando que se pueda leer en el otro extremo","Establece, administra y finaliza las sesiones entre dos hosts","Proporciona tránsito de datos confiable a través de un enlace físico"], correct:0, exp:"La capa de presentación actúa como traductor entre el formato de red y el formato que entiende la aplicación."},
+  {layer:4, difficulty:3, concept:"transporte", q:"¿Cuál de las siguientes capas del modelo TCP/IP es idéntica a la capa de transporte del modelo OSI?", opts:["Capa de Internet, que enruta paquetes","Capa de transporte, que usa TCP y UDP","Capa de acceso a la red, que gestiona conexiones físicas"], correct:1, exp:"La capa de transporte del modelo TCP/IP corresponde directamente a la capa de transporte del modelo OSI."},
+  {layer:7, difficulty:2, concept:"dhcp", q:"Los servidores DHCP, ¿en qué capa del modelo OSI operan?", opts:["En la de transporte","En la de aplicación","En la de enlace de datos"], correct:1, exp:"DHCP es un servicio de la capa de aplicación que asigna direcciones IP automáticamente."},
+  {layer:7, difficulty:1, concept:"aplicacion", q:"¿Qué capa proporciona servicios de red directamente a las aplicaciones del usuario final, como los navegadores web?", opts:["Capa de transporte","Capa de aplicación","Capa de enlace de datos"], correct:1, exp:"La capa de aplicación ofrece los servicios de red que usan directamente los programas del usuario."},
+  {layer:3, difficulty:1, concept:"red", q:"Según el modelo OSI, la Unidad de Datos de Protocolo utilizada en la capa de red es:", opts:["Trama","Paquete","Segmento"], correct:1, exp:"La PDU de la capa de red es el paquete."},
+  {layer:2, difficulty:2, concept:"enlace", q:"¿Qué capa proporciona transferencia de datos fiable entre dos nodos conectados físicamente, detectando y corrigiendo errores de la capa física?", opts:["La capa de enlace","La capa física","La capa de transporte"], correct:0, exp:"La capa de enlace de datos detecta y corrige errores de transmisión entre nodos conectados físicamente."},
+  {layer:4, difficulty:2, concept:"conexion", q:"En el modelo OSI, la función \"asegurarse de que los datos transmitidos llegan correctamente al receptor\" pertenece al:", opts:["Nivel de sesión","Nivel de red","Nivel de transporte"], correct:2, exp:"Garantizar que los datos lleguen correctamente al receptor es función de la capa de transporte."},
+  {layer:3, difficulty:2, concept:"ipv4", q:"¿Cuál de las siguientes capas del modelo OSI utiliza protocolos como IPv4 e IPv6 para gestionar el enrutamiento de paquetes?", opts:["Capa de transporte","Capa de red","Capa física"], correct:1, exp:"IPv4 e IPv6 son protocolos de la capa de red, encargados del direccionamiento y el enrutamiento."},
+  {layer:5, difficulty:1, concept:"sesion", q:"¿Qué función realiza la capa de sesión del modelo OSI en la comunicación entre dispositivos?", opts:["Establece, mantiene y termina sesiones de comunicación","Traduce datos entre formatos de red y aplicación","Enruta paquetes entre diferentes redes"], correct:0, exp:"La capa de sesión establece, mantiene y termina las sesiones de comunicación entre dispositivos."},
+  {layer:7, difficulty:3, concept:"aplicacion", q:"El modelo TCP/IP es fundamental para Internet. ¿Qué capa proporciona servicios de red directamente a las aplicaciones, equivalente a tres capas del modelo OSI?", opts:["Capa de transporte","Capa de aplicación","Capa de Internet"], correct:1, exp:"La capa de aplicación del modelo TCP/IP agrupa las funciones de las capas de aplicación, presentación y sesión del modelo OSI."},
+  {layer:2, difficulty:3, concept:"mac", q:"¿Qué capa es responsable del control de acceso al medio físico, la detección de errores en la transmisión y la organización de los datos en tramas?", opts:["Red","Enlace de datos","Transporte"], correct:1, exp:"La capa de enlace de datos controla el acceso al medio, detecta errores y organiza los datos en tramas."},
+  {layer:7, difficulty:1, concept:"dhcp", q:"¿Qué protocolo de la capa de aplicación se encarga de asignar automáticamente direcciones IP a los dispositivos, evitando conflictos?", opts:["Servidor DHCP","Servidor proxy","Servidor de nombres de dominio"], correct:0, exp:"DHCP funciona en la capa de aplicación, asignando direcciones IP automáticamente a los dispositivos."},
+  {layer:2, difficulty:3, concept:"mac", q:"¿Qué nivel del modelo OSI subdividen los subniveles LLC y MAC especificados por el IEEE?", opts:["El nivel físico","El nivel de enlace","El nivel de red"], correct:1, exp:"Los subniveles LLC y MAC, definidos por el IEEE, dividen la capa de enlace de datos."},
+  {layer:5, difficulty:2, concept:"sesion", q:"La capa de sesión del modelo OSI:", opts:["Mantiene sesiones entre dos hosts que se están comunicando","Divide los datos mandados por el emisor","Proporciona conectividad a redes ubicadas en lugares geográficos distintos"], correct:0, exp:"La capa de sesión mantiene la comunicación activa entre dos hosts."},
+  {layer:1, difficulty:2, concept:"repetidor", q:"¿Cuáles de las siguientes opciones, que funcionan en la capa física del modelo OSI, permiten conectar múltiples computadoras en una red local?", opts:["Hubs","Switch","Routers"], correct:0, exp:"Los hubs, que operan en la capa física, permiten conectar varios equipos repitiendo la señal a todos los puertos."},
+  {layer:7, difficulty:2, concept:"dhcp", q:"¿Qué dispositivo asigna automáticamente direcciones IP a los dispositivos en una red, operando en la capa de aplicación del modelo OSI?", opts:["Servidor DNS","Servidor DHCP","Servidor proxy"], correct:1, exp:"El servidor DHCP, que opera en la capa de aplicación, asigna direcciones IP automáticamente."},
+  {layer:2, difficulty:1, concept:"enlace", q:"Según el modelo OSI, la PDU utilizada en la capa de enlace de datos se denomina:", opts:["Mensaje de datos","Trama","Paquete"], correct:1, exp:"La PDU de la capa de enlace de datos es la trama."},
+  {layer:4, difficulty:2, concept:"tcp", q:"Señale cuál de las siguientes capas tiene como objeto la segmentación y reensamblado de paquetes en el modelo OSI:", opts:["La capa de transporte","La capa de aplicación","La capa de presentación"], correct:0, exp:"La segmentación y el reensamblado de los datos son funciones propias de la capa de transporte."},
+  {layer:6, difficulty:2, concept:"presentacion", q:"En el modelo OSI, ¿qué capa se encarga de la semántica y la sintaxis de los datos transmitidos?", opts:["Presentación","Sesión","Aplicación"], correct:0, exp:"La capa de presentación se ocupa de la semántica y la sintaxis de los datos, es decir, de su formato."},
+  {layer:7, difficulty:1, concept:"dns", q:"¿Qué servidor opera en la capa de aplicación y traduce nombres de dominio legibles por humanos en direcciones IP numéricas?", opts:["Servidor DHCP","Servidor Proxy","Servidor DNS"], correct:2, exp:"El servidor DNS, que opera en la capa de aplicación, traduce nombres de dominio a direcciones IP."},
+  {layer:4, difficulty:1, concept:"puerto", q:"¿En qué capa del modelo OSI situaría los segmentos?", opts:["En la capa de transporte","En la capa de presentación","En la capa de aplicación"], correct:0, exp:"Los segmentos son la unidad de datos de la capa de transporte."},
+  {layer:2, difficulty:2, concept:"enlace", q:"¿Qué capa gestiona el control de flujo y detección de errores entre nodos conectados físicamente?", opts:["Capa de aplicación","Capa de enlace de datos","Capa de transporte"], correct:1, exp:"El control de flujo y la detección de errores entre nodos conectados físicamente son funciones de la capa de enlace de datos."},
+  {layer:2, difficulty:2, concept:"ethernet", q:"Indique qué protocolo opera en la capa de enlace de datos para proporcionar transferencia fiable entre nodos conectados físicamente:", opts:["HTTP, usado en la capa de aplicación","Ethernet, usado en la capa de enlace de datos","TCP, usado en la capa de transporte"], correct:1, exp:"Ethernet es el protocolo típico de la capa de enlace de datos para la transferencia fiable entre nodos."},
+  {layer:1, difficulty:1, concept:"fisica", q:"¿Qué capa del modelo OSI se caracteriza por convertir los bits digitales en señales eléctricas, de radio u ópticas?", opts:["La capa de red","La capa física","La capa de enlace de datos"], correct:1, exp:"La capa física convierte los bits digitales en señales eléctricas, ópticas o de radio para su transmisión."},
+  {layer:7, difficulty:1, concept:"ftp", q:"Seleccione el protocolo que opera en la capa de aplicación para la transferencia de archivos:", opts:["TCP","FTP","IPv6"], correct:1, exp:"FTP es un protocolo de la capa de aplicación diseñado para la transferencia de archivos."},
+  {layer:2, difficulty:2, concept:"enlace", q:"La capa de enlace de datos de OSI:", opts:["Proporciona tránsito de datos confiable a través de un enlace de red","Proporciona tránsito de datos confiable a través de un enlace físico","Define las especificaciones eléctricas, mecánicas y funcionales para activar y desactivar el enlace físico"], correct:1, exp:"La capa de enlace de datos proporciona un tránsito de datos confiable a través del enlace físico."},
+  {layer:0, difficulty:3, concept:"red", q:"Seleccione la capa del modelo TCP/IP que agrupa las funciones de las capas de enlace de datos y física del modelo OSI:", opts:["Capa de acceso a la red","Capa de aplicación","Capa de transporte"], correct:0, exp:"La capa de acceso a la red del modelo TCP/IP agrupa las funciones de las capas de enlace de datos y física del modelo OSI."}
+];
+
+const TOTAL_ADAPTIVE = 20;
+const BKT_PARAMS = { p_init:0.35, p_transit:0.20, p_slip:0.10, p_guess:0.28 };
+const BKT_STORAGE_KEY = 'osi_bkt_v3_adaptive';
+
+let state = {
+  idx: 0,
+  answers: new Array(QUESTIONS.length).fill(null),
+  order: [],
+  sessionErrors: [],
+  isAdaptiveMode: true
+};
+
+// -----------------------------------------------------------------------------
+// CARGA Y VALIDACIÓN DE localStorage
+// -----------------------------------------------------------------------------
+function loadBKT(){
+  let saved = null;
+  try {
+    saved = JSON.parse(localStorage.getItem(BKT_STORAGE_KEY));
+  } catch(e) {
+    saved = null;
+  }
+
+  // Si no hay datos o están corruptos, inicializamos con valores por defecto
+  const defaultSRS = {};
+  for(let L=1; L<=7; L++) defaultSRS[L] = { lastSeen: 0, lastCorrect: 0, reviewDate: 0 };
+
+  const defaultValue = {
+    mastery: {},
+    conceptMastery: {},
+    confusion: {},
+    srs: defaultSRS,
+    attempts: 0,
+    qCount: {}
+  };
+
+  // Función de validación y merge
+  function safeMerge(loaded, def) {
+    const result = JSON.parse(JSON.stringify(def));
+    if (!loaded || typeof loaded !== 'object') return result;
+
+    // Mastery
+    if (loaded.mastery && typeof loaded.mastery === 'object') {
+      for (let L=1; L<=7; L++) {
+        const val = loaded.mastery[L];
+        if (typeof val === 'number' && val >= 0 && val <= 1) {
+          result.mastery[L] = val;
+        }
+      }
+    }
+    // ConceptMastery
+    if (loaded.conceptMastery && typeof loaded.conceptMastery === 'object') {
+      for (let key in loaded.conceptMastery) {
+        const val = loaded.conceptMastery[key];
+        if (typeof val === 'number' && val >= 0 && val <= 1) {
+          result.conceptMastery[key] = val;
+        }
+      }
+    }
+    // Confusion
+    if (loaded.confusion && typeof loaded.confusion === 'object') {
+      Object.assign(result.confusion, loaded.confusion);
+    }
+    // SRS
+    if (loaded.srs && typeof loaded.srs === 'object') {
+      for (let L=1; L<=7; L++) {
+        const d = loaded.srs[L];
+        if (d && typeof d === 'object') {
+          const lastSeen = typeof d.lastSeen === 'number' ? d.lastSeen : 0;
+          const lastCorrect = typeof d.lastCorrect === 'number' ? d.lastCorrect : 0;
+          const reviewDate = typeof d.reviewDate === 'number' ? d.reviewDate : 0;
+          result.srs[L] = { lastSeen, lastCorrect, reviewDate };
+        }
+      }
+    }
+    // Attempts
+    if (typeof loaded.attempts === 'number' && loaded.attempts >= 0) {
+      result.attempts = loaded.attempts;
+    }
+    // qCount (exposición histórica por pregunta)
+    if (loaded.qCount && typeof loaded.qCount === 'object') {
+      for (let key in loaded.qCount) {
+        const val = loaded.qCount[key];
+        if (typeof val === 'number' && val >= 0) {
+          result.qCount[key] = val;
+        }
+      }
+    }
+    return result;
+  }
+
+  const merged = safeMerge(saved, defaultValue);
+
+  // Asegurar que todos los conceptos del grafo estén inicializados
+  for (let L in CONCEPT_GRAPH) {
+    for (let subKey in CONCEPT_GRAPH[L].sub) {
+      if (!(subKey in merged.conceptMastery)) {
+        merged.conceptMastery[subKey] = BKT_PARAMS.p_init;
+      }
+    }
+  }
+  // Nodos explícitos adicionales
+  const explicitNodes = ["routing", "gateway", "subnet", "cidr", "puerto", "conexion"];
+  explicitNodes.forEach(node => {
+    if (!(node in merged.conceptMastery)) {
+      merged.conceptMastery[node] = BKT_PARAMS.p_init;
+    }
+  });
+
+  return merged;
+}
+
+function saveBKT(){
+  try {
+    localStorage.setItem(BKT_STORAGE_KEY, JSON.stringify(bkt));
+  } catch(e) {
+    // Si falla (cuota excedida, etc.), simplemente no guardamos
+  }
+}
+
+let bkt = loadBKT();
+
+// -----------------------------------------------------------------------------
+// SELECCIÓN ADAPTATIVA (integrando SRS y capa 0)
+// -----------------------------------------------------------------------------
+// Baraja aleatoriamente un array (Fisher-Yates) sin mutar el original
+function shuffleArray(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Elige, entre varios candidatos válidos, priorizando los que menos veces
+// (o nunca) se han visto en sesiones anteriores. Empates -> aleatorio real.
+function pickLeastExposed(candidates){
+  if (candidates.length === 0) return null;
+  let minCount = Infinity;
+  candidates.forEach(i => {
+    const c = bkt.qCount[i] || 0;
+    if (c < minCount) minCount = c;
+  });
+  const leastExposed = candidates.filter(i => (bkt.qCount[i] || 0) === minCount);
+  return leastExposed[Math.floor(Math.random() * leastExposed.length)];
+}
+
+function chooseNextQuestion() {
+  const askedIds = state.order;
+  const unaskedIds = QUESTIONS.map((_, i) => i).filter(i => !askedIds.includes(i));
+  if (unaskedIds.length === 0) return null;
+
+  const now = Date.now();
+
+  // ----- 0. Si hay preguntas que nunca se han visto en NINGUNA sesión pasada,
+  // dales prioridad alta (80%) para garantizar rotación por todo el banco -----
+  const neverSeen = unaskedIds.filter(i => !(bkt.qCount[i] > 0));
+  if (neverSeen.length > 0 && Math.random() < 0.80) {
+    return neverSeen[Math.floor(Math.random() * neverSeen.length)];
+  }
+
+  // ----- 1. Prioridad: capas con SRS vencido (reviewDate <= ahora) -----
+  const expiredLayers = [];
+  for (let L=1; L<=7; L++) {
+    if (bkt.srs[L] && bkt.srs[L].reviewDate > 0 && now >= bkt.srs[L].reviewDate) {
+      expiredLayers.push(L);
+    }
+  }
+  if (expiredLayers.length > 0) {
+    // Ordenar capas vencidas por proximidad de vencimiento (más urgentes primero)
+    expiredLayers.sort((a,b) => bkt.srs[a].reviewDate - bkt.srs[b].reviewDate);
+    for (let L of expiredLayers) {
+      const candidates = unaskedIds.filter(i => QUESTIONS[i].layer === L);
+      if (candidates.length > 0) {
+        // Entre las de menor dificultad, elegir la menos expuesta históricamente
+        const minDiff = Math.min(...candidates.map(i => QUESTIONS[i].difficulty));
+        const easiest = candidates.filter(i => QUESTIONS[i].difficulty === minDiff);
+        return pickLeastExposed(easiest);
+      }
+    }
+  }
+
+  // ----- 2. Incluir capa 0 (general) con 20% de probabilidad -----
+  if (Math.random() < 0.20) {
+    const generalCandidates = unaskedIds.filter(i => QUESTIONS[i].layer === 0);
+    if (generalCandidates.length > 0) {
+      return pickLeastExposed(generalCandidates);
+    }
+  }
+
+  // ----- 3. Selector basado en BKT (capa más débil) -----
+  // Desempate aleatorio real: si dos capas empatan en dominio (p.ej. al
+  // empezar, todas a 0.35), antes siempre ganaba la Capa 1 por ser sort
+  // estable. Ahora se reparte al azar entre las empatadas.
+  const targetLayers = [1, 2, 3, 4, 5, 6, 7].sort((a, b) => {
+    const diff = bkt.mastery[a] - bkt.mastery[b];
+    if (Math.abs(diff) < 0.001) return Math.random() - 0.5;
+    return diff;
+  });
+
+  for (const layer of targetLayers) {
+    const layerDomain = bkt.mastery[layer];
+    let targetDifficulty = 1;
+    if (layerDomain < 0.40) targetDifficulty = 1;
+    else if (layerDomain < 0.60) targetDifficulty = 2;
+    else if (layerDomain < 0.80) targetDifficulty = 3;
+    else targetDifficulty = 4; // dificultad alta
+
+    let candidates = unaskedIds.filter(i => QUESTIONS[i].layer === layer);
+    if (candidates.length === 0) continue;
+
+    // Filtrar por dificultad
+    let diffCandidates = candidates.filter(i => {
+      if (targetDifficulty === 4) return QUESTIONS[i].difficulty >= 4;
+      return QUESTIONS[i].difficulty === targetDifficulty;
+    });
+    if (diffCandidates.length === 0) diffCandidates = candidates;
+
+    return pickLeastExposed(diffCandidates);
+  }
+
+  // Fallback: cualquier pregunta no preguntada, priorizando menor exposición
+  return pickLeastExposed(unaskedIds);
+}
+
+// -----------------------------------------------------------------------------
+// ACTUALIZACIÓN BAYESIANA CON PROTECCIÓN CONTRA DIVISIÓN POR CERO
+// -----------------------------------------------------------------------------
+function updateBKT(layer, concept, correct){
+  const { p_slip, p_guess, p_transit } = BKT_PARAMS;
+
+  // Actualizar capa
+  if (layer !== 0) {
+    const p = bkt.mastery[layer];
+    let numerator, denominator;
+    if (correct) {
+      numerator = p * (1 - p_slip);
+      denominator = p * (1 - p_slip) + (1 - p) * p_guess;
+    } else {
+      numerator = p * p_slip;
+      denominator = p * p_slip + (1 - p) * (1 - p_guess);
+    }
+    // Evitar división por cero
+    if (denominator < 1e-9) {
+      // Si el denominador es cero, mantenemos el valor anterior (no actualizamos)
+      // pero en la práctica, con p en [0.02,0.98] esto no debería ocurrir.
+      // Sin embargo, lo dejamos como salvaguarda.
+    } else {
+      let pEv = numerator / denominator;
+      pEv = Math.min(0.98, Math.max(0.02, pEv));
+      bkt.mastery[layer] = Math.min(0.98, Math.max(0.02, pEv + (1 - pEv) * p_transit));
+    }
+  }
+
+  // Actualizar concepto
+  if (concept && bkt.conceptMastery[concept] !== undefined) {
+    const p = bkt.conceptMastery[concept];
+    let numerator, denominator;
+    if (correct) {
+      numerator = p * (1 - p_slip);
+      denominator = p * (1 - p_slip) + (1 - p) * p_guess;
+    } else {
+      numerator = p * p_slip;
+      denominator = p * p_slip + (1 - p) * (1 - p_guess);
+    }
+    if (denominator >= 1e-9) {
+      let pEv = numerator / denominator;
+      pEv = Math.min(0.98, Math.max(0.02, pEv));
+      bkt.conceptMastery[concept] = Math.min(0.98, Math.max(0.02, pEv + (1 - pEv) * p_transit));
+    }
+
+    // Propagación conceptual (solo en aciertos)
+    if (correct) {
+      if (concept === "router") {
+        if (bkt.conceptMastery["routing"] !== undefined)
+          bkt.conceptMastery["routing"] = Math.min(0.98, bkt.conceptMastery["routing"] + 0.06);
+        if (bkt.conceptMastery["gateway"] !== undefined)
+          bkt.conceptMastery["gateway"] = Math.min(0.98, bkt.conceptMastery["gateway"] + 0.06);
+      }
+      if (concept === "gateway" && bkt.conceptMastery["subnet"] !== undefined)
+        bkt.conceptMastery["subnet"] = Math.min(0.98, bkt.conceptMastery["subnet"] + 0.05);
+      if (concept === "subnet" && bkt.conceptMastery["cidr"] !== undefined)
+        bkt.conceptMastery["cidr"] = Math.min(0.98, bkt.conceptMastery["cidr"] + 0.05);
+      if (concept === "tcp") {
+        if (bkt.conceptMastery["puerto"] !== undefined)
+          bkt.conceptMastery["puerto"] = Math.min(0.98, bkt.conceptMastery["puerto"] + 0.06);
+        if (bkt.conceptMastery["conexion"] !== undefined)
+          bkt.conceptMastery["conexion"] = Math.min(0.98, bkt.conceptMastery["conexion"] + 0.06);
+      }
+      if (concept === "udp" && bkt.conceptMastery["puerto"] !== undefined)
+        bkt.conceptMastery["puerto"] = Math.min(0.98, bkt.conceptMastery["puerto"] + 0.05);
+    }
+  }
+
+  // SRS: actualizar fechas
+  if (layer !== 0) {
+    const now = Date.now();
+    bkt.srs[layer].lastSeen = now;
+    if (correct) {
+      bkt.srs[layer].lastCorrect = now;
+      const gapDays = Math.max(1, Math.round(bkt.mastery[layer] * 8));
+      bkt.srs[layer].reviewDate = now + gapDays * 24 * 60 * 60 * 1000;
+    } else {
+      // Si falla, la revisión se adelanta a 10 horas
+      bkt.srs[layer].reviewDate = now + 10 * 60 * 60 * 1000;
+    }
+  }
+
+  bkt.attempts++;
+  saveBKT();
+}
+
+// -----------------------------------------------------------------------------
+// DASHBOARD SRS (actualizable)
+// -----------------------------------------------------------------------------
+function updateSRSDashboard() {
+  const container = document.getElementById('srsDashboard');
+  if (!container) return;
+
+  const now = Date.now();
+  let candidateLayer = null;
+  let oldestTime = now;
+  let oldestLayer = null;
+
+  for (let L=1; L<=7; L++) {
+    const data = bkt.srs[L];
+    if (data.lastSeen > 0 && data.lastSeen < oldestTime) {
+      oldestTime = data.lastSeen;
+      oldestLayer = L;
+    }
+    if (data.reviewDate > 0 && now >= data.reviewDate) {
+      candidateLayer = L;
+      break;
+    }
+  }
+
+  if (candidateLayer) {
+    container.className = "ai-panel show";
+    container.style.display = "flex";
+    container.style.borderColor = "var(--l3)";
+    container.innerHTML = `
+      <div class="ai-panel-head" style="color: var(--l3);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>Repetición Espaciada Directa</span>
+      </div>
+      <div class="ai-panel-body" style="margin-top:4px;">Hoy toca repasar la Capa ${candidateLayer} porque tu algoritmo de memoria estima un riesgo alto de olvido. ¡Consolida el nodo!</div>
+    `;
+  } else if (oldestLayer && (now - oldestTime) > 4 * 24 * 3600 * 1000) {
+    const days = Math.round((now - oldestTime) / (24*3600*1000));
+    container.className = "ai-panel show";
+    container.style.display = "flex";
+    container.style.borderColor = "var(--l3)";
+    container.innerHTML = `
+      <div class="ai-panel-head" style="color: var(--l3);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>Alerta de olvido</span>
+      </div>
+      <div class="ai-panel-body" style="margin-top:4px;">Hace ${days} días que no practicas la Capa ${oldestLayer} (${LAYERS[oldestLayer].name}). Revísala pronto.</div>
+    `;
+  } else {
+    container.className = "ai-panel show";
+    container.style.display = "flex";
+    container.style.borderColor = "var(--ok)";
+    container.innerHTML = `
+      <div class="ai-panel-head" style="color: var(--ok);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        <span>Índice de Retención Estable</span>
+      </div>
+      <div class="ai-panel-body" style="margin-top:4px;">Tus curvas de olvido están equilibradas. El selector priorizará las capas más débiles.</div>
+    `;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// PERFIL CONCEPTUAL EN ÁRBOL
+// -----------------------------------------------------------------------------
+function generateConceptualProfileTreeHTML() {
+  let html = '<div class="mono" style="background: var(--surface-2); padding: 16px; border-radius: 12px; font-size: 13px; line-height: 1.7; border: 1px solid var(--border);">';
+
+  for (let L=1; L<=7; L++) {
+    const layerMeta = CONCEPT_GRAPH[L];
+    const lMastery = Math.round((bkt.mastery[L] || 0.35) * 100);
+    html += `<div style="font-weight: 700; color: ${LAYERS[L].color}; margin-top: 8px;">${layerMeta.name}</div>`;
+
+    const subKeys = Object.keys(layerMeta.sub);
+    subKeys.forEach((subKey, idx) => {
+      const label = layerMeta.sub[subKey];
+      const val = Math.round((bkt.conceptMastery[subKey] || BKT_PARAMS.p_init) * 100);
+      const isLast = (idx === subKeys.length - 1);
+      const branch = isLast ? "└── " : "├── ";
+      const dots = Math.max(2, 28 - label.length);
+      const bridge = ".".repeat(dots);
+      html += `<div style="color: var(--text-dim); padding-left: 12px;">${branch}${label} ${bridge} <span style="font-weight:600; color: var(--text);">${val}%</span></div>`;
+    });
+  }
+  html += '</div>';
+  return html;
+}
+
+// -----------------------------------------------------------------------------
+// FUNCIONES DE DIAGNÓSTICO Y AYUDA
+// -----------------------------------------------------------------------------
+function buildLocalInsight(errorEntry) {
+  const parts = [];
+  parts.push(`Teoría: ${errorEntry.exp}`);
+  const m = bkt.mastery[errorEntry.layer] || 0.35;
+  parts.push(`Dominio estimado de esta capa: ${Math.round(m*100)}%.`);
+  return parts.join(' ');
+}
+
+function buildSessionDiagnosis(errorEntries) {
+  const now = Date.now();
+  const expired = [];
+  for (let L=1; L<=7; L++) {
+    if (bkt.srs[L] && bkt.srs[L].reviewDate > 0 && now >= bkt.srs[L].reviewDate) {
+      expired.push(L);
+    }
+  }
+
+  let msg = `Has fallado ${errorEntries.length} preguntas en esta sesión. `;
+  if (expired.length > 0) {
+    const layers = expired.map(L => `Capa ${L} (${LAYERS[L].name})`).join(', ');
+    msg += `Tienes ${expired.length} capa(s) con revisión vencida: ${layers}. `;
+  }
+
+  const targetLayers = [1,2,3,4,5,6,7].sort((a,b) => bkt.mastery[a] - bkt.mastery[b]);
+  const weakest = targetLayers[0];
+  msg += `Tu punto más débil según BKT es la Capa ${weakest} (${LAYERS[weakest].name}) con un dominio del ${Math.round(bkt.mastery[weakest]*100)}%. `;
+  msg += 'El sistema priorizará estas áreas en los próximos bloques.';
+  return msg;
+}
+
+// -----------------------------------------------------------------------------
+// CONTROLADORES DE PANTALLA Y RENDER
+// -----------------------------------------------------------------------------
+const screens = {
+  start: document.getElementById('screen-start'),
+  quiz: document.getElementById('screen-quiz'),
+  results: document.getElementById('screen-results')
+};
+
+function showScreen(name){
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
+  window.scrollTo({top:0, behavior:'auto'});
+}
+
+function buildLegend(){
+  const wrap = document.getElementById('layerLegend');
+  wrap.innerHTML = '';
+  for (let i=1;i<=7;i++){
+    const el = document.createElement('div');
+    el.className='legend-pill';
+    el.style.background = LAYERS[i].color;
+    wrap.appendChild(el);
+  }
+}
+
+function buildHeroViz(){
+  const wrap = document.getElementById('heroViz');
+  const w=280,h=190;
+  let bars='';
+  const order=[7,6,5,4,3,2,1];
+  order.forEach((L,i)=>{
+    const y = 6 + i*25;
+    const width = 120 + (7-i)*18;
+    bars += `<rect x="${(w-width)/2}" y="${y}" width="${width}" height="17" rx="6" fill="${LAYERS[L].color}" opacity="${0.55+0.45*(i/6)}"><animate attributeName="opacity" values="${0.4};${0.9};${0.4}" dur="${3+i*0.4}s" repeatCount="indefinite" begin="${i*0.2}s"/></rect>`;
+  });
+  wrap.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" style="max-width:280px">${bars}</svg>`;
+}
+
+function buildRail(){
+  const rail = document.getElementById('osiRail');
+  rail.innerHTML='';
+  for (let i=7;i>=1;i--){
+    const seg = document.createElement('div');
+    seg.className='rail-seg';
+    seg.id = 'rail-'+i;
+    seg.innerHTML = `<span class="glow" style="background:${LAYERS[i].color}"></span><span style="position:relative;">${i}</span>`;
+    rail.appendChild(seg);
+  }
+}
+
+function updateRail(layer){
+  for (let i=1;i<=7;i++){
+    const seg = document.getElementById('rail-'+i);
+    if (seg) seg.classList.remove('lit');
+    if (i===layer && seg) seg.classList.add('lit');
+  }
+}
+
+function buildDotNav(){
+  const nav = document.getElementById('dotnav');
+  nav.innerHTML='';
+  const limit = state.isAdaptiveMode ? TOTAL_ADAPTIVE : state.order.length;
+  for (let pos=0; pos<limit; pos++){
+    const d = document.createElement('div');
+    d.className='d';
+    d.id='dot-'+pos;
+    nav.appendChild(d);
+  }
+}
+
+function updateDotNav(){
+  const limit = state.isAdaptiveMode ? TOTAL_ADAPTIVE : state.order.length;
+  for (let pos=0; pos<limit; pos++){
+    const d = document.getElementById('dot-'+pos);
+    if (!d) continue;
+    const qi = state.order[pos];
+    d.classList.toggle('answered', qi !== undefined && state.answers[qi] !== null);
+    d.classList.toggle('current', pos === state.idx);
+  }
+}
+
+function renderQuestion(){
+  const pos = state.idx;
+  const qi = state.order[pos];
+  const q = QUESTIONS[qi];
+  const layer = LAYERS[q.layer];
+  const totalLimit = state.isAdaptiveMode ? TOTAL_ADAPTIVE : state.order.length;
+
+  document.getElementById('progLabel').textContent = `PREGUNTA ${pos+1}/${totalLimit}`;
+  const correctCount = state.order.filter(idx => state.answers[idx] && state.answers[idx].correct).length;
+  document.getElementById('progScore').textContent = `${correctCount} acierto${correctCount===1?'':'s'}`;
+  document.getElementById('progFill').style.width = `${(pos/totalLimit)*100}%`;
+
+  document.querySelectorAll('.rail-seg').forEach(s => s.classList.remove('lit'));
+
+  const badge = document.getElementById('layerBadge');
+  badge.className = "layer-badge pending";
+  document.getElementById('layerDot').style.background = '';
+  document.getElementById('layerNum').textContent = 'CAPA ?';
+  document.getElementById('layerName').textContent = 'Oculto hasta responder';
+  badge.style.borderColor = 'var(--border)';
+  document.getElementById('diffBadge').textContent = `NIVEL ${q.difficulty}`;
+
+  document.getElementById('qText').textContent = q.q;
+
+  const optsWrap = document.getElementById('optionsWrap');
+  optsWrap.innerHTML='';
+  const letters=['A','B','C'];
+  q.opts.forEach((optText, oi)=>{
+    const btn = document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML = `<span class="letter">${letters[oi]}</span><span>${optText}</span>`;
+    btn.addEventListener('click', ()=>selectOption(qi, oi));
+    optsWrap.appendChild(btn);
+  });
+
+  document.getElementById('feedback').classList.remove('show','is-ok','is-bad');
+  document.getElementById('aiPanel').classList.remove('show');
+  document.getElementById('btnNext').classList.remove('ready');
+  document.getElementById('btnNextLabel').textContent = pos===totalLimit-1 ? 'Finalizar Bloque' : 'Siguiente';
+
+  const existing = state.answers[qi];
+  if (existing){
+    revealAnswer(qi, existing.picked);
+    if (!existing.correct && q._insightEntry){
+      document.getElementById('aiPanel').classList.add('show');
+      document.getElementById('aiPanelBody').textContent = q._insightEntry.resultText;
+    }
+  }
+  updateDotNav();
+}
+
+function selectOption(qi, oi){
+  if (state.answers[qi] !== null) return;
+  const q = QUESTIONS[qi];
+  const correct = oi === q.correct;
+  state.answers[qi] = {picked:oi, correct};
+  revealAnswer(qi, oi);
+
+  updateBKT(q.layer, q.concept, correct);
+
+  if (!correct){
+    const letters=['A','B','C'];
+    const errorEntry = {
+      qi, layer: q.layer,
+      pickedText: `${letters[oi]}) ${q.opts[oi]}`,
+      exp: q.exp,
+      resultText: null
+    };
+    errorEntry.resultText = buildLocalInsight(errorEntry);
+    q._insightEntry = errorEntry;
+    state.sessionErrors.push(errorEntry);
+
+    const panel = document.getElementById('aiPanel');
+    panel.classList.add('show');
+    document.getElementById('aiPanelBody').textContent = errorEntry.resultText;
+  }
+
+  // Actualizar dashboard SRS tras cada respuesta
+  updateSRSDashboard();
+}
+
+function revealAnswer(qi, picked){
+  const q = QUESTIONS[qi];
+  const layer = LAYERS[q.layer];
+
+  updateRail(q.layer);
+  const badge = document.getElementById('layerBadge');
+  badge.className = "layer-badge";
+  document.getElementById('layerDot').style.background = layer.color;
+  document.getElementById('layerNum').textContent = q.layer===0 ? 'GENERAL' : `CAPA ${q.layer}`;
+  document.getElementById('layerName').textContent = layer.name;
+  badge.style.borderColor = layer.color+'55';
+
+  const opts = document.querySelectorAll('#optionsWrap .opt');
+  opts.forEach((btn,oi)=>{
+    btn.disabled = true;
+    if (oi===q.correct) btn.classList.add('correct');
+    else if (oi===picked) btn.classList.add('wrong');
+    else btn.classList.add('disabled-not-picked');
+  });
+
+  const fb = document.getElementById('feedback');
+  const isOk = picked === q.correct;
+  fb.className = isOk ? "feedback show is-ok" : "feedback show is-bad";
+  document.getElementById('fbIcon').innerHTML = isOk
+    ? `<svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#5FD8A6" opacity="0.15"/><path d="M7 12.5l3 3 7-7" stroke="#5FD8A6" stroke-width="2.2" stroke-linecap="round"/></svg>`
+    : `<svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#F16C6C" opacity="0.15"/><path d="M8 8l8 8M16 8l-8 8" stroke="#F16C6C" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+  document.getElementById('fbTitle').textContent = isOk ? '¡Correcto!' : 'Estructura incorrecta';
+  document.getElementById('fbText').textContent = q.exp;
+
+  document.getElementById('btnNext').classList.add('ready');
+  const correctCount = state.order.filter(idx => state.answers[idx] && state.answers[idx].correct).length;
+  document.getElementById('progScore').textContent = `${correctCount} acierto${correctCount===1?'':'s'}`;
+  updateDotNav();
+}
+
+document.getElementById('btnNext').addEventListener('click', ()=>{
+  const totalLimit = state.isAdaptiveMode ? TOTAL_ADAPTIVE : state.order.length;
+  if (state.idx < totalLimit - 1){
+    state.idx++;
+    if (state.isAdaptiveMode && state.order.length <= state.idx) {
+      const nextQi = chooseNextQuestion();
+      if (nextQi !== null) {
+        state.order.push(nextQi);
+        bkt.qCount[nextQi] = (bkt.qCount[nextQi] || 0) + 1;
+        saveBKT();
+      }
+    }
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults(){
+  const correctCount = state.order.filter(idx => state.answers[idx] && state.answers[idx].correct).length;
+  const total = state.order.length;
+  const pct = total > 0 ? Math.round((correctCount/total)*100) : 0;
+
+  document.getElementById('scorePct').textContent = pct+'%';
+  document.getElementById('scoreFrac').textContent = `${correctCount} / ${total}`;
+
+  const circumference = 2*Math.PI*82;
+  const ring = document.getElementById('ringFg');
+  ring.style.strokeDasharray = circumference;
+  ring.style.strokeDashoffset = circumference - (circumference*pct/100);
+  ring.style.stroke = pct>=85 ? '#5FD8A6' : pct>=60 ? '#F2955E' : '#F16C6C';
+
+  document.getElementById('conceptualProfileTree').innerHTML = generateConceptualProfileTreeHTML();
+
+  renderReview('all');
+  showScreen('results');
+
+  document.getElementById('aiDiagnosisPanel').classList.add('show');
+  document.getElementById('aiDiagnosisBody').innerHTML = `<div>${buildSessionDiagnosis(state.sessionErrors)}</div>`;
+}
+
+function renderReview(mode){
+  const list = document.getElementById('reviewList');
+  list.innerHTML='';
+  const letters=['A','B','C'];
+
+  state.order.forEach(qi => {
+    const q = QUESTIONS[qi];
+    const ans = state.answers[qi];
+    const wasCorrect = ans && ans.correct;
+    if (mode === 'errors' && wasCorrect) return;
+
+    const div = document.createElement('div');
+    div.className='review-item';
+    let html = `<p class="review-q"><span class="mono" style="font-size:10px; opacity:0.5;">[NIVEL ${q.difficulty}]</span> ${q.q}</p>`;
+    if (!wasCorrect && ans){
+      html += `<p class="review-a your">✕ Tu respuesta: ${letters[ans.picked]}) ${q.opts[ans.picked]}</p>`;
+    }
+    html += `<p class="review-a correct">✓ Correcta: ${letters[q.correct]}) ${q.opts[q.correct]}</p>`;
+    div.innerHTML = html;
+    list.appendChild(div);
+  });
+}
+
+document.getElementById('toggleAll').addEventListener('click', function(){
+  this.classList.add('active');
+  document.getElementById('toggleErrors').classList.remove('active');
+  renderReview('all');
+});
+document.getElementById('toggleErrors').addEventListener('click', function(){
+  this.classList.add('active');
+  document.getElementById('toggleAll').classList.remove('active');
+  renderReview('errors');
+});
+
+function startFreshAdaptive(){
+  state.idx = 0;
+  state.answers = new Array(QUESTIONS.length).fill(null);
+  state.sessionErrors = [];
+  state.isAdaptiveMode = false; // orden ya fijado por el shuffle, no se va generando sobre la marcha
+  QUESTIONS.forEach(q => { delete q._insightEntry; });
+
+  // Baraja las 46 preguntas: cada apertura del HTML da un orden distinto
+  state.order = shuffleArray(QUESTIONS.map((_, i) => i));
+  state.order.forEach(qi => { bkt.qCount[qi] = (bkt.qCount[qi] || 0) + 1; });
+  saveBKT();
+
+  buildDotNav();
+  renderQuestion();
+  showScreen('quiz');
+  updateSRSDashboard();
+}
+
+document.getElementById('btnStart').addEventListener('click', startFreshAdaptive);
+document.getElementById('btnRetryAll').addEventListener('click', startFreshAdaptive);
+
+document.getElementById('btnRetryErrors').addEventListener('click', ()=>{
+  const errorIdx = state.order.filter(idx => !(state.answers[idx] && state.answers[idx].correct));
+  if (errorIdx.length === 0){ startFreshAdaptive(); return; }
+
+  state.idx = 0;
+  state.order = errorIdx;
+  state.answers = new Array(QUESTIONS.length).fill(null);
+  state.sessionErrors = [];
+  state.isAdaptiveMode = false;
+  errorIdx.forEach(idx => delete QUESTIONS[idx]._insightEntry);
+
+  buildDotNav();
+  renderQuestion();
+  showScreen('quiz');
+  updateSRSDashboard();
+});
+
+// Inicialización
+buildLegend();
+buildHeroViz();
+buildRail();
+updateSRSDashboard();
+
+})();
+</script>
+</body>
+</html>

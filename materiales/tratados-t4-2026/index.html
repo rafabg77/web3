@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Tratados UE — Policía Nacional</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #12151c;
+    --surface2: #1a1f2a;
+    --border: #2a3040;
+    --accent: #00d4ff;
+    --accent2: #ffd700;
+    --danger: #ff4060;
+    --success: #00e676;
+    --text: #e8eaf0;
+    --muted: #6a7385;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 70% 20%, rgba(0,212,255,0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 30% at 20% 80%, rgba(255,215,0,0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  .header {
+    position: relative;
+    z-index: 1;
+    padding: 48px 32px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    letter-spacing: 4px;
+    color: var(--text);
+    line-height: 1;
+    text-align: center;
+  }
+
+  .header h1 span { color: var(--accent2); }
+
+  .header-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    position: relative;
+    z-index: 1;
+    padding: 24px 32px 0;
+    max-width: 880px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* QUIZ AREA */
+  .quiz-area {
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 36px;
+    margin-bottom: 24px;
+    animation: fadeSlide 0.35s ease;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .question-text {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+
+  /* OPTIONS */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.18s ease;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    text-align: left;
+  }
+
+  .option:hover:not(.disabled) {
+    border-color: var(--accent);
+    background: rgba(0,212,255,0.05);
+    transform: translateX(4px);
+  }
+
+  .option-letter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    min-width: 20px;
+    transition: color 0.18s;
+  }
+
+  .option:hover:not(.disabled) .option-letter { color: var(--accent); }
+
+  .option.correct {
+    border-color: var(--success);
+    background: rgba(0,230,118,0.07);
+  }
+  .option.correct .option-letter { color: var(--success); }
+
+  .option.wrong {
+    border-color: var(--danger);
+    background: rgba(255,64,96,0.07);
+  }
+  .option.wrong .option-letter { color: var(--danger); }
+
+  .option.disabled { cursor: default; }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top: 20px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    line-height: 1.6;
+    font-family: 'IBM Plex Mono', monospace;
+    display: none;
+  }
+
+  .feedback.show { display: block; animation: fadeSlide 0.25s ease; }
+
+  .feedback.ok {
+    background: rgba(0,230,118,0.07);
+    border: 1px solid rgba(0,230,118,0.25);
+    color: var(--success);
+  }
+
+  .feedback.fail {
+    background: rgba(255,64,96,0.07);
+    border: 1px solid rgba(255,64,96,0.25);
+    color: #ff8099;
+  }
+
+  /* NEXT BUTTON */
+  .btn-next {
+    display: none;
+    margin-top: 24px;
+    padding: 14px 32px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .btn-next:hover { background: #33ddff; transform: translateY(-1px); }
+  .btn-next.show { display: inline-block; animation: fadeSlide 0.25s ease; }
+
+  /* RESULTS */
+  .results {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 48px 36px;
+    text-align: center;
+    animation: fadeSlide 0.4s ease;
+  }
+
+  .results.show { display: block; }
+
+  .results-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 100px;
+    line-height: 1;
+    letter-spacing: 4px;
+  }
+
+  .results-score.perfect { color: var(--success); }
+  .results-score.high { color: var(--accent2); }
+  .results-score.mid { color: var(--accent); }
+  .results-score.low { color: var(--danger); }
+
+  .results-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  .results-verdict {
+    margin: 28px auto;
+    font-size: 16px;
+    font-weight: 600;
+    max-width: 520px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .results-breakdown {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 28px 0;
+    flex-wrap: wrap;
+  }
+
+  .breakdown-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .breakdown-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    letter-spacing: 2px;
+  }
+
+  .breakdown-num.g { color: var(--success); }
+  .breakdown-num.b { color: var(--danger); }
+  .breakdown-num.t { color: var(--muted); }
+
+  .breakdown-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .fiability-bar-wrap {
+    margin: 28px auto;
+    max-width: 420px;
+  }
+
+  .fiability-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-align: left;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .fiability-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .fiability-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--danger), var(--accent2), var(--success));
+    transition: width 1s cubic-bezier(.22,.68,0,1.2);
+    width: 0%;
+  }
+
+  .fiability-pct {
+    text-align: right;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent2);
+    margin-top: 4px;
+  }
+
+  .btn-restart {
+    margin-top: 32px;
+    padding: 16px 40px;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .btn-restart:hover {
+    background: rgba(0,212,255,0.08);
+    transform: translateY(-2px);
+  }
+
+  /* FAILED LIST */
+  .failed-list {
+    margin-top: 36px;
+    text-align: left;
+  }
+
+  .failed-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .failed-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .failed-item strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 14px; }
+  .failed-item .correct-ans { color: var(--success); font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+
+  /* START SCREEN */
+  #start-screen {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .start-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 48px;
+    text-align: center;
+  }
+
+  .start-card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 3px;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .start-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 500px;
+    margin: 0 auto 32px;
+  }
+
+  .stats-grid {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--accent2);
+    line-height: 1;
+  }
+  .stat-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .btn-start {
+    padding: 18px 56px;
+    background: var(--accent2);
+    color: #000;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-start:hover { background: #ffe44d; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,215,0,0.25); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Oposiciones · Policía Nacional</div>
+  <h1>TRATADOS <span>UE</span></h1>
+  <div class="header-sub">Test de fiabilidad máxima · Nivel muy difícil</div>
+</div>
+
+<!-- START SCREEN -->
+<div id="start-screen">
+  <div class="start-card">
+    <h2>¿Estás listo para el examen?</h2>
+    <p>Este test cubre <strong style="color:var(--text)">todos los datos clave</strong> de los 8 tratados de la UE: fechas exactas, instituciones creadas, novedades, nombres propios y datos que confunden. Si respondes todo bien, estás al 100%.</p>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-num">40</div><div class="stat-lbl">Preguntas</div></div>
+      <div class="stat"><div class="stat-num">4</div><div class="stat-lbl">Opciones</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Fiabilidad si todo OK</div></div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">COMENZAR TEST</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-wrap" style="display:none">
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="q-counter">Pregunta 1 / 40</span>
+      <span id="q-score">✓ 0 &nbsp; ✗ 0</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div class="quiz-area">
+    <div class="question-card" id="question-card">
+      <div class="question-tag" id="q-tag">TRATADO</div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options" id="options-wrap"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">SIGUIENTE →</button>
+    </div>
+
+    <div class="results" id="results">
+      <div class="results-score" id="res-score"></div>
+      <div class="results-label">Puntuación final</div>
+      <div class="results-verdict" id="res-verdict"></div>
+      <div class="results-breakdown">
+        <div class="breakdown-item">
+          <div class="breakdown-num g" id="res-correct">0</div>
+          <div class="breakdown-label">Correctas</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-num b" id="res-wrong">0</div>
+          <div class="breakdown-label">Errores</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-num t">40</div>
+          <div class="breakdown-label">Total</div>
+        </div>
+      </div>
+      <div class="fiability-bar-wrap">
+        <div class="fiability-label">Fiabilidad para el examen</div>
+        <div class="fiability-bar"><div class="fiability-fill" id="fiab-fill"></div></div>
+        <div class="fiability-pct" id="fiab-pct"></div>
+      </div>
+      <div class="failed-list" id="failed-list"></div>
+      <button class="btn-restart" onclick="restartQuiz()">↺ REPETIR TEST</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+  // PARÍS
+  { tag: "TRATADO DE PARÍS", q: "¿En qué fecha exacta se firmó el Tratado de París (CECA)?", opts: ["18/04/1951","25/03/1951","01/07/1952","23/07/1951"], correct: 0, exp: "El Tratado de París se firmó el 18 de abril de 1951. Entró en vigor el 23/07/1952." },
+  { tag: "TRATADO DE PARÍS", q: "¿Cuándo entró en vigor el Tratado de París?", opts: ["18/04/1951","23/07/1952","01/01/1958","01/07/1967"], correct: 1, exp: "Firma: 18/04/1951 — Vigor: 23/07/1952." },
+  { tag: "TRATADO DE PARÍS", q: "¿Qué organización creó el Tratado de París?", opts: ["CEE","EURATOM","CECA","Mercado Común"], correct: 2, exp: "El Tratado de París creó la Comunidad Europea del Carbón y del Acero (CECA)." },
+  { tag: "TRATADO DE PARÍS", q: "¿En qué año expiró el Tratado de París?", opts: ["1999","2000","2002","2004"], correct: 2, exp: "El Tratado de París tenía una duración de 50 años; expiró en 2002." },
+  { tag: "TRATADO DE PARÍS", q: "¿En qué se basa ideológicamente el Tratado de París?", opts: ["Informe Spaak","Plan Schuman","Tratado Constitucional","Doctrina Monnet"], correct: 1, exp: "El Tratado de París se basa en el Plan Schuman, propuesta del ministro francés Robert Schuman." },
+  { tag: "TRATADO DE PARÍS", q: "¿Cuántos países fundadores firmaron el Tratado de París?", opts: ["4","5","6","9"], correct: 2, exp: "6 países: Francia, Italia, Alemania, Bélgica, Países Bajos y Luxemburgo." },
+  { tag: "TRATADO DE PARÍS", q: "¿Qué institución de la CECA fue precursora de la Comisión Europea?", opts: ["Asamblea Común","Consejo Especial de Ministros","Alta Autoridad","Tribunal de Justicia"], correct: 2, exp: "La Alta Autoridad era el órgano ejecutivo de la CECA, precursora de la Comisión Europea." },
+  { tag: "TRATADO DE ROMA", q: "¿Qué fecha de firma tiene el Tratado de Roma?", opts: ["18/04/1951","25/03/1957","08/04/1965","17/02/1986"], correct: 1, exp: "El Tratado de Roma se firmó el 25 de marzo de 1957." },
+  { tag: "TRATADO DE ROMA", q: "¿Cuándo entró en vigor el Tratado de Roma?", opts: ["01/07/1957","01/01/1958","25/03/1958","01/07/1967"], correct: 1, exp: "El Tratado de Roma entró en vigor el 1 de enero de 1958." },
+  { tag: "TRATADO DE ROMA", q: "¿Qué dos comunidades creó el Tratado de Roma?", opts: ["CECA y EURATOM","CEE y EURATOM","CEE y CECA","UE y EURATOM"], correct: 1, exp: "El Tratado de Roma creó simultáneamente la CEE y la EURATOM." },
+  { tag: "TRATADO DE ROMA", q: "¿Qué cuatro libertades fundamentales establece el Tratado de Roma?", opts: ["Personas, mercancías, armas y capital","Personas, mercancías, servicios y capital","Personas, trabajadores, servicios y bienes","Mercancías, servicios, capital y trabajo"], correct: 1, exp: "Las 4 libertades: libre circulación de personas, mercancías, servicios y capital." },
+  { tag: "TRATADO DE ROMA", q: "¿Qué institución financiera creó el Tratado de Roma?", opts: ["BCE","FMI","BEI","BERD"], correct: 2, exp: "El Tratado de Roma creó el Banco Europeo de Inversiones (BEI)." },
+  { tag: "TRATADO DE ROMA", q: "¿Qué nombre recibía el Parlamento Europeo en el Tratado de Roma?", opts: ["Consejo Legislativo","Parlamento Europeo","Asamblea Parlamentaria","Cámara de Representantes"], correct: 2, exp: "En el Tratado de Roma se denominaba Asamblea Parlamentaria y tenía solo función consultiva." },
+  { tag: "CONFERENCIA MESSINA", q: "¿Quién es el autor del Informe Spaak, base técnica del mercado común?", opts: ["Robert Schuman","Konrad Adenauer","Paul-Henri Spaak","Jean Monnet"], correct: 2, exp: "Paul-Henri Spaak (belga) fue el autor del Informe Spaak presentado en la Conferencia de Messina (1955)." },
+  // FUSIÓN
+  { tag: "TRATADO DE FUSIÓN", q: "¿Cuándo entró en vigor el Tratado de Fusión (Bruselas)?", opts: ["08/04/1965","01/01/1966","01/07/1967","01/11/1967"], correct: 2, exp: "El Tratado de Fusión se firmó el 08/04/1965 y entró en vigor el 01/07/1967." },
+  { tag: "TRATADO DE FUSIÓN", q: "¿Qué tratado derogó posteriormente el Tratado de Fusión?", opts: ["Maastricht","Niza","Ámsterdam","Lisboa"], correct: 2, exp: "El Tratado de Ámsterdam (1997) derogó el Tratado de Fusión de 1965." },
+  { tag: "TRATADO DE FUSIÓN", q: "¿Qué consecuencia principal tuvo el Tratado de Fusión?", opts: ["Creó el mercado interior","Fusionó CECA, CEE y EURATOM en una sola Comisión y Consejo","Creó la ciudadanía europea","Incorporó el Convenio de Schengen"], correct: 1, exp: "El Tratado de Fusión unificó las instituciones: una sola Comisión y un solo Consejo para las tres comunidades." },
+  // ACTA ÚNICA
+  { tag: "ACTA ÚNICA EUROPEA", q: "El Acta Única Europea tiene dos fechas de firma. ¿Cuáles son?", opts: ["01/01/1986 y 01/07/1986","17/02/1986 y 28/02/1986","01/02/1986 y 01/03/1986","10/02/1986 y 20/02/1986"], correct: 1, exp: "El Acta Única Europea se firmó en dos fechas: 17 y 28 de febrero de 1986." },
+  { tag: "ACTA ÚNICA EUROPEA", q: "¿Cuándo entró en vigor el Acta Única Europea?", opts: ["01/01/1987","01/07/1987","01/07/1986","01/01/1988"], correct: 1, exp: "El Acta Única Europea entró en vigor el 1 de julio de 1987." },
+  { tag: "ACTA ÚNICA EUROPEA", q: "¿Qué motivo principal impulsó el Acta Única Europea?", opts: ["La caída del Muro de Berlín","La adhesión de España y Portugal","La creación del euro","La ampliación a 25 miembros"], correct: 1, exp: "El Acta Única se hizo para preparar la adhesión de España y Portugal y reformar las instituciones." },
+  { tag: "ACTA ÚNICA EUROPEA", q: "¿Qué nombre oficial recibió el Parlamento Europeo con el Acta Única?", opts: ["Asamblea de la UE","Cámara Europea","Parlamento Europeo","Asamblea Parlamentaria"], correct: 2, exp: "El Acta Única Europea es el primer tratado que utiliza el nombre oficial 'Parlamento Europeo'." },
+  { tag: "ACTA ÚNICA EUROPEA", q: "¿Qué novedad introdujo el Acta Única respecto a la votación en el Consejo?", opts: ["Unanimidad obligatoria en todo","Veto individual de cualquier país","Mayoría cualificada en más ámbitos","Desaparición del voto ponderado"], correct: 2, exp: "El Acta Única amplió la votación por mayoría cualificada, reduciendo el poder de veto individual." },
+  // MAASTRICHT
+  { tag: "TRATADO DE MAASTRICHT", q: "¿Cuándo entró en vigor el Tratado de Maastricht?", opts: ["07/02/1992","01/01/1993","01/11/1993","01/05/1994"], correct: 2, exp: "Maastricht se firmó el 07/02/1992 y entró en vigor el 01/11/1993." },
+  { tag: "TRATADO DE MAASTRICHT", q: "¿Qué institución financiera creó el Tratado de Maastricht?", opts: ["BEI","FMI","BIS","BCE"], correct: 3, exp: "El Tratado de Maastricht creó el Banco Central Europeo (BCE)." },
+  { tag: "TRATADO DE MAASTRICHT", q: "¿Qué organismo policial europeo creó el Tratado de Maastricht?", opts: ["Frontex","Interpol","Europol","Eurojust"], correct: 2, exp: "Europol se creó en el Tratado de Maastricht, dentro del 3er pilar (JAI)." },
+  { tag: "TRATADO DE MAASTRICHT", q: "¿En qué pilar de Maastricht se incluye la Política Exterior y de Seguridad Común?", opts: ["1er Pilar","2º Pilar","3er Pilar","Pilar transversal"], correct: 1, exp: "La PESC es el 2º Pilar de Maastricht." },
+  { tag: "TRATADO DE MAASTRICHT", q: "¿En qué pilar de Maastricht se creó Europol?", opts: ["1er Pilar","2º Pilar","3er Pilar","No es de Maastricht"], correct: 2, exp: "Europol se creó en el 3er Pilar (Cooperación en Justicia y Asuntos de Interior — JAI)." },
+  { tag: "TRATADO DE MAASTRICHT", q: "¿Qué institución crea Maastricht para representar a las regiones?", opts: ["Consejo Económico y Social","Comité de las Regiones (CDR)","Comité de Protección Social","Asamblea de Regiones"], correct: 1, exp: "El Tratado de Maastricht crea el Comité de las Regiones (CDR)." },
+  { tag: "TRATADO DE MAASTRICHT", q: "¿En qué año se establecieron los Criterios de Copenhague?", opts: ["1992","1993","1994","1995"], correct: 1, exp: "Los Criterios de Copenhague se establecieron en 1993, como consecuencia del espíritu de Maastricht (no en 1992)." },
+  // ÁMSTERDAM
+  { tag: "TRATADO DE ÁMSTERDAM", q: "¿Cuándo entró en vigor el Tratado de Ámsterdam?", opts: ["02/10/1997","01/01/1998","01/05/1999","01/02/1999"], correct: 2, exp: "Ámsterdam se firmó el 02/10/1997 y entró en vigor el 01/05/1999." },
+  { tag: "TRATADO DE ÁMSTERDAM", q: "¿Qué convenio incorporó el Tratado de Ámsterdam al derecho de la UE?", opts: ["Convenio Europeo de DDHH","Convenio de Schengen","Convenio de Viena","Convenio de Dublín"], correct: 1, exp: "El Tratado de Ámsterdam incorporó el Convenio de Schengen al ordenamiento jurídico de la UE." },
+  { tag: "TRATADO DE ÁMSTERDAM", q: "¿Qué nuevo cargo creó el Tratado de Ámsterdam en política exterior?", opts: ["Presidente del Consejo Europeo","Comisario de Exteriores","Alto Representante para la PESC (Mr. PESC)","Ministro de Exteriores de la UE"], correct: 2, exp: "Ámsterdam creó el Alto Representante de Política Exterior y Seguridad Común, conocido como 'Mr. PESC'." },
+  { tag: "TRATADO DE ÁMSTERDAM", q: "¿Cuántos países son el mínimo para la cooperación reforzada según Ámsterdam?", opts: ["6","7","8","9"], correct: 3, exp: "La cooperación reforzada requiere un mínimo de 9 países que quieran avanzar más rápido juntos." },
+  // NIZA
+  { tag: "TRATADO DE NIZA", q: "¿Cuándo entró en vigor el Tratado de Niza?", opts: ["26/02/2001","01/01/2002","01/02/2003","01/05/2004"], correct: 2, exp: "Niza se firmó el 26/02/2001 y entró en vigor el 01/02/2003." },
+  { tag: "TRATADO DE NIZA", q: "¿Para qué ampliación se preparó el Tratado de Niza?", opts: ["De 12 a 15 miembros","De 15 a 25 miembros","De 25 a 27 miembros","De 6 a 12 miembros"], correct: 1, exp: "El Tratado de Niza reformó las instituciones para permitir la ampliación de 15 a 25 miembros." },
+  { tag: "TRATADO DE NIZA", q: "¿Qué organismo creó el Tratado de Niza?", opts: ["Comité de las Regiones","Defensor del Pueblo","Comité de Protección Social (CPS)","Consejo Económico y Social"], correct: 2, exp: "El Tratado de Niza creó el Comité de Protección Social (CPS)." },
+  { tag: "TRATADO CONSTITUCIONAL", q: "¿Qué países rechazaron el Tratado Constitucional (2004) en referéndum?", opts: ["Alemania y Francia","Francia y Países Bajos","Países Bajos y Dinamarca","Irlanda y Reino Unido"], correct: 1, exp: "Francia y Países Bajos rechazaron el Tratado Constitucional en referéndum, impidiendo su entrada en vigor." },
+  // LISBOA
+  { tag: "TRATADO DE LISBOA", q: "¿Cuándo entró en vigor el Tratado de Lisboa?", opts: ["13/12/2007","01/01/2009","01/12/2009","01/01/2010"], correct: 2, exp: "Lisboa se firmó el 13/12/2007 y entró en vigor el 01/12/2009." },
+  { tag: "TRATADO DE LISBOA", q: "¿Qué artículo del Tratado de Lisboa regula la retirada de un Estado miembro?", opts: ["Artículo 7","Artículo 49","Artículo 50","Artículo 127"], correct: 2, exp: "El Artículo 50 del Tratado de Lisboa regula el procedimiento de retirada, usado por el Reino Unido en el Brexit." },
+  { tag: "TRATADO DE LISBOA", q: "¿Cuántas firmas ciudadanas se necesitan para la iniciativa ciudadana europea?", opts: ["500.000 de 5 países","750.000 de 7 países","1.000.000 de 7 países","1.000.000 de 9 países"], correct: 2, exp: "La iniciativa ciudadana europea requiere 1 millón de firmas de al menos 7 Estados miembros." },
+  { tag: "TRATADO DE LISBOA", q: "¿Cómo pasa a llamarse el procedimiento de codecisión con el Tratado de Lisboa?", opts: ["Procedimiento Especial","Procedimiento Legislativo Ordinario (PLO)","Procedimiento de Unanimidad","Procedimiento de Cooperación"], correct: 1, exp: "Con Lisboa, la codecisión pasa a llamarse Procedimiento Legislativo Ordinario (PLO) y se amplía a nuevos ámbitos." },
+];
+
+let questions = [];
+let current = 0;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+let failedQ = [];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function shuffleOptions(q) {
+  // shuffle options keeping track of correct answer text
+  const correctText = q.opts[q.correct];
+  const opts = shuffle([...q.opts]);
+  return { ...q, opts, correct: opts.indexOf(correctText) };
+}
+
+function startQuiz() {
+  questions = shuffle(ALL_QUESTIONS.map(shuffleOptions));
+  current = 0; correct = 0; wrong = 0; failedQ = [];
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('quiz-wrap').style.display = 'block';
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('question-card').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  answered = false;
+
+  document.getElementById('q-tag').textContent = q.tag;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-counter').textContent = `Pregunta ${current + 1} / ${questions.length}`;
+  document.getElementById('q-score').innerHTML = `✓ ${correct} &nbsp; ✗ ${wrong}`;
+  document.getElementById('progress-fill').style.width = `${(current / questions.length) * 100}%`;
+
+  const wrap = document.getElementById('options-wrap');
+  wrap.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i, q.correct, q.exp, q.q, q.opts[q.correct]);
+    wrap.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+
+  const btn = document.getElementById('btn-next');
+  btn.className = 'btn-next';
+  btn.textContent = current === questions.length - 1 ? 'VER RESULTADOS →' : 'SIGUIENTE →';
+}
+
+function selectAnswer(idx, correctIdx, exp, qText, correctText) {
+  if (answered) return;
+  answered = true;
+
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.classList.add('disabled'));
+  opts[correctIdx].classList.add('correct');
+
+  const fb = document.getElementById('feedback');
+  if (idx === correctIdx) {
+    correct++;
+    opts[idx].classList.add('correct');
+    fb.className = 'feedback ok show';
+    fb.textContent = '✓ CORRECTO — ' + exp;
+  } else {
+    wrong++;
+    opts[idx].classList.add('wrong');
+    fb.className = 'feedback fail show';
+    fb.textContent = '✗ INCORRECTO — ' + exp;
+    failedQ.push({ q: qText, ans: correctText });
+  }
+
+  document.getElementById('q-score').innerHTML = `✓ ${correct} &nbsp; ✗ ${wrong}`;
+  document.getElementById('btn-next').classList.add('show');
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    document.getElementById('question-card').style.animation = 'none';
+    void document.getElementById('question-card').offsetWidth;
+    document.getElementById('question-card').style.animation = '';
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('question-card').style.display = 'none';
+  const res = document.getElementById('results');
+  res.classList.add('show');
+
+  const pct = Math.round((correct / questions.length) * 100);
+  const scoreEl = document.getElementById('res-score');
+  scoreEl.textContent = pct + '%';
+  scoreEl.className = 'results-score ' + (pct === 100 ? 'perfect' : pct >= 80 ? 'high' : pct >= 60 ? 'mid' : 'low');
+
+  document.getElementById('res-correct').textContent = correct;
+  document.getElementById('res-wrong').textContent = wrong;
+
+  const verdicts = {
+    100: '🏆 PERFECTO. Dominas todos los tratados al 100%. Estás listo para el examen.',
+    80: '💪 Muy bueno. Repasa los errores y estarás en forma para el examen.',
+    60: '📚 Bien encaminado, pero necesitas reforzar los detalles que han fallado.',
+    0: '🔄 Sigue practicando. Repite el test hasta dominar cada detalle.'
+  };
+  const v = pct === 100 ? 100 : pct >= 80 ? 80 : pct >= 60 ? 60 : 0;
+  document.getElementById('res-verdict').textContent = verdicts[v];
+
+  const fiabPct = Math.round(pct * 0.95 + (pct === 100 ? 5 : 0));
+  document.getElementById('fiab-pct').textContent = `Fiabilidad estimada: ${fiabPct}%`;
+  setTimeout(() => {
+    document.getElementById('fiab-fill').style.width = fiabPct + '%';
+  }, 300);
+
+  document.getElementById('progress-fill').style.width = '100%';
+
+  if (failedQ.length > 0) {
+    const fl = document.getElementById('failed-list');
+    fl.innerHTML = `<div class="failed-title">Preguntas falladas (${failedQ.length})</div>` +
+      failedQ.map(f => `<div class="failed-item"><strong>${f.q}</strong><span class="correct-ans">✓ ${f.ans}</span></div>`).join('');
+  } else {
+    document.getElementById('failed-list').innerHTML = '';
+  }
+}
+
+function restartQuiz() {
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('question-card').style.display = 'block';
+  startQuiz();
+}
+</script>
+</body>
+</html>

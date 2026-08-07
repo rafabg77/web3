@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNP · Repaso Express · T9 + SP + T14</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#F7F3EA;--bone-deep:#EFE8D8;--ink:#1B1812;--navy:#0F1B2D;--navy-soft:#1B2940;--garnet:#8B2635;--garnet-deep:#6B1C28;--brass:#B8893E;--green:#2D5043;--green-soft:#E4ECE6;--garnet-soft:#F3DEE0;--brass-soft:#F2E6CC;--line:#D8CCAE;--tr:0.28s cubic-bezier(0.4,0,0.2,1);}
+[data-theme="dark"]{--bone:#111318;--bone-deep:#1A1D24;--ink:#E8E4DC;--navy:#C9D2DF;--navy-soft:#2A3548;--line:#2E3340;--garnet-soft:#2A1519;--brass-soft:#261E0D;--green-soft:#0D1A15;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bone);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background var(--tr),color var(--tr);}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 1px 1px,rgba(27,24,18,0.035) 1px,transparent 0);background-size:22px 22px;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 24px 120px;}
+.pbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--garnet),var(--brass));z-index:100;width:0%;transition:width 0.1s;}
+.sidebar{position:fixed;left:16px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:8px;}
+.sb-dot{width:10px;height:10px;border-radius:50%;background:var(--line);border:2px solid transparent;cursor:pointer;transition:all var(--tr);position:relative;}
+.sb-dot::after{content:attr(data-label);position:absolute;left:18px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);background:var(--bone-deep);border:1px solid var(--line);padding:3px 8px;border-radius:4px;opacity:0;pointer-events:none;transition:opacity var(--tr);}
+.sb-dot:hover::after,.sb-dot.active::after{opacity:1;}
+.sb-dot.active{background:var(--garnet);border-color:var(--brass);transform:scale(1.35);}
+@media(max-width:1080px){.sidebar{display:none;}}
+.mode-bar{position:fixed;top:14px;right:14px;z-index:90;display:flex;gap:6px;align-items:center;}
+.mode-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.04em;border:1px solid var(--line);background:var(--bone);color:var(--ink);padding:5px 11px;border-radius:100px;cursor:pointer;transition:all var(--tr);}
+.mode-btn:hover{border-color:var(--garnet);color:var(--garnet);}
+.mode-btn.active{background:var(--navy);color:var(--brass);border-color:var(--navy);}
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bone);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all var(--tr);}
+.cover{padding:72px 0 48px;text-align:center;}
+.stamp{width:128px;height:128px;margin:0 auto 28px;border-radius:50%;border:3px solid var(--garnet);display:flex;align-items:center;justify-content:center;position:relative;animation:pulse 4s ease-in-out infinite;}
+.stamp::before{content:"";position:absolute;inset:8px;border:1.5px dashed var(--garnet);border-radius:50%;animation:spin 20s linear infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(139,38,53,0);}50%{box-shadow:0 0 0 12px rgba(139,38,53,0.12);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.stamp-text{font-family:'Fraunces',serif;font-weight:700;font-size:13px;color:var(--garnet);line-height:1.2;}
+h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(26px,5vw,46px);letter-spacing:-0.02em;margin-bottom:10px;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--brass);margin-bottom:6px;}
+.meta-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+.chip{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:100px;border:1px solid var(--line);background:var(--bone-deep);}
+.legend{font-size:12px;margin-top:16px;color:var(--brass);font-family:'JetBrains Mono',monospace;}
+/* BLOCK */
+.block{margin:40px 0;border-radius:2px;overflow:hidden;border:1px solid var(--line);}
+.block-head{background:var(--navy);padding:18px 24px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;}
+.block-head::before{content:"";position:absolute;right:20px;top:50%;transform:translateY(-50%);width:80px;height:80px;border-radius:50%;border:1px solid rgba(184,137,62,0.2);}
+.block-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--brass);letter-spacing:0.1em;background:rgba(184,137,62,0.15);padding:4px 10px;border-radius:4px;border:1px solid rgba(184,137,62,0.3);white-space:nowrap;}
+.block-title{font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;flex:1;}
+.block-body{background:var(--bone-deep);padding:24px;}
+/* SEC */
+.sec{margin:24px 0;}
+.sec-title{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--navy);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--garnet);}
+p{font-size:14px;line-height:1.65;margin-bottom:8px;}
+/* PILLS */
+.hot{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:#FFF3CD;color:#7a5a16;border:1px solid var(--brass);}
+.trap{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--garnet-soft);color:var(--garnet-deep);border:1px solid var(--garnet);}
+.kill{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono';font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:#1B1812;color:#fff;}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;}
+.tbl th{background:var(--navy);color:var(--brass);font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:8px 12px;text-align:left;}
+.tbl td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:rgba(27,24,18,0.03);}
+[data-theme="dark"] .tbl tr:nth-child(even) td{background:rgba(255,255,255,0.03);}
+/* PANELS */
+.panel{border-left:3px solid var(--garnet);padding:12px 16px;background:var(--garnet-soft);border-radius:0 4px 4px 0;margin:10px 0;font-size:13.5px;}
+.panel.g{border-color:var(--green);background:var(--green-soft);}
+.panel.b{border-color:var(--brass);background:var(--brass-soft);}
+.panel-h{font-family:'Fraunces',serif;font-weight:700;font-size:13px;color:var(--garnet-deep);margin-bottom:4px;}
+.panel.g .panel-h{color:var(--green);}
+.panel.b .panel-h{color:#7a5a16;}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.card{background:var(--bone);border:1px solid var(--line);border-radius:4px;padding:12px 14px;}
+.card-h{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;color:var(--navy);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px;}
+.card ul{list-style:none;padding:0;}
+.card ul li{font-size:12.5px;padding:2px 0;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:5px;}
+.card ul li:last-child{border-bottom:none;}
+.card ul li::before{content:"›";color:var(--garnet);font-weight:700;flex-shrink:0;}
+/* DATO */
+.d{display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;background:var(--navy);color:var(--brass);padding:1px 8px;border-radius:3px;}
+.pl{display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;background:var(--garnet-soft);color:var(--garnet-deep);border:1px solid var(--garnet);padding:1px 7px;border-radius:3px;}
+/* DETAILS */
+details{border:1px solid var(--line);border-radius:4px;margin:8px 0;overflow:hidden;}
+summary{padding:10px 16px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.05em;color:var(--navy);background:var(--bone);list-style:none;display:flex;align-items:center;gap:8px;}
+summary::before{content:"▶";font-size:9px;transition:transform var(--tr);}
+details[open] summary::before{transform:rotate(90deg);}
+details[open] summary{background:var(--navy);color:var(--brass);}
+.det-body{padding:14px 16px;background:var(--bone-deep);font-size:13.5px;}
+.det-body ul{list-style:disc;padding-left:18px;}
+.det-body ul li{margin:3px 0;}
+/* QUIZ */
+.quiz-card{background:var(--bone-deep);border:1px solid var(--line);border-radius:4px;padding:20px 24px;margin:16px 0;}
+.quiz-q{font-family:'Fraunces',serif;font-weight:700;font-size:15px;margin-bottom:14px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{border:1px solid var(--line);border-radius:4px;padding:9px 14px;cursor:pointer;font-size:13.5px;background:var(--bone);transition:all var(--tr);text-align:left;color:var(--ink);font-family:'Inter',sans-serif;}
+.quiz-opt:hover{border-color:var(--navy);}
+.quiz-opt.correct{background:var(--green-soft);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong{background:var(--garnet-soft);border-color:var(--garnet);color:var(--garnet-deep);}
+.quiz-exp{display:none;font-size:13px;margin-top:10px;padding:10px 14px;background:var(--brass-soft);border-left:3px solid var(--brass);border-radius:0 4px 4px 0;}
+.quiz-exp.show{display:block;}
+.score-box{text-align:center;margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:none;}
+/* COLORS */
+.leve{color:#2D5043;font-weight:700;}
+.grave{color:#b87333;font-weight:700;}
+.mgrave{color:var(--garnet);font-weight:700;}
+/* badge */
+.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;margin:1px;}
+.b-navy{background:var(--navy);color:var(--brass);}
+.b-red{background:var(--garnet);color:#fff;}
+.b-green{background:var(--green);color:#fff;}
+</style>
+</head>
+<body>
+<div class="pbar" id="pbar"></div>
+
+<nav class="sidebar" id="sb">
+  <div class="sb-dot active" data-label="Portada" onclick="goTo('cover')"></div>
+  <div class="sb-dot" data-label="T9 · FCS" onclick="goTo('t9')"></div>
+  <div class="sb-dot" data-label="T9 · Coordinación" onclick="goTo('t9b')"></div>
+  <div class="sb-dot" data-label="T9 · Consejo Policía" onclick="goTo('t9c')"></div>
+  <div class="sb-dot" data-label="SP · Disposiciones" onclick="goTo('sp1')"></div>
+  <div class="sb-dot" data-label="SP · Personal" onclick="goTo('sp2')"></div>
+  <div class="sb-dot" data-label="SP · Funciones" onclick="goTo('sp3')"></div>
+  <div class="sb-dot" data-label="T14 · DNI/Pasaporte" onclick="goTo('t14')"></div>
+  <div class="sb-dot" data-label="T14 · Actuaciones" onclick="goTo('t14b')"></div>
+  <div class="sb-dot" data-label="T14 · Sanciones" onclick="goTo('t14c')"></div>
+  <div class="sb-dot" data-label="Quiz Final" onclick="goTo('quiz')"></div>
+</nav>
+
+<div class="mode-bar">
+  <button class="mode-btn active" id="btn-e" onclick="setMode('e')">📋 ESTUDIO</button>
+  <button class="mode-btn" id="btn-r" onclick="setMode('r')">⚡ REPASO</button>
+  <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+</div>
+
+<div class="wrap">
+
+<!-- PORTADA -->
+<section id="cover" class="cover">
+  <div class="stamp"><div class="stamp-text">CNP<br>EXP<br>2025</div></div>
+  <p class="eyebrow">Escala Básica · Repaso Express</p>
+  <h1>T9 · Seguridad Privada · T14</h1>
+  <p style="font-size:14px;color:var(--brass);font-family:'JetBrains Mono',monospace;">LO 2/1986 &nbsp;·&nbsp; Ley 5/2014 &nbsp;·&nbsp; LO 4/2015</p>
+  <div class="meta-row">
+    <span class="chip">⏱ ~5 horas</span>
+    <span class="chip">🎯 Solo lo examinable</span>
+    <span class="chip">🔥 Muy preguntado</span>
+    <span class="chip">⚡ Trampas señaladas</span>
+    <span class="chip">💀 Datos eliminatorios</span>
+  </div>
+  <p class="legend"><span class="hot">🔥 Muy preguntado</span>&nbsp;<span class="trap">⚡ Trampa</span>&nbsp;<span class="kill">💀 Eliminatorio</span></p>
+</section>
+
+<!-- ══════════════════ TEMA 9 — PARTE A ══════════════════ -->
+<section id="t9" class="block">
+  <div class="block-head"><span class="block-num">TEMA 09-A</span><h2 class="block-title">LO 2/1986 · FCS · Composición y Funciones</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">⚖️ Art. 104 CE — Base Constitucional <span class="kill">💀</span></h3>
+      <div class="panel b">
+        <div class="panel-h">Art. 104 CE — Saber de memoria</div>
+        Las FCS, bajo dependencia del <strong>Gobierno</strong>, misión: proteger el libre ejercicio de derechos y libertades y garantizar la SC. Una <strong>LO</strong> determinará funciones, principios básicos de actuación y estatutos.
+      </div>
+      <p><strong>Art. 1:</strong> La seguridad pública es competencia <strong>exclusiva del Estado</strong>; mantenimiento corresponde al <strong>Gobierno de la Nación</strong>. CCAA y Corporaciones Locales pueden participar. Se ejerce a través de las FCS de cada administración.</p>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🏛️ Composición de las FCS (art. 2) <span class="hot">🔥</span></h3>
+      <div class="g3">
+        <div class="card">
+          <div class="card-h">FCSE (Gobierno)</div>
+          <ul>
+            <li><strong>CNP</strong> <span class="badge b-red">CIVIL</span> Dep. MI</li>
+            <li><strong>GC</strong> <span class="badge b-navy">MILITAR</span> Dep. MI (funciones) + MD (misiones militares)</li>
+            <li>En guerra/estado de sitio → solo MD</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h">Policías CCAA (cuerpo propio)</div>
+          <ul>
+            <li>Mossos (Cataluña)</li>
+            <li>Ertzaintza (País Vasco)</li>
+            <li>P. Foral Navarra</li>
+            <li>P. Canaria</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h">Policías Locales</div>
+          <ul>
+            <li><span class="badge b-red">CIVIL</span> Estructura jerarquizada</li>
+            <li>Ámbito municipal</li>
+            <li>Uniforme reglamentario</li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h">⚡ TRAMPA: CCAA sin cuerpo propio — Adscripción CNP</div>
+        <strong>Andalucía · Aragón · Galicia · Valencia</strong> → solicitan adscripción de Unidades del CNP (unidades completas, NO miembros individuales). Dependencia funcional de la CA, orgánica del MI.<br>
+        <strong>Asturias · Madrid</strong> → acuerdos de cooperación específicos (ni cuerpo propio ni adscripción).
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Funciones Exclusivas CNP / GC / Comunes (arts. 11-12) <span class="hot">🔥</span></h3>
+      <table class="tbl">
+        <thead><tr><th>CNP (capitales y urb.)</th><th>GC (resto + mar territorial)</th><th>Indistintas</th></tr></thead>
+        <tbody>
+          <tr><td>Expedición <strong>DNI y Pasaporte</strong></td><td>Armas y explosivos</td><td rowspan="6" style="vertical-align:middle;">Las que atribuya la legislación vigente</td></tr>
+          <tr><td>Control entrada/salida territorio (españoles y extranjeros)</td><td>Resguardo fiscal / contrabando</td></tr>
+          <tr><td>Extranjería, refugio, asilo, extradición, expulsión</td><td>Tráfico interurbano</td></tr>
+          <tr><td>Vigilancia e inspección del <strong>juego</strong></td><td>Custodia vías, costas, fronteras, puertos, aeropuertos</td></tr>
+          <tr><td>Investigación y persecución de <strong>drogas</strong></td><td>Naturaleza, medio ambiente, recursos hidráulicos</td></tr>
+          <tr><td><strong>Control entidades SP</strong> (vigilancia, investigación privada)</td><td>Conducción interurbana de presos y detenidos</td></tr>
+        </tbody>
+      </table>
+      <div class="panel">
+        <div class="panel-h">⚡ Trampa: Actuaciones fuera del ámbito territorial</div>
+        Por mandato judicial o MF, o situaciones excepcionales. Deben informar al Delegado/Subdelegado de Gobierno. Conflicto positivo/negativo: continúa quien <strong>intervino primero</strong>, hasta que decide el Del./Subdel. de Gob.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📌 Principios Básicos de Actuación (art. 5) <span class="hot">🔥</span></h3>
+      <div class="g2">
+        <details><summary>Adecuación al Ordenamiento Jurídico</summary><div class="det-body">Respeto absoluto a CE y OJ. Conducta neutral, imparcial, sin discriminación. Integridad y dignidad. Principios de jerarquía y subordinación. <strong>NO obedecerán órdenes manifiestamente ilegales.</strong> Colaboración con la Administración de Justicia.</div></details>
+        <details><summary>Relaciones con la Comunidad</summary><div class="det-body">Evitar abuso, arbitrariedad o discriminación. Trato correcto y esmerado. Informar con claridad sobre causas y finalidades. Actuar con decisión y sin demora (congruencia, oportunidad, proporcionalidad). Uso de armas solo con riesgo racionalmente grave para vida propia, de terceros o SC.</div></details>
+        <details><summary>Tratamiento de Detenidos</summary><div class="det-body">Identificarse como miembros de FCS al detener. Proteger vida e integridad. Respetar honor y dignidad. Cumplir diligentemente plazos y requisitos.</div></details>
+        <details><summary>Dedicación Profesional</summary><div class="det-body">Total dedicación. <strong>Intervenir siempre que sea necesario estén o no de servicio.</strong></div></details>
+        <details><summary>Secreto Profesional</summary><div class="det-body">Guardar riguroso secreto. <strong>NO obligados a revelar fuentes</strong> salvo que la ley o sus funciones lo exijan expresamente.</div></details>
+        <details><summary>Responsabilidad</summary><div class="det-body">Responden personal y directamente por actos que contravengan normas. Compatible con responsabilidad patrimonial de la AP.</div></details>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🔗 Cadena de Mando <span class="kill">💀</span></h3>
+      <table class="tbl">
+        <thead><tr><th>Mando</th><th>Órgano</th><th>Base normativa</th></tr></thead>
+        <tbody>
+          <tr><td>Mando Superior FCSE</td><td><strong>Ministro del Interior</strong></td><td>LO 2/1986</td></tr>
+          <tr><td>Mando ejercido</td><td><strong>SES</strong> (Secretario de Estado de Seguridad)</td><td>LO 2/1986</td></tr>
+          <tr><td>Mando directo FCSE (provincia)</td><td><strong>Delegado/Subdelegado del Gobierno</strong></td><td>LO 2/1986</td></tr>
+          <tr><td>Mando directo PN</td><td><strong>DGP</strong> (bajo autoridad SES)</td><td>LO 9/2015</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--brass);">Jerarquía interna (LO 9/2015): Dirección→E.Superior · Mando→E.Ejecutiva · Supervisión→Subinspección · Ejecución→E.Básica</p>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">👮 Policías CCAA — Competencias (art. 38)</h3>
+      <div class="g3">
+        <div class="card"><div class="card-h">Propias</div><ul><li>Cumplir disposiciones/órdenes de órganos CA</li><li>Vigilar/proteger personas, órganos y edificios CA</li><li>Inspección actividades CA</li><li>Coacción para ejecución forzosa</li></ul></div>
+        <div class="card"><div class="card-h">Colaboración FCSE</div><ul><li>Cumplir leyes y disposiciones Estado</li><li>Vigilar espacios públicos, manifestaciones, grandes concentraciones (prioritaria)</li><li>Garantizar servicios públicos esenciales</li><li>PJ (participación)</li></ul></div>
+        <div class="card"><div class="card-h">Simultáneas e indiferenciadas</div><ul><li>Conservación naturaleza, MA, recursos hidráulicos</li><li>Auxilio accidentes/catástrofes (protección civil)</li><li>Cooperar resolución amistosa conflictos privados</li></ul></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">👮‍♂️ Policías Locales — Funciones (arts. 51-54)</h3>
+      <div class="g2">
+        <div class="card"><div class="card-h">Funciones PL</div><ul>
+          <li>Protección autoridades y edificios municipales</li>
+          <li>Regular tráfico urbano e instruir atestados (accidentes)</li>
+          <li>Policía administrativa (ordenanzas y bandos)</li>
+          <li>Participación en Policía Judicial</li>
+          <li>Auxilio en catástrofes / protección civil</li>
+          <li>Diligencias de prevención del delito</li>
+          <li>Vigilancia espacios públicos y cooperación</li>
+          <li>Intervención en conflictos privados si son requeridos</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Actuación fuera del municipio</div><ul>
+          <li>Solo en emergencias (requerimiento autoridades competentes)</li>
+          <li>O protección de autoridades con autorización MI / análogo CA</li>
+          <li>Actuaciones tráfico y prevención: comunicar a FCSE</li>
+        </ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ TEMA 9 — PARTE B: ÓRGANOS COORDINACIÓN ══════════════════ -->
+<section id="t9b" class="block">
+  <div class="block-head"><span class="block-num">TEMA 09-B</span><h2 class="block-title">LO 2/1986 · Órganos de Coordinación</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">🏛️ Órganos de Coordinación por Niveles <span class="hot">🔥</span></h3>
+      <table class="tbl">
+        <thead><tr><th>Nivel</th><th>Órgano</th><th>Composición clave</th><th>Carácter</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Central</strong></td>
+            <td>Consejo de Política de Seguridad (CPS)</td>
+            <td>Pte: <strong>Ministro Interior</strong> + Consejeros Interior CCAA + nº igual reprs. Estado (designados por Gob.).<br>Asisten habitualmente: DGP, DGGC. Invitado: Pdte. FEMP.</td>
+            <td>Obligatorio</td>
+          </tr>
+          <tr>
+            <td><strong>Central</strong></td>
+            <td>Comité de Expertos</td>
+            <td><span class="d">8</span> reprs.: 4 del Estado + 4 de CCAA (elegidos anualmente por el CPS)</td>
+            <td>Asesor</td>
+          </tr>
+          <tr>
+            <td><strong>Autonómico</strong></td>
+            <td>Juntas de Seguridad</td>
+            <td>Nº igual reprs. Estado y CCAA. <strong>Solo donde hay cuerpo propio.</strong></td>
+            <td>Potestativo</td>
+          </tr>
+          <tr>
+            <td><strong>Local</strong></td>
+            <td>Junta Local de Seguridad (JLS)</td>
+            <td>Pte: Alcalde (o copresidente con Sub/Delegado Gob.)<br>Vocales AGE: Jefe FCSE + 1 repr. Sub/Delegación<br>Vocales CA: 1 repr.<br>Vocales Local: 3 reprs.<br>Secretario (voz sin voto): alterno 1 año entre Ayto. y AGE</td>
+            <td>Potestativo</td>
+          </tr>
+          <tr>
+            <td><strong>Distrito</strong></td>
+            <td>Junta de Seguridad de Distrito</td>
+            <td>Pte: <strong>Concejal de la Junta Municipal de Distrito</strong><br>Vocales: Jefes Unidades Policiales con competencia territorial<br>Secretario: 1 funcionario Junta Municipal</td>
+            <td>Potestativo</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="panel">
+        <div class="panel-h">⚡ Trampa: JLS — Reuniones y quórum</div>
+        Quórum: Presidente + secretario + ½ de sus miembros.<br>
+        Ordinaria: al menos <span class="pl">1 por semestre</span>. Extraordinaria: por necesidades.
+      </div>
+      <div class="panel b">
+        <div class="panel-h">Otros órganos de la JLS</div>
+        Comisión Técnica (asesoramiento) · Comisión de Coordinación Policial (jefes FCS, operativa) · Consejo Local de Seguridad (participación ciudadana) · Comisión Local de Seguridad (municipios sin PL).
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">⚖️ Derechos Individuales PN (art. 7 LO 9/2015)</h3>
+      <div class="card"><div class="card-h">Listado principal</div><ul>
+        <li>Respeto intimidad, orientación sexual e imagen</li>
+        <li>Adscripción por mérito, capacidad y antigüedad</li>
+        <li>Dignidad en el trabajo · Libertad de expresión</li>
+        <li>Inamovilidad del funcionario</li>
+        <li>Defensa y asistencia jurídica</li>
+        <li>Progresión carrera y promoción interna (igualdad, mérito, cap., antigüedad)</li>
+        <li>Formación profesional permanente y especialización</li>
+        <li>Retribuciones e indemnizaciones</li>
+        <li>No discriminación · Vacaciones · Asistencia sanitaria · Jubilación</li>
+        <li>Medidas de conciliación vida personal, familiar y laboral</li>
+      </ul></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ TEMA 9 — PARTE C: CONSEJO DE POLICÍA Y SINDICATOS ══════════════════ -->
+<section id="t9c" class="block">
+  <div class="block-head"><span class="block-num">TEMA 09-C</span><h2 class="block-title">LO 9/2015 · Consejo de Policía · Derechos Sindicales</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">🗳️ Consejo de Policía <span class="kill">💀</span></h3>
+      <div class="panel b">
+        <div class="panel-h">Composición — Memorizar exacto</div>
+        Presidente: <strong>Ministro del Interior</strong> o persona en quien delegue.<br>
+        <span class="d">14</span> representantes de la Administración (elegidos por MI) + <span class="d">14</span> representantes de la Policía Nacional. Total: composición paritaria.
+      </div>
+      <div class="panel">
+        <div class="panel-h">⚡ Trampa: Pleno válidamente constituido SIN cumplir convocatoria</div>
+        Si están reunidos <strong>todos sus miembros</strong> y lo acuerdan por <strong>unanimidad</strong>.
+      </div>
+      <div class="g2">
+        <div class="card"><div class="card-h">Elecciones — Plazos críticos <span class="kill">💀</span></div><ul>
+          <li>Por escalas: 1 repr./6.000 funcionarios o fracción</li>
+          <li>1-E.Superior · 2-E.Ejecutiva · 1-Subinspección · 10-E.Básica</li>
+          <li>+ <span class="d">14</span> suplentes</li>
+          <li>Convocar: entre <span class="pl">55-70 días</span> antes de fin mandato</li>
+          <li>Anticipada: 2 meses previos si lo solicitan Adm. o sindicatos</li>
+          <li>Fecha votación: <span class="pl">45-70 días</span> después de convocatoria</li>
+          <li>Campaña: <span class="pl">mín. 15 días · máx. 21</span></li>
+          <li>Sufragio personal, libre, directo y secreto</li>
+          <li>Mesa Electoral Única: radicada en <strong>Madrid</strong></li>
+          <li>Mesa constituida el <span class="pl">día 14</span> tras convocatoria</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Mandato y elegibilidad</div><ul>
+          <li>Mandato: <span class="d">4 años</span> (reelegibles)</li>
+          <li>Constitución: dentro de <span class="pl">15 días</span> tras resultados definitivos</li>
+          <li>Electores/elegibles: servicio activo, 2ª actividad, suspensión no firme</li>
+          <li>Vacante: cubierta automáticamente por siguiente en lista</li>
+          <li>Pérdida: fin mandato, renuncia, cambio escala, pérdida condición funcionario</li>
+        </ul></div>
+      </div>
+      <div class="sec">
+        <h3 class="sec-title" style="font-size:13px;border-bottom-color:var(--brass);">Funciones del Consejo de Policía</h3>
+        <div class="card"><ul>
+          <li>Mediación y conciliación en conflictos colectivos</li>
+          <li>Emitir informes en expedientes disciplinarios por faltas muy graves y contra representantes de sindicatos</li>
+          <li>Estudio del personal que pasa a 2ª actividad/jubilación por lesiones en acto de servicio</li>
+          <li>Propuestas sobre derechos sindicales y de participación</li>
+          <li>Criterios generales de planes y fondos de formación, promoción interna y perfeccionamiento</li>
+          <li>Participación en criterios de acción social y condiciones de prestación del servicio</li>
+          <li>Mociones y consultas sobre el estatuto profesional</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">⚖️ Derechos Sindicales PN (art. 8 LO 9/2015) <span class="kill">💀</span></h3>
+      <div class="panel">
+        <div class="panel-h">💀 DATO ELIMINATORIO — Prohibición de huelga</div>
+        Los PN <strong>NO podrán ejercer el derecho de huelga</strong> ni acciones sustitutivas del mismo, ni actuaciones concertadas con el fin de alterar el normal funcionamiento de los servicios.
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Aspecto</th><th>Regla</th></tr></thead>
+        <tbody>
+          <tr><td>Sindicatos permitidos</td><td>Solo de <strong>ámbito nacional</strong>, formados <strong>exclusivamente</strong> por PN</td></tr>
+          <tr><td>Federación</td><td>Solo con organizaciones integradas exclusivamente por PN. Sí pueden estar en internacionales del mismo carácter.</td></tr>
+          <tr><td>Constitución del sindicato</td><td>Depósito estatutos y acta fundacional en <strong>registro especial DGP</strong></td></tr>
+          <tr><td>Rechazo de estatutos</td><td>Si defectos no subsanados en <span class="d">10 días</span> desde requerimiento</td></tr>
+          <tr><td>Sindicato representativo</td><td>≥ 1 representante en Consejo O ≥ 10% votos en <strong>2 escalas</strong></td></tr>
+          <tr><td>1 repr. sin representatividad general</td><td>Con ≥ 10% votos en <strong>una sola</strong> escala</td></tr>
+          <tr><td>Local para actividad sindical</td><td>Unidades con más de <span class="d">250</span> funcionarios</td></tr>
+          <tr><td>Reuniones sindicales</td><td>Solicitar con mín. <span class="d">72h</span> antelación; resolución <span class="d">24h</span> antes</td></tr>
+          <tr><td>Negociación colectiva</td><td>A través de organizaciones sindicales en el Consejo o mesa</td></tr>
+        </tbody>
+      </table>
+      <div class="panel">
+        <div class="panel-h">Estatutos del sindicato deben incluir al menos:</div>
+        Denominación · fines · domicilio · órganos internos · provisión electiva de cargos · afiliación · modificación de estatutos · régimen económico.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ SEGURIDAD PRIVADA — PARTE A ══════════════════ -->
+<section id="sp1" class="block">
+  <div class="block-head"><span class="block-num">SP · LEY 5/2014</span><h2 class="block-title">Seguridad Privada · Disposiciones Generales y Competencias</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">📜 Naturaleza, Fines y Prohibiciones Absolutas <span class="kill">💀</span></h3>
+      <div class="panel b">
+        <div class="panel-h">Carácter esencial de la SP</div>
+        Las actividades de SP son <strong>complementarias y subordinadas</strong> respecto de la seguridad pública. Constituyen un recurso externo del monopolio estatal de seguridad.
+      </div>
+      <div class="g2">
+        <div class="card"><div class="card-h">Fines (art. 4)</div><ul>
+          <li>Satisfacer necesidades legítimas de seguridad o información</li>
+          <li>Contribuir a garantizar la seguridad pública y prevenir infracciones</li>
+          <li>Complementar el monopolio de seguridad del Estado</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Prohibiciones absolutas (art. 10)</div><ul>
+          <li>Prestar SP sin autorización o declaración responsable</li>
+          <li>Ejercer funciones SP sin habilitación/acreditación</li>
+          <li>Detectives NO pueden investigar delitos de oficio → denuncia inmediata</li>
+          <li>Empresas SP NO pueden hacer investigación privada</li>
+          <li>Despachos NO pueden prestar servicios de vigilancia</li>
+        </ul></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h">⚡ Prohibiciones de conducta (art. 8)</div>
+        NO pueden intervenir ni interferir en reuniones, manifestaciones ni conflictos políticos o laborales.<br>
+        NO pueden controlar opiniones políticas, sindicales o religiosas.<br>
+        NO pueden comunicar información a terceros (salvo autoridades judiciales y policiales).
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🏢 Competencias AGE vs CCAA (arts. 12-13) <span class="hot">🔥</span></h3>
+      <table class="tbl">
+        <thead><tr><th>AGE (MI / DGP / DGGC)</th><th>CCAA (con competencia + cuerpo propio)</th></tr></thead>
+        <tbody>
+          <tr><td>Autorización empresas SP con ámbito > 1 CCAA</td><td>Autorización empresas SP con domicilio y ámbito limitado a su territorio</td></tr>
+          <tr><td>Habilitación e inhabilitación personal SP → <strong>DGP</strong> (salvo guardas rurales → <strong>DGGC</strong>)</td><td>Declaración responsable de centros de formación con sede en CCAA</td></tr>
+          <tr><td>Declaración responsable despachos detectives y sucursales (cuando no sea de CCAA)</td><td>Inspección y sanción de actividades en la CCAA</td></tr>
+          <tr><td>Coordinación SP con FCSE</td><td>Coordinación SP con policía autonómica y local</td></tr>
+          <tr><td>Homologación medios, sistemas, características técnicas</td><td>Autorizar servicios de SP que se realicen en la CA</td></tr>
+          <tr><td>Acreditación ingenieros, técnicos y operadores de seguridad</td><td>Despachos y sucursales cuando tengan domicilio en CCAA y ámbito limitado</td></tr>
+        </tbody>
+      </table>
+      <div class="panel">
+        <div class="panel-h">⚡ Trampa: DGP vs DGGC en habilitaciones</div>
+        DGP habilita a <strong>todos</strong> los profesionales SP, EXCEPTO Guardas Rurales y sus especialidades (Guarda de Caza y Guardapesca Marítimo) → los habilita la <strong>DGGC</strong>.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🤝 Comisiones Mixtas de SP (art. 16) <span class="hot">🔥</span></h3>
+      <table class="tbl">
+        <thead><tr><th></th><th>Comisión Nacional SP</th><th>Comisión Provincial SP</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Adscrita a</strong></td><td>SES (Secretaría de Estado de Seguridad)</td><td>Delegaciones y Subdelegaciones del Gobierno</td></tr>
+          <tr><td><strong>Presidencia</strong></td><td><strong>DGP y DGGC</strong> (copresidencia)</td><td>Delegado (CCAA uniprovinciales) / Subdelegado (resto)</td></tr>
+          <tr><td><strong>Secretario</strong></td><td>Jefe Sección Unidad Orgánica Central SP del CNP. Con voz y voto.</td><td>Jefe Unidad Provincial SP del CNP. Con voz y voto.</td></tr>
+          <tr><td><strong>Carácter</strong></td><td colspan="2">Consultivo y de colaboración. <strong>Reuniones anuales.</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Plan Red Azul — SEGURPRI <span class="hot">🔥</span></h3>
+      <div class="panel g">
+        <div class="panel-h">Grupos SEGURPRI = Canal de transmisión entre CNP y SP</div>
+        Plan Integral de Colaboración PN + SP. Principios rectores: <strong>Legalidad, Seguridad y Relación.</strong>
+      </div>
+      <div class="g4">
+        <div class="card" style="text-align:center;"><div style="font-size:22px">🗂️</div><div class="card-h">GESTIONA</div></div>
+        <div class="card" style="text-align:center;"><div style="font-size:22px">🔧</div><div class="card-h">OPERA</div></div>
+        <div class="card" style="text-align:center;"><div style="font-size:22px">📡</div><div class="card-h">INFORMA</div></div>
+        <div class="card" style="text-align:center;"><div style="font-size:22px">👁️</div><div class="card-h">VIGILA</div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Registro Nacional SP y Autorización <span class="hot">🔥</span></h3>
+      <div class="panel b">
+        <div class="panel-h">Inscripción de OFICIO — automática</div>
+        Empresas SP · Personal SP · Despachos detectives · Centros de formación · Centrales receptoras de alarma de uso propio.<br>
+        Validez de la autorización: <span class="kill">💀 INDEFINIDA</span>. Validez declaración responsable (instalación/mantenimiento sistemas): INDEFINIDA.
+      </div>
+      <div class="g2">
+        <div class="card"><div class="card-h">No se puede inscribir</div><ul>
+          <li>Empresa cuya denominación coincida con otra ya inscrita</li>
+          <li>Que induzca a error con órganos de la AP</li>
+          <li>Que coincida con marca registrada (salvo consentimiento del titular)</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Contratación (art. 9)</div><ul>
+          <li>Siempre por escrito</li>
+          <li>Comunicar celebración al MI o CA con antelación al inicio</li>
+          <li>Investigación privada: solo datos para identificar partes (sin datos personales)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">⚡ Medidas Provisionales (art. 55) <span class="kill">💀</span></h3>
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-h">Quién las acuerda</div>
+          Miembros de las FCS. Inmediatamente dan cuenta a la autoridad competente.<br>
+          Tipos: <strong>ocupación, suspensión, cese, desconexión y retirada.</strong>
+        </div>
+        <div class="panel b">
+          <div class="panel-h">Plazos <span class="kill">💀</span></div>
+          Ratificadas, modificadas o revocadas en máx. <span class="d">15 días</span>.<br>
+          Sin efecto si no se incoa procedimiento en ese plazo.<br>
+          Duración máxima: <span class="d">6 meses</span>. Deben notificarse a los interesados.
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🕵️ Control e Inspección (arts. 53-54)</h3>
+      <p>Inspecciones anuales planificadas sobre empresas, despachos, personal, servicios, establecimientos y centros de formación. Realizadas por: <strong>CNP</strong> (general); <strong>GC</strong> (guardas rurales, centros formación relacionados); <strong>policía autonómica</strong> (en su CA). Al finalizar inspección: se extiende acta y, si hay infracción, se da cuenta a autoridad competente.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ SEGURIDAD PRIVADA — PARTE B: PERSONAL ══════════════════ -->
+<section id="sp2" class="block">
+  <div class="block-head"><span class="block-num">SP · PERSONAL</span><h2 class="block-title">Personal SP · TIP · Requisitos · Habilitación</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">👤 Personal de Seguridad Privada — Habilitación (art. 27) <span class="kill">💀</span></h3>
+      <div class="panel b">
+        <div class="panel-h">TIP — Tarjeta de Identidad Profesional</div>
+        Validez: <span class="d">10 años</span>. Documento público de acreditación. Expedida por el MI. Se porta durante el servicio.
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Personal SP</th><th>Prerequisito para habilitarse</th><th>Quién habilita</th><th>Formación previa</th></tr></thead>
+        <tbody>
+          <tr><td>Vigilante de Seguridad</td><td>—</td><td>DGP</td><td>Certificado profesionalidad / FP</td></tr>
+          <tr><td>Vigilante de Explosivos <span class="kill">💀</span></td><td><strong>Previa: Vigilante de Seguridad</strong></td><td>DGP</td><td>Certificado profesionalidad / FP</td></tr>
+          <tr><td>Escolta Privado</td><td>—</td><td>DGP</td><td>Certificado profesionalidad / FP</td></tr>
+          <tr><td>Guarda Rural</td><td>—</td><td>DGGC</td><td>Certificado profesionalidad / FP</td></tr>
+          <tr><td>Guarda de Caza <span class="kill">💀</span></td><td><strong>Previa: Guarda Rural</strong></td><td>DGGC</td><td>Certificado profesionalidad / FP</td></tr>
+          <tr><td>Guardapesca Marítimo <span class="kill">💀</span></td><td><strong>Previa: Guarda Rural</strong></td><td>DGGC</td><td>Certificado profesionalidad / FP</td></tr>
+          <tr><td>Jefe de Seguridad</td><td>—</td><td>DGP</td><td>Título grado o curso MIR</td></tr>
+          <tr><td>Director de Seguridad</td><td>—</td><td>DGP</td><td>Título grado o curso MIR</td></tr>
+          <tr><td>Detective Privado</td><td>—</td><td>DGP</td><td>Título grado o curso MIR (investigación privada)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Requisitos del Personal SP (art. 28)</h3>
+      <div class="card"><div class="card-h">Requisitos habilitación personal</div><ul>
+        <li>Mayor de edad</li>
+        <li>Nacionalidad UE/EEE o Estado con convenio con España</li>
+        <li>Capacidad física y aptitud psicológica necesaria</li>
+        <li>Formación previa (según categoría)</li>
+        <li>Carecer de antecedentes penales por delito doloso</li>
+        <li>No sancionado en los 2 años (infracción grave) o 4 años (muy grave) anteriores en materia SP</li>
+        <li>No separado del servicio en FCS o FFAA en los 2 años anteriores</li>
+        <li>Superar pruebas de comprobación del MI</li>
+      </ul></div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🏢 Requisitos Representantes Legales de Empresas SP (art. 22)</h3>
+      <div class="card"><ul>
+        <li>Persona física residente en UE o EEE</li>
+        <li>Carecer de antecedentes penales por delito doloso</li>
+        <li>No sancionado en 2 años (grave) o 4 años (muy grave) anteriores en materia SP</li>
+        <li>No haber sido administrador en empresa condenada por insolvencia, HP, SS, derechos trabajadores, intromisión DDFF en los <strong>10 años</strong> anteriores</li>
+        <li>No separado del servicio en FCS o FFAA de España o de su país en los 2 años anteriores</li>
+      </ul></div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🏗️ Tipos de Medidas de Seguridad (art. 52) <span class="hot">🔥</span></h3>
+      <div class="g3">
+        <div class="card"><div class="card-h">🧱 Física</div><ul><li>Barreras físicas que impidan o dificulten el acceso a lugares o bienes</li></ul></div>
+        <div class="card"><div class="card-h">📡 Electrónica</div><ul><li>Detectar/advertir amenazas, presencia o intento de asalto mediante dispositivos electrónicos</li></ul></div>
+        <div class="card"><div class="card-h">💻 Informática</div><ul><li>Confidencialidad, integridad y disponibilidad de sistemas de información</li></ul></div>
+        <div class="card"><div class="card-h">📋 Organizativa</div><ul><li>Disposición, programación o planificación de cometidos formalizados por personas</li></ul></div>
+        <div class="card"><div class="card-h">👤 Personal</div><ul><li>Servicios de seguridad regulados en esta ley distintos de los anteriores</li></ul></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🏦 Establecimientos obligados a adoptar medidas de SP (art. 51)</h3>
+      <div class="card"><ul>
+        <li>Entidades de crédito (bancos, cajas, cooperativas de crédito) y su transporte</li>
+        <li>Joyerías, platerías, galerías de arte y tiendas de antigüedades</li>
+        <li>Gasolineras, farmacias, lotería, apuestas, mutuas y locales de juego</li>
+        <li>Centrales receptoras de alarmas</li>
+        <li>Fábricas de explosivos, armas o sustancias peligrosas</li>
+        <li>Eventos o espectáculos públicos de gran afluencia (según valoración de riesgos)</li>
+      </ul></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ SEGURIDAD PRIVADA — PARTE C: FUNCIONES ══════════════════ -->
+<section id="sp3" class="block">
+  <div class="block-head"><span class="block-num">SP · FUNCIONES</span><h2 class="block-title">Funciones por Figura · Armas · Detectives</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">🔧 Funciones por Figura SP <span class="hot">🔥</span></h3>
+      <div class="g2">
+        <div class="card"><div class="card-h">Vigilante de Seguridad (art. 32)</div><ul>
+          <li>Vigilar y proteger bienes, establecimientos, lugares, eventos y personas en los mismos</li>
+          <li>Controles de identidad, objetos, vehículos (incluido interior) en accesos</li>
+          <li><strong>NO pueden retener documentación personal</strong> (sí impedir acceso)</li>
+          <li>Negativa a exhibir → puede impedir acceso u ordenar abandono del inmueble</li>
+          <li>Evitar actos delictivos e infracciones administrativas</li>
+          <li>Detener y poner inmediatamente a disposición FCS (<strong>NO pueden interrogar</strong>)</li>
+          <li>Verificación personal y respuesta de señales de alarma</li>
+          <li>Solo funciones de seguridad — NO pueden simultanear otras</li>
+          <li>Normalmente en interior de inmuebles (salvo excpciones)</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Escolta Privado (art. 33)</div><ul>
+          <li>Acompañamiento, defensa y protección de personas determinadas o grupos</li>
+          <li>Se aplica lo de art. 32 (vigilantes) <strong>excepto uniformidad</strong></li>
+          <li><strong>NO pueden</strong> realizar identificaciones ni detenciones</li>
+          <li>Excepción: agresión o intento manifiesto de agresión a protegidos → sí pueden detener</li>
+          <li>Al detener: poner <strong>inmediatamente</strong> a disposición FCS</li>
+          <li><strong>NO pueden interrogar</strong> al detenido</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Detective Privado (art. 37)</div><ul>
+          <li>Averiguaciones sobre personas, hechos y conductas privadas</li>
+          <li>Solo delitos perseguibles a <strong>instancia de parte</strong></li>
+          <li><strong>NO puede investigar delitos de oficio</strong> → denuncia inmediata + entrega de info</li>
+          <li>Confeccionar informes de investigación y ratificarlos ante autoridades</li>
+          <li>Colaborar con FCS cuando sus actividades afecten a SC</li>
+          <li><strong>NO compatible</strong> con funciones del resto del personal SP</li>
+          <li>NO puede investigar vida íntima en domicilios</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Jefe de Seguridad (art. 35) — obligatorio en empresas</div><ul>
+          <li>Análisis de riesgo y planificación de actuaciones</li>
+          <li>Organización, dirección e inspección del personal y servicios</li>
+          <li>Propuesta de sistemas de seguridad</li>
+          <li>Control formación permanente del personal</li>
+          <li>Coordinación con protección civil en emergencias</li>
+          <li>Garantía de colaboración con FCS</li>
+          <li>Supervisión de normativa SP aplicable</li>
+          <li>Custodia y traslado de armas de la empresa</li>
+        </ul></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h">⚡ Guardas Rurales — Excepción fundamental</div>
+        Los Guardas Rurales <strong>PUEDEN prestar servicios SIN constituir ni integrarse en empresa de seguridad</strong>, directamente a los titulares de bienes y derechos. El resto del personal armado DEBE estar en empresa.
+      </div>
+      <div class="panel b">
+        <div class="panel-h">Director de Seguridad (art. 36) — frente a la seguridad integral</div>
+        Obligatorio cuando lo exija la ley, por dimensión del servicio, por decisión gubernativa o por disposición especial. Puede compatibilizar con funciones de Jefe de Seguridad en las empresas SP.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🔫 Servicios con Armas de Fuego (art. 40) <span class="hot">🔥</span></h3>
+      <div class="card"><div class="card-h">Supuestos — obligatorios o permitidos</div><ul>
+        <li>Almacenamiento, recuento, clasificación y transporte de <strong>dinero, valores</strong> y objetos valiosos</li>
+        <li>Fábricas, depósitos o transporte de <strong>armas, cartuchería metálica y explosivos</strong></li>
+        <li>Buques bajo bandera española en aguas con <strong>grave riesgo</strong> para personas o bienes</li>
+        <li>Perimetral en <strong>centros penitenciarios, CIE, establecimientos militares e infraestructuras críticas</strong></li>
+      </ul></div>
+      <p style="font-size:12.5px;margin-top:8px;">Solo portar el arma estando <strong>de servicio.</strong> Puede acceder con ella al lugar del servicio salvo que legalmente se establezca lo contrario.</p>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📊 Informes de Detectives y Reserva <span class="hot">🔥</span></h3>
+      <div class="g2">
+        <div class="panel b">
+          <div class="panel-h">Informe de investigación (art. 49)</div>
+          <strong>Un único informe</strong> por servicio contratado. Contiene: nº registro, datos contratante, objeto, medios, resultados, detectives intervinientes y actuaciones. Solo incluye info relacionada con el objeto de la investigación. Debe conservarse archivado al menos <span class="d">3 años</span>.
+        </div>
+        <div class="panel">
+          <div class="panel-h">Deber de reserva y grabaciones (art. 50)</div>
+          Rigurosa reserva. Solo informar al cliente y a órganos judiciales/policiales (previa petición formal). Imágenes y sonidos grabados: destruir tras <span class="d">3 años</span>, salvo vinculados a procesos judiciales, investigaciones policiales o sanciones.
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Protección jurídica y Principios actuación (arts. 30-31)</h3>
+      <div class="panel g">
+        <div class="panel-h">Agente de la autoridad (art. 31)</div>
+        Se considerarán agresiones y desobediencias a agentes de la autoridad las cometidas contra el personal de SP, <strong>debidamente identificado</strong>, cuando desarrolle actividades de SP <strong>en cooperación y bajo el mando de las FCS.</strong>
+      </div>
+      <div class="panel b">
+        <div class="panel-h">Principios de actuación personal SP (art. 30)</div>
+        Legalidad · Integridad y dignidad · Corrección en el trato · Congruencia · Proporcionalidad · Reserva profesional · Colaboración con FCS.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ TEMA 14 — PARTE A: DNI, PASAPORTE E IDENTIFICACIÓN ══════════════════ -->
+<section id="t14" class="block">
+  <div class="block-head"><span class="block-num">TEMA 14-A</span><h2 class="block-title">LO 4/2015 · DNI · Pasaporte · Identificación</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">📄 DNI — Datos Esenciales <span class="kill">💀</span></h3>
+      <div class="g2">
+        <div class="panel b">
+          <div class="panel-h">DNI — Artículo 8 LO 4/2015</div>
+          Documento <strong>público y oficial.</strong> Único documento con <strong>suficiente valor por sí solo</strong> para la acreditación de identidad y datos personales.<br>
+          <strong>Obligatorio desde los <span class="d">14 años.</span></strong> Personal e intransferible.<br>
+          No puede ser privado (ni temporalmente) — excepto si ha de ser sustituido.<br>
+          <strong>Competencia:</strong> MIR → DGP (también custodia archivos y ficheros).
+        </div>
+        <div class="card"><div class="card-h">En el DNI NO puede constar <span class="kill">💀</span></div><ul>
+          <li>Raza o etnia</li>
+          <li>Religión o creencias</li>
+          <li>Opinión o ideología</li>
+          <li>Discapacidad</li>
+          <li>Orientación o identidad sexual</li>
+          <li>Afiliación política o sindical</li>
+        </ul></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h">⚡ Trampa: Sustracción/Extravío DNI vs Pasaporte</div>
+        <strong>DNI:</strong> comunicar <strong>"tan pronto como sea posible"</strong> a la comisaría o puesto FCS más próximo.<br>
+        <strong>Pasaporte:</strong> comunicar de manera <strong>INMEDIATA</strong> a las FCS o, en el extranjero, a la <strong>Representación Diplomática o Consular</strong> de España.
+      </div>
+      <div class="panel b">
+        <div class="panel-h">DNI electrónico</div>
+        Habilita a mayores de edad con plena capacidad y menores emancipados para <strong>identificación y firma electrónica.</strong> También a personas con capacidad judicialmente modificada si lo solicitan y no requieren apoyo o representación.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🛂 Pasaporte (art. 11) <span class="hot">🔥</span></h3>
+      <div class="panel b">
+        <div class="panel-h">Características</div>
+        Documento <strong>público, personal, individual e intransferible.</strong> Acredita identidad y nacionalidad fuera de España (y dentro para españoles no residentes).<br>
+        <strong>Expedición:</strong> DGP (territorio nacional) / Representaciones Diplomáticas y Consulares (extranjero).<br>
+        <strong>Desarrollo reglamentario:</strong> propuesta MI + Ministro Asuntos Exteriores → aprueba el <strong>Gobierno</strong>.
+      </div>
+      <div class="card"><div class="card-h">Excepciones: NO se expide pasaporte</div><ul>
+        <li>Condenado a pena privativa de libertad no extinguida (salvo autorización judicial)</li>
+        <li>Orden judicial de retirada del pasaporte</li>
+        <li>Libertad vigilada con prohibición de abandonar el territorio (salvo autorización judicial)</li>
+        <li>Menor o persona con capacidad modificada: orden judicial de prohibición de salida de España</li>
+        <li>Menores bajo patria potestad o tutela: necesario <strong>consentimiento expreso</strong> del representante</li>
+      </ul></div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🪪 Identificación de Extranjeros (art. 13)</h3>
+      <p>Los extranjeros en España tienen el <strong>derecho y la obligación</strong> de conservar y portar consigo: documento de identidad del país de origen + documentación que acredite su <strong>situación regular</strong> en España. <strong>NO pueden ser privados</strong> de su documentación de origen, excepto en investigaciones judiciales de carácter penal.</p>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🪪 Identificación de Personas (art. 16) <span class="kill">💀</span></h3>
+      <div class="panel">
+        <div class="panel-h">Supuestos para requerir identificación</div>
+        1. Indicios de que han podido <strong>participar</strong> en la comisión de una infracción.<br>
+        2. Razonablemente necesario para <strong>prevenir</strong> la comisión de un delito.
+      </div>
+      <div class="panel b">
+        <div class="panel-h">💀 Máximo 6 horas en dependencias policiales</div>
+        Si no es posible identificar in situ o el interesado se niega → acompañar a dependencias policiales más próximas, por tiempo estrictamente necesario → <span class="d">máx. 6 horas.</span> Solo a efectos de identificación. No es detención.
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Aspecto</th><th>Regla</th></tr></thead>
+        <tbody>
+          <tr><td>Información al requerido</td><td>De forma <strong>inmediata</strong> y comprensible los motivos de la identificación y del posible traslado</td></tr>
+          <tr><td>Libro-registro</td><td>Solo comunicado a <strong>autoridad judicial y MF</strong></td></tr>
+          <tr><td>Extracto al MF</td><td><strong>Mensualmente</strong> con indicación del tiempo empleado</td></tr>
+          <tr><td>Cancelación de asientos</td><td>De oficio a los <span class="d">3 años</span></td></tr>
+          <tr><td>Al finalizar</td><td>Entregar <strong>volante</strong> con: tiempo de permanencia, causa y agentes actuantes</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🚨 Registro Corporal Externo (art. 20)</h3>
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-h">Reglas generales</div>
+          Indicios racionales de hallazgo de efectos relevantes. Por agente del <strong>mismo sexo.</strong> Si exige dejar a la vista partes cubiertas: <strong>lugar reservado y fuera de vista de terceros.</strong> Información inmediata y comprensible. Constancia escrita.
+        </div>
+        <div class="panel">
+          <div class="panel-h">Excepción</div>
+          Salvo riesgo <strong>grave e inminente</strong> para los agentes → puede hacerse sin cumplir esas condiciones. Pueden realizarse <strong>contra la voluntad</strong> del afectado adoptando medidas de compulsión indispensables.
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🔇 Disolución de Reuniones/Manifestaciones (art. 23)</h3>
+      <div class="panel b">
+        <div class="panel-h">Art. 5 LO 9/1983 — Causas de disolución/suspensión</div>
+        Ilícitas conforme al CP · Alteración orden público con peligro para personas o bienes · Uniformes paramilitares de los asistentes · Organizadas por miembros de FFAA o GC.
+      </div>
+      <div class="panel">
+        <div class="panel-h">Procedimiento</div>
+        FCS deben <strong>avisar previamente</strong> (puede ser verbal si urgente).<br>
+        <strong>EXCEPCIÓN — sin previo aviso:</strong> si la alteración se produce con <strong>armas, artefactos explosivos, objetos contundentes u otro modo peligroso.</strong>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Obligaciones de Registro Documental (art. 25) <span class="hot">🔥</span></h3>
+      <div class="card"><div class="card-h">Actividades sujetas a registro</div><ul>
+        <li>Hospedaje · Transporte de personas · Cerrajería de seguridad</li>
+        <li>Comerciar/reparar objetos usados · Alquiler/desguace vehículos</li>
+        <li>Objetos/obras de arte · Joyería y metales preciosos o no</li>
+        <li>Centros gestores de residuos metálicos · Chatarra / productos desechados</li>
+        <li>Establecimientos de venta de productos químicos peligrosos a particulares</li>
+        <li>Acceso comercial a servicios telefónicos/telemáticos en lugar público</li>
+        <li>Titulares de embarcaciones de alta velocidad y aeronaves ligeras</li>
+      </ul></div>
+      <div class="panel">
+        <div class="panel-h">⚡ Parte de entrada al hospedaje</div>
+        Debe firmarlo toda persona <strong>mayor de 14 años.</strong> Para menores de 14: datos facilitados por el adulto acompañante.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ TEMA 14 — PARTE B: ACTUACIONES E INFRACCIONES ══════════════════ -->
+<section id="t14b" class="block">
+  <div class="block-head"><span class="block-num">TEMA 14-B</span><h2 class="block-title">LO 4/2015 · Infracciones por Categorías</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Infracciones MUY GRAVES (art. 35) <span class="hot">🔥</span></h3>
+      <div class="card"><ul>
+        <li>Reuniones/manifestaciones <strong>no comunicadas en infraestructuras de servicios básicos</strong> (incluido sobrevuelo) cuando generen <strong>riesgo para vida/integridad</strong> — responsables: organizadores</li>
+        <li>Celebrar espectáculos quebrantando <strong>prohibición/suspensión</strong> ordenada por autoridad por SC</li>
+        <li>Fabricar/circular/comerciar armas, explosivos, cartuchería incumpliendo normativa cuando se causen <strong>perjuicios muy graves</strong></li>
+        <li>Proyectar <strong>haces de luz</strong> sobre pilotos/conductores que pueda <strong>deslumbrar y provocar accidentes</strong></li>
+      </ul></div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Infracciones GRAVES (art. 36) — Las más preguntadas <span class="hot">🔥</span></h3>
+      <div class="card"><ul>
+        <li><strong>Intrusión en infraestructuras</strong> de servicios básicos con <strong>interferencia grave</strong> en su funcionamiento</li>
+        <li>Perturbar gravemente la SC en <strong>reuniones/manifestaciones frente al Congreso/Senado/Asambleas CCAA</strong> (aunque no estuvieran reunidas)</li>
+        <li><strong>Causar desórdenes en vías, espacios, establecimientos públicos</strong> obstaculizando gravemente la SC</li>
+        <li><strong>Negarse a la disolución</strong> de reuniones/manifestaciones ordenada por autoridad</li>
+        <li><strong>Desobedecer o Resistirse</strong> a la autoridad/agentes en ejercicio de funciones (cuando no sea delito)</li>
+        <li><strong>Negativa a identificarse</strong> a requerimiento de autoridad/agentes</li>
+        <li><strong>Alegar datos falsos o inexactos</strong> en los procesos de identificación</li>
+        <li><strong>Consumo o tenencia ilícita de drogas TESP</strong> (aunque no destinadas al tráfico) en lugares, vías, establecimientos públicos o transportes colectivos / <strong>Abandonar</strong> los instrumentos empleados en dichos lugares</li>
+        <li><strong>Uso de imágenes de autoridades/FCS</strong> que pueda <strong>poner en peligro</strong> la seguridad personal o familiar de los agentes, las instalaciones protegidas o el éxito de una operación</li>
+        <li><strong>Solicitar/aceptar servicios sexuales retribuidos</strong> en zonas de tránsito público, proximidades de lugares destinados a menores o generando riesgo vial</li>
+        <li><strong>Tolerar el consumo ilegal/tráfico de drogas</strong> en locales públicos por propietarios, administradores o encargados</li>
+        <li>Falta de colaboración con FCS en averiguación de delitos o prevención de riesgos SC (supuestos del art. 7)</li>
+        <li>Carecer de los registros previstos en esta ley para actividades con trascendencia para la SC y omitir comunicaciones obligatorias</li>
+      </ul></div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 Infracciones LEVES (art. 37)</h3>
+      <div class="card"><ul>
+        <li><strong>Faltas de respeto y consideración</strong> cuyo destinatario sea un miembro FCS en ejercicio de sus funciones (cuando no sea infracción penal)</li>
+        <li><strong>Dañar/deslucir bienes</strong> de uso o servicio público o bienes privados en vía pública</li>
+        <li><strong>Consumir bebidas alcohólicas</strong> en vías, espacios o establecimientos públicos perturbando <strong>gravemente</strong> la tranquilidad ciudadana</li>
+        <li><strong>Ocupar o permanecer en inmueble, vivienda o edificio ajeno</strong> contra la voluntad del propietario/arrendatario</li>
+        <li><strong>Escalar edificios/monumentos</strong> sin autorización cuando exista riesgo cierto de daños</li>
+        <li><strong>Incumplir la obligación de obtener el DNI</strong> y omisión de la denuncia de sustracción/extravío</li>
+        <li><strong>Negligencia en la custodia y conservación del DNI (3ª y posteriores pérdidas/extravíos en 1 año)</strong></li>
+        <li>Proyectar haces de luz sobre miembros FCS para impedir/dificultar sus funciones</li>
+        <li>Remover vallas/encintados colocados por FCS para delimitar perímetros de seguridad (cuando no sea grave)</li>
+        <li>Dejar sueltos animales feroces o dañinos / abandonar animales domésticos con peligro para su vida</li>
+        <li>Ocupar la vía pública infringiendo la ley o para venta ambulante no autorizada</li>
+      </ul></div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">🚗 Instrucción 7/2025 SES — Drogas en vehículos <span class="hot">🔥</span></h3>
+      <div class="panel">
+        <div class="panel-h">Novedad normativa — Probable en examen</div>
+        El <strong>consumo o mera tenencia de drogas en un vehículo ESTACIONADO NO constituye infracción administrativa</strong> de la LO 4/2015, salvo que haya indicios de <strong>tráfico o comercio</strong> de sustancias.<br>
+        Si el vehículo está <strong>en movimiento</strong>: puede tipificarse como delito contra la salud pública o contra la seguridad vial.
+      </div>
+      <div class="panel b">
+        <div class="panel-h">Actuación policial</div>
+        Solo con indicios claros y justificados. Identificación de ocupantes y en su caso registro del vehículo. Principio de proporcionalidad y respeto a DDFF. No intervenciones arbitrarias.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">👶 Menores y drogas — Disposición Adicional 5ª</h3>
+      <div class="panel b">
+        <div class="panel-h">Suspensión de multas</div>
+        Multas a <strong>menores de edad</strong> por consumo/tenencia ilícita de drogas TESP → pueden <strong>suspenderse</strong> si acceden (a solicitud propia y de sus representantes legales) a tratamiento/rehabilitación o reeducación. Si <strong>abandonan</strong> el tratamiento → se ejecuta la sanción económica.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ TEMA 14 — PARTE C: RÉGIMEN SANCIONADOR ══════════════════ -->
+<section id="t14c" class="block">
+  <div class="block-head"><span class="block-num">TEMA 14-C</span><h2 class="block-title">Régimen Sancionador · Prescripción · RCISC · Procedimiento</h2></div>
+  <div class="block-body">
+
+    <div class="sec">
+      <h3 class="sec-title">💰 Tabla Maestra de Sanciones (art. 39) <span class="kill">💀</span></h3>
+      <table class="tbl">
+        <thead><tr><th>Infracción</th><th>Multa (€)</th><th>Grado mín.</th><th>Grado med.</th><th>Grado máx.</th><th>Órgano competente</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="leve">LEVE</td>
+            <td><span class="d">100 – 600</span></td>
+            <td colspan="3" style="text-align:center;font-size:12px;">Directamente por criterios art. 33</td>
+            <td>Delegados del Gobierno en CCAA, Ceuta y Melilla</td>
+          </tr>
+          <tr>
+            <td class="grave">GRAVE</td>
+            <td><span class="d">601 – 30.000</span></td>
+            <td>601 – 10.400</td>
+            <td>10.401 – 20.200</td>
+            <td>20.201 – 30.000</td>
+            <td>Delegados del Gobierno</td>
+          </tr>
+          <tr>
+            <td class="mgrave">MUY GRAVE</td>
+            <td><span class="d">30.001 – 600.000</span></td>
+            <td>30.001 – 220.000 → <strong>SES</strong></td>
+            <td>220.001 – 410.000 → <strong>SES</strong></td>
+            <td>410.001 – 600.000 → <strong>MI</strong></td>
+            <td>MI (grado máx.) / SES (med. y mín.)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="panel">
+        <div class="panel-h">⚡ Trampa: Alcaldes también son competentes</div>
+        Cuando las infracciones se cometan en <strong>espacios públicos municipales o afecten a bienes de titularidad local.</strong>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">⏱️ Tabla de Prescripción y RCISC <span class="kill">💀</span></h3>
+      <table class="tbl">
+        <thead><tr><th>Tipo</th><th>Prescripción infracción</th><th>Prescripción sanción</th><th>Cancelación RCISC</th></tr></thead>
+        <tbody>
+          <tr><td class="leve">LEVE</td><td><span class="pl">6 meses</span></td><td><span class="pl">1 año</span></td><td><span class="pl">1 año</span></td></tr>
+          <tr><td class="grave">GRAVE</td><td><span class="pl">1 año</span></td><td><span class="pl">2 años</span></td><td><span class="pl">2 años</span></td></tr>
+          <tr><td class="mgrave">MUY GRAVE</td><td><span class="pl">2 años</span></td><td><span class="pl">3 años</span></td><td><span class="pl">3 años</span></td></tr>
+        </tbody>
+      </table>
+      <div class="panel b">
+        <div class="panel-h">Cómputos clave <span class="kill">💀</span></div>
+        <strong>Prescripción infracción:</strong> desde el día de la comisión. Infracción continuada: desde la <strong>última.</strong> Efectos permanentes: desde que se eliminó la situación ilícita.<br>
+        <strong>Prescripción sanción:</strong> desde el día siguiente a la firmeza en vía administrativa.<br>
+        <strong>Cancelación RCISC:</strong> desde la firmeza de la sanción.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">⚠️ Sanciones Accesorias (art. 39) <span class="hot">🔥</span></h3>
+      <table class="tbl">
+        <thead><tr><th>Tipo</th><th>Suspensión temporal</th><th>Clausura</th></tr></thead>
+        <tbody>
+          <tr><td class="grave">GRAVE</td><td>Hasta <span class="d">6 meses</span></td><td>Hasta <span class="d">2 años</span></td></tr>
+          <tr><td class="mgrave">MUY GRAVE</td><td><span class="d">6 meses y 1 día a 2 años</span><br><small>(reincidencia: hasta 6 años)</small></td><td><span class="d">2 años y 1 día a 6 años</span></td></tr>
+        </tbody>
+      </table>
+      <div class="panel b">
+        <div class="panel-h">Otras sanciones accesorias</div>
+        Retirada de armas, licencias y permisos · Comiso de bienes, medios o instrumentos (excepto de 3º de buena fe que los haya adquirido legalmente) · Suspensión temporal de autorizaciones · Clausura.
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📈 Graduación de Sanciones (art. 33) <span class="hot">🔥</span></h3>
+      <div class="g2">
+        <div class="card"><div class="card-h">Grado mínimo</div><ul><li>Comisión de <strong>una sola</strong> infracción sin circunstancias agravantes</li></ul></div>
+        <div class="card"><div class="card-h">Grado medio — 1 de estas circunstancias</div><ul>
+          <li><strong>Reincidencia:</strong> > 1 infracción misma naturaleza en <span class="d">2 años</span> con resolución firme</li>
+          <li>Intervención de <strong>violencia, amenaza o intimidación</strong></li>
+          <li>Cubrir el rostro con prenda u objeto <strong>impidiendo identificación</strong></li>
+          <li>Uso de <strong>menores, DNEP o personas vulnerables</strong> para cometer la infracción</li>
+        </ul></div>
+      </div>
+      <div class="card"><div class="card-h">Grado máximo</div><ul>
+        <li>Hechos que revistan <strong>especial gravedad</strong> teniendo en cuenta el número y entidad de las circunstancias concurrentes y los criterios de individualización</li>
+      </ul></div>
+    </div>
+
+    <div class="sec">
+      <h3 class="sec-title">📋 RCISC y Procedimiento (arts. 43-54)</h3>
+      <div class="g2">
+        <div class="card"><div class="card-h">RCISC — Registro Central Infracciones SC</div><ul>
+          <li>Creado en el <strong>MI</strong></li>
+          <li>Solo a efectos de apreciar la <strong>reincidencia</strong></li>
+          <li>Las CCAA con competencia y cuerpo propio pueden crear los suyos</li>
+          <li>Acceso: autoridades y órganos AAPP</li>
+          <li>Cancelación: 1/2/3 años según gravedad desde firmeza</li>
+        </ul></div>
+        <div class="card"><div class="card-h">Procedimiento sancionador</div><ul>
+          <li>No doble sanción: identidad sujeto + hecho + fundamento</li>
+          <li>Valor probatorio de denuncias/atestados de FCS (salvo prueba en contrario)</li>
+          <li><strong>Caducidad:</strong> <span class="d">1 año</span> desde incoación sin notificar resolución</li>
+          <li>Procedimientos caducados <strong>NO interrumpen prescripción</strong></li>
+          <li><strong>Procedimiento abreviado (graves y leves):</strong> 15 días para pago voluntario con <span class="d">50%</span> reducción, renuncia a alegaciones y fin del procedimiento</li>
+        </ul></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h">Medidas provisionales en procedimiento sancionador</div>
+        Acordadas en cualquier momento por el órgano competente, una vez incoado el expediente. Duración: no puede exceder de la <strong>mitad del plazo previsto para la sanción.</strong> Si las acuerdan agentes de la autoridad por grave riesgo: deben ratificarse, modificarse o revocarse en <strong>15 días.</strong>
+      </div>
+      <div class="panel b">
+        <div class="panel-h">Sujetos exentos y responsabilidad civil</div>
+        Exentos de responsabilidad: menores de <strong>14 años</strong> (se comunica al MF).<br>
+        Responsabilidad civil: siempre <strong>solidaria</strong> entre causantes. Si autor es menor de 18 no emancipado: responden solidariamente los <strong>padres, tutores, curadores, acogedores y guardadores legales.</strong>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ QUIZ ══════════════════ -->
+<section id="quiz" class="block">
+  <div class="block-head"><span class="block-num">QUIZ FINAL</span><h2 class="block-title">Autoevaluación · 20 Preguntas Tipo Examen</h2></div>
+  <div class="block-body">
+    <div class="score-box" id="scoreBox"></div>
+    <div id="quizContainer"></div>
+    <div style="text-align:center;margin-top:20px;">
+      <button onclick="resetQuiz()" style="background:var(--navy);color:var(--brass);border:none;padding:10px 24px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-weight:700;cursor:pointer;font-size:13px;">🔄 REINICIAR</button>
+    </div>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<script>
+// ── QUIZ DATA ──
+const QS=[
+  {q:"¿Cuál es la naturaleza jurídica del CNP?",opts:["Instituto armado de naturaleza militar dependiente del MD","Instituto armado de naturaleza civil dependiente del MI","Cuerpo civil no armado dependiente del MI","Instituto armado bajo doble dependencia MI y MD"],a:1,e:"El CNP es un instituto armado de naturaleza CIVIL, dependiente del Ministerio del Interior (art. 9 LO 2/1986). Solo la GC es de naturaleza militar."},
+  {q:"¿Qué CCAA tienen adscripción de Unidades del CNP (sin cuerpo propio)?",opts:["Cataluña, País Vasco, Navarra y Canarias","Andalucía, Aragón, Galicia y Valencia","Asturias, Madrid, Aragón y Galicia","Andalucía, Cataluña, Galicia y Valencia"],a:1,e:"Andalucía, Aragón, Galicia y Valencia solicitan adscripción de Unidades del CNP. Asturias y Madrid tienen acuerdos específicos de cooperación (diferente figura). Cataluña, PV, Navarra y Canarias tienen cuerpo propio."},
+  {q:"El Consejo de Policía está compuesto por:",opts:["Ministro Interior + 10 reprs. Adm. + 10 reprs. PN","Ministro Interior + 14 reprs. Adm. + 14 reprs. PN","SES + 12 reprs. Adm. + 12 reprs. PN","Ministro Interior + 16 reprs. Adm. + 16 reprs. PN"],a:1,e:"Presidente: Ministro del Interior (o delegado) + 14 representantes de la Administración + 14 representantes de la Policía Nacional. Composición paritaria."},
+  {q:"¿Pueden los miembros de la Policía Nacional ejercer el derecho de huelga?",opts:["Sí, como cualquier trabajador","Sí, pero solo huelgas generales","No, en ningún caso ni acciones sustitutivas","Solo en situaciones de especial urgencia"],a:2,e:"Los PN NO pueden ejercer el derecho de huelga ni acciones sustitutivas del mismo, ni actuaciones concertadas para alterar el normal funcionamiento de los servicios (art. 8 LO 9/2015)."},
+  {q:"Para convocar elecciones al Consejo de Policía, ¿cuándo se debe hacer?",opts:["Entre 30 y 45 días antes del fin de mandato","Entre 45 y 60 días antes del fin de mandato","Entre 55 y 70 días antes del fin de mandato","Entre 60 y 90 días antes del fin de mandato"],a:2,e:"La convocatoria de elecciones al Consejo de Policía debe hacerse entre 55 y 70 días antes de que finalice el mandato. La fecha de votación: entre 45 y 70 días después de la convocatoria."},
+  {q:"La habilitación de los Guardas de Caza y Guardapescas Marítimos corresponde a:",opts:["DGP, previa habilitación como Vigilante de Seguridad","DGGC, previa habilitación como Guarda Rural","DGP, sin requisito previo","DGGC, sin requisito previo"],a:1,e:"La habilitación de Guardas de Caza y Guardapescas Marítimos corresponde a la DGGC (no DGP) y requieren previa habilitación como Guarda Rural. Son especialidades del Guarda Rural."},
+  {q:"La validez de la TIP (Tarjeta de Identidad Profesional) del personal de SP es de:",opts:["5 años","8 años","10 años","Indefinida"],a:2,e:"La TIP tiene validez de 10 años. Es el documento público de acreditación del personal de SP mientras ejerce sus funciones profesionales (art. 27 Ley 5/2014)."},
+  {q:"¿Qué habilitación previa se requiere para ser Vigilante de Explosivos?",opts:["No requiere ninguna previa","Escolta Privado","Vigilante de Seguridad","Jefe de Seguridad"],a:2,e:"Es necesaria la previa habilitación como Vigilante de Seguridad para habilitarse como Vigilante de Explosivos (art. 26 Ley 5/2014)."},
+  {q:"La Comisión Nacional de Seguridad Privada está adscrita a:",opts:["DGP","Ministerio del Interior directamente","SES (Secretaría de Estado de Seguridad)","Delegaciones del Gobierno"],a:2,e:"La Comisión Nacional de SP está adscrita a la SES y copresidida por el DGP y el DGGC. Su secretario es el Jefe de la Sección de la Unidad Orgánica Central de SP del CNP."},
+  {q:"Las medidas provisionales (art. 55 Ley SP) deben ser ratificadas, modificadas o revocadas en un plazo máximo de:",opts:["7 días","10 días","15 días","30 días"],a:2,e:"Deben ser ratificadas, modificadas o revocadas en el plazo máximo de 15 días. La duración máxima de estas medidas es de 6 meses."},
+  {q:"¿A partir de qué edad es obligatorio tener el DNI?",opts:["16 años","18 años","14 años","12 años"],a:2,e:"Es obligatorio tener el DNI a partir de los 14 años. Es personal e intransferible. Es el único documento con suficiente valor por sí solo para acreditar la identidad (art. 9 LO 4/2015)."},
+  {q:"¿Cuánto tiempo puede mantenerse a una persona en dependencias policiales a efectos de identificación?",opts:["3 horas como máximo","Sin límite, hasta que se identifique","Máximo 6 horas","Máximo 24 horas"],a:2,e:"El tiempo en dependencias policiales a los solos efectos de identificación no puede superar en ningún caso las 6 horas (art. 16 LO 4/2015)."},
+  {q:"El extracto de las diligencias de identificación se envía al Ministerio Fiscal:",opts:["Semanalmente","Mensualmente","Trimestralmente","Anualmente"],a:1,e:"Mensualmente se enviará al MF un extracto de las diligencias de identificación practicadas, indicando el tiempo empleado en cada caso."},
+  {q:"La prescripción de una infracción GRAVE contra la SC es de:",opts:["6 meses","1 año","2 años","3 años"],a:1,e:"Prescripción infracciones: Leves 6 meses, GRAVES 1 año, Muy graves 2 años. No confundir con prescripción de sanciones: Leves 1 año, Graves 2 años, Muy graves 3 años."},
+  {q:"La sanción pecuniaria para infracciones MUY GRAVES oscila entre:",opts:["601 y 30.000 €","30.001 y 300.000 €","30.001 y 600.000 €","100 y 600 €"],a:2,e:"Muy graves: 30.001 a 600.000 €. Graves: 601 a 30.000 €. Leves: 100 a 600 €. El grado máximo (410.001-600.000€) es competencia del MI; los otros grados del SES."},
+  {q:"¿Quién es competente para sancionar infracciones MUY GRAVES en grado MÁXIMO?",opts:["SES","Delegado del Gobierno","Ministro del Interior","Juez competente"],a:2,e:"MI: grado máximo de muy graves (410.001-600.000€). SES: grado medio y mínimo de muy graves. Delegados del Gobierno: infracciones graves y leves."},
+  {q:"La cancelación de asientos en el RCISC para infracciones GRAVES se produce a los:",opts:["6 meses de la firmeza","1 año de la firmeza","2 años de la firmeza","3 años de la firmeza"],a:2,e:"Cancelación RCISC: Leves 1 año, GRAVES 2 años, Muy graves 3 años. Todos se computan desde la firmeza de la sanción en vía administrativa."},
+  {q:"La reincidencia que lleva al grado MEDIO de sanción se aprecia cuando se comete más de una infracción de la misma naturaleza en:",opts:["1 año con resolución firme","2 años con resolución firme","3 años con sentencia judicial","2 años con simple notificación"],a:1,e:"Reincidencia = comisión en término de 2 años de más de 1 infracción de la misma naturaleza con resolución firme en vía administrativa. Es uno de los cuatro supuestos del grado medio."},
+  {q:"En el procedimiento abreviado, el pago voluntario reduce la multa en un:",opts:["25%","30%","50%","75%"],a:2,e:"Procedimiento abreviado (15 días): pago voluntario con reducción del 50% de la multa, renuncia a formular alegaciones y fin del procedimiento. Solo para infracciones graves y leves."},
+  {q:"Según la Instrucción 7/2025 de la SES, el consumo o tenencia de drogas en un vehículo ESTACIONADO:",opts:["Siempre es infracción muy grave","Siempre es infracción grave","NO es infracción administrativa salvo indicios de tráfico","Es infracción leve en todo caso"],a:2,e:"La Instrucción 7/2025 establece que el consumo o mera tenencia de drogas en vehículo estacionado NO constituye infracción administrativa de la LO 4/2015, salvo que haya indicios de tráfico o comercio de sustancias."}
+];
+
+let answers=new Array(QS.length).fill(null),score=0;
+
+function buildQuiz(){
+  const c=document.getElementById('quizContainer');
+  c.innerHTML='';score=0;answers=new Array(QS.length).fill(null);
+  document.getElementById('scoreBox').style.display='none';
+  QS.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='quiz-card';card.id='qc'+qi;
+    card.innerHTML=`<div class="quiz-q"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);">P${String(qi+1).padStart(2,'0')} ·</span> ${q.q}</div><div class="quiz-opts" id="qo${qi}">${q.opts.map((o,oi)=>`<button class="quiz-opt" onclick="answer(${qi},${oi})">${String.fromCharCode(65+oi)}) ${o}</button>`).join('')}</div><div class="quiz-exp" id="qe${qi}">${q.e}</div>`;
+    c.appendChild(card);
+  });
+}
+
+function answer(qi,chosen){
+  if(answers[qi]!==null)return;
+  answers[qi]=chosen;
+  const opts=document.querySelectorAll(`#qo${qi} .quiz-opt`);
+  const correct=QS[qi].a;
+  opts.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');else if(i===chosen)b.classList.add('wrong');});
+  document.getElementById('qe'+qi).classList.add('show');
+  if(chosen===correct)score++;
+  if(answers.every(a=>a!==null))showScore();
+}
+
+function showScore(){
+  const sb=document.getElementById('scoreBox');
+  const pct=Math.round(score/QS.length*100);
+  const emoji=pct>=80?'🏆':pct>=60?'👍':'📚';
+  sb.style.display='block';
+  sb.innerHTML=`${emoji} Resultado: <span style="color:var(--garnet)">${score}/${QS.length}</span> — ${pct}%<div style="font-size:12px;margin-top:6px;font-weight:400;">${pct>=80?'¡Excelente! Listo para el examen.':pct>=60?'Bien, repasa los errores.':'Hay trabajo por hacer. ¡Ánimo!'}</div>`;
+}
+
+function resetQuiz(){buildQuiz();window.scrollTo({top:document.getElementById('quiz').offsetTop-80,behavior:'smooth'});}
+
+// ── SCROLL & SIDEBAR ──
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pbar').style.width=pct+'%';
+  const ids=['cover','t9','t9b','t9c','sp1','sp2','sp3','t14','t14b','t14c','quiz'];
+  let cur=0;
+  ids.forEach((id,i)=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<160)cur=i;});
+  document.querySelectorAll('.sb-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+});
+
+function goTo(id){const el=document.getElementById(id);if(el)window.scrollTo({top:el.offsetTop-70,behavior:'smooth'});}
+
+function toggleTheme(){
+  const h=document.documentElement;
+  const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.querySelector('.theme-btn').textContent=dark?'🌙':'☀️';
+}
+
+function setMode(m){
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+m).classList.add('active');
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

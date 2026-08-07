@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEMA 4 — Derecho Comunitario | CNP Escala Básica</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Bebas+Neue&display=swap');
+
+  :root {
+    --bg: #080C14;
+    --bg2: #0D1423;
+    --bg3: #111A2E;
+    --card: #141E35;
+    --card2: #1A2540;
+    --border: #1E2D4A;
+    --border2: #2A3F6A;
+    --blue: #0038A8;
+    --blue2: #1456D4;
+    --blue3: #3A7BFF;
+    --gold: #F5C518;
+    --gold2: #FFD740;
+    --green: #22C55E;
+    --red: #EF4444;
+    --orange: #F97316;
+    --purple: #A855F7;
+    --teal: #14B8A6;
+    --text: #E8EDF5;
+    --text2: #8FA3C8;
+    --text3: #4A6080;
+    --sidebar-w: 260px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #040812 0%, #0D1A3A 50%, #091025 100%);
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 2px solid var(--border);
+  }
+  .hero::before {
+    content: '★★★★★★★★★★★★';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    letter-spacing: 8px;
+    color: rgba(245,197,24,0.06);
+    font-size: 80px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 3px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 7vw, 72px);
+    letter-spacing: 3px;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 600px;
+    margin: 14px auto 0;
+  }
+  .eu-stars {
+    display: flex; justify-content: center; gap: 6px;
+    margin: 18px auto;
+  }
+  .eu-stars span { color: var(--gold); font-size: 18px; }
+
+  /* ===== LAYOUT ===== */
+  .layout {
+    display: flex;
+    align-items: flex-start;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: var(--sidebar-w);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    flex-shrink: 0;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 0 20px 12px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active { background: rgba(0,56,168,0.15); color: var(--blue3); border-left-color: var(--blue3); }
+  .nav-icon { font-size: 16px; width: 22px; text-align: center; }
+  .nav-sep { height: 1px; background: var(--border); margin: 10px 20px; }
+  .progress-bar {
+    margin: 16px 20px 0;
+    background: var(--border);
+    border-radius: 4px;
+    height: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--blue3), var(--gold));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-label { font-size: 11px; color: var(--text3); margin-top: 6px; padding: 0 20px; }
+
+  /* ===== MAIN ===== */
+  .main {
+    flex: 1;
+    padding: 40px;
+    max-width: calc(1400px - var(--sidebar-w));
+    overflow: hidden;
+  }
+
+  /* ===== SECTION ===== */
+  .section {
+    margin-bottom: 60px;
+    scroll-margin-top: 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--blue3);
+    background: rgba(58,123,255,0.1);
+    border: 1px solid rgba(58,123,255,0.3);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(22px, 3vw, 32px);
+    letter-spacing: 1.5px;
+    color: var(--text);
+  }
+  .section-title span { color: var(--gold); }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--border2); }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-body { font-size: 14px; color: var(--text2); line-height: 1.75; }
+  .card-body strong { color: var(--text); font-weight: 600; }
+  .card-body em { color: var(--gold2); font-style: normal; font-weight: 600; }
+
+  /* ===== GRID ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  /* ===== ALERT / TRAP ===== */
+  .trap {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #FBBF24;
+  }
+  .trap::before { content: '⚠️ TRAMPA DE EXAMEN: '; font-weight: 700; color: var(--red); }
+  .tip {
+    background: rgba(34,197,94,0.07);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #86EFAC;
+  }
+  .tip::before { content: '💡 CLAVE: '; font-weight: 700; color: var(--green); }
+  .info {
+    background: rgba(58,123,255,0.07);
+    border: 1px solid rgba(58,123,255,0.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #93C5FD;
+  }
+  .info::before { content: '📌 RECUERDA: '; font-weight: 700; color: var(--blue3); }
+
+  /* ===== TABS ===== */
+  .tabs { margin-bottom: 16px; }
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    border: none;
+    background: transparent;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); background: var(--bg3); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(245,197,24,0.05); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ===== ACCORDION ===== */
+  .accordion { margin-bottom: 10px; }
+  .acc-header {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .acc-header:hover { border-color: var(--border2); background: var(--card); }
+  .acc-header.open { border-color: var(--blue3); color: var(--gold); }
+  .acc-arrow { font-size: 12px; transition: transform 0.3s; color: var(--text3); }
+  .acc-header.open .acc-arrow { transform: rotate(180deg); color: var(--gold); }
+  .acc-body {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 20px;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.75;
+    display: none;
+  }
+  .acc-body.open { display: block; }
+  .acc-body strong { color: var(--text); }
+  .acc-body em { color: var(--gold2); font-style: normal; }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: var(--card2);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border2);
+  }
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+  }
+  td strong { color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .badge-blue { background: rgba(58,123,255,0.2); color: #7BB3FF; border: 1px solid rgba(58,123,255,0.3); }
+  .badge-green { background: rgba(34,197,94,0.15); color: #86EFAC; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-red { background: rgba(239,68,68,0.15); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
+  .badge-gold { background: rgba(245,197,24,0.15); color: var(--gold2); border: 1px solid rgba(245,197,24,0.3); }
+  .badge-purple { background: rgba(168,85,247,0.15); color: #D8B4FE; border: 1px solid rgba(168,85,247,0.3); }
+  .badge-teal { background: rgba(20,184,166,0.15); color: #5EEAD4; border: 1px solid rgba(20,184,166,0.3); }
+
+  /* ===== TIMELINE ===== */
+  .timeline { position: relative; padding-left: 30px; }
+  .timeline::before { content:''; position:absolute; left:10px; top:0; bottom:0; width:2px; background: linear-gradient(180deg, var(--blue3), var(--gold)); }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-dot { position:absolute; left:-24px; top:4px; width:12px; height:12px; background:var(--gold); border-radius:50%; border:2px solid var(--bg); box-shadow: 0 0 0 3px rgba(245,197,24,0.2); }
+  .tl-year { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--gold); font-weight:700; margin-bottom:2px; }
+  .tl-content { font-size:13.5px; color:var(--text2); }
+  .tl-content strong { color:var(--text); }
+
+  /* ===== QUIZ ===== */
+  .quiz-block {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 28px;
+    margin-top: 24px;
+  }
+  .quiz-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .quiz-q { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 12px; line-height: 1.5; }
+  .quiz-q span { font-family: 'JetBrains Mono',monospace; font-size:12px; color:var(--text3); margin-right:8px; }
+  .quiz-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .quiz-opt {
+    padding: 10px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text2);
+    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--blue3); color: var(--text); background: var(--card2); }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-opt.correct { background: rgba(34,197,94,0.12); border-color: var(--green); color: #86EFAC; }
+  .quiz-opt.wrong { background: rgba(239,68,68,0.1); border-color: var(--red); color: #FCA5A5; }
+  .quiz-opt.show-correct { background: rgba(34,197,94,0.07); border-color: rgba(34,197,94,0.4); color: #86EFAC; }
+  .quiz-letter { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; width:20px; height:20px; border-radius:4px; background:var(--border); display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text3); }
+  .quiz-explanation {
+    background: rgba(245,197,24,0.06);
+    border-left: 3px solid var(--gold);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .quiz-explanation.visible { display: block; }
+  .quiz-explanation strong { color: var(--gold); }
+  .quiz-nav { display: flex; gap: 10px; align-items: center; }
+  .btn {
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-primary:hover { background: var(--blue2); }
+  .btn-gold { background: var(--gold); color: #111; }
+  .btn-gold:hover { background: var(--gold2); }
+  .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
+  .quiz-score { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text3); margin-left:auto; }
+
+  /* ===== PILAR (Fuentes) ===== */
+  .pilar-wrap { display:flex; flex-direction:column; gap:3px; align-items:center; margin: 24px 0; }
+  .pilar-block {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+  }
+  .pilar-1 { background: linear-gradient(90deg, #0038A8, #003dbc); color:#fff; font-size:15px; }
+  .pilar-2 { background: linear-gradient(90deg, #1A2D6B, #1e3580); color:#B8CBF5; max-width:95%; }
+  .pilar-3 { background: linear-gradient(90deg, #111E4A, #15254a); color:#7A9BD5; max-width:88%; }
+  .pilar-arrow { color: var(--text3); font-size:18px; }
+
+  /* ===== MAPAS Y VISUALES ===== */
+  .comp-tree {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .comp-node {
+    flex: 1;
+    min-width: 200px;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .comp-exclusive { background: rgba(239,68,68,0.1); border: 2px solid rgba(239,68,68,0.4); }
+  .comp-shared { background: rgba(245,197,24,0.08); border: 2px solid rgba(245,197,24,0.35); }
+  .comp-coord { background: rgba(34,197,94,0.08); border: 2px solid rgba(34,197,94,0.35); }
+  .comp-special { background: rgba(168,85,247,0.08); border: 2px solid rgba(168,85,247,0.3); }
+  .comp-icon { font-size: 30px; margin-bottom: 8px; }
+  .comp-head { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .comp-exclusive .comp-head { color: #FCA5A5; }
+  .comp-shared .comp-head { color: var(--gold2); }
+  .comp-coord .comp-head { color: #86EFAC; }
+  .comp-special .comp-head { color: #D8B4FE; }
+  .comp-list { font-size: 12px; color: var(--text2); line-height: 1.7; text-align: left; }
+
+  /* ===== TAGS ===== */
+  .tag-group { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .tag { font-size:11.5px; padding:3px 10px; border-radius:20px; font-weight:600; }
+  .tag-blue { background:rgba(58,123,255,0.15); color:#7BB3FF; }
+  .tag-gold { background:rgba(245,197,24,0.12); color:var(--gold2); }
+  .tag-red { background:rgba(239,68,68,0.12); color:#FCA5A5; }
+  .tag-green { background:rgba(34,197,94,0.12); color:#86EFAC; }
+  .tag-grey { background:rgba(255,255,255,0.06); color:var(--text2); }
+
+  /* ===== NOTIFICATION LEGEND (INTERPOL) ===== */
+  .notif-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin:16px 0; }
+  .notif-card { border-radius:8px; padding:12px; text-align:center; }
+  .notif-dot { width:28px; height:28px; border-radius:50%; margin:0 auto 8px; }
+  .notif-name { font-size:12px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .notif-desc { font-size:11px; color:var(--text3); }
+
+  /* ===== STICKY TOP BAR ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,12,20,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar-title { font-size:13px; font-weight:600; color:var(--text2); }
+  .topbar-title span { color:var(--gold); }
+  .topbar-hint { font-size:11px; color:var(--text3); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 20px; }
+    .topbar { padding: 10px 20px; }
+    .notif-grid { grid-template-columns: repeat(2,1fr); }
+  }
+
+  /* ===== UTILIDADES ===== */
+  .mt-16 { margin-top:16px; }
+  .mt-24 { margin-top:24px; }
+  .divider { height:1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin:30px 0; }
+  .mono { font-family:'JetBrains Mono',monospace; }
+  .highlight { background:rgba(245,197,24,0.12); color:var(--gold2); padding:1px 5px; border-radius:3px; font-weight:600; }
+  .big-num { font-family:'Bebas Neue',sans-serif; font-size:42px; color:var(--blue3); line-height:1; }
+  .label-sm { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+
+  /* ===== WRAP LAYOUT ===== */
+  .page-wrap { display: flex; flex-direction: column; min-height: 100vh; }
+  .body-wrap { display: flex; flex: 1; }
+
+  /* ===== SECTION DIVIDER DECORATIVO ===== */
+  .section-divider {
+    display:flex; align-items:center; gap:12px;
+    margin: 40px 0 28px;
+  }
+  .section-divider-line { flex:1; height:1px; background:var(--border); }
+  .section-divider-chip {
+    font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--text3); font-weight:700; white-space:nowrap;
+  }
+
+  /* Smooth animation */
+  .fade-in { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Steps */
+  .steps { display:flex; flex-direction:column; gap:12px; margin:16px 0; }
+  .step { display:flex; gap:14px; align-items:flex-start; }
+  .step-num {
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; font-weight:700;
+    background: var(--blue);
+    color:#fff;
+    width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:2px;
+  }
+  .step-text { font-size:14px; color:var(--text2); line-height:1.6; }
+  .step-text strong { color:var(--text); }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-badge">CNP · ESCALA BÁSICA · OPOSICIÓN</div>
+  <h1>TEMA 4 <span>·</span> DERECHO COMUNITARIO</h1>
+  <div class="eu-stars">
+    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+  </div>
+  <p class="hero-sub">Guía completa y definitiva. Desde las fuentes del derecho hasta las operaciones policiales internacionales. Todo lo que necesitas para sacar un 10.</p>
+</div>
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar">
+  <div class="topbar-title">TEMA 4 · <span>Derecho Comunitario</span></div>
+  <div class="topbar-hint">📚 Usa el índice lateral para navegar</div>
+</div>
+
+<!-- ===== BODY ===== -->
+<div class="body-wrap">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-title">ÍNDICE DEL TEMA</div>
+
+  <a class="nav-item active" href="#fuentes" onclick="setActive(this)">
+    <span class="nav-icon">📜</span>Fuentes del Derecho
+  </a>
+  <a class="nav-item" href="#actos-juridicos" onclick="setActive(this)">
+    <span class="nav-icon">📋</span>Actos Jurídicos
+  </a>
+  <a class="nav-item" href="#principios" onclick="setActive(this)">
+    <span class="nav-icon">⚖️</span>Principios Comunitarios
+  </a>
+  <a class="nav-item" href="#competencias" onclick="setActive(this)">
+    <span class="nav-icon">🎯</span>Competencias de la UE
+  </a>
+  <a class="nav-item" href="#procedimiento" onclick="setActive(this)">
+    <span class="nav-icon">⚙️</span>Procedimiento Legislativo
+  </a>
+  <a class="nav-item" href="#paises" onclick="setActive(this)">
+    <span class="nav-icon">🌍</span>Países y Adhesión
+  </a>
+  <a class="nav-item" href="#simbolos" onclick="setActive(this)">
+    <span class="nav-icon">🏳️</span>Símbolos UE
+  </a>
+  <a class="nav-item" href="#economico" onclick="setActive(this)">
+    <span class="nav-icon">💶</span>Conceptos Económicos
+  </a>
+  <a class="nav-item" href="#schengen" onclick="setActive(this)">
+    <span class="nav-icon">🚧</span>Espacio Schengen
+  </a>
+  <a class="nav-item" href="#sistemas-info" onclick="setActive(this)">
+    <span class="nav-icon">🗄️</span>Sistemas Información
+  </a>
+  <a class="nav-item" href="#agencias" onclick="setActive(this)">
+    <span class="nav-icon">🚔</span>Agencias Policiales
+  </a>
+  <a class="nav-item" href="#tribunales" onclick="setActive(this)">
+    <span class="nav-icon">⚖️</span>TJUE vs TEDH
+  </a>
+  <a class="nav-item" href="#eppo-oede" onclick="setActive(this)">
+    <span class="nav-icon">🔍</span>EPPO y OEDE
+  </a>
+
+  <div class="nav-sep"></div>
+  <div class="sidebar-title">AUTOEVALUACIÓN</div>
+  <a class="nav-item" href="#quiz-section" onclick="setActive(this)">
+    <span class="nav-icon">🎓</span>Test Final
+  </a>
+
+  <div class="nav-sep"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label">Progreso de lectura</div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- 1. FUENTES DEL DERECHO -->
+<!-- ============================================================ -->
+<section class="section" id="fuentes">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <h2 class="section-title">FUENTES DEL <span>DERECHO</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏗️ La estructura jerárquica — De mayor a menor rango</div>
+    <div class="card-body">
+      Imagina una pirámide. Las fuentes del Derecho de la UE se organizan en <strong>tres niveles</strong>. Lo que está arriba tiene más fuerza que lo que está abajo. Si dos normas chocan, siempre gana la de nivel superior.
+    </div>
+  </div>
+
+  <div class="pilar-wrap">
+    <div class="pilar-block pilar-1">
+      🔺 DERECHO PRIMARIO U ORIGINARIO (Máximo rango)
+      <br><small style="opacity:.75;">Tratados fundacionales • Tratados de modificación • Tratados de adhesión • Principios generales • Carta de Derechos Fundamentales</small>
+    </div>
+    <div class="pilar-arrow">▼</div>
+    <div class="pilar-block pilar-2">
+      ⚙️ DERECHO SECUNDARIO O DERIVADO
+      <br><small style="opacity:.75;">Reglamentos • Directivas • Decisiones • Recomendaciones • Dictámenes</small>
+    </div>
+    <div class="pilar-arrow">▼</div>
+    <div class="pilar-block pilar-3">
+      🤝 ACUERDOS INTERNACIONALES
+      <br><small style="opacity:.75;">Por debajo del Derecho primario. Acuerdos con terceros países u organizaciones.</small>
+    </div>
+  </div>
+
+  <div class="tip">El Derecho primario tiene <strong>primacía absoluta y efecto directo</strong>. Es la cúspide del sistema. Los tratados son como la "Constitución" de la UE.</div>
+
+  <div class="trap">El Derecho primario NO son solo los tratados. También incluye los <strong>principios generales del derecho</strong> y la <strong>Carta de Derechos Fundamentales</strong>. Error frecuente en examen.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 2. ACTOS JURÍDICOS -->
+<!-- ============================================================ -->
+<section class="section" id="actos-juridicos">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <h2 class="section-title">ACTOS <span>JURÍDICOS</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📖 Los 5 instrumentos del Derecho Derivado</div>
+    <div class="card-body">Son los actos que crean las instituciones de la UE para regular materias concretas. Cada uno tiene un alcance y fuerza vinculante diferente.</div>
+  </div>
+
+  <div class="tabs" id="tabs-actos">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="openTab(event, 'tab-reglamento')">📘 Reglamento</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-directiva')">📗 Directiva</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-decision')">📙 Decisión</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-recomendaciones')">📄 Rec. y Dict.</button>
+    </div>
+
+    <!-- REGLAMENTO -->
+    <div class="tab-content active fade-in" id="tab-reglamento">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📘 Reglamento</div>
+          <div class="card-body">
+            <p>Es <strong>la norma de mayor rango</strong> del Derecho derivado. Es como una ley estatal pero a escala europea.</p>
+            <br>
+            <div class="tag-group">
+              <span class="tag tag-green">✅ Vinculante en TODOS sus elementos</span>
+              <span class="tag tag-blue">🌍 Alcance GENERAL (todos los EM)</span>
+              <span class="tag tag-gold">⚡ Efecto DIRECTO</span>
+            </div>
+            <br>
+            <p><strong>¿Necesita transposición?</strong> ❌ NO. Se aplica automáticamente y de forma uniforme en todos los Estados.</p>
+            <br>
+            <p><strong>¿Cuándo entra en vigor?</strong> Tras su publicación en el <em>DOUE</em>. Si no se especifica fecha: <em>a los 20 días</em>.</p>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="border-color:rgba(245,197,24,0.3);">
+            <div class="card-title" style="color:#86EFAC;">✅ Tipos de Reglamentos</div>
+            <div class="card-body">
+              <p>• <strong>Autónomos o de base:</strong> crean una normativa nueva desde cero.</p>
+              <br>
+              <p>• <strong>Marco:</strong> establecen el marco general de actuación.</p>
+              <br>
+              <p>• <strong>De ejecución:</strong> desarrollan o ejecutan un reglamento de base.</p>
+            </div>
+          </div>
+          <div class="trap">Un reglamento NO necesita ser "incorporado" o "transpuesto" al derecho nacional. Entra en vigor directamente. Esta es una trampa clásica.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIRECTIVA -->
+    <div class="tab-content fade-in" id="tab-directiva">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📗 Directiva</div>
+          <div class="card-body">
+            <p>La directiva <strong>obliga en cuanto al resultado final</strong>, pero deja libertad a cada Estado para elegir cómo llegar a ese resultado. Es el instrumento de armonización por excelencia.</p>
+            <br>
+            <div class="tag-group">
+              <span class="tag tag-green">✅ Vinculante en cuanto al RESULTADO</span>
+              <span class="tag tag-gold">🏳️ Alcance PARTICULAR</span>
+              <span class="tag tag-red">⏳ REQUIERE TRANSPOSICIÓN</span>
+            </div>
+            <br>
+            <p><strong>Plazo general de transposición:</strong> <em>2 años</em>.</p>
+            <br>
+            <p><strong>Si un Estado NO la incorpora:</strong> la Comisión puede iniciar un <em>procedimiento de infracción</em>.</p>
+            <br>
+            <p><strong>¿Puede el ciudadano usarla?</strong> Sí. Pueden ser <em>invocadas directamente ante los tribunales</em>.</p>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="border-color:rgba(34,197,94,0.3);">
+            <div class="card-title" style="color:#86EFAC;">📌 Tipos de Directivas</div>
+            <div class="card-body">
+              <p>• <strong>Legislativas:</strong> aprobadas por el PE y el Consejo.</p>
+              <br>
+              <p>• <strong>Delegadas:</strong> la Comisión actúa por delegación del legislador.</p>
+              <br>
+              <p>• <strong>De ejecución:</strong> para aplicar actos legislativos.</p>
+            </div>
+          </div>
+          <div class="trap">La directiva NO tiene efecto directo <em>automático</em>. Solo puede ser invocada directamente si el Estado no la ha transpuesto en plazo y sus disposiciones son suficientemente claras y precisas.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DECISIÓN -->
+    <div class="tab-content fade-in" id="tab-decision">
+      <div class="card">
+        <div class="card-title">📙 Decisión</div>
+        <div class="card-body">
+          <p>La decisión es <strong>obligatoria en su totalidad</strong> para sus destinatarios. La diferencia clave con el reglamento es que puede dirigirse tanto a todos los EM como a sujetos concretos (una empresa, un ciudadano).</p>
+          <br>
+          <div class="tag-group">
+            <span class="tag tag-green">✅ Vinculante para sus destinatarios</span>
+            <span class="tag tag-blue">🎯 Alcance general O particular</span>
+            <span class="tag tag-gold">⚡ Efecto DIRECTO</span>
+          </div>
+          <br>
+          <p><strong>¿Cuándo entra en vigor?</strong></p>
+          <ul style="margin:8px 0 0 20px;color:var(--text2);font-size:14px;line-height:1.8;">
+            <li>Con <strong>destinatario identificado</strong>: tras su notificación a los interesados.</li>
+            <li>Sin destinatario específico: tras su publicación en el DOUE.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info">Diferencia clave: El reglamento es siempre de <strong>alcance general</strong>. La decisión puede ser de alcance <strong>general O particular</strong>. Eso es lo que puede confundir en examen.</div>
+    </div>
+
+    <!-- RECOMENDACIONES Y DICTÁMENES -->
+    <div class="tab-content fade-in" id="tab-recomendaciones">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📄 Recomendaciones</div>
+          <div class="card-body">
+            <p>Sugieren una línea de actuación a los EM o a sujetos.</p>
+            <br>
+            <div class="tag-group">
+              <span class="tag tag-red">❌ NO vinculantes</span>
+              <span class="tag tag-red">❌ Sin efecto directo</span>
+            </div>
+            <br>
+            <p>Ejemplo: "Recomendamos que los Estados adopten tal política de empleo".</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📄 Dictámenes</div>
+          <div class="card-body">
+            <p>Emiten una <strong>opinión</strong> de las instituciones sobre una cuestión.</p>
+            <br>
+            <div class="tag-group">
+              <span class="tag tag-red">❌ NO vinculantes</span>
+              <span class="tag tag-red">❌ Sin obligaciones legales</span>
+            </div>
+            <br>
+            <p>Ejemplo: "El Consejo opina que esta ley nacional es compatible con el Derecho europeo".</p>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2 mt-16">
+        <div class="card" style="border-color:rgba(168,85,247,0.3);">
+          <div class="card-title" style="color:#D8B4FE;">📗 Libro Blanco</div>
+          <div class="card-body"><strong>Anuncia medidas propuestas</strong> para alcanzar objetivos concretos de la UE. Son propuestas de acción.</div>
+        </div>
+        <div class="card" style="border-color:rgba(20,184,166,0.3);">
+          <div class="card-title" style="color:#5EEAD4;">📒 Libro Verde</div>
+          <div class="card-body"><strong>Documentos de consulta</strong> a los interesados. Sirven para abrir el debate antes de legislar. Preguntan: "¿Qué os parece esta idea?"</div>
+        </div>
+      </div>
+      <div class="trap">Recomendaciones y dictámenes: <strong>NINGUNO es vinculante, ninguno tiene efecto directo</strong>. Si el examen pregunta "¿cuál es vinculante?" entre los 5 actos, la respuesta es reglamento, directiva y decisión. Recomendaciones y dictámenes, NO.</div>
+    </div>
+  </div>
+
+  <!-- TABLA COMPARATIVA -->
+  <div class="card mt-24">
+    <div class="card-title">📊 Tabla Comparativa — Los 5 Actos de un Vistazo</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Acto</th>
+            <th>Vinculante</th>
+            <th>Alcance</th>
+            <th>Efecto Directo</th>
+            <th>Transposición</th>
+            <th>Entrada en Vigor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Reglamento</strong></td>
+            <td><span class="badge badge-green">✅ Sí (todos elementos)</span></td>
+            <td><span class="badge badge-blue">General</span></td>
+            <td><span class="badge badge-green">✅ Sí</span></td>
+            <td><span class="badge badge-red">❌ No (automático)</span></td>
+            <td>DOUE + 20 días si no se indica</td>
+          </tr>
+          <tr>
+            <td><strong>Directiva</strong></td>
+            <td><span class="badge badge-gold">⚡ Sí (en resultado)</span></td>
+            <td><span class="badge badge-blue">Particular</span></td>
+            <td><span class="badge badge-gold">⚡ Condicionado</span></td>
+            <td><span class="badge badge-green">✅ Sí (2 años)</span></td>
+            <td>Tras transposición por EM</td>
+          </tr>
+          <tr>
+            <td><strong>Decisión</strong></td>
+            <td><span class="badge badge-green">✅ Sí (íntegra)</span></td>
+            <td><span class="badge badge-blue">General o particular</span></td>
+            <td><span class="badge badge-green">✅ Sí</span></td>
+            <td><span class="badge badge-red">❌ No</span></td>
+            <td>DOUE o notificación</td>
+          </tr>
+          <tr>
+            <td><strong>Recomendación</strong></td>
+            <td><span class="badge badge-red">❌ No</span></td>
+            <td>Variable</td>
+            <td><span class="badge badge-red">❌ No</span></td>
+            <td><span class="badge badge-red">❌ No</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>Dictamen</strong></td>
+            <td><span class="badge badge-red">❌ No</span></td>
+            <td>Variable</td>
+            <td><span class="badge badge-red">❌ No</span></td>
+            <td><span class="badge badge-red">❌ No</span></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3. PRINCIPIOS -->
+<!-- ============================================================ -->
+<section class="section" id="principios">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <h2 class="section-title">PRINCIPIOS DEL DERECHO <span>COMUNITARIO</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚖️ Las reglas del juego de la UE</div>
+    <div class="card-body">Estos principios son las reglas básicas que gobiernan cómo funciona el Derecho europeo y cómo se relaciona con los derechos nacionales. Hay que saber todos y saber qué hace cada uno.</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        ⚡ Eficacia Directa <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        Las normas de la UE crean <strong>derechos y obligaciones directamente</strong> para los ciudadanos. No es necesaria una ley nacional que las "active". Los ciudadanos pueden invocarlas ante los tribunales.<br><br>
+        <em>Ejemplo:</em> Un trabajador puede alegar directamente ante un tribunal que la normativa europea le da derecho a determinado periodo de descanso.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        🏆 Primacía <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        El Derecho comunitario <strong>prevalece siempre sobre el Derecho nacional</strong> cuando existe conflicto. Un juez nacional debe dejar sin aplicar una ley nacional contraria al Derecho europeo.<br><br>
+        <em>Ejemplo:</em> Si una ley española contradice un reglamento europeo, el juez aplica el reglamento y aparca la ley española.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        📐 Subsidiariedad <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        La UE solo interviene si los objetivos <strong>no pueden ser logrados suficientemente por los EM</strong> a nivel nacional, regional o local, y en cambio pueden lograrse mejor a nivel comunitario.<br><br>
+        <em>Regla simple:</em> Si los Estados pueden hacerlo solos → la UE se queda fuera. Si solo la UE puede hacerlo bien → la UE actúa.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        📏 Proporcionalidad <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        La acción de la UE <strong>no debe ir más allá de lo necesario</strong> para alcanzar los objetivos de los tratados. Ni más, ni menos.<br><br>
+        <em>Analogía:</em> Si el objetivo es cazar una mosca, usas un matagoscas, no un cañón.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        📋 Atribución <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        La UE solo puede actuar en las materias en las que los <strong>EM le han otorgado competencia</strong> a través de los tratados. Todo lo que no se atribuya expresamente a la UE, corresponde a los EM.<br><br>
+        <em>Regla simple:</em> Sin tratado que lo diga → la UE no puede meterse.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        🔄 Autonomía <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        Los EM han <strong>aceptado que ciertas competencias pasen a manos de la UE</strong>. El Derecho europeo es un ordenamiento jurídico propio e independiente, separado del derecho internacional clásico y del derecho interno de los EM.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        🤝 Colaboración <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        El Derecho de la UE <strong>necesita los ordenamientos nacionales</strong> para ser efectivo. Los jueces y administraciones nacionales son los "brazos" de la UE en cada país.
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        🛡️ Seguridad Jurídica <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        Los EM tienen la <strong>obligación de eliminar del ordenamiento</strong> cualquier norma interna que sea contraria al Derecho comunitario. No basta con no aplicarla; hay que derogarla.
+      </div>
+    </div>
+    <div class="accordion" style="grid-column: 1/-1;">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        💸 Responsabilidad por Incumplimiento <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        Si un Estado <strong>incumple el Derecho de la UE</strong> y ello causa daños a los ciudadanos, el Estado responde patrimonialmente y debe indemnizar a los perjudicados (Jurisprudencia <em>Francovich</em>).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 4. COMPETENCIAS -->
+<!-- ============================================================ -->
+<section class="section" id="competencias">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <h2 class="section-title">COMPETENCIAS <span>DE LA UE</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 ¿Quién puede legislar sobre qué?</div>
+    <div class="card-body">No todo lo regula la UE. Las competencias se dividen en 4 categorías según quién tiene el poder de legislar. Es como repartir el trabajo entre la UE y los países miembros.</div>
+  </div>
+
+  <div class="comp-tree">
+    <div class="comp-node comp-exclusive">
+      <div class="comp-icon">🔴</div>
+      <div class="comp-head">EXCLUSIVAS</div>
+      <div class="comp-list">
+        Solo la UE legisla.<br>Los EM solo si la UE los autoriza.<br><br>
+        • Unión aduanera<br>
+        • Competencia del mercado interior<br>
+        • Política monetaria (zona euro)<br>
+        • Recursos biológicos marinos<br>
+        • Política comercial común<br>
+        • Acuerdos internacionales<br>
+        • Política exterior y de seguridad
+      </div>
+    </div>
+    <div class="comp-node comp-shared">
+      <div class="comp-icon">🟡</div>
+      <div class="comp-head">COMPARTIDAS</div>
+      <div class="comp-list">
+        Ambos pueden legislar.<br>Los EM actúan si la UE no lo ha hecho.<br><br>
+        • Mercado interior<br>
+        • Política social<br>
+        • Cohesión económica/social<br>
+        • Agricultura y pesca<br>
+        • Medio ambiente<br>
+        • Consumidores<br>
+        • Transportes<br>
+        • Energía<br>
+        • Espacio libertad/seguridad/justicia<br>
+        • Salud pública
+      </div>
+    </div>
+    <div class="comp-node comp-coord">
+      <div class="comp-icon">🟢</div>
+      <div class="comp-head">COORDINACIÓN</div>
+      <div class="comp-list">
+        La UE solo apoya, coordina o complementa.<br>No desplaza a los EM.<br><br>
+        • Salud humana<br>
+        • Industria<br>
+        • Cultura<br>
+        • Turismo<br>
+        • Educación<br>
+        • Formación profesional<br>
+        • Juventud y deporte<br>
+        • Protección civil<br>
+        • Cooperación administrativa
+      </div>
+    </div>
+    <div class="comp-node comp-special">
+      <div class="comp-icon">🟣</div>
+      <div class="comp-head">ESPECIAL</div>
+      <div class="comp-list">
+        Política exterior y de seguridad común.<br><br>
+        Carácter <strong>intergubernamental</strong> — bajo control de los EM, no de las instituciones supranacionales de la UE.
+      </div>
+    </div>
+  </div>
+
+  <div class="trap">La política monetaria es competencia <strong>EXCLUSIVA</strong> de la UE — pero solo para los países de la eurozona (20 países). Para los que no usan el euro, es compartida. En el examen pueden intentar confundirte diciendo que es compartida o de coordinación.</div>
+  <div class="trap">La <strong>política exterior y de seguridad común</strong> es una competencia "especial" de carácter intergubernamental — los que la controlan son los EM, no las instituciones comunitarias. No la confundas con las exclusivas.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 5. PROCEDIMIENTO LEGISLATIVO -->
+<!-- ============================================================ -->
+<section class="section" id="procedimiento">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <h2 class="section-title">PROCEDIMIENTO <span>LEGISLATIVO</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">⚙️ Procedimiento Ordinario</div>
+      <div class="card-body">
+        Es el más habitual. La <strong>Comisión propone</strong> y el <strong>Consejo + Parlamento Europeo</strong> legislan conjuntamente.<br><br>
+        <div class="steps">
+          <div class="step"><div class="step-num">1ª</div><div class="step-text"><strong>Primera lectura:</strong> el PE adopta su posición. Si el Consejo está de acuerdo → adoptado. Si no → envía su posición al PE.</div></div>
+          <div class="step"><div class="step-num">2ª</div><div class="step-text"><strong>Segunda lectura:</strong> el PE puede aprobar, rechazar o enmendar la posición del Consejo.</div></div>
+          <div class="step"><div class="step-num">3ª</div><div class="step-text"><strong>Conciliación:</strong> Si no hay acuerdo, un <em>Comité de Conciliación</em> (PE + Consejo) busca un texto común. Luego, tercera lectura en ambas cámaras.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚙️ Procedimiento Especial</div>
+      <div class="card-body">
+        El <strong>Consejo es el único legislador</strong>. El PE solo es consultado o da aprobación, pero <strong>no puede bloquear</strong>.<br><br>
+        <div class="info">Se usa para materias sensibles donde los EM quieren conservar más control:</div>
+        <div class="tag-group mt-16">
+          <span class="tag tag-red">Fiscalidad</span>
+          <span class="tag tag-red">Competencia</span>
+          <span class="tag tag-red">Política exterior</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">👥 Iniciativa Ciudadana Europea (ICE)</div>
+    <div class="card-body">
+      Los ciudadanos también pueden iniciar procesos legislativos. Los requisitos son muy concretos y el examen los pregunta:<br><br>
+      <div class="grid-3 mt-16">
+        <div style="text-align:center; padding:20px; background:var(--bg3); border-radius:8px; border:1px solid var(--border2);">
+          <div class="big-num">7</div>
+          <div class="label-sm">Ciudadanos organizadores</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px;">De al menos 7 EM diferentes</div>
+        </div>
+        <div style="text-align:center; padding:20px; background:var(--bg3); border-radius:8px; border:1px solid var(--border2);">
+          <div class="big-num" style="font-size:36px;">1M</div>
+          <div class="label-sm">Firmas recogidas</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px;">En al menos 7 EM distintos</div>
+        </div>
+        <div style="text-align:center; padding:20px; background:var(--bg3); border-radius:8px; border:1px solid var(--border2);">
+          <div class="big-num">🏛️</div>
+          <div class="label-sm">Destinatario</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px;">Se dirige a la Comisión Europea</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="trap">La ICE se dirige a la <strong>Comisión</strong>, no al Parlamento ni al Consejo. Y el grupo organizador debe ser de al menos <strong>7 ciudadanos de 7 EM distintos</strong>. Son datos exactos que preguntan.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 6. PAÍSES -->
+<!-- ============================================================ -->
+<section class="section" id="paises">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <h2 class="section-title">PAÍSES Y <span>ADHESIÓN</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌍 27 Países Miembros por Oleadas</div>
+    <div class="card-body">La UE ha crecido por etapas. Saber cuándo entró cada país es una pregunta frecuente, especialmente los casos especiales (últimos en entrar, quién salió).</div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1958 — FUNDADORES (6)</div>
+      <div class="tl-content"><strong>Alemania, Bélgica, Francia, Italia, Luxemburgo, Países Bajos.</strong><br>Firmaron el Tratado de Roma. Son los papás de la UE.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1973 — Primera ampliación (3)</div>
+      <div class="tl-content"><strong>Dinamarca, Irlanda, Reino Unido.</strong><br>⚠️ <span class="highlight">Reino Unido salió en 2020 (Brexit)</span></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1981 — Segunda ampliación (1)</div>
+      <div class="tl-content"><strong>Grecia.</strong></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1986 — Tercera ampliación (2)</div>
+      <div class="tl-content"><strong>España y Portugal.</strong> 🇪🇸</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">1995 — Cuarta ampliación (3)</div>
+      <div class="tl-content"><strong>Austria, Finlandia, Suecia.</strong></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2004 — Gran Ampliación (10)</div>
+      <div class="tl-content"><strong>Chipre, Eslovaquia, Eslovenia, Estonia, Hungría, Letonia, Lituania, Malta, Polonia, República Checa.</strong><br>La mayor ampliación de la historia.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2007 — (2)</div>
+      <div class="tl-content"><strong>Bulgaria y Rumanía.</strong></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--blue3);"></div>
+      <div class="tl-year">2013 — ÚLTIMO EN INCORPORARSE (1)</div>
+      <div class="tl-content"><strong>Croacia.</strong> <span class="highlight">El más reciente EM.</span></div>
+    </div>
+  </div>
+
+  <div class="tip">España entró en <strong>1986</strong> junto con Portugal. Croacia en <strong>2013</strong> es el último. Reino Unido salió en <strong>2020</strong> (Brexit). Estos tres datos son los más preguntados.</div>
+
+  <div class="grid-2 mt-24">
+    <div class="card">
+      <div class="card-title">📋 Procedimiento de Adhesión (Art. 49 TUE)</div>
+      <div class="card-body">
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">El país debe respetar los <strong>valores europeos</strong> y los <strong>criterios de Copenhague</strong>.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">La solicitud se dirige al <strong>Consejo</strong>.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">El Consejo decide por <strong>unanimidad</strong>, previa consulta a la Comisión y aprobación del PE.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">El acuerdo debe ser ratificado por <strong>todos los EM</strong>.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🚪 Cláusula de Retirada (Art. 50 TUE)</div>
+      <div class="card-body">
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-text">El EM <strong>notifica su intención al Consejo Europeo</strong>.</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">El Consejo negocia y celebra el acuerdo por <strong>mayoría cualificada</strong>, previa aprobación del PE.</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">Los Tratados dejan de aplicarse: al entrar en vigor el acuerdo, o <em>2 años después de la notificación</em> si no hay acuerdo.</div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-text">El país puede <strong>reincorporarse</strong> a través del procedimiento de adhesión normal.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">🏳️ Países Candidatos (actuales)</div>
+    <div class="card-body">
+      <div class="tag-group">
+        <span class="tag tag-blue">Albania</span>
+        <span class="tag tag-blue">Bosnia y Herzegovina</span>
+        <span class="tag tag-gold">Georgia ⚠️ suspendido hasta 2028</span>
+        <span class="tag tag-blue">Moldavia</span>
+        <span class="tag tag-blue">Montenegro</span>
+        <span class="tag tag-blue">Macedonia del Norte</span>
+        <span class="tag tag-blue">Serbia</span>
+        <span class="tag tag-blue">Turquía</span>
+        <span class="tag tag-blue">Ucrania</span>
+      </div>
+    </div>
+  </div>
+  <div class="trap">Georgia está suspendida hasta <strong>2028</strong>. No confundas candidatos con candidatos suspendidos. Este detalle aparece en examen.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 7. SÍMBOLOS -->
+<!-- ============================================================ -->
+<section class="section" id="simbolos">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <h2 class="section-title">SÍMBOLOS <span>DE LA UE</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="grid-4">
+    <div class="card" style="text-align:center;">
+      <div style="font-size:36px;margin-bottom:8px;">💬</div>
+      <div class="card-title" style="justify-content:center;">Lema</div>
+      <div class="card-body"><em>"Unida en la diversidad"</em></div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div style="font-size:36px;margin-bottom:8px;">🏳️</div>
+      <div class="card-title" style="justify-content:center;">Bandera</div>
+      <div class="card-body"><strong>12 estrellas doradas</strong> en fondo azul.<br><small style="color:var(--text3)">Simbolizan perfección y unidad. El número 12 no representa países.</small></div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div style="font-size:36px;margin-bottom:8px;">🎵</div>
+      <div class="card-title" style="justify-content:center;">Himno</div>
+      <div class="card-body"><em>"Oda a la Alegría"</em><br><small style="color:var(--text3)">de Ludwig van Beethoven</small></div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div style="font-size:36px;margin-bottom:8px;">📅</div>
+      <div class="card-title" style="justify-content:center;">Día de Europa</div>
+      <div class="card-body"><strong>9 de mayo</strong><br><small style="color:var(--text3)">Declaración Schuman (1950)</small></div>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">🏛️ Padre Fundador</div>
+    <div class="card-body">
+      <strong>Jean Monnet</strong> es considerado el impulsor y padre fundador de la UE.<br><br>
+      La UE ganó el <strong>Premio Nobel de la Paz en 2012</strong>.
+    </div>
+  </div>
+  <div class="trap">Las 12 estrellas de la bandera <strong>NO representan los países fundadores</strong> (que fueron 6) ni el número actual de países (27). El número 12 simboliza la perfección y la unidad. Error clásico.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 8. CONCEPTOS ECONÓMICOS -->
+<!-- ============================================================ -->
+<section class="section" id="economico">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <h2 class="section-title">CONCEPTOS <span>ECONÓMICOS</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">💶 Eurozona</div>
+      <div class="card-body">
+        Los países que usan el <strong>euro</strong> como moneda.<br><br>
+        Actualmente: <em>20 países</em>.<br><br>
+        Bulgaria está en proceso de incorporarse (previsto para 2026).
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏦 Eurosistema</div>
+      <div class="card-body">
+        <strong>BCE</strong> (Banco Central Europeo)<br>+<br><strong>BCN</strong> (Bancos Centrales Nacionales) de los países de la zona euro.<br><br>
+        Solo los del euro, no todos los 27.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏛️ SEBC (Sistema Europeo de Bancos Centrales)</div>
+      <div class="card-body">
+        <strong>BCE</strong> (Banco Central Europeo)<br>+<br><strong>BCN</strong> (Bancos Centrales Nacionales) de los <em>27 EM</em>.<br><br>
+        Todos los países, con o sin euro.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌐 EEE (Espacio Económico Europeo)</div>
+      <div class="card-body">
+        <strong>UE (27 países)</strong><br>+<br><strong>Islandia, Liechtenstein, Noruega</strong> (Estados de la AELC)<br><br>
+        ⚠️ <em>Suiza tiene acuerdos bilaterales pero NO forma parte del EEE.</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">🧠 Truco para recordar las diferencias</div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Concepto</th><th>¿Quién lo forma?</th><th>Clave</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Eurozona</strong></td><td>20 países con el €</td><td><span class="badge badge-gold">Solo países con euro</span></td></tr>
+            <tr><td><strong>Eurosistema</strong></td><td>BCE + BCN zona euro</td><td><span class="badge badge-gold">Bancos centrales del euro</span></td></tr>
+            <tr><td><strong>SEBC</strong></td><td>BCE + BCN 27 EM</td><td><span class="badge badge-blue">Todos los bancos centrales UE</span></td></tr>
+            <tr><td><strong>EEE</strong></td><td>UE + Islandia, Liechtenstein, Noruega</td><td><span class="badge badge-green">UE ampliada con AELC</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="trap">Suiza <strong>NO pertenece al EEE</strong>. Es la trampa clásica. Tiene acuerdos con la UE, pero no forma parte del EEE. Islandia, Liechtenstein y Noruega SÍ.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 9. SCHENGEN -->
+<!-- ============================================================ -->
+<section class="section" id="schengen">
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <h2 class="section-title">ESPACIO <span>SCHENGEN</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🚧 El espacio Schengen — Lo esencial</div>
+      <div class="card-body">
+        Un espacio de libre circulación sin controles fronterizos interiores.<br><br>
+        <strong>29 países</strong> = UE (27) <strong>menos Irlanda y Chipre</strong> + <strong>Islandia, Suiza, Noruega y Liechtenstein</strong>.<br><br>
+        España se incorporó en <em>1991</em>.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📜 Marco jurídico</div>
+      <div class="card-body">
+        <p>• <strong>Acuerdo de Schengen (1985)</strong>: marco político. Firmado en Schengen (Luxemburgo).</p><br>
+        <p>• <strong>CAAS — Convenio de Aplicación (1990)</strong>: instrumento jurídico en vigor desde <em>1995</em>.</p><br>
+        <p>• <strong>Código de Fronteras Schengen</strong>: rige el espacio en la actualidad.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 style="font-size:16px;font-weight:700;color:var(--gold);margin-bottom:16px;">🚓 Vigilancia y Persecución Transfronteriza</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Característica</th>
+          <th>⚠️ Vigilancia Transfronteriza</th>
+          <th>🚨 Persecución Transfronteriza</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Finalidad</strong></td>
+          <td>Investigación judicial — <em>seguimiento discreto</em></td>
+          <td>Perseguir delito <em>flagrante</em> o evasión</td>
+        </tr>
+        <tr>
+          <td><strong>Delitos que activan</strong></td>
+          <td>Delitos que den lugar a extradición</td>
+          <td>Delito flagrante o fuga</td>
+        </tr>
+        <tr>
+          <td><strong>Detener</strong></td>
+          <td><span class="badge badge-red">❌ Prohibido</span></td>
+          <td><span class="badge badge-gold">⚡ Se permite retener</span></td>
+        </tr>
+        <tr>
+          <td><strong>Interrogar</strong></td>
+          <td><span class="badge badge-red">❌ Prohibido</span></td>
+          <td><span class="badge badge-red">❌ Prohibido</span></td>
+        </tr>
+        <tr>
+          <td><strong>Entrar en domicilios</strong></td>
+          <td><span class="badge badge-red">❌ Prohibido</span></td>
+          <td><span class="badge badge-red">❌ Prohibido</span></td>
+        </tr>
+        <tr>
+          <td><strong>Autorización</strong></td>
+          <td>Previa (o urgencia)</td>
+          <td>Previa (o urgencia)</td>
+        </tr>
+        <tr>
+          <td><strong>Límites territoriales</strong></td>
+          <td>5h sin autorización al cruzar frontera</td>
+          <td>Francia: 10 km — Portugal: 50 km o 2 horas</td>
+        </tr>
+        <tr>
+          <td><strong>Cese</strong></td>
+          <td>Por solicitud del EM o al llegar a 5h</td>
+          <td>Por solicitud, sobrepasar límites o cumplir objetivo</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">👮 Competencia y Normas sobre el Retenido</div>
+    <div class="card-body">
+      <p><strong>Cuerpos competentes:</strong> Policía Nacional, Guardia Civil, Ertzaintza, Mossos d'Esquadra y Vigilancia Aduanera.</p>
+      <br>
+      <p><strong>Si el retenido NO es nacional del país:</strong> debe ser liberado en un <em>máximo de 6 horas</em>, salvo solicitud formal de extradición.</p>
+    </div>
+  </div>
+
+  <div class="trap">En persecución transfronteriza: para <strong>Francia el límite es 10 km</strong> y para <strong>Portugal es 50 km o 2 horas</strong>. Son datos exactos que siempre preguntan. No los confundas.</div>
+  <div class="trap">En vigilancia: <strong>se puede seguir pero no detener ni interrogar</strong>. En persecución: <strong>se puede retener pero no interrogar ni entrar en domicilios</strong>. La diferencia entre retener y detener es clave.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 10. SISTEMAS DE INFORMACIÓN -->
+<!-- ============================================================ -->
+<section class="section" id="sistemas-info">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <h2 class="section-title">SISTEMAS DE <span>INFORMACIÓN</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗄️ SIS — El sistema central</div>
+    <div class="card-body">
+      El <strong>Sistema de Información Schengen (SIS)</strong> es la gran base de datos de cooperación policial de la UE.<br><br>
+      El <strong>SIS RECAST (2018, activo desde 2023)</strong> es la versión actualizada y mejorada.<br><br>
+      <div class="grid-3 mt-16">
+        <div style="padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;text-align:center;">
+          <div style="font-size:22px;margin-bottom:6px;">🏛️</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text);">C-SIS</div>
+          <div style="font-size:11px;color:var(--text3);">Central en Estrasburgo. Distribuye a los N-SIS nacionales.</div>
+        </div>
+        <div style="padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;text-align:center;">
+          <div style="font-size:22px;margin-bottom:6px;">🏠</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text);">N-SIS</div>
+          <div style="font-size:11px;color:var(--text3);">Copia nacional en cada Estado.</div>
+        </div>
+        <div style="padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;text-align:center;">
+          <div style="font-size:22px;margin-bottom:6px;">📞</div>
+          <div style="font-size:12px;font-weight:700;color:var(--text);">SIRENE</div>
+          <div style="font-size:11px;color:var(--text3);">Unidades de contacto 24/7 en cada país.</div>
+        </div>
+      </div>
+      <br>
+      <p><strong>EU-LISA</strong> gestiona técnicamente el SIS: sede en <em>Tallin</em>, operativa en <em>Estrasburgo</em>, respaldo en <em>Austria</em>.</p>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">🗃️ Otros Sistemas</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sistema</th><th>Para qué sirve</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Eurodac</strong></td><td>Huellas dactilares de solicitantes de <strong>asilo</strong></td></tr>
+          <tr><td><strong>VIS</strong></td><td>Sistema de información de <strong>visados</strong></td></tr>
+          <tr><td><strong>EES</strong></td><td>Registro de <strong>entradas y salidas</strong> de la UE</td></tr>
+          <tr><td><strong>ETIAS</strong></td><td><strong>Autorizaciones de viaje</strong> (como ESTA de EE.UU.)</td></tr>
+          <tr><td><strong>ECRIS-TCN</strong></td><td>Intercambio de <strong>antecedentes penales</strong> de nacionales de terceros países</td></tr>
+          <tr><td><strong>e-CODEX</strong></td><td><strong>Comunicación judicial</strong> electrónica entre EM</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 11. AGENCIAS POLICIALES -->
+<!-- ============================================================ -->
+<section class="section" id="agencias">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <h2 class="section-title">AGENCIAS POLICIALES <span>INTERNACIONALES</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tabs" id="tabs-agencias">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="openTab(event, 'tab-europol')">🔵 EUROPOL</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-eurojust')">⚖️ EUROJUST</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-frontex')">🛂 FRONTEX</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-cepol')">🎓 CEPOL</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-interpol')">🌐 INTERPOL</button>
+    </div>
+
+    <!-- EUROPOL -->
+    <div class="tab-content active fade-in" id="tab-europol">
+      <div class="grid-2">
+        <div class="card" style="border-color:rgba(58,123,255,0.4);">
+          <div class="card-title" style="color:#7BB3FF;">🔵 EUROPOL — Datos Clave</div>
+          <div class="card-body">
+            <p>• <strong>Año:</strong> 1999</p>
+            <p>• <strong>Sede:</strong> La Haya (Países Bajos)</p>
+            <p>• <strong>Países:</strong> 26 (⚠️ Dinamarca NO coopera en funciones operativas)</p>
+            <br>
+            <p><strong>Estructura:</strong></p>
+            <ul style="margin:8px 0 0 20px;line-height:1.9;">
+              <li>Consejo de Administración: 1 rep. por EM + 1 de la Comisión (4 años)</li>
+              <li>Director Ejecutivo: 4 años renovable <em>una vez</em></li>
+              <li>Interventor Financiero</li>
+              <li>Comité Presupuestario</li>
+              <li>Unidad Nacional de Europol (en cada país)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="border-color:rgba(58,123,255,0.4);">
+          <div class="card-title" style="color:#7BB3FF;">⚙️ Funciones e Informes</div>
+          <div class="card-body">
+            <p><strong>Funciones:</strong> Prevención de delincuencia grave, ciberdelincuencia y terrorismo. Apoyo analítico y operativo.</p>
+            <br>
+            <p><strong>Bases de datos:</strong> EIS, PROY ANÁLISIS, TECS, SIENA</p>
+            <br>
+            <p><strong>Informes periódicos:</strong></p>
+            <ul style="margin:8px 0 0 20px;line-height:1.9;">
+              <li>SOCTA: cada <em>4 años</em> (amenaza crimen organizado)</li>
+              <li>IOCTA: <em>anual</em> (cibercrimen)</li>
+              <li>TE-SAT: <em>anual</em> (terrorismo)</li>
+            </ul>
+            <br>
+            <p><strong>Centros especializados:</strong></p>
+            <ul style="margin:8px 0 0 20px;line-height:1.9;">
+              <li><em>EC3</em>: ciberdelincuencia</li>
+              <li><em>CELT</em>: terrorismo</li>
+              <li><em>EMSC</em>: migrantes</li>
+              <li><em>IPC3</em>: propiedad intelectual</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="trap">Europol, Eurojust y CEPOL: en todos los casos, <strong>Dinamarca NO participa operativamente</strong> aunque colabora. Son 26 países, no 27. Pregunta clásica.</div>
+    </div>
+
+    <!-- EUROJUST -->
+    <div class="tab-content fade-in" id="tab-eurojust">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title" style="color:#86EFAC;">⚖️ EUROJUST — Datos Clave</div>
+          <div class="card-body">
+            <p>• <strong>Año:</strong> 2002</p>
+            <p>• <strong>Sede:</strong> La Haya (Países Bajos)</p>
+            <p>• <strong>Países:</strong> 26 (Dinamarca colabora pero no integra)</p>
+            <br>
+            <p><strong>Función principal:</strong> Apoyo práctico a <em>fiscales</em> contra delincuencia transfronteriza y terrorismo.</p>
+            <br>
+            <p><strong>Estructura:</strong></p>
+            <ul style="margin:8px 0 0 20px;line-height:1.9;">
+              <li>Colegio de EUROJUST: 1 representante (fiscal, juez o policía) por EM por <em>5 años renovables</em></li>
+              <li>Consejo Ejecutivo</li>
+              <li>Director Administrativo</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:#86EFAC;">🚨 Herramientas Operativas</div>
+          <div class="card-body">
+            <p><strong>ECI — Equipos Conjuntos de Investigación:</strong> grupos mixtos de magistrados y policías de varios países que investigan juntos un caso.</p>
+            <br>
+            <p><strong>CCE — Célula de Coordinación de Emergencias:</strong> disponible <em>24/7</em> para situaciones urgentes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRONTEX -->
+    <div class="tab-content fade-in" id="tab-frontex">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title" style="color:#5EEAD4;">🛂 FRONTEX — Datos Clave</div>
+          <div class="card-body">
+            <p>• <strong>Año:</strong> 2004</p>
+            <p>• <strong>Sede:</strong> Varsovia (Polonia)</p>
+            <p>• <strong>Integra:</strong> EM de la UE + países Schengen</p>
+            <br>
+            <p><strong>Estructura:</strong></p>
+            <ul style="margin:8px 0 0 20px;line-height:1.9;">
+              <li>Consejo de Administración: 1 miembro por EM + 2 de la Comisión</li>
+              <li>Asociados: Islandia, Noruega, Suiza, Liechtenstein</li>
+              <li><em>Agente de Derechos Fundamentales</em> (independiente)</li>
+              <li>Foro Consultivo</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:#5EEAD4;">⚙️ Funciones</div>
+          <div class="card-body">
+            <ul style="margin:0 0 0 18px;line-height:2;">
+              <li>Gestión de <strong>fronteras exteriores</strong> de la UE</li>
+              <li>Vigilancia aérea</li>
+              <li>Apoyo en <strong>retornos</strong> de migrantes irregulares</li>
+              <li>Despliegue de la <strong>Guardia Europea de Fronteras y Costas</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CEPOL -->
+    <div class="tab-content fade-in" id="tab-cepol">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title" style="color:#D8B4FE;">🎓 CEPOL — Datos Clave</div>
+          <div class="card-body">
+            <p>• <strong>Año:</strong> 2005</p>
+            <p>• <strong>Sede:</strong> Budapest (Hungría)</p>
+            <p>• <strong>Países:</strong> 26 (Dinamarca colabora)</p>
+            <br>
+            <p><strong>Función:</strong> Formación para FCSE (Fuerzas y Cuerpos de Seguridad del Estado) a través de una <em>red de escuelas policiales</em>.</p>
+            <br>
+            <p><strong>Estructura:</strong></p>
+            <ul style="margin:8px 0 0 20px;line-height:1.9;">
+              <li>Consejo de Administración: 1 por EM + 1 de la Comisión (4 años)</li>
+              <li>CNU: Unidad Nacional CEPOL en cada país</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:#D8B4FE;">📊 Resumen Comparativo de Sedes</div>
+          <div class="card-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Agencia</th><th>Año</th><th>Sede</th></tr></thead>
+                <tbody>
+                  <tr><td>EUROPOL</td><td>1999</td><td>La Haya 🇳🇱</td></tr>
+                  <tr><td>EUROJUST</td><td>2002</td><td>La Haya 🇳🇱</td></tr>
+                  <tr><td>FRONTEX</td><td>2004</td><td>Varsovia 🇵🇱</td></tr>
+                  <tr><td>CEPOL</td><td>2005</td><td>Budapest 🇭🇺</td></tr>
+                  <tr><td>INTERPOL</td><td>1923</td><td>Lyon 🇫🇷</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERPOL -->
+    <div class="tab-content fade-in" id="tab-interpol">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title" style="color:var(--gold);">🌐 INTERPOL — Datos Clave</div>
+          <div class="card-body">
+            <p>• <strong>Año:</strong> 1923 (el más antiguo)</p>
+            <p>• <strong>Sede:</strong> Lyon (Francia)</p>
+            <p>• <strong>Países miembros:</strong> 196</p>
+            <br>
+            <p><strong>Estructura:</strong></p>
+            <ul style="margin:8px 0 0 20px;line-height:1.9;">
+              <li><em>Asamblea General:</em> reunión anual. Elige Presidente por <strong>4 años</strong>.</li>
+              <li><em>Secretaría General:</em> 5 años, reelegible.</li>
+              <li><em>Comité Ejecutivo:</em> 13 miembros (Presidente + 3 Vicepresidentes + 9 vocales). Se reúne 3 veces al año. Vocales no reelegibles inmediatamente.</li>
+              <li><em>ONC:</em> Oficinas Centrales Nacionales en cada país.</li>
+              <li><em>IGCI:</em> Complejo Mundial para la Innovación. Sede: <strong>Singapur</strong>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="color:var(--gold);">🎨 Sistema de Notificaciones (Colores)</div>
+          <div class="card-body">
+            <div class="notif-grid">
+              <div class="notif-card" style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);">
+                <div class="notif-dot" style="background:#EF4444;"></div>
+                <div class="notif-name">ROJA</div>
+                <div class="notif-desc">Persona <strong>buscada</strong></div>
+              </div>
+              <div class="notif-card" style="background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);">
+                <div class="notif-dot" style="background:#EAB308;"></div>
+                <div class="notif-name">AMARILLA</div>
+                <div class="notif-desc">Persona <strong>desaparecida</strong></div>
+              </div>
+              <div class="notif-card" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);">
+                <div class="notif-dot" style="background:#3B82F6;"></div>
+                <div class="notif-name">AZUL</div>
+                <div class="notif-desc">Recabar <strong>información</strong></div>
+              </div>
+              <div class="notif-card" style="background:rgba(30,30,30,0.5);border:1px solid rgba(100,100,100,0.4);">
+                <div class="notif-dot" style="background:#374151;box-shadow:0 0 0 2px rgba(255,255,255,0.2);"></div>
+                <div class="notif-name">NEGRA</div>
+                <div class="notif-desc">Identificar <strong>cadáver</strong></div>
+              </div>
+              <div class="notif-card" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);">
+                <div class="notif-dot" style="background:#22C55E;"></div>
+                <div class="notif-name">VERDE</div>
+                <div class="notif-desc">Advertencia sobre delincuente</div>
+              </div>
+              <div class="notif-card" style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);">
+                <div class="notif-dot" style="background:#F97316;"></div>
+                <div class="notif-name">NARANJA</div>
+                <div class="notif-desc"><strong>Peligro</strong> para la seguridad</div>
+              </div>
+              <div class="notif-card" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);">
+                <div class="notif-dot" style="background:#A855F7;"></div>
+                <div class="notif-name">MORADA</div>
+                <div class="notif-desc">Modus operandi / métodos</div>
+              </div>
+              <div class="notif-card" style="background:rgba(156,163,175,0.1);border:1px solid rgba(156,163,175,0.3);">
+                <div class="notif-dot" style="background:#9CA3AF;"></div>
+                <div class="notif-name">GRIS</div>
+                <div class="notif-desc">Activos <strong>delictivos</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="trap">El Comité Ejecutivo de Interpol tiene <strong>13 miembros</strong>: Presidente + 3 Vicepresidentes + 9 vocales. Y se reúne <strong>3 veces al año</strong> (no una). La Asamblea General sí se reúne una vez al año.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 12. TRIBUNALES -->
+<!-- ============================================================ -->
+<section class="section" id="tribunales">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <h2 class="section-title">TJUE <span>vs</span> TEDH</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="info">Son dos tribunales completamente distintos con funciones, sedes y sistemas jurídicos diferentes. <strong>No los confundas.</strong></div>
+
+  <div class="table-wrap mt-16">
+    <table>
+      <thead>
+        <tr>
+          <th>Característica</th>
+          <th>🇪🇺 TJUE</th>
+          <th>🏛️ TEDH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Pertenece a</strong></td>
+          <td>Unión Europea</td>
+          <td>Consejo de Europa</td>
+        </tr>
+        <tr>
+          <td><strong>Año de creación</strong></td>
+          <td>1952 (Tratado de París)</td>
+          <td>1959 (CEDH, reformado 1998)</td>
+        </tr>
+        <tr>
+          <td><strong>Sede</strong></td>
+          <td>Luxemburgo 🇱🇺</td>
+          <td>Estrasburgo 🇫🇷</td>
+        </tr>
+        <tr>
+          <td><strong>Función</strong></td>
+          <td>Interpretar y armonizar el Derecho de la UE. Conflictos entre EM e instituciones.</td>
+          <td>Proteger los derechos del CEDH. Cualquier persona puede acudir.</td>
+        </tr>
+        <tr>
+          <td><strong>Composición</strong></td>
+          <td>TJ: 27 jueces + 11 abogados generales (6 años)<br>TG: 54 jueces (2 por EM)</td>
+          <td>46 jueces (1 por Estado parte), &lt;65 años al ser candidatos, 9 años no renovables</td>
+        </tr>
+        <tr>
+          <td><strong>Presidencia</strong></td>
+          <td>Los jueces eligen Presidente y Vicepresidente por 3 años renovables</td>
+          <td>El Pleno elige Presidente por 3 años reelegible una vez</td>
+        </tr>
+        <tr>
+          <td><strong>Acceso</strong></td>
+          <td>EM, instituciones, particulares</td>
+          <td>Cualquier persona, tras agotar vías internas. En España: tras recurso de amparo ante el TC y en plazo de <strong>4 meses</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Salas/formaciones</strong></td>
+          <td>Sala 3 o 5 jueces / Gran Sala 15 / Pleno 27</td>
+          <td>Juez único / Comité 3 / Sala 7 / Gran Sala 17</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">⚙️ El juez del Estado demandado en el TEDH</div>
+    <div class="card-body">
+      Una regla importante: el juez del Estado demandado <strong>siempre participa</strong> en las formaciones que deciden sobre el <em>fondo</em> del asunto.<br><br>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Formación</th><th>¿Participa el juez del Estado?</th></tr></thead>
+          <tbody>
+            <tr><td>Sala (7 jueces)</td><td><span class="badge badge-green">✅ SÍ</span></td></tr>
+            <tr><td>Gran Sala (17 jueces)</td><td><span class="badge badge-green">✅ SÍ</span></td></tr>
+            <tr><td>Comité (3 jueces)</td><td><span class="badge badge-red">❌ NO</span></td></tr>
+            <tr><td>Juez único</td><td><span class="badge badge-red">❌ NO</span></td></tr>
+            <tr><td>Colegio (5 jueces)</td><td><span class="badge badge-red">❌ NO</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="trap">El TJUE pertenece a la UE (27 países). El TEDH pertenece al <strong>Consejo de Europa</strong> (46 países — mucho más amplio que la UE). Son organizaciones distintas. No confundas el Consejo de Europa con el Consejo Europeo (que es una institución de la UE).</div>
+  <div class="trap">Para acudir al TEDH desde España, el plazo es <strong>4 meses</strong> desde la última resolución interna (recurso de amparo ante el TC). Antes era 6 meses, se redujo en 2022.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- 13. EPPO y OEDE -->
+<!-- ============================================================ -->
+<section class="section" id="eppo-oede">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <h2 class="section-title">EPPO <span>&</span> OEDE</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🔍 EPPO — Fiscalía Europea</div>
+      <div class="card-body">
+        <p>• <strong>Nombre:</strong> European Public Prosecutor's Office</p>
+        <p>• <strong>Sede:</strong> Luxemburgo</p>
+        <p>• <strong>Países:</strong> 24 (sin Dinamarca, Irlanda ni Hungría)</p>
+        <br>
+        <p><strong>Función:</strong> Investigar y perseguir delitos que perjudiquen los <em>intereses financieros de la UE</em>.</p>
+        <br>
+        <p><strong>Organización Central:</strong></p>
+        <ul style="margin:8px 0 0 20px;line-height:1.9;">
+          <li>Colegio: Fiscal General Europeo + 1 Fiscal Europeo por EM</li>
+          <li>Salas permanentes</li>
+          <li>FGEU: mandato de <em>7 años no renovable</em></li>
+          <li>Director Administrativo</li>
+        </ul>
+        <br>
+        <p><strong>Nivel descentralizado:</strong><br>
+        Fiscales Europeos Delegados (FED). Mínimo 2 por EM. Mandato de <em>5 años renovables</em>.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔍 EPPO en España</div>
+      <div class="card-body">
+        <p><strong>Sede española:</strong> Madrid</p>
+        <p><strong>Deben ser:</strong> nacionales españoles activos en carrera judicial/fiscal.</p>
+        <p><strong>Situación:</strong> servicios especiales a tiempo completo.</p>
+        <br>
+        <p><strong>Competencias de los FED:</strong></p>
+        <ul style="margin:8px 0 0 20px;line-height:1.9;">
+          <li>Delitos contra la Hacienda de la UE</li>
+          <li>Fraude IVA &gt;10 millones en 2+ Estados</li>
+          <li>Fraude de subvenciones europeas</li>
+          <li>Blanqueo, cohecho, malversación</li>
+          <li>Organización criminal</li>
+        </ul>
+        <br>
+        <p><strong>Tribunal competente en España:</strong> la <em>Audiencia Nacional</em>.</p>
+        <p><strong>Juez de Garantías:</strong> autoriza diligencias restrictivas, medidas cautelares, secreto, apertura de juicio y protección de testigos.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card">
+    <div class="card-title">🛡️ OEDE — Orden Europea de Detención y Entrega</div>
+    <div class="card-body">
+      La euroorden es el mecanismo que permite a un juez europeo pedir la entrega de una persona que se encuentra en otro EM para enjuiciarla o que cumpla condena.
+      <br><br>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Supuesto</th><th>Pena mínima</th></tr></thead>
+          <tbody>
+            <tr><td>Para acciones penales en curso (enjuiciamiento)</td><td><span class="badge badge-gold">&gt; 12 meses</span></td></tr>
+            <tr><td>Para cumplimiento de condena ya impuesta</td><td><span class="badge badge-gold">&gt; 4 meses</span></td></tr>
+            <tr><td>Sin necesidad de doble tipificación (32 delitos)</td><td><span class="badge badge-gold">&gt; 3 años</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <p><strong>¿Quién emite la OEDE?</strong> El <em>Juez de la causa</em>.</p>
+      <p><strong>¿Quién ejecuta en España?</strong> El <em>JCI de la Audiencia Nacional</em> o el <em>Juez Central de Menores (JCM)</em>.</p>
+    </div>
+  </div>
+
+  <div class="card mt-16">
+    <div class="card-title">⏱️ Plazos de la OEDE — Los que preguntan en examen</div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Acción</th><th>Plazo</th></tr></thead>
+          <tbody>
+            <tr><td>Disposición judicial de detención (JCM)</td><td><span class="badge badge-blue">24 horas</span></td></tr>
+            <tr><td>Disposición judicial de detención (JCI)</td><td><span class="badge badge-blue">72 horas</span></td></tr>
+            <tr><td>Si <strong>consiente</strong> la entrega: resolución</td><td><span class="badge badge-green">10 días tras audiencia</span></td></tr>
+            <tr><td>Si <strong>no consiente</strong>: vista</td><td><span class="badge badge-gold">Máx. 3 días</span></td></tr>
+            <tr><td>Si no consiente: resolución definitiva</td><td><span class="badge badge-gold">60 días desde detención (+ 30 prórroga)</span></td></tr>
+            <tr><td>Entrega efectiva (tras resolución judicial)</td><td><span class="badge badge-purple">Máx. 10 días</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="trap">JCM tiene <strong>24 horas</strong> y JCI tiene <strong>72 horas</strong> para dictar la disposición judicial. Si el detenido consiente, resolución en <strong>10 días</strong> sin recurso. Si no consiente, puede recurrir ante la <em>Sala Penal de la AN</em>.</div>
+  <div class="trap">La EPPO opera con <strong>24 países</strong> (falta Dinamarca, Irlanda y Hungría). El Fiscal General Europeo tiene mandato de <strong>7 años NO renovable</strong>. Los FED tienen <strong>5 años renovables</strong>.</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- QUIZ FINAL -->
+<!-- ============================================================ -->
+<section class="section" id="quiz-section">
+  <div class="section-header">
+    <div class="section-num">🎓</div>
+    <h2 class="section-title">TEST DE <span>AUTOEVALUACIÓN</span></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="quiz-block" id="quizBlock">
+    <div class="quiz-title">🎯 Preguntas tipo examen CNP — Tema 4</div>
+
+    <div id="quizContainer">
+      <!-- Questions rendered by JS -->
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn btn-primary" id="btnPrev" onclick="prevQuestion()" style="display:none;">← Anterior</button>
+      <button class="btn btn-gold" id="btnNext" onclick="nextQuestion()">Siguiente →</button>
+      <div class="quiz-score" id="quizScore">Pregunta 1 de 20</div>
+    </div>
+
+    <div id="quizFinal" style="display:none; text-align:center; padding:30px;">
+      <div style="font-size:50px;margin-bottom:16px;">🏆</div>
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--gold); margin-bottom:8px;">RESULTADO FINAL</div>
+      <div id="finalScoreText" style="font-size:18px; color:var(--text2); margin-bottom:24px;"></div>
+      <button class="btn btn-gold" onclick="restartQuiz()">🔄 Repetir test</button>
+    </div>
+  </div>
+</section>
+
+</main>
+</div><!-- body-wrap -->
+</div><!-- page-wrap -->
+
+<script>
+// ===========================
+// QUIZ DATA
+// ===========================
+const quizData = [
+  {
+    q: "¿Cuál es el acto jurídico de mayor rango dentro del Derecho derivado de la UE?",
+    opts: ["La Directiva", "La Decisión", "El Reglamento", "La Recomendación"],
+    correct: 2,
+    exp: "<strong>El Reglamento</strong> es la norma de mayor rango del Derecho derivado. Es vinculante en todos sus elementos, tiene alcance general, efecto directo y no necesita transposición."
+  },
+  {
+    q: "Un reglamento europeo publicado en el DOUE sin indicar fecha de entrada en vigor, ¿cuándo comienza a aplicarse?",
+    opts: ["Al día siguiente de su publicación", "A los 7 días", "A los 20 días de su publicación en el DOUE", "A los 30 días"],
+    correct: 2,
+    exp: "Si el reglamento no indica fecha, entra en vigor <strong>a los 20 días</strong> de su publicación en el DOUE. Este plazo es el que se aplica por defecto."
+  },
+  {
+    q: "¿Cuál es el plazo general de transposición de una directiva de la UE?",
+    opts: ["1 año", "2 años", "3 años", "6 meses"],
+    correct: 1,
+    exp: "El plazo general de transposición de una directiva es de <strong>2 años</strong>. Si un Estado no la incorpora, la Comisión puede iniciar un procedimiento de infracción."
+  },
+  {
+    q: "El principio de subsidiariedad establece que:",
+    opts: ["La UE actúa siempre que tenga competencia", "La acción de la UE no puede ir más allá de lo necesario", "La UE solo interviene si los Estados no pueden lograr los objetivos suficientemente", "El derecho europeo prevalece sobre el nacional"],
+    correct: 2,
+    exp: "<strong>Subsidiariedad</strong>: la UE solo actúa cuando los objetivos no pueden lograrse de manera suficiente por los Estados miembros. Si el Estado puede hacerlo solo y bien, la UE no interviene."
+  },
+  {
+    q: "¿Cuántos países forman el espacio Schengen actualmente?",
+    opts: ["27", "26", "29", "30"],
+    correct: 2,
+    exp: "El espacio Schengen lo forman <strong>29 países</strong>: los 27 de la UE menos Irlanda y Chipre, más Islandia, Suiza, Noruega y Liechtenstein."
+  },
+  {
+    q: "En la persecución transfronteriza en el marco Schengen, ¿qué límite territorial aplica en Francia?",
+    opts: ["50 km", "10 km", "100 km", "2 horas"],
+    correct: 1,
+    exp: "En Francia el límite para la persecución transfronteriza es de <strong>10 km</strong>. En Portugal es 50 km o 2 horas."
+  },
+  {
+    q: "¿Qué organización gestiona técnicamente el SIS y tiene su sede operativa en Estrasburgo?",
+    opts: ["EUROPOL", "FRONTEX", "EU-LISA", "EUROJUST"],
+    correct: 2,
+    exp: "<strong>EU-LISA</strong> gestiona técnicamente el SIS. Su sede está en Tallin, la sede operativa en Estrasburgo y el respaldo en Austria."
+  },
+  {
+    q: "EUROPOL tiene su sede en:",
+    opts: ["Bruselas", "Estrasburgo", "La Haya", "Lyon"],
+    correct: 2,
+    exp: "EUROPOL tiene su sede en <strong>La Haya</strong> (Países Bajos), al igual que EUROJUST. Cuidado: INTERPOL está en Lyon, FRONTEX en Varsovia y CEPOL en Budapest."
+  },
+  {
+    q: "¿Qué notificación de INTERPOL se emite para personas desaparecidas?",
+    opts: ["Notificación Roja", "Notificación Azul", "Notificación Amarilla", "Notificación Verde"],
+    correct: 2,
+    exp: "La <strong>Notificación Amarilla</strong> se emite para personas <strong>desaparecidas</strong>. La Roja es para buscados/fugitivos, la Azul para recabar información y la Verde para advertencias."
+  },
+  {
+    q: "¿Cuántos países participan en la EPPO (Fiscalía Europea)?",
+    opts: ["27", "26", "25", "24"],
+    correct: 3,
+    exp: "La EPPO opera con <strong>24 países</strong>. No participan Dinamarca, Irlanda ni Hungría."
+  },
+  {
+    q: "El último país en incorporarse a la Unión Europea fue:",
+    opts: ["Bulgaria", "Rumanía", "Croacia", "Montenegro"],
+    correct: 2,
+    exp: "<strong>Croacia</strong> fue el último en incorporarse, en <strong>2013</strong>. Bulgaria y Rumanía lo hicieron en 2007."
+  },
+  {
+    q: "El TJUE pertenece a la UE. ¿A qué organización pertenece el TEDH?",
+    opts: ["Naciones Unidas", "Consejo de Europa", "La OTAN", "La OSCE"],
+    correct: 1,
+    exp: "El TEDH pertenece al <strong>Consejo de Europa</strong>, una organización distinta a la UE con 46 países miembros. No confundas el 'Consejo de Europa' con el 'Consejo Europeo' (institución de la UE)."
+  },
+  {
+    q: "Para que una persona pueda acudir al TEDH desde España, ¿cuál es el plazo tras la última resolución interna?",
+    opts: ["6 meses", "3 meses", "4 meses", "1 año"],
+    correct: 2,
+    exp: "El plazo para acudir al TEDH desde España es de <strong>4 meses</strong> tras agotar las vías internas (incluyendo el recurso de amparo ante el TC). Antes era 6 meses, se redujo en 2022."
+  },
+  {
+    q: "¿Qué mandato tiene el Fiscal General Europeo de la EPPO?",
+    opts: ["5 años renovables", "6 años renovable una vez", "7 años no renovable", "4 años renovables"],
+    correct: 2,
+    exp: "El Fiscal General Europeo de la EPPO tiene un mandato de <strong>7 años no renovable</strong>. Los Fiscales Europeos Delegados tienen 5 años renovables."
+  },
+  {
+    q: "Para emitir una Orden Europea de Detención y Entrega destinada al cumplimiento de una condena ya impuesta, ¿cuál es la pena mínima?",
+    opts: ["Más de 3 años", "Más de 12 meses", "Más de 4 meses", "Más de 6 meses"],
+    correct: 2,
+    exp: "Para el <strong>cumplimiento de condena</strong> ya impuesta, la pena debe ser superior a <strong>4 meses</strong>. Para enjuiciamiento, más de 12 meses. Para delitos sin doble tipificación, más de 3 años."
+  },
+  {
+    q: "La Iniciativa Ciudadana Europea requiere un grupo organizador de al menos 7 ciudadanos de 7 EM distintos y recoger firmas de:",
+    opts: ["500.000 personas en 5 EM", "1 millón de personas en al menos 7 EM", "2 millones de personas en al menos 10 EM", "1 millón de personas en todos los EM"],
+    correct: 1,
+    exp: "La ICE requiere <strong>1 millón de firmas en al menos 7 Estados miembros</strong>. El grupo organizador debe ser de mínimo 7 ciudadanos de 7 EM distintos. La ICE se dirige a la Comisión Europea."
+  },
+  {
+    q: "¿Cuál de los siguientes ámbitos es competencia EXCLUSIVA de la Unión Europea?",
+    opts: ["Educación", "Medio ambiente", "Política monetaria para la zona euro", "Salud pública"],
+    correct: 2,
+    exp: "La <strong>política monetaria para la zona euro</strong> es competencia exclusiva de la UE. La educación es de coordinación. El medio ambiente y la salud pública son competencias compartidas."
+  },
+  {
+    q: "Suiza en relación al Espacio Económico Europeo (EEE):",
+    opts: ["Forma parte del EEE junto con Noruega e Islandia", "No forma parte del EEE, aunque tiene acuerdos bilaterales con la UE", "Es candidata a incorporarse al EEE", "Forma parte del EEE desde 2004"],
+    correct: 1,
+    exp: "<strong>Suiza NO forma parte del EEE</strong>. Tiene acuerdos bilaterales con la UE, pero no ha ratificado el EEE. Sí forman parte del EEE: Islandia, Liechtenstein y Noruega."
+  },
+  {
+    q: "CEPOL tiene su sede en:",
+    opts: ["Varsovia", "La Haya", "Estrasburgo", "Budapest"],
+    correct: 3,
+    exp: "<strong>CEPOL</strong> tiene su sede en <strong>Budapest</strong> (Hungría). FRONTEX está en Varsovia, EUROPOL y EUROJUST en La Haya, y el TEDH en Estrasburgo."
+  },
+  {
+    q: "Si en una persecución transfronteriza el detenido NO es nacional del país, ¿cuánto tiempo máximo puede ser retenido sin solicitud de extradición?",
+    opts: ["24 horas", "12 horas", "6 horas", "72 horas"],
+    correct: 2,
+    exp: "Si el retenido no es nacional del país, debe ser liberado en un <strong>máximo de 6 horas</strong>, salvo solicitud formal de extradición."
+  }
+];
+
+// ===========================
+// QUIZ LOGIC
+// ===========================
+let currentQ = 0;
+let answers = new Array(quizData.length).fill(null);
+let answered = new Array(quizData.length).fill(false);
+
+function renderQuestion() {
+  const q = quizData[currentQ];
+  const container = document.getElementById('quizContainer');
+  const prev = document.getElementById('btnPrev');
+  const next = document.getElementById('btnNext');
+  const score = document.getElementById('quizScore');
+
+  prev.style.display = currentQ > 0 ? 'block' : 'none';
+  next.textContent = currentQ === quizData.length - 1 ? 'Ver Resultado' : 'Siguiente →';
+  score.textContent = `Pregunta ${currentQ + 1} de ${quizData.length}`;
+
+  const isAnswered = answered[currentQ];
+  const userAns = answers[currentQ];
+
+  let optsHtml = q.opts.map((opt, i) => {
+    let cls = '';
+    if (isAnswered) {
+      if (i === q.correct) cls = 'correct';
+      else if (i === userAns && userAns !== q.correct) cls = 'wrong';
+      else if (i !== userAns && i !== q.correct) cls = '';
+    }
+    const letters = ['A', 'B', 'C', 'D'];
+    return `<button class="quiz-opt ${cls}" onclick="answerQ(${i})" ${isAnswered ? 'disabled' : ''}>
+      <span class="quiz-letter">${letters[i]}</span>${opt}
+    </button>`;
+  }).join('');
+
+  const expHtml = isAnswered ? `<div class="quiz-explanation visible">✅ ${q.exp}</div>` : `<div class="quiz-explanation"></div>`;
+
+  container.innerHTML = `
+    <div class="quiz-q"><span>P${currentQ + 1}.</span> ${q.q}</div>
+    <div class="quiz-opts">${optsHtml}</div>
+    ${expHtml}
+  `;
+}
+
+function answerQ(idx) {
+  if (answered[currentQ]) return;
+  answers[currentQ] = idx;
+  answered[currentQ] = true;
+  renderQuestion();
+}
+
+function nextQuestion() {
+  if (currentQ < quizData.length - 1) {
+    currentQ++;
+    renderQuestion();
+  } else {
+    showFinal();
+  }
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
+}
+
+function showFinal() {
+  document.getElementById('quizContainer').style.display = 'none';
+  document.getElementById('btnPrev').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'none';
+  document.getElementById('quizScore').style.display = 'none';
+  document.getElementById('quizFinal').style.display = 'block';
+
+  const correct = answers.filter((a, i) => a === quizData[i].correct).length;
+  const total = quizData.length;
+  const pct = Math.round((correct / total) * 100);
+
+  let msg = '';
+  let color = '';
+  if (pct >= 90) { msg = '🌟 Excelente — Estás listo para el examen'; color = '#22C55E'; }
+  else if (pct >= 70) { msg = '👍 Bien — Repasa los fallos y vuelve a intentarlo'; color = '#F5C518'; }
+  else { msg = '📚 Necesitas más repaso — ¡Tú puedes!'; color = '#EF4444'; }
+
+  document.getElementById('finalScoreText').innerHTML = `<span style="font-size:48px;color:${color};font-family:'Bebas Neue',sans-serif;">${correct}/${total}</span><br><span style="color:${color};">${pct}%</span><br><br>${msg}`;
+}
+
+function restartQuiz() {
+  currentQ = 0;
+  answers = new Array(quizData.length).fill(null);
+  answered = new Array(quizData.length).fill(false);
+  document.getElementById('quizContainer').style.display = 'block';
+  document.getElementById('btnPrev').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'block';
+  document.getElementById('quizScore').style.display = 'block';
+  document.getElementById('quizFinal').style.display = 'none';
+  renderQuestion();
+}
+
+// ===========================
+// TABS
+// ===========================
+function openTab(evt, tabId) {
+  const parent = evt.target.closest('.tabs');
+  parent.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  parent.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  evt.target.classList.add('active');
+}
+
+// ===========================
+// ACCORDION
+// ===========================
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+}
+
+// ===========================
+// SIDEBAR NAV
+// ===========================
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===========================
+// PROGRESS SCROLL
+// ===========================
+window.addEventListener('scroll', () => {
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = window.scrollY;
+  const pct = Math.min(100, Math.round((scrolled / docH) * 100));
+  const fill = document.getElementById('progressFill');
+  if (fill) fill.style.width = pct + '%';
+
+  // Highlight active nav
+  const sections = document.querySelectorAll('section.section');
+  let current = '';
+  sections.forEach(sec => {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= 200 && rect.bottom > 200) {
+      current = '#' + sec.id;
+    }
+  });
+  if (current) {
+    document.querySelectorAll('.nav-item').forEach(n => {
+      n.classList.toggle('active', n.getAttribute('href') === current);
+    });
+  }
+});
+
+// ===========================
+// INIT
+// ===========================
+document.addEventListener('DOMContentLoaded', () => {
+  renderQuestion();
+});
+</script>
+</body>
+</html>

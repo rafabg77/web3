@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test LO 4/2015 — Infracciones</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1f1f1f;
+    --border: #2a2a2a;
+    --text: #f0ede6;
+    --muted: #666;
+    --leve: #4ade80;
+    --leve-bg: #052e16;
+    --grave: #fb923c;
+    --grave-bg: #1c0a00;
+    --muy: #f87171;
+    --muy-bg: #1f0707;
+    --accent: #e8d5b0;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem 1rem 4rem;
+  }
+
+  header {
+    width: 100%;
+    max-width: 720px;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+
+  header p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .stats-row {
+    width: 100%;
+    max-width: 720px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .stat .n {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    display: block;
+    color: var(--accent);
+  }
+
+  .stat .n.ok { color: var(--leve); }
+  .stat .n.err { color: var(--muy); }
+
+  .stat .l {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .progress-wrap {
+    width: 100%;
+    max-width: 720px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 720px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    margin-bottom: 1.25rem;
+    animation: fadeIn 0.25s ease;
+  }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+  .q-meta {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .q-text {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  .options {
+    width: 100%;
+    max-width: 720px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .opt {
+    padding: 1rem;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    text-transform: uppercase;
+  }
+
+  .opt:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: #1a1a14;
+    transform: translateY(-2px);
+  }
+
+  .opt:disabled { cursor: default; }
+
+  .opt.correct {
+    background: var(--leve-bg) !important;
+    border-color: var(--leve) !important;
+    color: var(--leve) !important;
+  }
+
+  .opt.wrong {
+    background: var(--muy-bg) !important;
+    border-color: var(--muy) !important;
+    color: var(--muy) !important;
+  }
+
+  .feedback {
+    width: 100%;
+    max-width: 720px;
+    padding: 0.875rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    display: none;
+    margin-bottom: 1rem;
+    border-left: 3px solid;
+  }
+
+  .feedback.show { display: block; animation: fadeIn 0.2s ease; }
+  .feedback.ok { background: var(--leve-bg); border-color: var(--leve); color: var(--leve); }
+  .feedback.fail { background: var(--muy-bg); border-color: var(--muy); color: var(--muy); }
+
+  .btn-next {
+    width: 100%;
+    max-width: 720px;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: none;
+  }
+
+  .btn-next.show { display: block; }
+  .btn-next:hover { background: #1a1810; }
+
+  /* RESULT */
+  .result {
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    padding: 3rem 2rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .result.show { display: block; }
+
+  .result .big-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(4rem, 14vw, 7rem);
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .result .badge {
+    display: inline-block;
+    margin: 1rem 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+  }
+
+  .result .badge.perfect { background: var(--leve-bg); color: var(--leve); border: 1px solid var(--leve); }
+  .result .badge.good { background: #0c1a05; color: #86efac; border: 1px solid #86efac; }
+  .result .badge.mid { background: var(--grave-bg); color: var(--grave); border: 1px solid var(--grave); }
+  .result .badge.low { background: var(--muy-bg); color: var(--muy); border: 1px solid var(--muy); }
+
+  .result .msg {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+  }
+
+  .result .breakdown {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    max-width: 400px;
+    margin: 0 auto 2rem;
+  }
+
+  .result .bd-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+  }
+
+  .result .bd-item span { display: block; font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+  .result .bd-item span.g { color: var(--leve); }
+  .result .bd-item span.r { color: var(--muy); }
+
+  .btn-restart {
+    padding: 1rem 2.5rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-restart:hover { background: #1a1810; }
+
+  /* fallos section in result */
+  .wrong-list {
+    width: 100%;
+    max-width: 720px;
+    margin-top: 2rem;
+    text-align: left;
+    display: none;
+  }
+
+  .wrong-list.show { display: block; }
+
+  .wrong-list h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muy);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wrong-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muy);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.65;
+  }
+
+  .wrong-item .wi-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--leve);
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 500px) {
+    .options { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Test de Infracciones</h1>
+  <p>LO 4/2015 — Protección de la Seguridad Ciudadana</p>
+</header>
+
+<div class="stats-row">
+  <div class="stat"><span class="n" id="s-total">0</span><span class="l">Respondidas</span></div>
+  <div class="stat"><span class="n ok" id="s-ok">0</span><span class="l">Correctas</span></div>
+  <div class="stat"><span class="n err" id="s-err">0</span><span class="l">Errores</span></div>
+  <div class="stat"><span class="n" id="s-left">—</span><span class="l">Restantes</span></div>
+</div>
+
+<div class="progress-wrap"><div class="progress-fill" id="pgbar"></div></div>
+
+<div id="quiz">
+  <div class="card" id="qcard">
+    <div class="q-meta" id="qmeta"></div>
+    <div class="q-text" id="qtext"></div>
+  </div>
+  <div class="options">
+    <button class="opt" id="bLeve"    onclick="answer('LEVE')">Leve</button>
+    <button class="opt" id="bGrave"   onclick="answer('GRAVE')">Grave</button>
+    <button class="opt" id="bMuy"     onclick="answer('MUY GRAVE')">Muy grave</button>
+  </div>
+  <div class="feedback" id="fb"></div>
+  <button class="btn-next" id="btnNext" onclick="next()">Siguiente →</button>
+</div>
+
+<div class="result" id="result">
+  <div class="big-pct" id="rpct"></div>
+  <div id="rbadge"></div>
+  <p class="msg" id="rmsg"></p>
+  <div class="breakdown">
+    <div class="bd-item"><span class="g" id="r-ok">0</span>Correctas</div>
+    <div class="bd-item"><span class="r" id="r-err">0</span>Errores</div>
+  </div>
+  <button class="btn-restart" onclick="init()">↺ Nuevo test aleatorio</button>
+</div>
+
+<div class="wrong-list" id="wrongList">
+  <h3>Infracciones falladas — repásalas</h3>
+  <div id="wrongItems"></div>
+</div>
+
+<script>
+const ALL = [
+  {t:"MUY GRAVE",q:"Reuniones o manifestaciones no comunicadas en inmediaciones de infraestructuras que prestan servicios básicos, con intrusión en sus recintos o sobrevuelo, cuando se genere riesgo para la vida o integridad física. Responsables: organizadores/promotores."},
+  {t:"MUY GRAVE",q:"Celebrar espectáculos públicos o actividades recreativas quebrantando la prohibición o suspensión ordenada por autoridad por razones de seguridad pública."},
+  {t:"MUY GRAVE",q:"Fabricar, almacenar, transportar o comerciar con armas reglamentarias, explosivos o artículos pirotécnicos incumpliendo la normativa, sin documentación/autorización o con omisión de medidas de seguridad, SIEMPRE QUE SE CAUSEN PERJUICIOS MUY GRAVES."},
+  {t:"MUY GRAVE",q:"Proyectar haces de luz mediante cualquier tipo de dispositivo sobre pilotos o conductores de medios de transporte, pudiendo deslumbrar o distraer su atención y provocar accidentes."},
+  {t:"GRAVE",q:"Intrusión en infraestructuras o instalaciones que prestan servicios básicos para la comunidad (incluido su sobrevuelo) cuando se haya producido una interferencia grave en su funcionamiento."},
+  {t:"GRAVE",q:"Perturbar gravemente la seguridad ciudadana en reuniones o manifestaciones frente a las sedes del Congreso, el Senado o las Asambleas de las CCAA (aunque no estuvieran reunidas), cuando no constituya infracción penal."},
+  {t:"GRAVE",q:"Perturbar el desarrollo de una reunión o manifestación lícita, cuando no constituya infracción penal."},
+  {t:"GRAVE",q:"Perturbar la seguridad ciudadana en actos públicos, espectáculos, ceremonias religiosas u otras reuniones con numerosas personas, cuando no sean constitutivas de infracción penal."},
+  {t:"GRAVE",q:"Causar desórdenes en vías, espacios o establecimientos públicos; obstaculizar la vía pública con mobiliario urbano, contenedores, vehículos, neumáticos u otros elementos, alterando gravemente la seguridad ciudadana."},
+  {t:"GRAVE",q:"Negarse a la disolución de reuniones o manifestaciones en tránsito público ordenada por autoridad competente (supuestos del art. 5 LO 9/1983)."},
+  {t:"GRAVE",q:"Carecer de los registros previstos en la ley para las actividades con trascendencia para la seguridad ciudadana y omitir las comunicaciones obligatorias."},
+  {t:"GRAVE",q:"Fabricar, reparar, almacenar, transportar o comerciar con armas reglamentarias, explosivos, cartuchería o artículos pirotécnicos incumpliendo la normativa, sin documentación o con omisión de medidas de seguridad (SIN causar perjuicios muy graves)."},
+  {t:"GRAVE",q:"Desobedecer o resistirse a la autoridad o a sus agentes en el ejercicio de sus funciones, cuando no sea constitutivo de delito."},
+  {t:"GRAVE",q:"Negativa a identificarse a requerimiento de la autoridad o sus agentes."},
+  {t:"GRAVE",q:"Alegar datos falsos o inexactos en los procesos de identificación."},
+  {t:"GRAVE",q:"Uso público e indebido de uniformes, insignias o condecoraciones oficiales, o elementos del equipamiento de cuerpos policiales o servicios de emergencia, que puedan generar engaño sobre quien los use, cuando no sea infracción penal."},
+  {t:"GRAVE",q:"Consumir o tener ilícitamente drogas tóxicas, estupefacientes o sustancias psicotrópicas (aunque no estuvieran destinadas al tráfico) en lugares, vías, establecimientos públicos o transportes colectivos, y abandonar en dichos lugares los instrumentos empleados."},
+  {t:"GRAVE",q:"Incumplir las restricciones a la navegación impuestas a las embarcaciones de alta velocidad y aeronaves ligeras."},
+  {t:"GRAVE",q:"Portar, exhibir o usar armas prohibidas de modo negligente, temerario o intimidatorio, o fuera de los lugares habilitados para su uso (aun con licencia), siempre que no constituya infracción penal."},
+  {t:"GRAVE",q:"Uso de imágenes o datos personales o profesionales de autoridades o miembros de las FCS que pueda poner en peligro su seguridad personal o familiar, la de instalaciones protegidas, o el éxito de una operación."},
+  {t:"GRAVE",q:"Falta de colaboración con las FCS en la averiguación de delitos o en la prevención de acciones que puedan poner en riesgo la seguridad ciudadana (supuestos del art. 7)."},
+  {t:"GRAVE",q:"Trasladar personas en cualquier tipo de vehículo con el objeto de facilitarles el acceso a drogas tóxicas, estupefacientes o sustancias psicotrópicas."},
+  {t:"GRAVE",q:"Plantación y cultivo ilícitos de drogas tóxicas, estupefacientes o sustancias psicotrópicas en lugares visibles al público."},
+  {t:"GRAVE",q:"Tolerar el consumo ilegal o el tráfico de drogas en locales o establecimientos públicos y la falta de diligencia en impedirlos por parte de propietarios, administradores o encargados."},
+  {t:"GRAVE",q:"Solicitud o aceptación por el demandante de servicios sexuales retribuidos en zonas de tránsito público, proximidades de lugares destinados a uso por menores, o cuando puedan generar riesgo para la seguridad vial."},
+  {t:"GRAVE",q:"Negar el acceso u obstruir deliberadamente las inspecciones o controles en fábricas, locales, establecimientos, embarcaciones y aeronaves."},
+  {t:"GRAVE",q:"Alegar datos o circunstancias falsas para la obtención de documentaciones reguladas en esta ley, siempre que no constituya infracción penal."},
+  {t:"GRAVE",q:"Actos de obstrucción que pretendan impedir a autoridad, empleado público o corporación oficial el ejercicio legítimo de sus funciones o el cumplimiento de resoluciones administrativas o judiciales, al margen de los procedimientos legales y sin ser delito."},
+  {t:"GRAVE",q:"Acciones u omisiones que impidan u obstaculicen el funcionamiento de los servicios de emergencia, provocando o incrementando un riesgo para la vida o integridad de las personas, o agravando las consecuencias del suceso."},
+  {t:"LEVE",q:"Incumplir las restricciones de circulación peatonal o el itinerario con ocasión de un acto público, reunión o manifestación, cuando provoquen alteraciones menores en su normal desarrollo."},
+  {t:"LEVE",q:"Remover vallas, encintados u otros elementos fijos o móviles colocados por las FCS para delimitar perímetros de seguridad (aun con carácter preventivo), cuando no constituya infracción grave."},
+  {t:"LEVE",q:"Celebrar reuniones en tránsito público o manifestaciones incumpliendo lo dispuesto para la comunicación, prohibiciones o instrucciones. Responsables: organizadores/promotores."},
+  {t:"LEVE",q:"Irregularidades en la cumplimentación de los registros previstos en esta ley con trascendencia para la seguridad ciudadana."},
+  {t:"LEVE",q:"Alegar datos o circunstancias falsas u omitir comunicaciones obligatorias dentro de los plazos establecidos."},
+  {t:"LEVE",q:"Exhibir objetos peligrosos para la vida o integridad física con ánimo intimidatorio, siempre que no constituya delito ni infracción grave."},
+  {t:"LEVE",q:"Omisión o insuficiencia de medidas que garanticen la conservación de la documentación de armas y explosivos, y falta de denuncia de pérdida o sustracción."},
+  {t:"LEVE",q:"Proyectar haces de luz mediante cualquier tipo de dispositivo sobre miembros de las FCS para impedir o dificultar el ejercicio de sus funciones."},
+  {t:"LEVE",q:"Faltas de respeto y consideración cuyo destinatario sea un miembro de las FCS en el ejercicio de sus funciones de protección de la seguridad, cuando no sean constitutivas de infracción penal."},
+  {t:"LEVE",q:"Dañar o deslucir bienes muebles o inmuebles de uso o servicio público, o bienes muebles o inmuebles privados en vía pública."},
+  {t:"LEVE",q:"Dejar sueltos o en condiciones de causar daños animales feroces o dañinos, o abandonar animales domésticos poniendo en peligro su vida."},
+  {t:"LEVE",q:"Escalar edificios o monumentos sin autorización cuando exista un riesgo cierto de ocasionar daños a las personas o bienes."},
+  {t:"LEVE",q:"Consumir bebidas alcohólicas en lugares, vías, establecimientos públicos o transportes públicos cuando perturbe gravemente la tranquilidad ciudadana."},
+  {t:"LEVE",q:"Realizar o incitar a la realización de actos que atenten contra la libertad sexual."},
+  {t:"LEVE",q:"Ejecutar actos de exhibición obscena, cuando no constituya infracción penal."},
+  {t:"LEVE",q:"Ocupar o permanecer en cualquier inmueble, vivienda o edificio ajeno, contra la voluntad de su propietario, arrendatario o titular."},
+  {t:"LEVE",q:"Ocupar la vía pública con infracción de lo dispuesto por la ley, contra la decisión de autoridad competente, o para la venta ambulante no autorizada."},
+  {t:"LEVE",q:"Incumplir la obligación de obtener la documentación personal legalmente exigida, y la omisión o negligencia en la denuncia de su sustracción o extravío."},
+  {t:"LEVE",q:"Negarse a entregar la documentación personal legalmente exigida cuando se hubiese acordado su retirada o retención."},
+  {t:"LEVE",q:"Negligencia en la custodia y conservación de la documentación personal legalmente exigida (3ª y posteriores pérdidas o extravíos en un año)."},
+];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+let qs, idx, ok, err, answered, mistakes;
+
+function init(){
+  qs = shuffle([...ALL]);
+  idx=0; ok=0; err=0; answered=false; mistakes=[];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('quiz').style.display='block';
+  document.getElementById('wrongList').classList.remove('show');
+  updateStats(); loadQ();
+}
+
+function loadQ(){
+  answered=false;
+  const q=qs[idx];
+  document.getElementById('qmeta').textContent = `Pregunta ${idx+1} / ${qs.length}`;
+  document.getElementById('qtext').textContent = q.q;
+  document.getElementById('pgbar').style.width = `${(idx/qs.length)*100}%`;
+  ['bLeve','bGrave','bMuy'].forEach(id=>{
+    const b=document.getElementById(id);
+    b.disabled=false; b.className='opt';
+  });
+  const fb=document.getElementById('fb');
+  fb.className='feedback'; fb.textContent='';
+  document.getElementById('btnNext').className='btn-next';
+}
+
+function answer(chosen){
+  if(answered)return;
+  answered=true;
+  const q=qs[idx];
+  const isOk=(chosen===q.t);
+  const map={'LEVE':'bLeve','GRAVE':'bGrave','MUY GRAVE':'bMuy'};
+  document.getElementById(map[chosen]).className='opt '+(isOk?'correct':'wrong');
+  if(!isOk) document.getElementById(map[q.t]).className='opt correct';
+  ['bLeve','bGrave','bMuy'].forEach(id=>document.getElementById(id).disabled=true);
+  const fb=document.getElementById('fb');
+  if(isOk){ok++;fb.textContent='✓ Correcto';fb.className='feedback show ok';}
+  else{err++;mistakes.push(q);fb.textContent=`✗ Incorrecto — La respuesta correcta es: ${q.t}`;fb.className='feedback show fail';}
+  updateStats();
+  const bn=document.getElementById('btnNext');
+  bn.textContent=(idx+1<qs.length)?'Siguiente →':'Ver resultados →';
+  bn.className='btn-next show';
+}
+
+function next(){
+  idx++;
+  if(idx>=qs.length){showResult();return;}
+  loadQ();
+}
+
+function updateStats(){
+  document.getElementById('s-total').textContent=ok+err;
+  document.getElementById('s-ok').textContent=ok;
+  document.getElementById('s-err').textContent=err;
+  document.getElementById('s-left').textContent=qs ? Math.max(0,qs.length-(ok+err)) : '—';
+}
+
+function showResult(){
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('pgbar').style.width='100%';
+  const pct=Math.round((ok/qs.length)*100);
+  document.getElementById('rpct').textContent=pct+'%';
+  document.getElementById('r-ok').textContent=ok;
+  document.getElementById('r-err').textContent=err;
+  let cls,msg;
+  if(pct===100){cls='perfect';msg='Perfección total. Dominas absolutamente todas las infracciones de la LO 4/2015.';}
+  else if(pct>=90){cls='good';msg='Nivel excelente. Repasa los fallos y lo bordas.';}
+  else if(pct>=70){cls='mid';msg='Buen resultado, pero hay margen de mejora. Revisa los grupos que más te cuestan.';}
+  else{cls='low';msg='Necesitas un repaso más profundo. Estudia los tres grupos de infracciones y vuelve a intentarlo.';}
+  document.getElementById('rbadge').innerHTML=`<div class="badge ${cls}">${pct===100?'⭐ Perfecto':'Resultado '+pct+'%'}</div>`;
+  document.getElementById('rmsg').textContent=msg;
+  document.getElementById('result').classList.add('show');
+
+  if(mistakes.length>0){
+    const wl=document.getElementById('wrongList');
+    const wi=document.getElementById('wrongItems');
+    wi.innerHTML=mistakes.map(m=>`<div class="wrong-item">${m.q}<div class="wi-label">Correcta: ${m.t}</div></div>`).join('');
+    wl.classList.add('show');
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex,follow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 12 · Protección Internacional — Guía de Estudio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#131c30;
+  --navy-2:#1c2942;
+  --ink:#232b3a;
+  --paper:#f2efe6;
+  --paper-2:#e9e5d8;
+  --card:#fffdf8;
+  --gold:#a9832c;
+  --gold-2:#c9a24a;
+  --oxblood:#7c3232;
+  --oxblood-bg:#f6e9e5;
+  --sage:#3f6146;
+  --sage-bg:#e8efe4;
+  --slate:#525a68;
+  --line:#d8d2c0;
+  --radius:4px;
+  --serif:'Fraunces', Georgia, serif;
+  --sans:'Source Sans 3', system-ui, sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.55;
+  font-size:16px;
+}
+::selection{background:var(--gold-2); color:var(--navy);}
+
+/* ---------- Top identity bar ---------- */
+.topbar{
+  background:var(--navy);
+  color:#cfd6e6;
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  padding:9px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.topbar span.dim{color:#7c88a3;}
+
+/* ---------- Hero ---------- */
+.hero{
+  background:
+    radial-gradient(1200px 400px at 85% -120px, rgba(169,131,44,.16), transparent 60%),
+    var(--navy);
+  color:#f2efe6;
+  padding:64px 28px 46px;
+  position:relative;
+  overflow:hidden;
+  border-bottom:3px solid var(--gold);
+}
+.hero::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size:100% 34px;
+  pointer-events:none;
+}
+.hero-inner{max-width:1180px; margin:0 auto; position:relative;}
+.eyebrow{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold-2);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+.eyebrow .stamp{
+  border:1px solid var(--gold-2);
+  padding:3px 8px;
+  border-radius:2px;
+}
+h1.title{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(2.1rem, 4.4vw, 3.5rem);
+  margin:0 0 10px;
+  letter-spacing:-.01em;
+}
+h1.title em{
+  font-style:normal;
+  color:var(--gold-2);
+}
+.subtitle{
+  font-size:1.05rem;
+  color:#c7cede;
+  max-width:640px;
+  margin:0 0 30px;
+}
+.hero-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.pill{
+  font-family:var(--mono);
+  font-size:12px;
+  padding:7px 13px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.18);
+  color:#dfe3ee;
+  background:rgba(255,255,255,.04);
+}
+.pill.gold{border-color:var(--gold-2); color:var(--gold-2);}
+
+/* timeline signature strip */
+.timeline{
+  margin-top:38px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid rgba(255,255,255,.14);
+  padding-top:22px;
+}
+.timeline .tl-item{
+  padding-right:18px;
+  border-left:2px solid var(--gold);
+  padding-left:14px;
+}
+.timeline .tl-date{
+  font-family:var(--mono);
+  color:var(--gold-2);
+  font-size:13px;
+  font-weight:600;
+}
+.timeline .tl-desc{
+  font-size:12.5px;
+  color:#aeb6c9;
+  margin-top:4px;
+  line-height:1.4;
+}
+
+/* ---------- notice ---------- */
+.notice-wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+.notice{
+  background:var(--oxblood-bg);
+  border:1px solid #dcbcb4;
+  border-left:4px solid var(--oxblood);
+  color:#5a2727;
+  padding:16px 20px;
+  margin-top:-1px;
+  border-radius:0 var(--radius) var(--radius) 0;
+  font-size:14px;
+  transform:translateY(-26px);
+}
+.notice b{font-family:var(--serif); font-weight:600;}
+
+/* ---------- layout ---------- */
+.layout{
+  max-width:1180px;
+  margin:0 auto;
+  padding:8px 28px 90px;
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:44px;
+  align-items:start;
+}
+nav.toc{
+  position:sticky;
+  top:18px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 16px;
+  max-height:calc(100vh - 36px);
+  overflow-y:auto;
+}
+nav.toc h2{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--slate);
+  margin:2px 4px 12px;
+}
+nav.toc ol{
+  list-style:none;
+  margin:0; padding:0;
+  counter-reset:toc;
+}
+nav.toc li{counter-increment:toc;}
+nav.toc a{
+  display:flex;
+  gap:10px;
+  align-items:baseline;
+  padding:7px 6px;
+  border-radius:3px;
+  text-decoration:none;
+  color:var(--ink);
+  font-size:13.3px;
+  border-left:2px solid transparent;
+}
+nav.toc a::before{
+  content:counter(toc, decimal-leading-zero);
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--gold);
+  flex:none;
+}
+nav.toc a:hover{background:var(--paper-2);}
+nav.toc a.active{
+  border-left-color:var(--gold);
+  background:var(--paper-2);
+  font-weight:600;
+}
+
+main{min-width:0;}
+
+section.block{
+  scroll-margin-top:18px;
+  margin-bottom:52px;
+  padding-top:6px;
+}
+.block-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  margin-bottom:6px;
+  border-bottom:2px solid var(--navy);
+  padding-bottom:10px;
+}
+.block-num{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--gold);
+  border:1px solid var(--gold);
+  border-radius:50%;
+  width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center;
+  flex:none;
+}
+.block-head h2{
+  font-family:var(--serif);
+  font-size:1.55rem;
+  font-weight:600;
+  margin:0;
+  color:var(--navy-2);
+}
+.block-intro{
+  color:var(--slate);
+  font-size:14.5px;
+  margin:10px 0 22px;
+  max-width:74ch;
+}
+
+h3.sub{
+  font-family:var(--serif);
+  font-size:1.12rem;
+  font-weight:600;
+  color:var(--navy-2);
+  margin:26px 0 10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+h3.sub::before{
+  content:"";
+  width:8px; height:8px;
+  background:var(--gold);
+  border-radius:50%;
+  flex:none;
+}
+h4.subsub{
+  font-family:var(--sans);
+  font-weight:700;
+  font-size:14.5px;
+  color:var(--navy-2);
+  margin:16px 0 6px;
+}
+
+p{margin:0 0 12px; font-size:14.7px;}
+ul.study, ol.study{margin:0 0 14px; padding-left:20px; font-size:14.7px;}
+ul.study li, ol.study li{margin-bottom:6px;}
+ul.study{list-style:none; padding-left:2px;}
+ul.study > li{
+  position:relative;
+  padding-left:16px;
+}
+ul.study > li::before{
+  content:"—";
+  position:absolute; left:0; color:var(--gold);
+  font-weight:700;
+}
+
+/* article citation chip - signature element */
+.art{
+  font-family:var(--mono);
+  font-size:12.2px;
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  color:var(--navy-2);
+  padding:1px 7px;
+  border-radius:3px;
+  white-space:nowrap;
+}
+
+/* definition card */
+.def{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-left:3px solid var(--navy);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:14px 18px;
+  margin:14px 0;
+}
+.def .lbl{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:block;
+  margin-bottom:6px;
+}
+
+/* callouts */
+.callout{
+  border-radius:var(--radius);
+  padding:14px 18px;
+  margin:16px 0;
+  font-size:14.3px;
+  border:1px solid;
+}
+.callout.key{background:#eef1f6; border-color:#c6cfe0; }
+.callout.key .lbl{color:var(--navy-2);}
+.callout.warn{background:var(--oxblood-bg); border-color:#dcbcb4;}
+.callout.warn .lbl{color:var(--oxblood);}
+.callout.right{background:var(--sage-bg); border-color:#c3d6c4;}
+.callout.right .lbl{color:var(--sage);}
+.callout .lbl{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:6px;
+  font-weight:600;
+}
+
+/* tables */
+.table-wrap{overflow-x:auto; margin:16px 0 22px; border:1px solid var(--line); border-radius:var(--radius);}
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:13.3px;
+  background:var(--card);
+}
+table caption{
+  text-align:left;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--slate);
+  padding:10px 14px;
+  background:var(--paper-2);
+  border-bottom:1px solid var(--line);
+}
+th, td{
+  padding:9px 13px;
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  text-align:left;
+  vertical-align:top;
+}
+th{
+  background:var(--navy);
+  color:#eef0f5;
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:.02em;
+}
+tr:last-child td{border-bottom:none;}
+td:last-child, th:last-child{border-right:none;}
+tr:nth-child(even) td{background:#faf8f2;}
+
+.status{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:10.5px;
+  padding:2px 7px;
+  border-radius:10px;
+  font-weight:600;
+}
+.status.new{background:var(--sage-bg); color:var(--sage);}
+.status.repl{background:#fbf0da; color:#8a6a1a;}
+.status.mod{background:#eaeef6; color:#3a4a70;}
+
+/* two-col grid for compare */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0;}
+@media(max-width:700px){.grid2{grid-template-columns:1fr;}}
+.grid2 .col{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;
+}
+.grid2 .col h5{
+  margin:0 0 8px; font-family:var(--serif); font-size:1rem; color:var(--navy-2);
+}
+
+.phase-row{
+  display:flex; gap:12px; margin:10px 0; align-items:flex-start;
+}
+.phase-num{
+  font-family:var(--mono); font-weight:600; color:var(--gold);
+  border:1px solid var(--gold); border-radius:50%;
+  width:26px; height:26px; flex:none; display:flex; align-items:center; justify-content:center; font-size:12px;
+}
+.phase-body b{display:block; font-size:14px; margin-bottom:2px; color:var(--navy-2);}
+.phase-body p{margin:0; font-size:13.6px; color:var(--slate);}
+
+footer{
+  background:var(--navy);
+  color:#9aa4bb;
+  text-align:center;
+  padding:26px;
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:.06em;
+}
+
+@media(max-width:920px){
+  .layout{grid-template-columns:1fr;}
+  nav.toc{position:static; max-height:none;}
+  .timeline{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Ingreso a Escala Básica · Policía Nacional</span>
+  <span class="dim">Guía de estudio · Jurispol</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="stamp">Tema 12</span> Extranjería &amp; Asilo</div>
+    <h1 class="title">Protección <em>Internacional</em></h1>
+    <p class="subtitle">Del asilo clásico de la Ley 12/2009 al Nuevo Pacto Europeo de Migración y Asilo: estatuto de refugiado, protección subsidiaria, procedimiento común, acogida, Dublín III, Eurodac, apátridas y protección temporal.</p>
+    <div class="hero-meta">
+      <span class="pill gold">Tema modificado en su totalidad</span>
+      <span class="pill">Ley 12/2009</span>
+      <span class="pill">PEMA · 9 Reglamentos + 1 Directiva</span>
+      <span class="pill">14 apartados</span>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">14 may 2024</div>
+        <div class="tl-desc">Aprobación del Pacto Europeo de Migración y Asilo (DOUE 22 may 2024)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">12 jun 2026</div>
+        <div class="tl-desc">Aplicación de la mayoría de Reglamentos del Pacto (Dir. 2024/1346, Reg. 1348, 1349, 1350, 1352, 1356, 1358)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">1 jul 2026</div>
+        <div class="tl-desc">Aplicación del Reg. 2024/1347 (estatutos), Reg. 2024/1351 (Dublín) y Reg. 2024/1359 (crisis)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">11 jun 2026</div>
+        <div class="tl-desc">Instrucción de la Subsecretaría del MI: aplicación práctica del Pacto en España</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="notice-wrap">
+  <div class="notice">
+    <b>Aviso de actualización —</b> Se ha modificado el <b>Tema 12 · Extranjería</b>: se modifica el tema entero para incorporar el Nuevo Pacto Europeo de Migración y Asilo, vigente desde el 12 de junio y el 1 de julio de 2026.
+  </div>
+</div>
+
+<div class="layout">
+
+  <nav class="toc" id="toc">
+    <h2>Contenido del tema</h2>
+    <ol>
+      <li><a href="#s1">La protección internacional</a></li>
+      <li><a href="#s2">Concepto y tipología</a></li>
+      <li><a href="#s3">Exclusión y denegación</a></li>
+      <li><a href="#s4">Cese, retirada y revocación</a></li>
+      <li><a href="#s5">Procedimiento de solicitud</a></li>
+      <li><a href="#s6">Contenido de la protección</a></li>
+      <li><a href="#s7">Sistema de acogida</a></li>
+      <li><a href="#s8">Gestión asilo y migración (Dublín)</a></li>
+      <li><a href="#s9">Procedimiento fronterizo de retorno</a></li>
+      <li><a href="#s10">Menores y vulnerables</a></li>
+      <li><a href="#s11">Recurso contencioso-admin.</a></li>
+      <li><a href="#s12">Sistema Eurodac</a></li>
+      <li><a href="#s13">Estatuto de apátrida</a></li>
+      <li><a href="#s14">Protección temporal</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- 1 -->
+    <section class="block" id="s1">
+      <div class="block-head"><span class="block-num">1</span><h2>La protección internacional</h2></div>
+      <p class="block-intro">Marco normativo: del asilo de 1984 a la Ley 12/2009 y su profunda transformación por el Nuevo Pacto Europeo de Migración y Asilo (PEMA).</p>
+
+      <h3 class="sub">Evolución histórica</h3>
+      <ul class="study">
+        <li>El derecho de asilo en España se remonta a <b>1984</b>: la <span class="art">Ley 5/1984</span>, de 26 de marzo, desarrolló el mandato del <span class="art">art. 13.4 CE</span>.</li>
+        <li>Tras su modificación en 1994 y el impulso del <b>Tratado de Ámsterdam (1997)</b>, la <span class="art">Ley 12/2009</span>, de 30 de octubre, transpuso las Directivas de segunda generación del <b>Sistema Europeo Común de Asilo (SECA)</b>, articulando la protección en torno a dos figuras: <b>el derecho de asilo</b> y <b>el derecho a la protección subsidiaria</b>.</li>
+        <li>El <b>Pacto Europeo de Migración y Asilo (PEMA)</b>: 9 Reglamentos + 1 Directiva, aprobados el <b>14 de mayo de 2024</b>, publicados el <b>22 de mayo de 2024</b>, todos obligatorios y de aplicación directa.</li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Instrumentos del PEMA — contenido y comparativa con la Ley 12/2009</caption>
+          <thead><tr><th>Instrumento</th><th>Contenido principal</th><th>Comparativa / aplicación</th></tr></thead>
+          <tbody>
+            <tr><td>Dir. (UE) 2024/1346</td><td>Normas de acogida de solicitantes</td><td>Sustituye Dir. 2013/33/UE. Desde 12 jun 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1347</td><td>Requisitos: estatuto de refugiado y prot. subsidiaria</td><td>Sustituye Dir. 2011/95/UE. Desde 1 jul 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1348</td><td>Procedimiento común de protección internacional</td><td>Sustituye Dir. 2013/32/UE. Desde 12 jun 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1349</td><td>Procedimiento fronterizo de retorno</td><td>Nuevo. Desde 12 jun 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1350</td><td>Marco de Reasentamiento y Admisión Humanitaria</td><td>Nuevo, sin precedente. Desde 12 jun 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1351</td><td>Gestión del asilo y la migración (sustituye Dublín)</td><td>Sustituye Reg. 604/2013. Desde 1 jul 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1352</td><td>Modificaciones técnicas ECRIS-TCN y RCDI (triaje)</td><td>Instrumento de apoyo. Desde 12 jun 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1356</td><td>Triaje de nacionales de terceros países en frontera</td><td>Nuevo, sin precedente. Desde 12 jun 2026</td></tr>
+            <tr><td>Reg. (UE) 2024/1358</td><td>Creación / reforma de EURODAC</td><td>Sustituye Reg. 603/2013. Desde 12 jun 2026 (art. 29 desde 2029)</td></tr>
+            <tr><td>Reg. (UE) 2024/1359</td><td>Crisis, instrumentalización y fuerza mayor</td><td>Nuevo. Desde 1 jul 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout key">
+        <span class="lbl">Idea clave</span>
+        La Ley 12/2009 <b>permanece formalmente vigente</b>, pero su vigencia residual se limita a lo <b>no cubierto por el Pacto</b>: el estatuto de apátrida (<span class="art">RD 865/2001</span>), las solicitudes en embajadas y consulados, y ciertos aspectos de acogida hasta la transposición de la <span class="art">Dir. 2024/1346</span>. La <b>Instrucción de la Subsecretaría de 11 de junio de 2026</b> reconoce la primacía del Derecho de la UE y la inaplicación de la Ley 12/2009 cuando resulte incompatible.
+      </div>
+
+      <h3 class="sub">Definiciones esenciales</h3>
+      <div class="def">
+        <span class="lbl">Derecho de asilo</span>
+        Protección dispensada a nacionales no comunitarios o apátridas a quienes se reconoce la condición de refugiado, conforme al <span class="art">art. 3 Ley 12/2009</span>, la <b>Convención de Ginebra de 1951</b> y su <b>Protocolo de Nueva York de 1967</b>.
+      </div>
+      <div class="def">
+        <span class="lbl">Refugiado</span>
+        Quien, por fundados temores de persecución por <b>raza, religión, nacionalidad, opiniones políticas, pertenencia a determinado grupo social, género, orientación o identidad sexual</b>, se halla fuera de su país de nacionalidad (o residencia habitual, si es apátrida) y no puede o no quiere acogerse a su protección — siempre que no incurra en causas de exclusión (<span class="art">art. 8</span>) ni de denegación/revocación (<span class="art">art. 9</span>).
+      </div>
+      <div class="def">
+        <span class="lbl">Protección subsidiaria</span>
+        Ampara a quienes, <b>sin reunir los requisitos del asilo</b>, presenten motivos fundados para temer un riesgo real de sufrir daños graves si regresan (<span class="art">art. 15 Reg. 2024/1347</span>), y no puedan o quieran acogerse a la protección de su país.
+      </div>
+
+      <div class="callout right">
+        <span class="lbl">Efecto común a ambas</span>
+        La <b>no devolución ni expulsión</b> de sus beneficiarios (<span class="art">art. 21 Reg. 2024/1347</span>), junto con las medidas de la normativa de la UE y convenios internacionales ratificados por España.
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="block" id="s2">
+      <div class="block-head"><span class="block-num">2</span><h2>Concepto y tipología de protección internacional</h2></div>
+      <p class="block-intro">La protección internacional es el género que comprende dos modalidades: el <b>estatuto de refugiado</b> y la <b>protección subsidiaria</b> (<span class="art">art. 1 Ley 12/2009</span>).</p>
+
+      <h3 class="sub">El estatuto de refugiado</h3>
+      <p>Conforme al <span class="art">art. 3 Ley 12/2009</span>, en línea con el <span class="art">art. 1 A Convención de Ginebra</span> y el <span class="art">Reg. 2024/1347</span>.</p>
+      <div class="callout warn">
+        <span class="lbl">Actos de persecución (art. 6 Ley / art. 9 Reg.)</span>
+        Violaciones graves y reiteradas de derechos humanos fundamentales (especialmente las no exceptuables del <span class="art">art. 15.2 CEDH</span>) o una acumulación de medidas equivalente: violencia física o psíquica (incluida sexual), medidas discriminatorias, procesamientos o penas desproporcionados, denegación de tutela judicial, sanción por objeción al servicio militar cuando implique delitos contra la humanidad, y actos por razón de género o contra menores.
+      </div>
+
+      <h4 class="subsub">Los 5 motivos de persecución (art. 7 Ley 12/2009 / art. 10 Reg. 2024/1347)</h4>
+      <ul class="study">
+        <li><b>Raza:</b> color, origen o pertenencia a un grupo étnico determinado.</li>
+        <li><b>Religión:</b> convicciones teístas, no teístas o ateas; práctica o abstención; comportamientos privados o públicos.</li>
+        <li><b>Nacionalidad:</b> no se limita a la ciudadanía; puede comprender identidad cultural, étnica o lingüística.</li>
+        <li><b>Opiniones políticas:</b> opinión, pensamiento o creencia sobre agentes de persecución o sus métodos.</li>
+        <li><b>Pertenencia a determinado grupo social (PGS):</b> característica innata o antecedentes inmutables con identidad diferenciada. Orientación sexual, identidad de género, circunstancias de género y discapacidad pueden ser relevantes.</li>
+      </ul>
+      <div class="callout key">
+        <span class="lbl">Regla práctica</span>
+        Basta que el <b>agente persecutor atribuya</b> la característica al solicitante, sin que este deba poseerla realmente. Agentes de persecución (<span class="art">art. 13</span>): el Estado, quienes controlen el territorio, o agentes no estatales cuando el Estado no pueda o no quiera proteger.
+      </div>
+
+      <h3 class="sub">La protección subsidiaria</h3>
+      <p><span class="art">Art. 4 Ley 12/2009</span>, en línea con el <span class="art">Reg. 2024/1347</span>. Daños graves (<span class="art">art. 15 Reg.</span>, desplaza al <span class="art">art. 10 Ley</span>):</p>
+      <ul class="study">
+        <li>Pena de muerte o riesgo de ejecución.</li>
+        <li>Tortura o tratos inhumanos o degradantes.</li>
+        <li>Amenazas graves por violencia indiscriminada en conflicto armado internacional o interno.</li>
+      </ul>
+      <p><i>La violencia indiscriminada puede afectar a cualquiera, con independencia de su situación personal: a mayor afectación personal, se exige un menor nivel de violencia generalizada. No es necesario que el conflicto esté formalmente calificado como tal en Derecho internacional humanitario.</i></p>
+
+      <div class="callout key">
+        <span class="lbl">Relación entre ambas formas</span>
+        Se examinan de forma <b>subsidiaria y de oficio</b> en un procedimiento único: primero el estatuto de refugiado y, <b>solo si no procede</b>, la protección subsidiaria — sin que el solicitante deba pedir cada modalidad expresamente. Los Estados (como España) pueden equiparar los derechos reconocidos.
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="block" id="s3">
+      <div class="block-head"><span class="block-num">3</span><h2>Exclusión y denegación de la protección internacional</h2></div>
+      <p class="block-intro">Dos figuras distintas que conviene no confundir en el examen: la exclusión se apoya en la conducta pasada del solicitante; la denegación, en su peligrosidad presente.</p>
+
+      <h3 class="sub">Causas de exclusión del estatuto de refugiado (art. 12 Reg. 2024/1347 / art. 8 Ley 12/2009)</h3>
+      <ul class="study">
+        <li><b>Protección de otro organismo de la ONU</b> (art. 1.D Convención de Ginebra) — p. ej. UNRWA, mientras subsista.</li>
+        <li><b>Equiparación a la nacionalidad del país de residencia.</b></li>
+        <li><b>Crímenes contra la paz, de guerra o contra la humanidad.</b></li>
+        <li><b>Delito común grave</b> fuera del país de refugio, cometido antes de ser admitido como refugiado.</li>
+        <li><b>Actos contrarios a las finalidades y principios de la ONU</b> (participación, financiación o incitación al terrorismo).</li>
+      </ul>
+      <p>Se excluye <b>sin necesidad de evaluación adicional de proporcionalidad</b> vinculada al temor a la persecución (<span class="art">art. 12.4 Reg. 2024/1347</span>).</p>
+
+      <h3 class="sub">Causas de exclusión de la protección subsidiaria (art. 17 Reg. 2024/1347 / art. 11 Ley 12/2009)</h3>
+      <ul class="study">
+        <li>Crimen contra la paz, de guerra o contra la humanidad.</li>
+        <li>Delito grave antes de llegar a España, o condena firme por delito grave tras su llegada.</li>
+        <li>Actos contrarios a las finalidades y principios de la ONU.</li>
+        <li>Constituir un peligro para la comunidad o la seguridad nacional.</li>
+      </ul>
+      <div class="callout warn">
+        <span class="lbl">Exclusiva de la protección subsidiaria</span>
+        Peligro para la seguridad interior o exterior de España o para el orden público (<span class="art">art. 11.1.d Ley 12/2009</span>) — no debe confundirse con las causas de denegación.
+      </div>
+
+      <h3 class="sub">Exclusión vs. denegación</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspecto</th><th>Exclusión</th><th>Denegación</th></tr></thead>
+          <tbody>
+            <tr><td><b>Qué es</b></td><td>La persona no merece protección por lo que hizo</td><td>Podría merecerla, pero es un peligro para España</td></tr>
+            <tr><td><b>Cuándo opera</b></td><td>Desde el principio (<i>ab initio</i>)</td><td>Aunque la persecución o el riesgo sean reales</td></tr>
+            <tr><td><b>Por qué motivo</b></td><td>Conductas delictivas graves cometidas antes</td><td>Peligrosidad presente / condena firme por delito grave</td></tr>
+            <tr><td><b>Base legal</b></td><td>Arts. 8 y 11 Ley 12/2009 / Arts. 12 y 17 Reg. 2024/1347</td><td>Arts. 9 y 12 Ley 12/2009 (no desplazados por el PEMA)</td></tr>
+            <tr><td><b>¿Igual para refugiado y subsidiaria?</b></td><td>No — la de subsidiaria es más amplia</td><td>Sí — idénticas para ambas modalidades</td></tr>
+            <tr><td><b>Efectos</b></td><td>Impide el reconocimiento; no cabe recurso ordinario de revisión del fondo</td><td>Abre plazo de recurso contencioso-administrativo (art. 37 Ley 12/2009)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout key">
+        <span class="lbl">Denegación (idéntica para ambos estatutos)</span>
+        En todo caso se denegará a quien constituya, por razones fundadas, un <b>peligro para la seguridad de España</b>, o a quien, con <b>condena firme por delito grave</b>, constituya una amenaza para la comunidad (<span class="art">arts. 9 y 12 Ley 12/2009</span>, vigentes como fuente supletoria).
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="block" id="s4">
+      <div class="block-head"><span class="block-num">4</span><h2>Cese, retirada y revocación de la protección internacional</h2></div>
+      <p class="block-intro">El Reglamento (UE) 2024/1347 articula la extinción en torno a tres figuras: <b>el cese</b>, <b>la exclusión</b> y <b>la retirada</b>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Cese, retirada y exclusión sobrevenida — efectos temporales</caption>
+          <thead><tr><th>Instituto</th><th>Estatuto de refugiado</th><th>Protección subsidiaria</th><th>Efecto temporal</th></tr></thead>
+          <tbody>
+            <tr><td>Cese</td><td>Art. 11 Reg. 2024/1347</td><td>Art. 16 Reg. 2024/1347</td><td><b>Pro futuro</b> (ex nunc)</td></tr>
+            <tr><td>Retirada (incl. exclusión sobrevenida, falsedad, peligrosidad)</td><td>Art. 14 Reg. 2024/1347</td><td>Art. 19 Reg. 2024/1347</td><td>Pro futuro si es cese; retroactivo si es exclusión o falsedad</td></tr>
+            <tr><td>Exclusión originaria no detectada</td><td>Art. 12 Reg. 2024/1347</td><td>Art. 17 Reg. 2024/1347</td><td><b>Retroactivo</b> (ex tunc)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Cese del estatuto de refugiado (art. 11 Reg. 2024/1347)</h3>
+      <p>Opera cuando la persona <b>deja de necesitar protección</b> por haber cambiado las circunstancias que la motivaron. No implica que el estatuto nunca debiera haberse concedido, sino que ha devenido innecesario. Situaciones:</p>
+      <ul class="study">
+        <li>Acogerse de nuevo, voluntariamente, a la protección del país de su nacionalidad.</li>
+        <li>Recobrar voluntariamente la nacionalidad perdida.</li>
+        <li>Adquirir una nueva nacionalidad y disfrutar de su protección.</li>
+        <li>Establecerse de nuevo, voluntariamente, en el país que había abandonado.</li>
+        <li>Nacionales de terceros países: no poder seguir negándose a la protección de su país por haber desaparecido las circunstancias (excepto razones imperiosas de persecución anterior; el cambio debe ser significativo y no temporal).</li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Causas de la retirada — efecto temporal y fundamento</caption>
+          <thead><tr><th>Causa</th><th>Efecto temporal</th><th>Fundamento</th></tr></thead>
+          <tbody>
+            <tr><td>Cese (circunstancias han cambiado)</td><td>Ex nunc (pro futuro)</td><td>Arts. 11, 16 Reg. 2024/1347</td></tr>
+            <tr><td>Exclusión sobrevenida o nunca detectada</td><td>Ex tunc (retroactivo)</td><td>Arts. 12, 17 Reg. 2024/1347</td></tr>
+            <tr><td>Fraude o tergiversación de hechos</td><td>Ex tunc (retroactivo)</td><td>Arts. 14.1.c) y 19.1.c) Reg. 2024/1347</td></tr>
+            <tr><td>Peligro para la seguridad o la comunidad</td><td>Ex nunc (pro futuro)</td><td>Arts. 14.1.d) y e) Reg. 2024/1347</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <span class="lbl">Procedimiento de cese y retirada</span>
+        Regulado en el <span class="art">art. 66 Reg. 2024/1348</span>, aplicable desde el 12 jun 2026: información al interesado, trámite de audiencia, resolución motivada y recurso judicial con <b>efecto suspensivo</b> como regla general. La carga de la prueba recae siempre en la <b>autoridad decisoria</b>.
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="block" id="s5">
+      <div class="block-head"><span class="block-num">5</span><h2>El procedimiento de solicitud</h2></div>
+      <p class="block-intro">El Reg. (UE) 2024/1348 instaura un procedimiento común, vigente para todas las solicitudes desde el 12 de junio de 2026, que desplaza los arts. 17 a 37 de la Ley 12/2009.</p>
+
+      <h3 class="sub">Sistema trifásico de presentación</h3>
+      <div class="phase-row">
+        <div class="phase-num">1</div>
+        <div class="phase-body"><b>Formulación (art. 26)</b><p>El nacional de tercer país o apátrida expresa su deseo de protección internacional, sin necesidad de palabras específicas. Desde ese momento goza de todos los derechos del Reglamento.</p></div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-num">2</div>
+        <div class="phase-body"><b>Registro (art. 27)</b><p>Plazo máximo <b>5 días hábiles</b> (ampliable a 15 días si hay número desproporcionado). Autoridad no competente: remisión en <b>3 días hábiles</b>, con otros 5 días para registrar.</p></div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-num">3</div>
+        <div class="phase-body"><b>Formalización (art. 28)</b><p>Mediante entrevista personal individual. <b>21 días</b> desde el registro (en frontera, máx. <b>5 días</b> desde el primer registro). Desde aquí empieza a contar el plazo del procedimiento administrativo.</p></div>
+      </div>
+
+      <div class="callout key">
+        <span class="lbl">Documentación en dos niveles (art. 29 Reg. 2024/1348)</span>
+        <b>Documento de registro</b> (art. 29.1): acredita la solicitud, válido hasta expedirse el de formalización. <b>Documento de formalización</b> (art. 29.4): validez máxima de <b>12 meses</b>, renovable, con imagen facial, firma, estatuto y declaración de permanencia.
+      </div>
+
+      <h3 class="sub">Derechos y obligaciones del solicitante</h3>
+      <div class="grid2">
+        <div class="col">
+          <h5>Derechos</h5>
+          <ul class="study">
+            <li>Ser documentado como solicitante.</li>
+            <li>Asistencia jurídica gratuita e intérprete.</li>
+            <li>Que se comunique su solicitud al ACNUR.</li>
+            <li>Suspensión de devolución, expulsión o extradición.</li>
+            <li>Conocer el expediente en cualquier momento.</li>
+            <li>Atención sanitaria y prestaciones sociales.</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h5>Obligaciones</h5>
+          <ul class="study">
+            <li>Cooperar con las autoridades.</li>
+            <li>Presentar cuanto antes todos los elementos de la solicitud.</li>
+            <li>Proporcionar impresiones dactilares, fotografías y consentir grabaciones (previamente informado).</li>
+            <li>Informar de su domicilio y cambios.</li>
+            <li>Comparecer cuando se le requiera.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub">Órganos competentes</h3>
+      <ul class="study">
+        <li><b>OAR</b> (Oficina de Asilo y Refugio), dependiente de la Dirección General de Política Interior del MI: instruye y propone resolución.</li>
+        <li><b>MI</b>: resuelve, previo informe de la <b>CIAR</b> (Comisión Interministerial de Asilo y Refugio).</li>
+        <li><b>ACNUR</b>: derecho a estar presente en todas las fases.</li>
+        <li>Procedimiento fronterizo: el <b>DGPI</b> resuelve en 4 días naturales; superado el plazo, resuelve la <b>Subsecretaría del Interior</b> a propuesta de la CIAR.</li>
+      </ul>
+
+      <h3 class="sub">Plazos del procedimiento</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fase</th><th>Plazo</th></tr></thead>
+          <tbody>
+            <tr><td>Admisibilidad</td><td>2 meses, prorrogable otros 2 meses (10 días hábiles en el supuesto del art. 38.1.e)</td></tr>
+            <tr><td>Examen del fondo (ordinario)</td><td>6 meses desde formalización, prorrogable otros 6 meses</td></tr>
+            <tr><td>Examen del fondo (acelerado)</td><td>Máximo 3 meses, sin derecho al trabajo</td></tr>
+            <tr><td><b>Plazo absoluto máximo</b></td><td><b>21 meses</b> desde la formalización</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">La entrevista personal</h3>
+      <p>Pieza central del procedimiento (<span class="art">art. 17 Ley 12/2009</span>; <span class="art">arts. 28 y 46 Reg. 2024/1348</span>).</p>
+      <ul class="study">
+        <li><b>Individual</b> siempre, salvo excepción imprescindible.</li>
+        <li><b>Presencial</b> como regla; videoconferencia solo si las circunstancias lo justifican.</li>
+        <li><b>Grabación obligatoria</b> (novedad del Reglamento) con acceso previo a la resolución.</li>
+        <li>Perspectiva de género: entrevistador/intérprete del sexo preferido, separación del cónyuge si procede.</li>
+      </ul>
+
+      <h3 class="sub">Inadmisión a trámite (art. 38 Reg. 2024/1348)</h3>
+      <ul class="study">
+        <li>Otro Estado miembro ya concedió protección internacional.</li>
+        <li>El tercer país es <b>primer país de asilo</b> o <b>tercer país seguro</b>.</li>
+        <li>Solicitud posterior sin nuevos elementos pertinentes.</li>
+        <li>Presentada más de 7 días hábiles tras notificarse una decisión de retorno.</li>
+      </ul>
+
+      <h3 class="sub">El procedimiento acelerado</h3>
+      <p>Tres modalidades en la práctica: <b>ordinario</b> (6 meses, prorrogable), <b>preferente</b> (plazos a la mitad) y <b>acelerado</b> (reservado a países con tasa de reconocimiento ≤ 20% en la UE; máximo 3 meses, sin trabajo). Supuestos: país de origen seguro, solicitud dilatoria, motivos graves de seguridad, declaraciones incoherentes o falsas, o nacionalidad con tasa de reconocimiento ≤ 20%.</p>
+
+      <h3 class="sub">El procedimiento en frontera</h3>
+      <p>Coexisten el procedimiento breve del <span class="art">art. 21 Ley 12/2009</span> (4 días, prorrogables a 10) y el <b>procedimiento fronterizo de asilo</b> (<span class="art">arts. 43-54 Reg. 2024/1348</span>), de alcance más amplio.</p>
+      <div class="callout key">
+        <span class="lbl">Duración</span>
+        Plazo máximo de <b>12 semanas</b> desde el registro, incluyendo el eventual recurso; la Administración procura resolver en las primeras <b>6 semanas</b>. Transcurrido el plazo máximo sin resolución, la solicitud pasa al procedimiento ordinario.
+      </div>
+
+      <h3 class="sub">El triaje o cribado (Reg. UE 2024/1356)</h3>
+      <p>Fase previa y autónoma, sin equivalente anterior, que precede a cualquier procedimiento de protección o retorno. Duración: no más de <b>7 días</b> en frontera exterior, <b>3 días</b> en territorio (4 días si ya llevaba más de 72h aprehendida). Incluye identificación biométrica, registro en EURODAC, examen de vulnerabilidad e inspecciones de seguridad.</p>
+
+      <h3 class="sub">Terceros países seguros designados a nivel nacional</h3>
+      <p style="font-size:13.6px; color:var(--slate);">Bangladesh, Egipto, Kosovo, India, Marruecos, Colombia y Túnez, además de los países candidatos a la adhesión a la UE: Albania, Bosnia y Herzegovina, Georgia, Moldavia, Montenegro, Macedonia del Norte, Serbia, Turquía y Ucrania.</p>
+
+      <h3 class="sub">Solicitudes en embajadas y consulados</h3>
+      <p>Especialidad <b>exclusivamente nacional</b> (<span class="art">art. 38 Ley 12/2009</span>): vía excepcional y discrecional, autónoma e independiente del procedimiento ordinario. Tramitación: Misión Diplomática/Oficina Consular → informe preceptivo del MAEUEC → instrucción de la OAR → resolución del MI (previo informe CIAR).</p>
+
+      <h3 class="sub">Reasentamiento y Admisión Humanitaria (Reg. UE 2024/1350)</h3>
+      <p>Marco <b>voluntario</b>, vía de entrada legal y protegida, <b>anterior</b> a la solicitud en territorio o frontera. Plan bienal 2026-2027: <b>10.430 personas</b>. Permiso inicial mínimo de <b>3 años</b> (reasentados) o <b>1 año</b> (admisión humanitaria).</p>
+    </section>
+
+    <!-- 6 -->
+    <section class="block" id="s6">
+      <div class="block-head"><span class="block-num">6</span><h2>El contenido de la protección internacional</h2></div>
+      <p class="block-intro">El Reglamento (UE) 2024/1347, directamente aplicable desde el <b>12 de junio de 2026</b>, establece el contenido de ambos estatutos, desplazando la Ley 12/2009 en este ámbito.</p>
+
+      <div class="callout key">
+        <span class="lbl">Principio de non-refoulement</span>
+        Garantía nuclear, consagrada en el <span class="art">art. 33 Convención de Ginebra</span> y el <span class="art">art. 19 Carta DFUE</span>: ningún Estado puede expulsar, devolver ni extraditar a una persona a un país donde corra riesgo de persecución o daños graves. Absoluta frente al refugiado; idéntica garantía para tortura/tratos inhumanos en protección subsidiaria (<span class="art">art. 3 CEDH</span>).
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Permisos de residencia (art. 24 Reg. 2024/1347)</caption>
+          <thead><tr><th>Estatuto</th><th>Permiso inicial</th><th>Renovación</th></tr></thead>
+          <tbody>
+            <tr><td>Refugiado (asilo)</td><td>Mínimo <b>3 años</b></td><td>3 años. Sí, mientras subsistan los motivos.</td></tr>
+            <tr><td>Protección subsidiaria</td><td>Mínimo <b>1 año</b></td><td>2 años. Sí, mientras subsistan las condiciones.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><i>El PEMA <b>unifica y reduce</b> el plazo anterior de la tarjeta de residencia por razones humanitarias (que se expedía por 1 año hasta alcanzar la residencia de larga duración de 5 años, conforme a la LOEx).</i></p>
+
+      <h3 class="sub">Documentos de viaje</h3>
+      <ul class="study">
+        <li><b>Refugiados:</b> documento conforme al Anexo de la Convención de Ginebra, salvo razones imperiosas de seguridad nacional u orden público.</li>
+        <li><b>Protección subsidiaria:</b> documento conforme al Derecho nacional, cuando no puedan obtener pasaporte nacional.</li>
+        <li>Vigencia mínima superior a <b>1 año</b> en ambos casos.</li>
+      </ul>
+
+      <h3 class="sub">Acceso al empleo, educación y prestaciones sociales</h3>
+      <p>Derecho de acceso al empleo, educación, asistencia social y sanitaria y vivienda <b>en condiciones equivalentes a las de los nacionales</b>, reduciéndose las diferencias frente al régimen anterior de la Directiva 2011/95/UE.</p>
+
+      <h3 class="sub">Unidad familiar: extensión familiar vs. reagrupación familiar</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspecto</th><th>Extensión familiar (art. 40)</th><th>Reagrupación familiar (art. 41)</th></tr></thead>
+          <tbody>
+            <tr><td><b>Naturaleza</b></td><td>Traslación del estatuto al familiar</td><td>Procedimiento autónomo de residencia</td></tr>
+            <tr><td><b>Requisito del familiar</b></td><td>Puede necesitar protección propia o estar en España</td><td>No necesita protección propia; reside en el extranjero</td></tr>
+            <tr><td><b>Estatuto resultante</b></td><td>Asilo o protección subsidiaria derivados</td><td>Autorización de residencia por reagrupación</td></tr>
+            <tr><td><b>Condiciones económicas</b></td><td>No exigidas</td><td>Exceptuadas del régimen general</td></tr>
+            <tr><td><b>Régimen aplicable</b></td><td>Ley 12/2009</td><td>Ley 12/2009 (cap. V Dir. 2003/86/CE)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <span class="lbl">Atención</span>
+        Ambas vías son <b>alternativas y no acumulativas</b>: no puede pretenderse simultáneamente la extensión familiar y la reagrupación para el mismo familiar y por la misma circunstancia.
+      </div>
+      <p style="font-size:13.6px;">Familiares reagrupables: cónyuge/pareja de hecho estable; hijos menores no casados (propios, del cónyuge, adoptivos o de acogida); hijos con discapacidad que no puedan proveerse; y padre/madre a cargo, mayores de 65 años, por razones humanitarias.</p>
+    </section>
+
+    <!-- 7 -->
+    <section class="block" id="s7">
+      <div class="block-head"><span class="block-num">7</span><h2>Sistema de acogida en materia de protección internacional</h2></div>
+      <p class="block-intro">Regulado en el <span class="art">RD 220/2022</span>, de 29 de marzo, que desarrolla el Capítulo III del Título II de la Ley 12/2009 y suprime los antiguos <b>CAR</b>.</p>
+
+      <h3 class="sub">Fases del itinerario (máx. 18 meses, salvo vulnerabilidad)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Fase</th><th>Denominación</th><th>Contenido principal</th></tr></thead>
+          <tbody>
+            <tr><td>1ª</td><td>Acogida</td><td>Evaluación inicial, alojamiento en centro colectivo (CAED/CETI), necesidades básicas, orientación jurídica y social</td></tr>
+            <tr><td>2ª</td><td>Integración</td><td>Recursos más autónomos (pisos tutelados/CAST), formación, empleo, idioma</td></tr>
+            <tr><td>3ª</td><td>Autonomía</td><td>Salida del sistema; apoyo puntual; ayudas de alquiler o prestaciones complementarias</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Recursos del sistema</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Recurso</th><th>Siglas</th><th>Características</th></tr></thead>
+          <tbody>
+            <tr><td>Centro de Estancia Temporal de Inmigrantes</td><td>CETI</td><td>Ceuta y Melilla. Primera acogida por frontera sur. Gestión directa del Estado.</td></tr>
+            <tr><td>Centro de Acogida, Emergencia y Derivación</td><td>CAED</td><td>1ª fase. Alojamiento colectivo integral. Sustituye a los antiguos CAR.</td></tr>
+            <tr><td>Centro de Atención, Acogida y Protección</td><td>CAST</td><td>2ª fase. Menor intervención, autonomía progresiva.</td></tr>
+            <tr><td>Pisos tutelados / recursos autónomos</td><td>—</td><td>3ª fase. Viviendas compartidas gestionadas por entidades.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Reducción y retirada de las condiciones de acogida</h3>
+      <div class="grid2">
+        <div class="col">
+          <h5>Causas de reducción</h5>
+          <ul class="study">
+            <li>Ocultación de información relevante sobre situación económica.</li>
+            <li>Incumplimiento de obligaciones del itinerario.</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h5>Causas de retirada (más graves)</h5>
+          <ul class="study">
+            <li>Abandono voluntario sin causa justificada.</li>
+            <li>Ocultación de recursos económicos suficientes.</li>
+            <li>Resolución desfavorable firme de la solicitud.</li>
+            <li>Riesgo para la convivencia o seguridad del centro.</li>
+            <li>Infracciones graves o muy graves.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub">Gestión mediante acción concertada</h3>
+      <p>Permite encomendar la prestación de servicios de acogida a entidades sin ánimo de lucro (Cruz Roja, ACNUR, Cáritas, ACCEM…) sin necesidad de contrato público. Autorización de la <b>Secretaría de Estado de Migraciones</b>, duración de <b>2 a 4 años</b>, prorrogable por igual periodo.</p>
+
+      <h3 class="sub">Régimen disciplinario (RD 220/2022 y Orden ISM/922/2023)</h3>
+      <p>Principios: legalidad, irretroactividad, tipicidad, responsabilidad, proporcionalidad, prescripción y concurrencia de sanciones. Infracciones: leves, graves y muy graves.</p>
+      <ul class="study">
+        <li><b>Inicio:</b> de oficio por el Director General de Gestión del Sistema de Acogida (propia iniciativa, petición de otro órgano o denuncia).</li>
+        <li><b>Instrucción:</b> Subdirección General de Protección Internacional.</li>
+        <li><b>Resolución:</b> Dirección General de Atención Humanitaria y del Sistema de Acogida y Protección Internacional.</li>
+      </ul>
+
+      <h3 class="sub">El internamiento en las normas de acogida (Dir. UE 2024/1346)</h3>
+      <p>El internamiento <b>no tiene carácter punitivo</b> y no puede imponerse por el mero hecho de ser solicitante ni por razón de nacionalidad. Causas tasadas: decidir sobre el derecho a entrar en un procedimiento fronterizo; verificar identidad/nacionalidad; obtener elementos de la solicitud con riesgo de fuga; garantizar obligaciones legales; procedimiento de retorno; o seguridad nacional/orden público.</p>
+      <div class="callout warn">
+        <span class="lbl">MENAS</span>
+        Pueden ser internados, pero <b>nunca en centros policiales ni penitenciarios</b>; a partir de los 16 años, posible acogida en centros de adultos si redunda en su interés superior.
+      </div>
+      <p>Acceso al mercado de trabajo: a los <b>6 meses</b> desde el registro de la solicitud (salvo demora imputable al solicitante); en el procedimiento acelerado <b>no existe</b> derecho al trabajo.</p>
+    </section>
+
+    <!-- 8 -->
+    <section class="block" id="s8">
+      <div class="block-head"><span class="block-num">8</span><h2>Gestión del asilo y la migración (sustitución de Dublín III)</h2></div>
+      <p class="block-intro">El Reglamento (UE) 2024/1351 establece un marco común basado en tres pilares: determinación del Estado responsable, mecanismo de solidaridad obligatorio, y enfoque estratégico e integral.</p>
+
+      <h3 class="sub">Criterios jerárquicos para determinar el Estado responsable</h3>
+      <ol class="study">
+        <li><b>Criterios familiares:</b> Estado donde resida un miembro de la familia beneficiario o solicitante.</li>
+        <li><b>Titulares de visado o permiso de residencia:</b> el Estado que lo expidió.</li>
+        <li><b>Entrada irregular:</b> el Estado de la frontera exterior de entrada (plazo de caducidad de responsabilidad: <b>3 años</b>, frente a los 12 meses anteriores).</li>
+        <li><b>Entrada regular:</b> el Estado de entrada regular.</li>
+        <li><b>Cláusula de cierre:</b> el Estado donde se formalizó la solicitud.</li>
+      </ol>
+
+      <div class="callout key">
+        <span class="lbl">Cláusula discrecional (antes "cláusula soberana")</span>
+        Cualquier Estado miembro puede examinar voluntariamente una solicitud aunque no le corresponda, a instancia del solicitante o de oficio, por razones humanitarias, familiares o de otra índole (<span class="art">art. 19 Reg. 2024/1351</span>).
+      </div>
+
+      <h3 class="sub">Mecanismo de solidaridad obligatorio</h3>
+      <ul class="study">
+        <li><b>Informe Europeo Anual sobre Asilo y Migración</b> (Comisión) — identifica la presión migratoria.</li>
+        <li><b>Contingente anual de solidaridad</b> (Consejo, a propuesta de la Comisión) — mínimo de referencia: <b>30.000 reubicaciones</b> y <b>600 millones de euros</b>.</li>
+        <li>Tipos de contribución: <b>reubicación</b>, <b>contribuciones financieras</b> y <b>medidas alternativas</b> de solidaridad.</li>
+        <li>Clave de distribución: función del tamaño de la población y del PIB de cada Estado.</li>
+      </ul>
+
+      <h3 class="sub">Garantías del solicitante frente al traslado</h3>
+      <ul class="study">
+        <li>Derecho a ser informado y oído antes del traslado.</li>
+        <li>Recurso judicial: resolución entre <b>1 y 3 semanas</b>; efecto suspensivo resuelto en <b>1 mes</b>.</li>
+        <li>Traslado: dentro de los <b>6 meses</b> desde la aceptación; si no se efectúa, la responsabilidad revierte al Estado peticionario (salvo prórroga de 1 o 3 años en caso de prisión o fuga).</li>
+      </ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="block" id="s9">
+      <div class="block-head"><span class="block-num">9</span><h2>El procedimiento fronterizo de retorno</h2></div>
+      <p class="block-intro">El Reglamento (UE) 2024/1349 da continuidad inmediata al procedimiento fronterizo de asilo, para el retorno rápido y efectivo de quienes vieron denegada su solicitud sin derecho de permanencia.</p>
+
+      <ul class="study">
+        <li>No están autorizados a entrar en el territorio del Estado miembro.</li>
+        <li>Residencia máxima de <b>12 semanas</b> en ubicaciones de frontera exterior o zonas de tránsito (o en territorio, si no hay ubicaciones disponibles).</li>
+        <li>Plazo de salida voluntaria de hasta <b>15 días</b>, salvo riesgo de fuga o denegación manifiestamente infundada.</li>
+        <li>Transcurridas 12 semanas sin retorno efectuado, se aplica la Directiva 2008/115/CE (Directiva de Retorno).</li>
+      </ul>
+
+      <div class="callout warn">
+        <span class="lbl">Internamiento</span>
+        Carácter excepcional y de último recurso. No puede exceder el plazo máximo de <b>12 semanas</b>; en situaciones de crisis, prorrogable hasta <b>6 semanas adicionales</b>.
+      </div>
+
+      <p>Se aplican en todo caso las garantías de <b>non-refoulement</b>, interés superior del menor, vida familiar, estado de salud y condiciones de internamiento, conforme a la Directiva 2008/115/CE.</p>
+    </section>
+
+    <!-- 10 -->
+    <section class="block" id="s10">
+      <div class="block-head"><span class="block-num">10</span><h2>Menores y otras personas vulnerables</h2></div>
+      <p class="block-intro">El interés superior del menor es un principio cardinal que atraviesa todo el marco normativo, con obligaciones procedimentales concretas y de oficio.</p>
+
+      <h3 class="sub">MENA: identificación, tutela y procedimiento especial</h3>
+      <div class="def">
+        <span class="lbl">Definición</span>
+        Menor no acompañado (MENA): nacional de tercer país o apátrida <b>menor de 18 años</b> que entra en España sin adulto responsable, o queda desamparado tras su entrada.
+      </div>
+      <ul class="study">
+        <li><b>Identificación inmediata:</b> se asigna sin dilación un representante, en cualquier fase (incluido el triaje).</li>
+        <li><b>Asistencia jurídica gratuita</b> desde el registro, sin necesidad de petición expresa.</li>
+        <li>Procedimiento con carácter <b>preferente y urgente</b>.</li>
+        <li>No pueden someterse al procedimiento fronterizo, salvo que las condiciones de acogida cumplan íntegramente el Capítulo IV de la Directiva 2024/1346.</li>
+        <li><b>Datos biométricos:</b> a partir del 12 jun 2026, se exigen desde los <b>6 años</b> (antes, 14 años con el Reg. 603/2013).</li>
+      </ul>
+
+      <h3 class="sub">Determinación de la edad</h3>
+      <div class="phase-row">
+        <div class="phase-num">1</div>
+        <div class="phase-body"><b>Fase no médica (prioritaria)</b><p>Examen multidisciplinar: entrevista psicosocial, análisis del comportamiento, aspecto físico y estudio documental. Método primario y obligatorio.</p></div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-num">2</div>
+        <div class="phase-body"><b>Reconocimiento médico (última ratio)</b><p>Solo si la fase anterior no es concluyente. Requiere consentimiento informado. En ningún caso exploraciones que vulneren la dignidad del menor.</p></div>
+      </div>
+      <div class="callout right">
+        <span class="lbl">Presunción a favor del menor</span>
+        En caso de resultado <b>no concluyente</b>, incluso tras la fase médica, <b>se presume que el solicitante es menor de edad</b>.
+      </div>
+
+      <h3 class="sub">Otras personas vulnerables (art. 20 Reg. 2024/1348)</h3>
+      <p>Evaluación individual e iniciada <b>de oficio</b>, concluyendo en un plazo máximo de <b>30 días</b>. Factores: edad, sexo, orientación sexual, identidad de género, discapacidad, enfermedad física o mental, o víctimas de tortura, violación u otras formas graves de violencia.</p>
+      <ul class="study">
+        <li><b>Personas con discapacidad:</b> incorporadas al sistema general de vulnerables; la discapacidad puede ser característica definitoria de un grupo social.</li>
+        <li><b>Víctimas de trata:</b> entrevista por personal formado en victimización secundaria; la información sobre su condición de víctima no puede trasladarse al país de origen ni usarse en su perjuicio.</li>
+        <li><b>Perspectiva de género</b> (Considerando 21): principio transversal — entrevistador/intérprete del sexo preferido; MGF, matrimonio forzoso, violencia doméstica y sexual pueden constituir actos de persecución.</li>
+      </ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="block" id="s11">
+      <div class="block-head"><span class="block-num">11</span><h2>El recurso contencioso-administrativo</h2></div>
+      <p class="block-intro">El recurso administrativo de reposición resulta <b>incompatible con el PEMA</b>: todas las resoluciones son directamente recurribles en vía judicial.</p>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Plazos de interposición del recurso</caption>
+          <thead><tr><th>Tipo de resolución</th><th>Plazo</th></tr></thead>
+          <tbody>
+            <tr><td>Denegación por inadmisibilidad, retirada implícita, infundada o manifiestamente infundada (acelerado / fronterizo)</td><td><b>Entre 5 y 10 días</b></td></tr>
+            <tr><td>Todos los demás casos</td><td><b>Entre 2 semanas y 1 mes</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Régimen general de recursos (art. 29 Ley 12/2009)</caption>
+          <thead><tr><th>Tipo de resolución</th><th>Procedimiento</th><th>Órgano competente</th><th>Plazo</th></tr></thead>
+          <tbody>
+            <tr><td>Inadmisión a trámite (frontera o territorio)</td><td>Abreviado (PA)</td><td>Sección de lo C-A del Tribunal Central de Instancia</td><td>2 meses</td></tr>
+            <tr><td>Denegación de asilo o concesión del art. 17.2</td><td>Ordinario (PO)</td><td>Sala de lo C-A de la Audiencia Nacional</td><td>2 meses</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout key">
+        <span class="lbl">Efecto suspensivo automático</span>
+        Los efectos de una decisión de retorno se suspenden automáticamente mientras el solicitante tenga derecho de permanencia (<span class="art">art. 68</span>). <b>No hay</b> suspensión automática en: denegación acelerada por infundada, denegación en fronterizo (salvo MENA), inadmisión por causas tasadas, o retirada implícita — en estos casos, plazo mínimo de <b>5 días</b> para solicitar autorización de permanencia al órgano jurisdiccional.
+      </div>
+
+      <p>El <span class="art">art. 135 LJCA</span> prevé un <b>procedimiento cautelar de tramitación inmediata</b>: el recurrente puede solicitar la suspensión simultáneamente al interponer el recurso; el órgano judicial puede adoptar la medida <i>inaudita parte</i> cuando la urgencia lo justifique.</p>
+    </section>
+
+    <!-- 12 -->
+    <section class="block" id="s12">
+      <div class="block-head"><span class="block-num">12</span><h2>Sistema Eurodac</h2></div>
+      <p class="block-intro">Sistema centralizado de comparación de datos biométricos de la UE. El Reglamento (UE) 2024/1358, de 14 de mayo de 2024, sustituye al Reg. 603/2013 y es aplicable desde el <b>12 de junio de 2026</b>. Gestión operativa: <b>Agencia eu-LISA</b>.</p>
+
+      <h3 class="sub">Finalidades</h3>
+      <ul class="study">
+        <li>Apoyar la determinación del Estado responsable.</li>
+        <li>Asistir en el procedimiento de admisión.</li>
+        <li>Controlar la inmigración irregular y movimientos secundarios.</li>
+        <li>Contribuir a la protección de menores (localización de desaparecidos).</li>
+        <li><b>Novedad:</b> prevención, detección e investigación de terrorismo y delitos graves.</li>
+        <li>Alimentar el RCDI (Registro Común de Datos de Identidad).</li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Categorías de personas registradas — edad mínima</caption>
+          <thead><tr><th>Categoría</th><th>Art.</th><th>Edad mín.</th></tr></thead>
+          <tbody>
+            <tr><td>Solicitantes de protección internacional</td><td>Art. 15</td><td><b>6 años</b></td></tr>
+            <tr><td>Nacionales en situación irregular en territorio</td><td>Art. 18.2</td><td>6 años</td></tr>
+            <tr><td>Aprehendidos al cruzar irregularmente la frontera</td><td>Art. 22</td><td>6 años</td></tr>
+            <tr><td>Desembarcados tras búsqueda y salvamento</td><td>Art. 23</td><td>6 años</td></tr>
+            <tr><td>Registrados para reasentamiento</td><td>Art. 20</td><td>6 años</td></tr>
+            <tr><td>Beneficiarios de protección temporal</td><td>Art. 26</td><td>6 años</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <span class="lbl">Umbral de edad — comparación</span>
+        El Reg. 2024/1358 <b>reduce el umbral de 14 a 6 años</b> respecto del Reg. 603/2013 anterior.
+      </div>
+
+      <h3 class="sub">Plazos de transmisión de datos</h3>
+      <ul class="study">
+        <li><b>Solicitantes (general):</b> cuanto antes, máximo <b>72 horas</b> desde el registro.</li>
+        <li><b>Supuesto fronterizo:</b> cuanto antes, máx. 72 horas desde la toma de datos biométricos.</li>
+        <li><b>Excepciones:</b> huellas defectuosas, razones de salud, problemas técnicos graves — ampliable hasta <b>48 horas</b> adicionales (120h en total).</li>
+        <li><b>Aprehendidos en frontera irregular / desembarcados:</b> lo antes posible, máx. 72h (ampliable a 120h).</li>
+        <li><b>Protección temporal</b> (no se aplica hasta 2029): máx. <b>10 días</b>.</li>
+      </ul>
+
+      <h3 class="sub">Procedimiento de comparación</h3>
+      <ul class="study">
+        <li><b>Plazo ordinario:</b> 24 horas desde la recepción.</li>
+        <li><b>Plazo urgente:</b> 1 hora, si el Estado miembro lo exige.</li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Plazos de conservación de datos</caption>
+          <thead><tr><th>Categoría</th><th>Plazo</th></tr></thead>
+          <tbody>
+            <tr><td>Solicitantes de protección internacional</td><td><b>10 años</b> desde la transmisión</td></tr>
+            <tr><td>Cruce ilegal de frontera</td><td>5 años</td></tr>
+            <tr><td>Situación irregular hallados en territorio</td><td>3 años</td></tr>
+            <tr><td>Procedimiento de admisión (reasentamiento)</td><td>5 años</td></tr>
+            <tr><td>Denegación de admisión por seguridad/orden público</td><td>3 años</td></tr>
+            <tr><td>Beneficiarios de protección internacional (concedido)</td><td>5 años</td></tr>
+            <tr><td>Beneficiarios de protección temporal</td><td>1 año (prorrogable anualmente)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <span class="lbl">Acceso para fines policiales (arts. 32-34)</span>
+        Autoridades nacionales y Europol pueden acceder con condiciones estrictas y acumulativas: búsqueda previa infructuosa en bases nacionales/UE, necesidad para prevenir/investigar terrorismo o delitos graves, caso concreto para personas concretas. <b>Prohibidas las comparaciones sistemáticas.</b>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="block" id="s13">
+      <div class="block-head"><span class="block-num">13</span><h2>Estatuto de apátrida</h2></div>
+      <p class="block-intro">Regulado por el <span class="art">RD 865/2001</span>, de 20 de julio, que incorpora la <b>Convención sobre el Estatuto de los Apátridas de Nueva York de 1954</b>. No modificado por el PEMA.</p>
+
+      <div class="def">
+        <span class="lbl">Apátrida</span>
+        Toda persona que <b>no sea considerada como nacional suyo por ningún Estado</b>, conforme a su legislación.
+      </div>
+
+      <h3 class="sub">Procedimiento (competencia de la OAR)</h3>
+      <div class="phase-row"><div class="phase-num">1</div><div class="phase-body"><b>Instrucción</b><p>Acreditación, comprobación y verificación de extremos relevantes; intérprete gratuito si carece de medios.</p></div></div>
+      <div class="phase-row"><div class="phase-num">2</div><div class="phase-body"><b>Pruebas, alegaciones e informes</b><p>Presentación de pruebas; incorporación de informes de asociaciones dedicadas al asesoramiento del apátrida.</p></div></div>
+      <div class="phase-row"><div class="phase-num">3</div><div class="phase-body"><b>Trámite de audiencia</b><p>Plazo de <b>15 días</b> para alegar y presentar documentos.</p></div></div>
+      <div class="phase-row"><div class="phase-num">4</div><div class="phase-body"><b>Propuesta de resolución</b><p>La OAR eleva propuesta motivada al MI a través de la Dirección General de Política Interior.</p></div></div>
+      <div class="phase-row"><div class="phase-num">5</div><div class="phase-body"><b>Resolución</b><p>El MI resuelve en <b>máximo 3 meses</b>; transcurrido el plazo, silencio administrativo <b>negativo</b>.</p></div></div>
+
+      <h3 class="sub">Efectos de la concesión</h3>
+      <ul class="study">
+        <li>Tarjeta acreditativa de la condición de apátrida (residencia y actividades laborales/profesionales).</li>
+        <li>Documento de viaje: validez formal de <b>2 años</b> (en la práctica se expiden por <b>5 años</b>).</li>
+        <li>Acceso a la residencia de larga duración.</li>
+      </ul>
+
+      <h3 class="sub">Causas de revocación</h3>
+      <ul class="study">
+        <li><b>Obtención fraudulenta</b> del estatuto.</li>
+        <li><b>Causas sobrevenidas</b> (art. 1.2 Convención de 1954): protección de otro organismo de la ONU distinto del ACNUR; reconocimiento de derechos de nacionalidad por el país de residencia; delitos graves anteriores al reconocimiento.</li>
+      </ul>
+
+      <div class="callout right">
+        <span class="lbl">Expulsión de apátridas — protección cualificada</span>
+        Solo por razones de <b>seguridad nacional u orden público</b> (art. 31 Convención de 1954), con garantías procedimentales plenas, plazo razonable para buscar admisión legal en otro país, y respeto absoluto del principio de <b>non-refoulement</b>.
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="block" id="s14">
+      <div class="block-head"><span class="block-num">14</span><h2>Protección temporal</h2></div>
+      <p class="block-intro">Activada por primera vez en la historia de la UE por la <b>Decisión de Ejecución del Consejo (UE) 2022/382</b>, de 4 de marzo de 2022, en favor de las personas desplazadas desde <b>Ucrania</b>.</p>
+
+      <div class="def">
+        <span class="lbl">Concepto</span>
+        Mecanismo de respuesta a emergencias migratorias excepcionales, que da amparo <b>inmediato y colectivo</b> a una afluencia masiva de personas desplazadas que no pueden regresar a su país de origen.
+      </div>
+
+      <p><b>Marco normativo:</b> Directiva 2001/55/CE (no modificada por el PEMA); <span class="art">RD 1325/2003</span> como transposición española; Disposición Adicional 2ª de la Ley 12/2009.</p>
+
+      <h3 class="sub">Características esenciales</h3>
+      <ul class="study">
+        <li>Se activa para <b>colectivos específicos</b>, no con carácter individual.</li>
+        <li>Duración de <b>1 año</b>, automáticamente prorrogable por otro año adicional.</li>
+        <li>Prórroga excepcional adicional de <b>1 año más</b> (máximo <b>3 años en total</b>), por el Consejo de Ministros.</li>
+        <li><b>Compatible</b> con la tramitación simultánea de una solicitud individual de protección internacional.</li>
+      </ul>
+
+      <h3 class="sub">Declaración de protección temporal — dos vías</h3>
+      <div class="grid2">
+        <div class="col">
+          <h5>Declaración a escala de la UE</h5>
+          <p style="font-size:13.6px;">Por el <b>Consejo de la UE</b>, mediante decisión a propuesta de la Comisión Europea. El Consejo de Ministros español puede solicitar que se eleve una propuesta.</p>
+        </div>
+        <div class="col">
+          <h5>Declaración nacional</h5>
+          <p style="font-size:13.6px;">El Gobierno español, por acuerdo motivado del <b>Consejo de Ministros</b>: a propuesta del Ministro de Asuntos Exteriores (evacuación) o del MI (emergencia).</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Contenido de la protección temporal</h3>
+      <ul class="study">
+        <li>Libertad de circulación y residencia.</li>
+        <li>Derecho a la información y al permiso de residencia.</li>
+        <li>Título de viaje y acogida en territorio nacional.</li>
+        <li>Autorización para trabajar y ayudas sociales.</li>
+        <li>Reagrupación familiar.</li>
+        <li>Derecho a solicitar el estatuto de refugiado o, en su caso, protección subsidiaria.</li>
+      </ul>
+
+      <h3 class="sub">Causas de denegación del reconocimiento individual (art. 12 RD 1325/2003)</h3>
+      <ul class="study">
+        <li>Delito contra la paz, crimen de guerra o crimen contra la humanidad.</li>
+        <li>Delito grave común fuera de España antes de su admisión.</li>
+        <li>Actos contrarios a las finalidades y principios de la ONU.</li>
+        <li>Peligro para la seguridad nacional o amenaza al orden público por condena definitiva grave.</li>
+      </ul>
+
+      <div class="callout warn">
+        <span class="lbl">Caso Ucrania — DA 19.ª RD 1155/2024 (modificada por RD 316/2026)</span>
+        Primera activación del régimen al constatarse la afluencia masiva desde Ucrania. Permite a los titulares de residencia obtenida a su amparo solicitar autorizaciones de estancia y residencia iniciables desde territorio nacional, como pasarela hacia la residencia ordinaria ante la eventual extinción de la protección temporal.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  Tema 12 · Protección Internacional — Guía de estudio · Ingreso Escala Básica, Policía Nacional
+</footer>
+
+<script>
+  const links = document.querySelectorAll('nav.toc a');
+  const sections = document.querySelectorAll('section.block');
+  const map = new Map();
+  links.forEach(l => map.set(l.getAttribute('href').slice(1), l));
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = map.get(entry.target.id);
+      if(!link) return;
+      if(entry.isIntersecting){
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin: '-15% 0px -70% 0px', threshold: 0});
+
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex,follow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expediente de Estudio · Estructura CNP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root{
+    --navy-deep: #0b1b2e;
+    --navy: #12294a;
+    --navy-light: #1e3a63;
+    --paper: #f2ede1;
+    --paper-dim: #e6dfcd;
+    --brass: #b8974f;
+    --brass-bright: #d9b869;
+    --ink: #1a1f26;
+    --red-stamp: #8c1f28;
+    --green-stamp: #29623f;
+    --line: rgba(184,151,79,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at top left, rgba(30,58,99,0.5), transparent 60%),
+      radial-gradient(ellipse at bottom right, rgba(30,58,99,0.35), transparent 55%),
+      var(--navy-deep);
+    color:var(--paper);
+    font-family:'Source Serif 4', Georgia, serif;
+    min-height:100vh;
+    padding:32px 16px 64px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* Faint watermark texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 14px);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .letterhead{
+    width:100%;
+    max-width:760px;
+    text-align:center;
+    margin-bottom:22px;
+    position:relative;
+    z-index:1;
+  }
+
+  .badge{
+    width:56px;height:56px;
+    margin:0 auto 10px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--brass-bright), var(--brass) 60%, #8a6d34 100%);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow: 0 0 0 3px var(--navy-deep), 0 0 0 4px var(--brass), 0 6px 14px rgba(0,0,0,0.5);
+  }
+  .badge svg{width:30px;height:30px;fill:var(--navy-deep);}
+
+  .letterhead h1{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:20px;
+    margin:0 0 4px;
+    color:var(--paper);
+  }
+  .letterhead .sub{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    color:var(--brass-bright);
+    text-transform:uppercase;
+  }
+  .letterhead .rule{
+    height:1px;
+    margin:14px auto 0;
+    max-width:520px;
+    background:linear-gradient(90deg, transparent, var(--brass), transparent);
+  }
+
+  .expediente{
+    width:100%;
+    max-width:760px;
+    position:relative;
+    z-index:1;
+  }
+
+  /* progress strip */
+  .progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--brass-bright);
+    margin-bottom:10px;
+    text-transform:uppercase;
+  }
+  .progress-track{
+    height:4px;
+    background:rgba(255,255,255,0.08);
+    border-radius:2px;
+    overflow:hidden;
+    margin-bottom:22px;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg, var(--brass), var(--brass-bright));
+    width:0%;
+    transition:width .4s ease;
+  }
+
+  .card{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    padding:34px 32px 28px;
+    position:relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.06);
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0;
+    width:8px;
+    background:repeating-linear-gradient(45deg, var(--navy) 0 6px, var(--brass) 6px 12px);
+  }
+
+  .caso-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--navy-light);
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:14px;
+    padding-bottom:10px;
+    border-bottom:1px dashed rgba(18,41,74,0.25);
+  }
+
+  .pregunta{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:19px;
+    line-height:1.4;
+    margin:0 0 22px;
+    color:var(--navy);
+  }
+
+  .opciones{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:6px;
+  }
+
+  .opcion{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    text-align:left;
+    background:#fff;
+    border:1.5px solid rgba(18,41,74,0.18);
+    border-radius:3px;
+    padding:13px 16px;
+    font-family:'Source Serif 4', Georgia, serif;
+    font-size:15px;
+    color:var(--ink);
+    cursor:pointer;
+    transition: border-color .15s, background .15s, transform .1s;
+  }
+  .opcion:hover:not(.locked){
+    border-color:var(--navy-light);
+    background:#fafcff;
+  }
+  .opcion:active:not(.locked){transform:scale(0.995);}
+
+  .opcion .letra{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--navy);
+    background:var(--paper-dim);
+    border-radius:50%;
+    width:24px;height:24px;
+    min-width:24px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(18,41,74,0.2);
+  }
+
+  .opcion.correcta{
+    border-color:var(--green-stamp);
+    background:#eef6ef;
+  }
+  .opcion.correcta .letra{background:var(--green-stamp); color:#fff; border-color:var(--green-stamp);}
+
+  .opcion.incorrecta{
+    border-color:var(--red-stamp);
+    background:#f9eeee;
+  }
+  .opcion.incorrecta .letra{background:var(--red-stamp); color:#fff; border-color:var(--red-stamp);}
+
+  .opcion.locked{cursor:default;}
+  .opcion.dim{opacity:0.55;}
+
+  /* Stamp */
+  .stamp-wrap{
+    position:relative;
+    height:0;
+  }
+  .stamp{
+    position:absolute;
+    right:6px; top:-58px;
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    border:3px solid;
+    border-radius:6px;
+    padding:6px 12px;
+    transform:rotate(-9deg) scale(0.85);
+    opacity:0;
+    animation: stampIn .35s ease forwards;
+    pointer-events:none;
+  }
+  @keyframes stampIn{
+    0%{opacity:0; transform:rotate(-9deg) scale(1.4);}
+    60%{opacity:1;}
+    100%{opacity:0.92; transform:rotate(-9deg) scale(0.85);}
+  }
+  .stamp.ok{color:var(--green-stamp); border-color:var(--green-stamp);}
+  .stamp.bad{color:var(--red-stamp); border-color:var(--red-stamp);}
+
+  .logica{
+    margin-top:20px;
+    padding-top:16px;
+    border-top:1px dashed rgba(18,41,74,0.25);
+    font-size:14px;
+    line-height:1.55;
+    color:#33342f;
+    display:none;
+  }
+  .logica.show{display:block; animation:fadeUp .3s ease;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+  .logica .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--navy-light);
+    display:block;
+    margin-bottom:6px;
+  }
+
+  .controles{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:24px;
+  }
+
+  .btn{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    font-size:13px;
+    padding:11px 22px;
+    border-radius:3px;
+    border:none;
+    cursor:pointer;
+    transition: background .15s, transform .1s, opacity .15s;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-prev{
+    background:transparent;
+    color:var(--brass-bright);
+    border:1px solid var(--line);
+  }
+  .btn-prev:hover{border-color:var(--brass-bright);}
+  .btn-next{
+    background:linear-gradient(180deg, var(--brass-bright), var(--brass));
+    color:var(--navy-deep);
+  }
+  .btn-next:hover{filter:brightness(1.06);}
+  .btn:disabled{opacity:0.35; cursor:not-allowed;}
+
+  .marcador{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--brass-bright);
+    letter-spacing:0.05em;
+  }
+
+  .resumen{
+    text-align:center;
+    padding:40px 20px;
+  }
+  .resumen .badge{width:70px;height:70px;}
+  .resumen h2{
+    font-family:'Oswald', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    font-size:22px;
+    margin:14px 0 6px;
+    color:var(--navy);
+  }
+  .resumen .score{
+    font-family:'JetBrains Mono', monospace;
+    font-size:38px;
+    font-weight:700;
+    color:var(--navy);
+    margin:8px 0 2px;
+  }
+  .resumen .score span{font-size:18px; color:#6b6b60;}
+  .resumen p{color:#4a4a42; font-size:14px;}
+
+  .footer-note{
+    max-width:760px;
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:rgba(242,237,225,0.4);
+    letter-spacing:0.08em;
+    margin-top:26px;
+    text-transform:uppercase;
+  }
+
+  @media (max-width:480px){
+    .card{padding:24px 18px 22px;}
+    .pregunta{font-size:17px;}
+    .stamp{right:4px; top:-50px; font-size:12px; padding:5px 9px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="letterhead">
+    <div class="badge">
+      <svg viewBox="0 0 24 24"><path d="M12 1 3 4v6c0 5.2 3.6 9.9 9 11 5.4-1.1 9-5.8 9-11V4l-9-3zm0 2.2 6.5 2.3v4.5c0 4-2.7 7.7-6.5 8.8-3.8-1.1-6.5-4.8-6.5-8.8V5.5L12 3.2zM10.7 14.4 7.8 11.5l1.4-1.4 1.5 1.5 4.1-4.1 1.4 1.4-5.5 5.5z"/></svg>
+    </div>
+    <h1>Cuerpo Nacional de Policía</h1>
+    <div class="sub">Expediente de Estudio · Estructura Orgánica Central y Periférica</div>
+    <div class="rule"></div>
+  </div>
+
+  <div class="expediente">
+    <div class="progress-row">
+      <span id="progLabel">Caso 1 / 39</span>
+      <span id="progScore">Aciertos: 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+
+    <div id="cardZone"></div>
+
+    <div class="controles" id="controlesZone" style="display:none;">
+      <button class="btn btn-prev" id="btnPrev">◂ Anterior</button>
+      <span class="marcador" id="marcadorTxt"></span>
+      <button class="btn btn-next" id="btnNext">Siguiente ▸</button>
+    </div>
+  </div>
+
+  <div class="footer-note">Documento de uso personal para preparación de oposición · Sin límite de tiempo</div>
+
+<script>
+const preguntas = [
+{p:"La división de cooperación internacional depende directamente de:",o:{a:"DAO",b:"DGP",c:"Gabinete Técnico"},c:"b",l:"Según la estructura de la organización central, la División de Cooperación Internacional se encuentra entre los órganos que dependen directamente de la persona titular de la Dirección General de la Policía."},
+{p:"En caso de vacante, ausencia o enfermedad quién sustituye a la persona titular del Gabinete Técnico (1ª vez):",o:{a:"S.G Recursos Humanos y Formación",b:"S.G de Logística e Innovación",c:"DAO"},c:"a",l:"El temario establece un orden de prelación para la suplencia de los órganos con nivel de Subdirección General dentro del centro directivo, siendo el titular de RRHH el primero en la jerarquía de sustitución."},
+{p:"En caso de vacante, ausencia o enfermedad quién sustituye a la persona titular del Gabinete Técnico (2ª vez):",o:{a:"S.G Recursos Humanos y Formación",b:"S.G de Logística e Innovación",c:"DAO"},c:"b",l:"Siguiendo el orden jerárquico establecido, si el primer sustituto (RRHH) no está disponible, la responsabilidad recae en el siguiente órgano del mismo nivel, que es la Subdirección General de Logística e Innovación."},
+{p:"La supervisión de la operatividad policial y de las comisarías especiales y unidades adscritas a las CCAA le corresponde:",o:{a:"Unidad Central de Coordinación Operativa y Técnica",b:"Unidad de Planificación Estratégica y Coordinación",c:"Área de Coordinación Operativa"},c:"c",l:"Dentro de la División de Operaciones y Transformación Digital, es el Área de Coordinación Operativa la que tiene asignada la supervisión de las 6 Comisarías Especiales y las Unidades Adscritas."},
+{p:"El Centro Nacional de Comunicaciones depende de:",o:{a:"División de Operaciones y Transformación Digital",b:"UPEC",c:"División Económica y Técnica"},c:"b",l:"El temario ubica al Centro Nacional de Comunicaciones como un punto permanente integrado dentro de la estructura de la Unidad de Planificación Estratégica y Coordinación (UPEC)."},
+{p:"Quién se encarga de la gestión, control e inspección del tratamiento de la estadística de la criminalidad:",o:{a:"Área de Seguimiento, Inteligencia y Coordinación",b:"Área de Planificación y Prospectiva",c:"Unidad Central de Inteligencia Criminal"},c:"a",l:"Esta función específica está asignada al Área de Seguimiento, Inteligencia y Coordinación, que depende orgánicamente de la UPEC."},
+{p:"La División de Operaciones y Transformación Digital tiene nivel orgánico de:",o:{a:"Subdirección General",b:"La que determine la RPT",c:"Ninguna es correcta"},c:"b",l:"La correcta es la que determine la RPT (Relación de Puestos de Trabajo): a diferencia de las Comisarías Generales y otras Divisiones, que sí tienen nivel de Subdirección General, la DOTD tiene el nivel orgánico que en cada momento fije la RPT."},
+{p:"En caso de vacante, ausencia o enfermedad quién sustituye al Comisario General de Información:",o:{a:"El titular de la Secretaría General",b:"El Jefe Central de Operaciones",c:"El Jefe Superior de Policía"},c:"a",l:"En la estructura de las Comisarías Generales, la Secretaría General actúa como el órgano de gestión y apoyo inmediato, asumiendo la suplencia del titular."},
+{p:"Captación, recepción, tratamiento y desarrollo de la información de interés para el orden y la seguridad pública la ejerce:",o:{a:"Comisaría General de Información",b:"Unidad Central de Inteligencia Criminal",c:"Área de Seguimiento, Inteligencia y Coordinación"},c:"a",l:"Esta es la definición literal de las competencias de la CGI, especialmente enfocada en la lucha contra el terrorismo y amenazas a la seguridad pública."},
+{p:"La unidad adscrita a la Fiscalía Especial contra la Corrupción y la Criminalidad Organizada depende de:",o:{a:"UDYCO",b:"UDEV",c:"UDEF"},c:"c",l:"El temario sitúa a esta unidad específica bajo la dependencia de la Unidad Central de Delincuencia Económica y Fiscal (UDEF)."},
+{p:"Cuál de las siguientes no depende de la Unidad Central de Atención a la Familia y la Mujer:",o:{a:"Oficina de Estudios",b:"Brigada Operativa de Atención a la Familia y a la Mujer",c:"Brigada Operativa de Seguimiento de la Mujer"},c:"c",l:"La estructura de la UFAM comprende la Brigada Operativa de Atención y Apoyo y la Oficina de Estudios; la opción C es un nombre inexistente en el organigrama oficial."},
+{p:"Quién se constituye como centro de prevención y respuesta e-crime en la Policía Nacional:",o:{a:"Unidad Central de Apoyo Tecnológico",b:"Unidad Central de Ciberdelincuencia",c:"Unidad Central de Inteligencia Criminal"},c:"b",l:"La Unidad Central de Ciberdelincuencia (UCC) es definida expresamente en las fuentes como el \"Centro de Prevención y Respuesta E-Crime\"."},
+{p:"La Oficina Central de Asuntos Taurinos depende de:",o:{a:"La Secretaría General de la CGSC",b:"Brigada de Coordinación Operativa de la CGSC",c:"Directamente del Comisario General de Seguridad Ciudadana"},c:"b",l:"Orgánicamente, los asuntos taurinos se gestionan desde la Brigada de Coordinación Operativa de la Comisaría General de Seguridad Ciudadana."},
+{p:"La protección de testigos protegidos y la seguridad de los traslados de obras de arte le corresponde a:",o:{a:"Brigada Central de Protecciones Especiales",b:"Brigada Central de Escoltas",c:"Brigada Operativa del Museo del Prado"},c:"a",l:"Dentro de la Unidad Central de Protección, la Brigada de Protecciones Especiales asume la seguridad de delegaciones extranjeras, testigos protegidos y traslados de arte."},
+{p:"Dentro de la Policía Nacional quién actúa como interlocutor policial nacional sanitario:",o:{a:"DAO",b:"Unidad Central de Participación Ciudadana",c:"Unidad Central de Seguridad Privada"},c:"c",l:"El temario especifica que a la Unidad Central de Seguridad Privada se adscribe la figura del Interlocutor Policial Nacional Sanitario."},
+{p:"¿Cuál es la dependencia orgánica de las UPR de España?:",o:{a:"CGSC",b:"Jefatura de Unidades Especiales",c:"Plantilla"},c:"c",l:"Las Unidades de Prevención y Reacción (UPR) tienen una triple dependencia orgánica de las plantillas territoriales donde están destinadas (JSP, Comisarías Provinciales o Locales)."},
+{p:"Quién ejerce la función de actuar como punto nacional de la base de datos de documentos falsos y auténticos (FADO):",o:{a:"Brigada de Investigación de Redes",b:"Brigada de Acción Exterior",c:"Unidad Central de Criminalística"},c:"a",l:"FADO es gestionado por la Brigada de Investigación de Redes, dentro de la UCRIF, debido a su competencia en falsedades documentales internacionales."},
+{p:"A quién le corresponde gestionar los laboratorios de PC en las áreas de biología-ADN, química y toxicología:",o:{a:"Unidad Central de Investigación de la Escena del Delito",b:"Unidad Central de Análisis Científicos",c:"Unidad Central de Criminalística"},c:"b",l:"Esta unidad es la encargada de los laboratorios y los informes periciales químicos y biológicos en la Comisaría General de Policía Científica."},
+{p:"Quién ejerce la Secretaría del Consejo de la Policía:",o:{a:"El Jefe de la División de Personal",b:"La persona titular del Gabinete Técnico",c:"La Secretaria General de la S.G de Recursos Humanos y Formación"},c:"c",l:"Dado que el Consejo de Policía trata sobre condiciones laborales, su secretaría se ubica en la estructura de la Subdirección General de RRHH."},
+{p:"Quién gestiona el programa de acción social de la Policía Nacional:",o:{a:"La Unidad de PRL y Protección Sociosanitaria",b:"El Área de Auditoría y Gestión de Calidad",c:"Unidad de Gestión de Personal Policial"},c:"a",l:"El Programa de Acción Social es gestionado específicamente por el Área Sanitaria de la Unidad de PRL y Protección Sociosanitaria."},
+{p:"Quién se encarga de la tramitación y propuestas de resolución de las reclamaciones y recursos administrativos y judiciales:",o:{a:"Área de Asistencia Letrada",b:"Gabinete de Recursos Jurídicos",c:"Área de Asuntos Jurídicos"},c:"c",l:"El Área de Asuntos Jurídicos, encuadrada en la División de Personal, tiene esta competencia específica."},
+{p:"El Tribunal Médico depende de El Área de Prevención Laboral y Protección Sociosanitaria (V/F):",o:{a:"Verdadero",b:"Falso"},c:"b",l:"Según el temario, el Tribunal Médico es coordinado por la Secretaría General de la División de Personal."},
+{p:"El Área de Coordinación Formativa Internacional depende de:",o:{a:"CAE",b:"CAEP",c:"Escuela Nacional de Policía"},c:"a",l:"El Centro de Actualización y Especialización (CAE) incluye en su estructura la coordinación formativa internacional y CEPOL."},
+{p:"La falta de colaboración manifiesta con otros miembros de las FCS cuando resulte perjudicado gravemente el servicio es:",o:{a:"Leve",b:"Grave",c:"Muy grave"},c:"c",l:"El régimen disciplinario califica como \"muy grave\" esta falta cuando el perjuicio para el servicio o la seguridad ciudadana es de carácter grave."},
+{p:"Cuántos miembros forman la Junta de Gobierno de la Policía Nacional:",o:{a:"15",b:"14",c:"16"},c:"c",l:"La suma de sus miembros (DGP, DAO, 3 Subdirectores, 6 Comisarios Generales, 4 Jefes de División y el Secretario/Jefe de Personal) da un total de 16."},
+{p:"¿Quién se encarga de materializar una orden de detención y entrega?:",o:{a:"Europol",b:"Sirene",c:"Ambas son correctas"},c:"b",l:"La Oficina SIRENE es el punto nacional encargado de tramitar y materializar las entregas de personas reclamadas judicialmente mediante OEDE."},
+{p:"Quién sustituye al Jefe de la División de Formación y Perfeccionamiento en caso de vacante, ausencia o enfermedad:",o:{a:"El Jefe de la Escuela Nacional de Policía",b:"El Jefe del CAEP",c:"La persona titular de la Secretaría General"},c:"c",l:"En las Divisiones centrales, el titular de la Secretaría General asume las funciones de suplencia del jefe de la misma."},
+{p:"La Oficina de Traducción e Interpretación de Lenguas depende directamente de:",o:{a:"Servicio de Asuntos Generales",b:"Servicio de Relaciones Institucionales",c:"Área de Coordinación Institucional e Identidad Corporativa"},c:"a",l:"Esta oficina se integra orgánicamente en el Servicio de Asuntos Generales del Gabinete Técnico."},
+{p:"La Oficina Nacional de Accesibilidad depende de:",o:{a:"La S.G de Logística e Innovación",b:"El Gabinete Técnico",c:"La S.G de Recursos Humanos y Formación"},c:"b",l:"Se encuadra en las funciones transversales de derechos e igualdad que gestiona el Gabinete Técnico de la DGP."},
+{p:"El órgano de mando, gestión, coordinación e inspección de los distintos servicios en el ámbito territorial es:",o:{a:"Comisaría Provincial",b:"Comisaría Zonal",c:"Jefatura Superior de Policía"},c:"c",l:"Esta es la definición funcional exacta de las 20 Jefaturas Superiores de Policía repartidas por el territorio nacional."},
+{p:"Cuáles son las unidades básicas de la organización policial en las grandes urbes:",o:{a:"Comisaría Zonal",b:"Comisaría Local",c:"Comisaría de Distrito"},c:"c",l:"El temario define a la Comisaría de Distrito como la unidad operativa básica en los núcleos urbanos de mayor población."},
+{p:"Cuántas Comisarías de Distrito existen en la Policía Nacional:",o:{a:"63",b:"70",c:"52"},c:"a",l:"La cifra oficial recogida en el temario actualizado es de 63 comisarías de este tipo."},
+{p:"Quién sustituye al Comisario Provincial en caso de vacante, ausencia o enfermedad:",o:{a:"La persona titular de la UCOP",b:"El Jefe de la UTO de mayor categoría",c:"Ninguna es correcta"},c:"a",l:"El titular de la Unidad de Coordinación Operativa Provincial (UCOP) es el jefe de operaciones y sustituto natural del Comisario Provincial."},
+{p:"Con cuántos CCPA cuenta la Policía Nacional con Portugal:",o:{a:"5",b:"7",c:"3"},c:"a",l:"España mantiene 5 Centros de Cooperación Policial y Aduanera operativos en la frontera lusa."},
+{p:"¿Qué divisa corresponde con un bastón de mando orlado y un entorchado en su base?:",o:{a:"Subinspector",b:"Inspector Jefe",c:"Inspector"},c:"a",l:"El entorchado único en la base, combinado con el bastón, identifica a la categoría de Subinspector dentro de su escala."},
+{p:"¿Cuántos años debes de estar en la categoría de Oficial de Policía para ascender a Subinspector?:",o:{a:"Dos años",b:"Tres años",c:"Cinco años"},c:"b",l:"Se requiere una permanencia mínima de 3 años en la categoría de Oficial para poder promocionar a la Escala de Inspección."},
+{p:"La LO 4/2010 establece que por faltas graves podrá imponerse la sanción de:",o:{a:"Suspensión funciones 5 días a 3 meses",b:"Suspensión funciones de 5 días a seis meses + antigüedad",c:"Suspensión funciones desde 5 días hasta 3 años"},c:"b",l:"El cuadro de sanciones del régimen disciplinario establece este rango temporal específico para las infracciones graves."},
+{p:"La forma de proveer los puestos de trabajo dentro de una escala, categoría o subgrupo son mediante los principios de:",o:{a:"Mérito, capacidad y antigüedad",b:"Mérito, capacidad, igualdad de oportunidades y objetividad",c:"Mérito, capacidad, antigüedad, publicidad e igualdad"},c:"a",l:"Según la LO 2/1986 y la LO 9/2015, los puestos internos se cubren atendiendo a estos tres criterios fundamentales."},
+{p:"Quién determinará aquellos destinos/servicios en los que resulte aconsejable no utilizar el uniforme:",o:{a:"DGP",b:"DAP",c:"DAO Central"},c:"a",l:"El Director General de la Policía tiene la competencia exclusiva para organizar y controlar el cumplimiento de la normativa sobre uniformidad."},
+{p:"A quién le corresponderá conceder el cambio de uniformidad entre invierno/verano en la Comisaría Provincial de Cuenca:",o:{a:"DAO",b:"DGP",c:"JSP de Castilla-La Mancha"},c:"c",l:"Los Jefes Superiores coordinan la gestión de los servicios en su ámbito territorial, incluyendo la adaptación estacional del uniforme según el clima local."}
+];
+
+let idx = 0;
+let answered = new Array(preguntas.length).fill(null); // stores chosen letter or null
+let score = 0;
+
+const cardZone = document.getElementById('cardZone');
+const controlesZone = document.getElementById('controlesZone');
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+const progLabel = document.getElementById('progLabel');
+const progScore = document.getElementById('progScore');
+const progFill = document.getElementById('progFill');
+const marcadorTxt = document.getElementById('marcadorTxt');
+
+function render(){
+  if(idx >= preguntas.length){ renderResumen(); return; }
+  controlesZone.style.display='flex';
+  const q = preguntas[idx];
+  const chosen = answered[idx];
+  const letras = Object.keys(q.o);
+
+  let optsHtml = '';
+  letras.forEach(L=>{
+    let cls = 'opcion';
+    if(chosen){
+      cls += ' locked';
+      if(L === q.c) cls += ' correcta';
+      else if(L === chosen) cls += ' incorrecta';
+      else cls += ' dim';
+    }
+    optsHtml += `<button class="${cls}" data-letra="${L}" onclick="elegir('${L}')">
+        <span class="letra">${L}</span><span>${q.o[L]}</span>
+      </button>`;
+  });
+
+  let stampHtml = '';
+  if(chosen){
+    if(chosen === q.c) stampHtml = `<div class="stamp-wrap"><div class="stamp ok">✓ Correcto</div></div>`;
+    else stampHtml = `<div class="stamp-wrap"><div class="stamp bad">✕ Revisar</div></div>`;
+  }
+
+  cardZone.innerHTML = `
+    <div class="card">
+      <div class="caso-label"><span>Caso Nº ${String(idx+1).padStart(2,'0')}</span><span>Estructura Orgánica CNP</span></div>
+      <p class="pregunta">${q.p}</p>
+      <div class="opciones">${optsHtml}</div>
+      ${stampHtml}
+      <div class="logica ${chosen ? 'show':''}">
+        <span class="tag">Fundamento</span>
+        ${q.l}
+      </div>
+    </div>
+  `;
+
+  progLabel.textContent = `Caso ${idx+1} / ${preguntas.length}`;
+  progScore.textContent = `Aciertos: ${score}`;
+  progFill.style.width = ((idx)/(preguntas.length))*100 + '%';
+
+  btnPrev.disabled = idx === 0;
+  btnNext.textContent = idx === preguntas.length-1 ? 'Cerrar expediente ▸' : 'Siguiente ▸';
+  btnNext.disabled = !chosen;
+  marcadorTxt.textContent = chosen ? '' : 'Selecciona una respuesta';
+}
+
+function elegir(letra){
+  if(answered[idx]) return;
+  answered[idx] = letra;
+  if(letra === preguntas[idx].c) score++;
+  render();
+}
+
+function renderResumen(){
+  controlesZone.style.display='none';
+  const total = preguntas.length;
+  const pct = Math.round((score/total)*100);
+  cardZone.innerHTML = `
+    <div class="card">
+      <div class="resumen">
+        <div class="badge" style="margin:0 auto;">
+          <svg viewBox="0 0 24 24" style="width:36px;height:36px;fill:#0b1b2e;"><path d="M12 1 3 4v6c0 5.2 3.6 9.9 9 11 5.4-1.1 9-5.8 9-11V4l-9-3zm0 2.2 6.5 2.3v4.5c0 4-2.7 7.7-6.5 8.8-3.8-1.1-6.5-4.8-6.5-8.8V5.5L12 3.2zM10.7 14.4 7.8 11.5l1.4-1.4 1.5 1.5 4.1-4.1 1.4 1.4-5.5 5.5z"/></svg>
+        </div>
+        <h2>Expediente Cerrado</h2>
+        <div class="score">${score}<span> / ${total}</span></div>
+        <p>${pct}% de aciertos sobre el temario de estructura orgánica</p>
+        <button class="btn btn-next" style="margin-top:18px;" onclick="reiniciar()">Reabrir expediente ↺</button>
+      </div>
+    </div>
+  `;
+  progLabel.textContent = `Caso ${total} / ${total}`;
+  progScore.textContent = `Aciertos: ${score}`;
+  progFill.style.width = '100%';
+}
+
+function reiniciar(){
+  idx = 0;
+  score = 0;
+  answered = new Array(preguntas.length).fill(null);
+  render();
+}
+
+btnPrev.addEventListener('click', ()=>{ if(idx>0){ idx--; render(); } });
+btnNext.addEventListener('click', ()=>{ idx++; render(); });
+
+render();
+</script>
+</body>
+</html>

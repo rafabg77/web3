@@ -1,0 +1,38 @@
+name: Sincronizar nuevos repos con GitHub Pages
+
+on:
+  schedule:
+    # Todos los días a las 07:00 UTC (09:00 hora peninsular en horario de verano).
+    # Cambia el cron si quieres que corra más o menos a menudo.
+    - cron: '0 7 * * *'
+  workflow_dispatch: {}
+    # Esto añade un botón "Run workflow" en la pestaña Actions del repo,
+    # para lanzarlo a mano justo después de publicar un material nuevo
+    # sin esperar a la ejecución diaria.
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar el repo
+        uses: actions/checkout@v4
+
+      - name: Buscar y añadir materiales nuevos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-repos.js
+
+      - name: Commitear y publicar si hay cambios
+        run: |
+          if ! git diff --quiet -- data/temario.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add data/temario.json
+            git commit -m "Sincronización automática: nuevos materiales detectados"
+            git push
+          else
+            echo "Sin cambios que commitear."
+          fi

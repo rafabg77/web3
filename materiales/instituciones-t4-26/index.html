@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇪🇺 Instituciones UE — CNP Escala Básica</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1f2937;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --blue: #388bfd;
+    --blue-soft: #1d3461;
+    --gold: #f0c040;
+    --gold-soft: #3d2e00;
+    --green: #3fb950;
+    --green-soft: #0f2d1a;
+    --red: #f85149;
+    --red-soft: #2d0f0f;
+    --purple: #bc8cff;
+    --purple-soft: #1e1035;
+    --cyan: #39d2f0;
+    --cyan-soft: #0d2b33;
+    --orange: #ff8c42;
+    --orange-soft: #2d1800;
+    --eu-blue: #003399;
+    --eu-yellow: #ffcc00;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    background: linear-gradient(135deg, #001a66 0%, #003399 40%, #001a66 100%);
+    padding: 40px 24px 32px;
+    text-align: center;
+    border-bottom: 3px solid var(--eu-yellow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★';
+    position: absolute;
+    top: 12px; left: 50%; transform: translateX(-50%);
+    color: var(--eu-yellow);
+    font-size: 10px;
+    letter-spacing: 6px;
+    opacity: 0.8;
+    white-space: nowrap;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 span { color: var(--eu-yellow); }
+  .hero p { color: #a8c4ff; font-size: 14px; }
+  .badge-row {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-top: 16px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-bar {
+    position: sticky;
+    top: 0; z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 0;
+    padding: 0 8px;
+  }
+  .nav-bar::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--text2);
+    padding: 12px 16px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--eu-yellow); border-bottom-color: var(--eu-yellow); }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 24px 16px; max-width: 1000px; margin: 0 auto; }
+  .section.visible { display: block; }
+
+  /* ── INSTITUTION CARDS ── */
+  .inst-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .inst-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .inst-card:hover { transform: translateY(-2px); }
+  .inst-card-header {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .inst-icon { font-size: 28px; }
+  .inst-card-header h3 { font-size: 14px; font-weight: 700; line-height: 1.3; }
+  .inst-card-header .sede { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .inst-body { padding: 12px 16px; }
+  .inst-body p { font-size: 13px; color: var(--text2); }
+  .inst-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+
+  /* ── DETAIL MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 680px;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    animation: slideIn 0.2s ease;
+  }
+  @keyframes slideIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .modal-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-icon { font-size: 36px; }
+  .modal-header h2 { font-size: 20px; font-weight: 700; }
+  .modal-header .sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .modal-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--text2);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .modal-close:hover { background: var(--bg3); color: var(--text); }
+  .modal-body { padding: 20px 24px; }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .info-chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .info-chip .label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .info-chip .value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .info-chip .value span { font-size: 11px; font-weight: 400; color: var(--text2); }
+
+  .section-block {
+    background: var(--bg3);
+    border-left: 3px solid;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+  }
+  .section-block h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .section-block ul { padding-left: 16px; }
+  .section-block li { font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+  .section-block li strong { color: var(--text); }
+  .section-block p { font-size: 13px; color: var(--text2); }
+
+  /* Memory tricks */
+  .trick-box {
+    background: linear-gradient(135deg, #1a0a3d, #2d1060);
+    border: 1px solid var(--purple);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+  .trick-box h4 { font-size: 12px; color: var(--purple); font-weight: 700; margin-bottom: 6px; }
+  .trick-box p { font-size: 13px; color: #d4b8ff; }
+  .trick-box .trick-content { font-size: 14px; font-weight: 600; color: #fff; margin-top: 4px; }
+
+  /* ── TABLE DE SEDES ── */
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .city-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    transition: border-color 0.2s;
+  }
+  .city-card:hover { border-color: var(--gold); }
+  .city-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .city-flag { font-size: 18px; }
+  .city-items { list-style: none; }
+  .city-items li {
+    font-size: 12px;
+    color: var(--text2);
+    padding: 3px 0;
+    border-bottom: 1px solid var(--bg3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .city-items li:last-child { border-bottom: none; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── PRESIDENTES ── */
+  .pres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .pres-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .pres-card .inst-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text3);
+    margin-bottom: 2px;
+  }
+  .pres-card .pres-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .pres-card .pres-detail {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 4px;
+  }
+  .pres-card .mandate-bar {
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .mandate-fill { height: 100%; border-radius: 2px; }
+
+  /* ── QUIZ ── */
+  .quiz-container { max-width: 640px; margin: 0 auto; }
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .quiz-score {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+  .quiz-progress {
+    background: var(--bg3);
+    height: 6px;
+    border-radius: 3px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .question-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .question-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .question-text {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 12px 16px;
+    text-align: left;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .option-btn:hover:not(:disabled) { background: var(--blue-soft); border-color: var(--blue); }
+  .option-btn.correct { background: var(--green-soft); border-color: var(--green); color: #7ee787; }
+  .option-btn.wrong { background: var(--red-soft); border-color: var(--red); color: #ff7b72; }
+  .option-btn:disabled { cursor: default; }
+  .option-letter {
+    width: 24px; height: 24px;
+    background: var(--bg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .explanation {
+    background: var(--bg3);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text2);
+    display: none;
+  }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--gold); }
+  .next-btn {
+    background: var(--blue);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 24px;
+    width: 100%;
+    margin-top: 12px;
+    transition: opacity 0.15s;
+    display: none;
+  }
+  .next-btn:hover { opacity: 0.85; }
+  .next-btn.show { display: block; }
+
+  .quiz-results {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+  .quiz-results.show { display: block; }
+  .result-score { font-size: 64px; font-weight: 700; line-height: 1; }
+  .result-label { font-size: 18px; color: var(--text2); margin-bottom: 24px; }
+  .restart-btn {
+    background: none;
+    border: 2px solid var(--blue);
+    border-radius: 10px;
+    color: var(--blue);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 28px;
+    transition: all 0.15s;
+  }
+  .restart-btn:hover { background: var(--blue); color: #fff; }
+
+  /* ── COMPARATIVA ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .compare-table th {
+    background: var(--bg3);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text2);
+    border-bottom: 2px solid var(--border);
+  }
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:hover td { background: var(--bg3); }
+  .compare-table .inst-name { font-weight: 700; font-size: 13px; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    margin: 1px;
+  }
+
+  /* ── FLASHCARDS ── */
+  .flash-container { max-width: 500px; margin: 0 auto; }
+  .flash-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s;
+    margin-bottom: 16px;
+    perspective: 1000px;
+  }
+  .flash-card:hover { transform: scale(1.01); }
+  .flash-front, .flash-back {
+    width: 100%;
+    backface-visibility: hidden;
+    transition: opacity 0.2s;
+  }
+  .flash-back { display: none; }
+  .flash-card.flipped .flash-front { display: none; }
+  .flash-card.flipped .flash-back { display: block; }
+  .flash-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+  .flash-q { font-size: 18px; font-weight: 600; line-height: 1.4; }
+  .flash-a { font-size: 15px; color: var(--green); font-weight: 600; line-height: 1.5; }
+  .flash-hint { font-size: 12px; color: var(--text3); margin-top: 16px; }
+  .flash-nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+  .flash-nav-btn {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    transition: all 0.15s;
+  }
+  .flash-nav-btn:hover { background: var(--bg3); border-color: var(--text2); }
+  .flash-counter { font-size: 13px; color: var(--text2); min-width: 60px; text-align: center; }
+
+  /* ── GENERAL UTILS ── */
+  h2.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, var(--gold-soft), #2d2000);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #f0d070;
+  }
+  .highlight-box strong { color: var(--gold); }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg3);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--cyan);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .info-grid { grid-template-columns: 1fr 1fr; }
+    .modal { border-radius: 12px 12px 0 0; margin-bottom: 0; }
+    .modal-overlay { align-items: flex-end; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🇪🇺 <span>Instituciones de la Unión Europea</span></h1>
+  <p>Guía interactiva de estudio · Oposición CNP Escala Básica</p>
+  <div class="badge-row">
+    <span class="badge">7 Instituciones</span>
+    <span class="badge">Quizzes interactivos</span>
+    <span class="badge">Flashcards</span>
+    <span class="badge">Comparativas</span>
+    <span class="badge">Trucos mnemotécnicos</span>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showTab('resumen')">🏛️ Resumen</button>
+  <button class="nav-btn" onclick="showTab('sedes')">📍 Sedes</button>
+  <button class="nav-btn" onclick="showTab('presidentes')">👤 Presidentes</button>
+  <button class="nav-btn" onclick="showTab('detalle')">🔍 Detalle</button>
+  <button class="nav-btn" onclick="showTab('comparativa')">📊 Comparativa</button>
+  <button class="nav-btn" onclick="showTab('flashcards')">🃏 Flashcards</button>
+  <button class="nav-btn" onclick="showTab('quiz')">🎯 Quiz</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ RESUMEN ═══ -->
+<div id="tab-resumen" class="section visible">
+  <h2 class="section-title">🏛️ Las 7 Instituciones Principales</h2>
+  <p class="section-desc">Haz clic en cualquier institución para ver todos sus detalles. Estudia cada una por dentro.</p>
+
+  <div class="highlight-box">
+    <strong>💡 Truco maestro:</strong> Las <strong>5 grandes</strong> con sede en Bruselas-Luxemburgo: Consejo UE, Consejo Europeo, Comisión, PE (multisede), y TJUE. Recuerda: <strong>"BRU-BRU-BRU-EST/BRU/LUX-LUX"</strong>
+  </div>
+
+  <div class="inst-grid">
+    <div class="inst-card" onclick="openModal('consejo_ue')" style="border-top: 3px solid #388bfd">
+      <div class="inst-card-header">
+        <div class="inst-icon">⚖️</div>
+        <div>
+          <h3>Consejo de la UE</h3>
+          <div class="sede">📍 Bruselas (+ Luxemburgo 3 meses)</div>
+        </div>
+      </div>
+      <div class="inst-body">
+        <p>Representa a los <strong>gobiernos</strong> de los EEMM. Con el PE, es el principal órgano legislativo.</p>
+        <div>
+          <span class="inst-badge" style="background:#1d3461;color:#388bfd">27 ministros</span>
+          <span class="inst-badge" style="background:#0f2d1a;color:#3fb950">Presidencia rotatoria 6 meses</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="inst-card" onclick="openModal('consejo_europeo')" style="border-top: 3px solid #f0c040">
+      <div class="inst-card-header">
+        <div class="inst-icon">🌍</div>
+        <div>
+          <h3>Consejo Europeo</h3>
+          <div class="sede">📍 Bruselas</div>
+        </div>
+      </div>
+      <div class="inst-body">
+        <p>Jefes de Estado o Gobierno. Fija la <strong>orientación política</strong> general de la UE.</p>
+        <div>
+          <span class="inst-badge" style="background:#3d2e00;color:#f0c040">27 líderes + Presidente + Comisión</span>
+          <span class="inst-badge" style="background:#1d3461;color:#388bfd">Antonio Costa</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="inst-card" onclick="openModal('comision')" style="border-top: 3px solid #3fb950">
+      <div class="inst-card-header">
+        <div class="inst-icon">🏢</div>
+        <div>
+          <h3>Comisión Europea</h3>
+          <div class="sede">📍 Bruselas</div>
+        </div>
+      </div>
+      <div class="inst-body">
+        <p>El <strong>gobierno</strong> de la UE. Iniciativa legislativa exclusiva, ejecuta el presupuesto.</p>
+        <div>
+          <span class="inst-badge" style="background:#0f2d1a;color:#3fb950">27 comisarios</span>
+          <span class="inst-badge" style="background:#1d3461;color:#388bfd">Von der Leyen</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="inst-card" onclick="openModal('pe')" style="border-top: 3px solid #bc8cff">
+      <div class="inst-card-header">
+        <div class="inst-icon">🗳️</div>
+        <div>
+          <h3>Parlamento Europeo</h3>
+          <div class="sede">📍 Estrasburgo / Bruselas / Luxemburgo</div>
+        </div>
+      </div>
+      <div class="inst-body">
+        <p>Elegido por <strong>sufragio universal</strong>. Colegislador con el Consejo UE.</p>
+        <div>
+          <span class="inst-badge" style="background:#1e1035;color:#bc8cff">719-720 europarlamentarios</span>
+          <span class="inst-badge" style="background:#3d2e00;color:#f0c040">61 de España</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="inst-card" onclick="openModal('tjue')" style="border-top: 3px solid #f85149">
+      <div class="inst-card-header">
+        <div class="inst-icon">⚖️</div>
+        <div>
+          <h3>TJUE</h3>
+          <div class="sede">📍 Luxemburgo</div>
+        </div>
+      </div>
+      <div class="inst-body">
+        <p>Garantiza la <strong>interpretación uniforme</strong> del derecho UE en todos los EEMM.</p>
+        <div>
+          <span class="inst-badge" style="background:#2d0f0f;color:#f85149">27 jueces TJ + 54 TG</span>
+          <span class="inst-badge" style="background:#1d3461;color:#388bfd">11 Abogados generales</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="inst-card" onclick="openModal('tribunal_cuentas')" style="border-top: 3px solid #ff8c42">
+      <div class="inst-card-header">
+        <div class="inst-icon">🔍</div>
+        <div>
+          <h3>Tribunal de Cuentas UE</h3>
+          <div class="sede">📍 Luxemburgo</div>
+        </div>
+      </div>
+      <div class="inst-body">
+        <p>Audita el <strong>presupuesto</strong> de la UE. Informa sospechas de fraude a la OLAF.</p>
+        <div>
+          <span class="inst-badge" style="background:#2d1800;color:#ff8c42">27 miembros · 6 años</span>
+          <span class="inst-badge" style="background:#1d3461;color:#388bfd">Tony Murphy</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="inst-card" onclick="openModal('bce')" style="border-top: 3px solid #39d2f0">
+      <div class="inst-card-header">
+        <div class="inst-icon">💶</div>
+        <div>
+          <h3>Banco Central Europeo</h3>
+          <div class="sede">📍 Fráncfort</div>
+        </div>
+      </div>
+      <div class="inst-body">
+        <p>Política monetaria del euro. <strong>Total independencia</strong> de gobiernos e instituciones.</p>
+        <div>
+          <span class="inst-badge" style="background:#0d2b33;color:#39d2f0">Christine Lagarde</span>
+          <span class="inst-badge" style="background:#2d1800;color:#ff8c42">Mandato 8 años no renovable</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="background: linear-gradient(135deg, #0d2b33, #002030); border-color: var(--cyan)">
+    <strong>🎯 Otros organismos clave:</strong> <strong>BEI y Fondo Europeo de Inversiones</strong> → Luxemburgo | <strong>Defensor del Pueblo</strong> → Estrasburgo (Teresa Anjinho) | <strong>CDR y CESE</strong> → Bruselas (329 miembros, 21 España)
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SEDES ═══ -->
+<div id="tab-sedes" class="section">
+  <h2 class="section-title">📍 Sedes por Ciudad</h2>
+  <p class="section-desc">Dominar las sedes es clave para el examen. Agrúpalas por ciudad para memorizarlas juntas.</p>
+
+  <div class="map-grid">
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇧🇪</span> Bruselas</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#388bfd"></span>Consejo de la UE (principal)</li>
+        <li><span class="dot" style="background:#f0c040"></span>Consejo Europeo</li>
+        <li><span class="dot" style="background:#3fb950"></span>Comisión Europea</li>
+        <li><span class="dot" style="background:#bc8cff"></span>PE (comisiones y sesiones adicionales)</li>
+        <li><span class="dot" style="background:#39d2f0"></span>AR / SEAE</li>
+        <li><span class="dot" style="background:#ff8c42"></span>CDR y CESE</li>
+        <li><span class="dot" style="background:#f85149"></span>SEPD</li>
+        <li><span class="dot" style="background:#888"></span>CPS (Comité Político y Seguridad)</li>
+      </ul>
+    </div>
+
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇱🇺</span> Luxemburgo</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#f85149"></span>TJUE (Tribunal de Justicia + General)</li>
+        <li><span class="dot" style="background:#ff8c42"></span>Tribunal de Cuentas UE</li>
+        <li><span class="dot" style="background:#bc8cff"></span>PE (Secretariado General)</li>
+        <li><span class="dot" style="background:#39d2f0"></span>BEI (Banco Europeo de Inversiones)</li>
+        <li><span class="dot" style="background:#3fb950"></span>Fondo Europeo de Inversiones</li>
+        <li><span class="dot" style="background:#388bfd"></span>Consejo UE (abril, junio, octubre)</li>
+      </ul>
+    </div>
+
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇫🇷</span> Estrasburgo</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#bc8cff"></span>PE (plenarias mensuales)</li>
+        <li><span class="dot" style="background:#f0c040"></span>Defensor del Pueblo Europeo</li>
+      </ul>
+    </div>
+
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇩🇪</span> Fráncfort</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#39d2f0"></span>Banco Central Europeo (BCE)</li>
+      </ul>
+    </div>
+
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇦🇹</span> Viena</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#3fb950"></span>Agencia Derechos Fundamentales UE</li>
+        <li><span class="dot" style="background:#388bfd"></span>VIS Central</li>
+      </ul>
+    </div>
+
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇪🇸</span> Bilbao</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#f0c040"></span>Agencia Europea de Seguridad y Salud en el Trabajo</li>
+      </ul>
+    </div>
+
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇱🇹</span> Vilna</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#f85149"></span>Instituto Europeo para la Igualdad de Género</li>
+      </ul>
+    </div>
+
+    <div class="city-card">
+      <div class="city-name"><span class="city-flag">🇬🇷</span> Atenas</div>
+      <ul class="city-items">
+        <li><span class="dot" style="background:#bc8cff"></span>ENISA (Agencia UE de Ciberseguridad)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="trick-box">
+    <h4>🧠 Mnemotécnica para Sedes Especiales</h4>
+    <p>Recuerda las agencias especiales con: <span class="trick-content">"VIENA-DERECHOS | BILBAO-SALUD | VILNA-IGUALDAD | ATENAS-CYBER"</span></p>
+    <p style="margin-top:8px">Y el trío de Luxemburgo: <span class="trick-content">TJUE + Tribunal de Cuentas + BEI + Secretariado PE</span></p>
+    <p style="margin-top:8px">⚠️ <strong>OJO:</strong> El Consejo UE tiene reuniones en Luxemburgo en <strong>abril, junio y octubre</strong>. Los demás meses → Bruselas.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ PRESIDENTES ═══ -->
+<div id="tab-presidentes" class="section">
+  <h2 class="section-title">👤 Presidentes y Dirigentes Actuales</h2>
+  <p class="section-desc">Los cargos actuales son pregunta frecuente. Memoriza nombre, institución y duración del mandato.</p>
+
+  <div class="pres-grid">
+    <div class="pres-card">
+      <div class="inst-label">🌍 Consejo Europeo</div>
+      <div class="pres-name">Antonio Costa</div>
+      <div class="pres-detail">Elegido por <strong>mayoría cualificada</strong> por los miembros · Mandato <strong>2,5 años renovable una vez</strong> · Apodado "Mr. Europe"</div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:50%;background:#f0c040"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">🏢 Comisión Europea</div>
+      <div class="pres-name">Ursula von der Leyen</div>
+      <div class="pres-detail">Propuesta por Consejo Europeo · Elegida por el PE por <strong>mayoría absoluta</strong> · Mandato <strong>5 años</strong></div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:70%;background:#3fb950"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">🗳️ Parlamento Europeo</div>
+      <div class="pres-name">Roberta Metsola</div>
+      <div class="pres-detail">Mesa: 14 vicepresidentes + 5 cuestores · Elegida por <strong>2,5 años renovables</strong></div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:60%;background:#bc8cff"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">⚖️ Tribunal de Justicia UE</div>
+      <div class="pres-name">Koen Lenaerts</div>
+      <div class="pres-detail">Elegido por los miembros · Mandato <strong>3 años renovables</strong></div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:40%;background:#f85149"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">⚖️ Tribunal General</div>
+      <div class="pres-name">Marc Jaeger</div>
+      <div class="pres-detail">Elegido por los miembros · Mandato <strong>3 años renovables</strong></div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:55%;background:#f85149"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">🔍 Tribunal de Cuentas UE</div>
+      <div class="pres-name">Tony Murphy</div>
+      <div class="pres-detail">Elegido por los miembros · Mandato <strong>3 años renovables</strong> · Miembros nombrados por el Consejo por 6 años</div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:35%;background:#ff8c42"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">💶 Banco Central Europeo</div>
+      <div class="pres-name">Christine Lagarde</div>
+      <div class="pres-detail">Elegida por el Consejo Europeo por <strong>mayoría cualificada</strong> · Mandato <strong>8 años NO renovable</strong></div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:65%;background:#39d2f0"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">🌐 Alto Representante (PESC)</div>
+      <div class="pres-name">Kaja Kallas</div>
+      <div class="pres-detail">Nombrada por Consejo Europeo · Mandato <strong>5 años</strong> · Preside Consejo Asuntos Exteriores · Vicepresidenta Comisión</div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:45%;background:#388bfd"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">🏗️ BEI</div>
+      <div class="pres-name">Nadia Calviño</div>
+      <div class="pres-detail">Española · Mandato <strong>6 años renovables</strong></div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:30%;background:#3fb950"></div></div>
+    </div>
+
+    <div class="pres-card">
+      <div class="inst-label">🏛️ Defensor del Pueblo</div>
+      <div class="pres-name">Teresa Anjinho</div>
+      <div class="pres-detail">Elegida por el PE · Mandato <strong>5 años renovables una vez</strong> · Sede en Estrasburgo</div>
+      <div class="mandate-bar"><div class="mandate-fill" style="width:25%;background:#bc8cff"></div></div>
+    </div>
+  </div>
+
+  <div class="trick-box">
+    <h4>🧠 Truco para Recordar Mandatos</h4>
+    <p><span class="trick-content">8 años (no renovable) = BCE (Lagarde) — el único no renovable</span></p>
+    <p style="margin-top:6px"><span class="trick-content">5 años = Comisión, AR (Kallas), Defensor del Pueblo, CDR, CESE, comisarios</span></p>
+    <p style="margin-top:6px"><span class="trick-content">3 años = Presidentes TJ, TG, Tribunal de Cuentas</span></p>
+    <p style="margin-top:6px"><span class="trick-content">2,5 años = Consejo Europeo (Costa), PE (Metsola), CDR/CESE presidente</span></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ DETALLE ═══ -->
+<div id="tab-detalle" class="section">
+  <h2 class="section-title">🔍 Fichas Completas por Institución</h2>
+  <p class="section-desc">Selecciona una institución para ver su ficha completa con todos los detalles del temario.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px">
+    <button class="flash-nav-btn" onclick="showDetail('consejo_ue')">⚖️ Consejo UE</button>
+    <button class="flash-nav-btn" onclick="showDetail('consejo_europeo')">🌍 Consejo Europeo</button>
+    <button class="flash-nav-btn" onclick="showDetail('comision')">🏢 Comisión</button>
+    <button class="flash-nav-btn" onclick="showDetail('pe')">🗳️ Parlamento</button>
+    <button class="flash-nav-btn" onclick="showDetail('tjue')">⚖️ TJUE</button>
+    <button class="flash-nav-btn" onclick="showDetail('bce')">💶 BCE</button>
+    <button class="flash-nav-btn" onclick="showDetail('otros')">🔗 Otros</button>
+  </div>
+
+  <div id="detail-content">
+    <div style="color:var(--text2);text-align:center;padding:40px">Selecciona una institución para ver su ficha completa ☝️</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ COMPARATIVA ═══ -->
+<div id="tab-comparativa" class="section">
+  <h2 class="section-title">📊 Tabla Comparativa General</h2>
+  <p class="section-desc">Un vistazo rápido a todos los datos clave de las principales instituciones.</p>
+
+  <div style="overflow-x:auto">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Institución</th>
+        <th>Sede</th>
+        <th>Miembros / Composición</th>
+        <th>Presidente Actual</th>
+        <th>Mandato</th>
+        <th>Quórum / Mayoría</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong class="inst-name">⚖️ Consejo UE</strong><br><small style="color:var(--text3)">Consejo de Ministros</small></td>
+        <td>Bruselas <br><small style="color:var(--text3)">+ Lux. (abr/jun/oct)</small></td>
+        <td>27 ministros (1 por EM)</td>
+        <td><span class="tag" style="background:var(--blue-soft);color:var(--blue)">Presidencia Rotatoria</span><br><small>Dinamarca (actual)</small></td>
+        <td>6 meses<br><small>(trío de 18 meses)</small></td>
+        <td>Doble mayoría cualificada<br><small>55% EM + 65% población</small></td>
+      </tr>
+      <tr>
+        <td><strong class="inst-name">🌍 Consejo Europeo</strong></td>
+        <td>Bruselas</td>
+        <td>27 Jefes Estado/Gobierno<br>+ Pdte. + Pdte. Comisión</td>
+        <td><span class="tag" style="background:var(--gold-soft);color:var(--gold)">Antonio Costa</span></td>
+        <td>2,5 años<br><small>renovable 1 vez</small></td>
+        <td>Consenso / Unanimidad / Mayoría cualificada</td>
+      </tr>
+      <tr>
+        <td><strong class="inst-name">🏢 Comisión Europea</strong></td>
+        <td>Bruselas</td>
+        <td>27 comisarios<br>1 por EM · 5 años</td>
+        <td><span class="tag" style="background:var(--green-soft);color:var(--green)">Von der Leyen</span></td>
+        <td>5 años</td>
+        <td>Mayoría simple o consenso</td>
+      </tr>
+      <tr>
+        <td><strong class="inst-name">🗳️ Parlamento Europeo</strong></td>
+        <td>Estrasburgo / Bruselas / Luxemburgo</td>
+        <td>Máx. 750<br>Actualmente 719-720<br>Quórum 1/3</td>
+        <td><span class="tag" style="background:var(--purple-soft);color:var(--purple)">Roberta Metsola</span></td>
+        <td>5 años</td>
+        <td>Mayoría simple, absoluta o cualificada</td>
+      </tr>
+      <tr>
+        <td><strong class="inst-name">⚖️ TJUE</strong><br><small style="color:var(--text3)">TJ + TG</small></td>
+        <td>Luxemburgo</td>
+        <td>TJ: 27 jueces + 11 Abogados Gral.<br>TG: 54 jueces (2 por EM)</td>
+        <td><span class="tag" style="background:var(--red-soft);color:var(--red)">Koen Lenaerts (TJ)</span><br><span class="tag" style="background:var(--red-soft);color:var(--red)">Marc Jaeger (TG)</span></td>
+        <td>3 años<br><small>renovables</small></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong class="inst-name">🔍 Tribunal de Cuentas</strong></td>
+        <td>Luxemburgo</td>
+        <td>27 miembros<br>Nombrados por Consejo</td>
+        <td><span class="tag" style="background:var(--orange-soft);color:var(--orange)">Tony Murphy</span></td>
+        <td>Miembros: 6 años<br>Pdte: 3 años</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong class="inst-name">💶 BCE</strong></td>
+        <td>Fráncfort</td>
+        <td>Gobernadores BCN + Comité Ejecutivo</td>
+        <td><span class="tag" style="background:var(--cyan-soft);color:var(--cyan)">Christine Lagarde</span></td>
+        <td>8 años<br><small>NO renovable</small></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong class="inst-name">🌐 Alto Representante</strong></td>
+        <td>Bruselas</td>
+        <td>Único cargo</td>
+        <td><span class="tag" style="background:var(--blue-soft);color:var(--blue)">Kaja Kallas</span></td>
+        <td>5 años</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2 class="section-title" style="margin-top:32px">🔢 Números Clave</h2>
+  <p class="section-desc">Los números que más salen en examen.</p>
+
+  <div class="info-grid" style="margin-top:0">
+    <div class="info-chip">
+      <div class="label">🗳️ PE – Máximo europarlamentarios</div>
+      <div class="value">750 <span>(actualmente 719-720)</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">🇪🇸 España en el PE</div>
+      <div class="value">61 <span>europarlamentarios</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">🏢 Grupos políticos PE</div>
+      <div class="value">8 <span>(mín. 23 diputados de ¼ EM)</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">📋 Comisiones Permanentes PE</div>
+      <div class="value">22 <span>+ 4 Subcomisiones</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">🌍 Consejo Europeo – Quórum</div>
+      <div class="value">2/3 <span>de los miembros</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">🗳️ PE – Quórum</div>
+      <div class="value">1/3 <span>de los miembros</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">⚙️ Formaciones del Consejo UE</div>
+      <div class="value">10 <span>formaciones</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">🇪🇸 España en CDR / CESE</div>
+      <div class="value">21 <span>de 329 miembros</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">📊 Doble Mayoría Cualificada</div>
+      <div class="value">55% <span>EM + 65% población</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">🏛️ Defensor del Pueblo – Plazo reclamación</div>
+      <div class="value">2 años <span>desde conocer los hechos</span></div>
+    </div>
+    <div class="info-chip">
+      <div class="label">📅 Respuesta institución al Defensor</div>
+      <div class="value">3 meses</div>
+    </div>
+    <div class="info-chip">
+      <div class="label">⚖️ Casación ante TJ – Plazo</div>
+      <div class="value">2 meses</div>
+    </div>
+  </div>
+
+  <div class="trick-box">
+    <h4>🧠 El trío de presidencias rotatorias del Consejo UE</h4>
+    <p>Las presidencias van por tríos de 18 meses: <span class="trick-content">Polonia → Dinamarca → Chipre (actualmente Dinamarca)</span></p>
+    <p style="margin-top:6px">Semestres: <span class="trick-content">Enero-Junio / Julio-Diciembre</span></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FLASHCARDS ═══ -->
+<div id="tab-flashcards" class="section">
+  <h2 class="section-title">🃏 Flashcards de Repaso</h2>
+  <p class="section-desc">Haz clic en la tarjeta para ver la respuesta. Navega con los botones o las flechas del teclado.</p>
+
+  <div class="flash-container">
+    <div class="flash-card" id="flashCard" onclick="flipCard()">
+      <div class="flash-front">
+        <div class="flash-label">PREGUNTA — Haz clic para ver la respuesta</div>
+        <div class="flash-q" id="flashQ"></div>
+      </div>
+      <div class="flash-back">
+        <div class="flash-label">✅ RESPUESTA</div>
+        <div class="flash-a" id="flashA"></div>
+      </div>
+      <div class="flash-hint" id="flashHint"></div>
+    </div>
+    <div class="flash-nav">
+      <button class="flash-nav-btn" onclick="prevFlash()">← Anterior</button>
+      <div class="flash-counter" id="flashCounter">1 / 30</div>
+      <button class="flash-nav-btn" onclick="nextFlash()">Siguiente →</button>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="flash-nav-btn" onclick="shuffleFlash()" style="font-size:12px;padding:6px 14px">🔀 Barajar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ QUIZ ═══ -->
+<div id="tab-quiz" class="section">
+  <h2 class="section-title">🎯 Quiz de Examen</h2>
+  <p class="section-desc">Preguntas tipo test al estilo CNP. Se explica el porqué de cada respuesta.</p>
+
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="quiz-header">
+        <div class="quiz-score" id="quizScore">Pregunta 1 de 20</div>
+        <div class="quiz-score" id="quizPoints">✅ 0 | ❌ 0</div>
+      </div>
+      <div class="quiz-progress">
+        <div class="quiz-progress-fill" id="quizProgressFill" style="width:5%"></div>
+      </div>
+      <div class="question-card" id="questionCard">
+        <div class="question-num" id="questionNum">Pregunta 1</div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options" id="optionsContainer"></div>
+        <div class="explanation" id="explanation"></div>
+      </div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Siguiente pregunta →</button>
+    </div>
+    <div class="quiz-results" id="quizResults">
+      <div class="result-score" id="resultScore">–/–</div>
+      <div class="result-label" id="resultLabel"></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Repetir quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ MODAL ════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalBg(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+
+// ─────────────────────────────────────────────────────────────
+// INSTITUTION DATA
+// ─────────────────────────────────────────────────────────────
+const institutions = {
+  consejo_ue: {
+    icon: '⚖️', name: 'Consejo de la Unión Europea', sub: 'También llamado Consejo de Ministros',
+    color: '#388bfd',
+    chips: [
+      { label: 'Sede principal', value: 'Bruselas' },
+      { label: 'Sede adicional', value: 'Luxemburgo <span>(abril, junio, octubre)</span>' },
+      { label: 'Composición', value: '27 representantes <span>(1 ministro por EM)</span>' },
+      { label: 'Perfil', value: 'Rango ministerial <span>+ plena capacidad para comprometer al Estado</span>' },
+      { label: 'Presidencia', value: 'Rotatoria 6 meses <span>(trío: Polonia-Dinamarca-Chipre)</span>' },
+      { label: 'Presidencia actual', value: 'Dinamarca' },
+      { label: 'Semestres', value: 'Enero-Junio / Julio-Diciembre' },
+      { label: 'Formaciones', value: '10 formaciones' },
+    ],
+    blocks: [
+      { color: '#388bfd', title: '📜 Funciones Legislativas y Presupuestarias', items: [
+        'Junto con el PE es el principal órgano de decisión',
+        'Negocia y adopta la legislación de la UE',
+        'Aprueba el presupuesto junto con el PE',
+        'Representa los intereses de los Gobiernos de los EEMM'
+      ]},
+      { color: '#f0c040', title: '🌐 Funciones en Política Exterior', items: [
+        'Desarrolla e impulsa la PESC bajo las pautas del Consejo Europeo',
+        'El Consejo de Asuntos Exteriores lo preside el AR (no el Presidente del Consejo)',
+        'El Presidente preside el resto de formaciones'
+      ]},
+      { color: '#3fb950', title: '🔧 Órganos de Apoyo', items: [
+        '<strong>COREPER</strong>: Comité de Representantes Permanentes — órgano preparatorio y filtro técnico/político',
+        '<strong>COREPER I</strong>: Temas técnicos/sectoriales (asistido por grupo MERTENS)',
+        '<strong>COREPER II</strong>: Temas políticos/institucionales (asistido por grupo ANTICI)',
+        '<strong>COSI</strong>: Coordina la cooperación en seguridad interior'
+      ]},
+      { color: '#f85149', title: '🗳️ Toma de Decisiones', items: [
+        '<strong>Doble mayoría cualificada</strong>: 55% de EEMM que representen el 65% de la población',
+        '<strong>Mayoría simple</strong>: temas administrativos',
+        '<strong>Unanimidad</strong>: política exterior o fiscalidad',
+        'Los debates y votaciones son PÚBLICOS'
+      ]}
+    ],
+    trick: 'El Consejo UE = los "ministros". El Consejo Europeo = los "jefes". ¡No confundirlos en examen! El Consejo UE NO tiene periodicidad fija de reunión.'
+  },
+  consejo_europeo: {
+    icon: '🌍', name: 'Consejo Europeo', sub: 'El nivel más elevado de cooperación política',
+    color: '#f0c040',
+    chips: [
+      { label: 'Sede', value: 'Bruselas' },
+      { label: 'Miembros', value: '27 Jefes de Estado o Gobierno + Presidente CE + Presidente Comisión' },
+      { label: 'Quórum', value: '2/3 de miembros' },
+      { label: 'AR', value: 'Participa pero NO es miembro' },
+      { label: 'Presidente', value: 'Antonio Costa ("Mr. Europe")' },
+      { label: 'Elección presidente', value: 'Mayoría cualificada por sus miembros' },
+      { label: 'Mandato presidente', value: '2,5 años renovable una vez' },
+      { label: 'Periodicidad', value: 'Al menos 2 veces por semestre (cumbres trimestrales + extraordinarias)' },
+    ],
+    blocks: [
+      { color: '#f0c040', title: '🎯 Funciones Principales', items: [
+        'Definir la orientación y prioridades políticas generales de la UE',
+        'Establece la agenda política de la UE al más alto nivel',
+        'Establece la PESC (Política Exterior y de Seguridad Común)',
+        'Su Presidente asume la representación exterior (sin perjuicio del AR)'
+      ]},
+      { color: '#3fb950', title: '👥 Designaciones y Nombramientos', items: [
+        'Designa y nombra candidatos para el BCE',
+        'Propone al Presidente de la Comisión (el PE lo elige)',
+        'Designa al AR (junto con el Presidente Comisión)',
+        'Nombra a los miembros del Comité Ejecutivo del BCE'
+      ]},
+      { color: '#388bfd', title: '🗳️ Toma de Decisiones', items: [
+        'Por <strong>consenso</strong> como norma general',
+        'Por <strong>unanimidad</strong> en ciertos casos',
+        'Por <strong>mayoría cualificada</strong> para nombramientos y algunos procedimientos'
+      ]}
+    ],
+    trick: '¡Cuidado! El AR participa en las reuniones pero NO es miembro del Consejo Europeo. En cambio, el Presidente de la Comisión SÍ es miembro. Recuerda: 2,5 años para Costa (igual que Metsola en el PE).'
+  },
+  comision: {
+    icon: '🏢', name: 'Comisión Europea', sub: 'El "gobierno" de la UE — Iniciativa legislativa exclusiva',
+    color: '#3fb950',
+    chips: [
+      { label: 'Sede', value: 'Bruselas' },
+      { label: 'Composición', value: '27 comisarios (1 por EM)' },
+      { label: 'Colegio', value: 'Presidente + 6 Vicepresidentes + 20 comisarios' },
+      { label: 'Vicepresidentes ejecutivos', value: '5 ejecutivos (incluido el AR)' },
+      { label: 'Presidenta', value: 'Ursula von der Leyen' },
+      { label: 'Mandato', value: '5 años' },
+      { label: 'Elección presidenta', value: 'Propuesta por C. Europeo · Elegida por PE por mayoría absoluta' },
+      { label: 'Reunión', value: 'Al menos una vez por semana + sesiones extraordinarias' },
+    ],
+    blocks: [
+      { color: '#3fb950', title: '⚡ Funciones Ejecutivas', items: [
+        '<strong>Iniciativa legislativa exclusiva</strong>: solo ella puede proponer nueva legislación',
+        'Elabora y ejecuta el presupuesto de la UE',
+        'Vela por el cumplimiento del derecho de la UE',
+        'Propone sanciones económicas'
+      ]},
+      { color: '#388bfd', title: '🌐 Representación Exterior', items: [
+        'Representa a la UE en el exterior en la mayoría de materias',
+        '<strong>Excepción</strong>: en PESC la representación es del AR',
+        'Sus comisarios actúan con <strong>total independencia</strong> de los gobiernos nacionales'
+      ]},
+      { color: '#f0c040', title: '🗳️ Toma de Decisiones', items: [
+        'Por <strong>mayoría simple</strong> o <strong>consenso</strong>',
+        'El Presidente tiene poder de orientación política sobre el Colegio',
+        'Puede pedir la dimisión de un comisario'
+      ]}
+    ],
+    trick: 'La Comisión tiene el MONOPOLIO de la iniciativa legislativa (solo ella propone leyes). El PE y el Consejo pueden pedírselo pero no imponérselo. Recuerda: 6 Vicepresidentes = 1 AR + 5 ejecutivos.'
+  },
+  pe: {
+    icon: '🗳️', name: 'Parlamento Europeo', sub: 'La única institución elegida directamente por los ciudadanos',
+    color: '#bc8cff',
+    chips: [
+      { label: 'Sede plenarias', value: 'Estrasburgo (plenarias mensuales)' },
+      { label: 'Sede comisiones', value: 'Bruselas (comisiones y sesiones adicionales)' },
+      { label: 'Secretariado', value: 'Luxemburgo' },
+      { label: 'Número actual', value: '719-720 parlamentarios' },
+      { label: 'Máximo permitido', value: '750 europarlamentarios' },
+      { label: 'España', value: '61 eurodiputados' },
+      { label: 'Quórum', value: '1/3 de los miembros' },
+      { label: 'Mandato', value: '5 años · sufragio universal · reelegibles' },
+    ],
+    blocks: [
+      { color: '#bc8cff', title: '📋 Organización Interna', items: [
+        '<strong>8 grupos políticos</strong> (mínimo 23 eurodiputados de ¼ de los EEMM)',
+        '<strong>22 Comisiones Permanentes</strong> + 4 Subcomisiones',
+        'Mesa: Presidenta + 14 vicepresidentes + 5 cuestores (2,5 años renovables)',
+        'Se reúne anualmente el segundo martes de marzo'
+      ]},
+      { color: '#3fb950', title: '⚖️ Funciones', items: [
+        '<strong>Legislativa</strong>: colegislador junto con el Consejo UE',
+        '<strong>Presupuestaria</strong>: aprueba el presupuesto con el Consejo',
+        '<strong>Control democrático</strong>: supervisa las instituciones, especialmente la Comisión',
+        'Decide sobre acuerdos internacionales',
+        'Puede censurar a la Comisión (moción de censura por 2/3)'
+      ]},
+      { color: '#f85149', title: '🗳️ Toma de Decisiones', items: [
+        'Por <strong>mayoría simple</strong> en la mayoría de casos',
+        'Por <strong>mayoría absoluta</strong> para investidura del Presidente de la Comisión',
+        'Por <strong>mayoría de 2/3</strong> para moción de censura a la Comisión'
+      ]}
+    ],
+    trick: 'El PE tiene 3 sedes: ESTRASBURGO (plenarias), BRUSELAS (comisiones), LUXEMBURGO (secretariado). Regla para moción de censura: necesitas 2/3 de los votos emitidos Y mayoría absoluta de los miembros. ¡Es un doble requisito!'
+  },
+  tjue: {
+    icon: '⚖️', name: 'Tribunal de Justicia de la UE (TJUE)', sub: 'Tribunal de Justicia (TJ) + Tribunal General (TG)',
+    color: '#f85149',
+    chips: [
+      { label: 'Sede', value: 'Luxemburgo' },
+      { label: 'TJ – Jueces', value: '27 jueces (1 por EM)' },
+      { label: 'TJ – Abogados Generales', value: '11 abogados generales' },
+      { label: 'TG – Jueces', value: '54 jueces (2 por EM)' },
+      { label: 'Pdte. TJ', value: 'Koen Lenaerts' },
+      { label: 'Pdte. TG', value: 'Marc Jaeger' },
+      { label: 'Mandato presidentes', value: '3 años renovables (elegidos por los miembros)' },
+      { label: 'Plazo casación', value: '2 meses' },
+    ],
+    blocks: [
+      { color: '#f85149', title: '⚖️ Competencias del TJ (Tribunal de Justicia)', items: [
+        '<strong>Cuestión prejudicial</strong>: cuando un tribunal nacional pregunta al TJ sobre derecho UE',
+        '<strong>Recurso por incumplimiento</strong>: contra un EM que no cumple el derecho UE',
+        '<strong>Recurso de anulación</strong>: contra actos de las instituciones',
+        '<strong>Recurso por omisión</strong>: cuando una institución no actúa debiendo hacerlo',
+        '<strong>Recurso de casación</strong>: contra sentencias del TG (plazo 2 meses)'
+      ]},
+      { color: '#388bfd', title: '📋 Competencias del TG (Tribunal General)', items: [
+        'Recursos de <strong>particulares y empresas</strong> contra decisiones de la UE',
+        'Recursos de <strong>EEMM contra la Comisión o el Consejo</strong>',
+        'Acciones de <strong>reparación de daños</strong>',
+        'Recursos en materia de <strong>contratos y propiedad intelectual</strong>'
+      ]},
+      { color: '#3fb950', title: '🎯 Función General', items: [
+        'Garantizar la <strong>interpretación y aplicación UNIFORME</strong> de la legislación UE en todos los EEMM',
+        'Sus sentencias son vinculantes para todos los EEMM',
+        'El TJ resuelve recursos de casación contra sentencias del TG'
+      ]}
+    ],
+    trick: 'Regla sencilla: TG = "primera instancia" (particulares y empresas). TJ = "casación" + "cuestiones prejudiciales" + incumplimientos de EEMM. La cuestión prejudicial es SOLO del TJ, nunca del TG.'
+  },
+  tribunal_cuentas: {
+    icon: '🔍', name: 'Tribunal de Cuentas UE', sub: 'El auditor externo de la Unión Europea',
+    color: '#ff8c42',
+    chips: [
+      { label: 'Sede', value: 'Luxemburgo' },
+      { label: 'Miembros', value: '27 (1 por EM)' },
+      { label: 'Quién nombra', value: 'El Consejo (previa consulta al PE)' },
+      { label: 'Mandato miembros', value: '6 años renovables' },
+      { label: 'Presidente', value: 'Tony Murphy' },
+      { label: 'Mandato presidente', value: '3 años renovables (elegido por miembros)' },
+      { label: 'OLAF', value: 'Comunica sospechas de fraude' },
+      { label: 'Función', value: 'Auditor externo e independiente' },
+    ],
+    blocks: [
+      { color: '#ff8c42', title: '🔍 Funciones de Fiscalización', items: [
+        'Audita <strong>ingresos y gastos</strong> de la UE',
+        'Verifica correcta percepción, uso, rentabilidad y contabilidad del presupuesto',
+        'Contribuye a mejorar la gestión presupuestaria de la Comisión',
+        'Informa sobre las finanzas de la UE',
+        'Informa sospechas de fraude o corrupción a la <strong>OLAF</strong> (Oficina Europea de Lucha contra el Fraude)'
+      ]}
+    ],
+    trick: 'A pesar de su nombre, el Tribunal de Cuentas NO es un tribunal judicial — no tiene función jurisdiccional. Es un órgano AUDITOR. Sus miembros los nombra el CONSEJO (previa consulta al PE). Mandato de MIEMBROS = 6 años. Mandato del PRESIDENTE = 3 años.'
+  },
+  bce: {
+    icon: '💶', name: 'Banco Central Europeo (BCE)', sub: 'Banco Central de la zona euro · Total independencia',
+    color: '#39d2f0',
+    chips: [
+      { label: 'Sede', value: 'Fráncfort (Alemania)' },
+      { label: 'Presidenta', value: 'Christine Lagarde' },
+      { label: 'Mandato presidente', value: '8 años NO renovable' },
+      { label: 'Elección', value: 'Consejo Europeo por mayoría cualificada' },
+      { label: 'Independencia', value: 'Total · No sujeto a gobiernos ni instituciones' },
+      { label: 'Comité Ejecutivo', value: 'Presidente + Vicepresidente + 4 miembros · 8 años' },
+      { label: 'Consejo de Gobierno', value: 'Comité Ejecutivo + Gobernadores BCN zona euro' },
+      { label: 'Consejo General', value: 'Presidente + Vicepresidente + Gobernadores BCN de todos los EEMM' },
+    ],
+    blocks: [
+      { color: '#39d2f0', title: '💰 Política Monetaria', items: [
+        '<strong>Funciones</strong>: garantizar la estabilidad de precios',
+        'Define la política monetaria del euro',
+        'Autoriza la emisión de billetes en euros',
+        'Gestiona las reservas de divisas',
+        'Gestiona el sistema europeo de pagos',
+        'Funciona con <strong>total independencia</strong> de gobiernos e instituciones'
+      ]},
+      { color: '#388bfd', title: '🏗️ Órganos de Decisión', items: [
+        '<strong>Consejo de Gobierno</strong>: principal órgano de decisión. Comité Ejecutivo + Gobernadores BCN zona euro',
+        '<strong>Comité Ejecutivo</strong>: gestión diaria. Presidente + Vicepresidente + 4 miembros (8 años)',
+        '<strong>Consejo General</strong>: consultivo y de coordinación. Presidente + Vicepresidente + TODOS los Gobernadores BCN de la UE'
+      ]}
+    ],
+    trick: 'ÚNICO mandato NO renovable en toda la UE: el del Presidente del BCE (8 años). El Consejo General incluye a TODOS los EEMM (27). El Consejo de Gobierno solo a los de la zona EURO. Lagarde es la presidenta actual.'
+  },
+  otros: {
+    icon: '🔗', name: 'Otros Organismos de la UE', sub: 'CDR, CESE, AR, SEAE, SEPD, BEI, Defensor del Pueblo',
+    color: '#bc8cff',
+    chips: [
+      { label: 'CDR Sede', value: 'Bruselas' },
+      { label: 'CDR Miembros', value: '329 (21 España) · Nombrados por Consejo · 5 años' },
+      { label: 'CDR Reuniones', value: 'Hasta 6 reuniones anuales' },
+      { label: 'CESE Sede', value: 'Bruselas' },
+      { label: 'CESE Miembros', value: '329 (21 España) · Nombrados por Consejo · 5 años' },
+      { label: 'CESE Reuniones', value: 'Hasta 9 reuniones anuales' },
+      { label: 'Defensor del Pueblo', value: 'Teresa Anjinho · Estrasburgo · Elegida por PE · 5 años' },
+      { label: 'BEI Presidenta', value: 'Nadia Calviño · Luxemburgo · 6 años' },
+    ],
+    blocks: [
+      { color: '#bc8cff', title: '🏛️ Comité de las Regiones (CDR)', items: [
+        'Sede en <strong>Bruselas</strong>',
+        '<strong>329 miembros</strong> (21 de España) · representantes locales y regionales',
+        'Nombrados por el Consejo por <strong>5 años renovables</strong>',
+        'Presidente elegido por <strong>2,5 años</strong>',
+        '<strong>Órgano consultivo</strong> · Hasta <strong>6 reuniones anuales</strong>',
+        'Adopta dictámenes por <strong>mayoría simple</strong>'
+      ]},
+      { color: '#3fb950', title: '💼 Comité Económico y Social (CESE)', items: [
+        'Sede en <strong>Bruselas</strong>',
+        '<strong>329 miembros</strong> (21 de España) · sectores económicos y sociales',
+        'Nombrados por el Consejo por <strong>5 años renovables</strong>',
+        'Presidente elegido por <strong>2,5 años</strong>',
+        '<strong>Órgano consultivo</strong> · Hasta <strong>9 reuniones anuales</strong>',
+        'Adopta dictámenes por <strong>mayoría simple</strong>'
+      ]},
+      { color: '#f0c040', title: '🌐 Alto Representante (AR) y SEAE', items: [
+        'AR actual: <strong>Kaja Kallas</strong> · Sede Bruselas · Nombrada por C. Europeo · 5 años',
+        'Es responsable de la <strong>política exterior de la UE</strong>',
+        'Preside el <strong>Consejo de Asuntos Exteriores</strong>',
+        'Es <strong>Vicepresidenta de la Comisión</strong>',
+        'Bajo su responsabilidad: el <strong>CPS</strong> (Comité Político y de Seguridad)',
+        'Dirige el <strong>SEAE</strong> (cuerpo diplomático de la UE) · Sede Bruselas'
+      ]},
+      { color: '#39d2f0', title: '🏛️ Otros Organismos', items: [
+        '<strong>SEPD</strong>: Supervisor Europeo de Protección de Datos · Bruselas · Elegido por PE y Consejo · 5 años renovable una vez',
+        '<strong>BEI</strong>: Banco Europeo de Inversiones · Luxemburgo · Presidenta Nadia Calviño (6 años renovables)',
+        '<strong>Fondo Europeo de Inversiones</strong>: Luxemburgo · Apoya a las pymes',
+        '<strong>Defensor del Pueblo</strong>: Estrasburgo · Teresa Anjinho · Elegida PE · 5 años renovable · Plazo reclamación 2 años · Respuesta institución 3 meses'
+      ]}
+    ],
+    trick: 'CDR y CESE tienen el MISMO número de miembros (329, con 21 de España). Diferencia clave: CDR = representantes TERRITORIALES (regiones y municipios); CESE = representantes SOCIALES Y ECONÓMICOS (empresarios, trabajadores, etc.). CDR tiene 6 reuniones, CESE tiene 9.'
+  }
+};
+
+// ─────────────────────────────────────────────────────────────
+// FLASHCARDS DATA
+// ─────────────────────────────────────────────────────────────
+let flashcards = [
+  { q: '¿Cuál es la sede del Consejo Europeo?', a: 'Bruselas', hint: '📍 Institución' },
+  { q: '¿Cuántos miembros tiene el Consejo de la UE?', a: '27 (un ministro por cada Estado miembro)', hint: '🔢 Composición' },
+  { q: '¿Quién es el Presidente actual del Consejo Europeo?', a: 'Antonio Costa ("Mr. Europe")', hint: '👤 Cargo actual' },
+  { q: '¿Cuánto dura el mandato del Presidente del Consejo Europeo?', a: '2,5 años, renovable una vez', hint: '📅 Mandato' },
+  { q: '¿Quién es la Presidenta de la Comisión Europea?', a: 'Ursula von der Leyen', hint: '👤 Cargo actual' },
+  { q: '¿Cómo se elige al Presidente de la Comisión Europea?', a: 'Propuesto por el Consejo Europeo y elegido por el PE por mayoría absoluta', hint: '🗳️ Procedimiento' },
+  { q: '¿Cuál es la sede principal del Parlamento Europeo para plenarias?', a: 'Estrasburgo', hint: '📍 Sede' },
+  { q: '¿Cuántos eurodiputados puede tener el PE como máximo?', a: '750 (actualmente son 719-720)', hint: '🔢 Límite' },
+  { q: '¿Cuántos eurodiputados tiene España en el PE?', a: '61', hint: '🇪🇸 España' },
+  { q: '¿Cuántos grupos políticos tiene el PE?', a: '8 grupos políticos', hint: '🏛️ Organización' },
+  { q: '¿Cuántos miembros mínimo necesita un grupo político en el PE?', a: '23 eurodiputados de al menos ¼ de los EEMM', hint: '📋 Requisito' },
+  { q: '¿Dónde tiene su sede el TJUE?', a: 'Luxemburgo', hint: '📍 Sede' },
+  { q: '¿Cuántos jueces tiene el Tribunal General (TG)?', a: '54 jueces (2 por Estado miembro)', hint: '🔢 Composición' },
+  { q: '¿Cuál es el plazo para el recurso de casación ante el TJ?', a: '2 meses', hint: '⏱️ Plazo' },
+  { q: '¿Quién es el Presidente del BCE y cuánto dura su mandato?', a: 'Christine Lagarde · 8 años NO renovable', hint: '👤 + 📅' },
+  { q: '¿En qué ciudad tiene sede el BCE?', a: 'Fráncfort (Alemania)', hint: '📍 Sede' },
+  { q: '¿Cuántos meses al año el Consejo UE se reúne en Luxemburgo?', a: 'Abril, junio y octubre (3 meses)', hint: '📅 Sede' },
+  { q: '¿Cuál es la doble mayoría cualificada en el Consejo UE?', a: '55% de los EEMM que representen el 65% de la población', hint: '🗳️ Votación' },
+  { q: '¿Qué es el COREPER y sus dos ramas?', a: 'Comité de Representantes Permanentes. COREPER I (técnico, grupo MERTENS) y COREPER II (político, grupo ANTICI)', hint: '🔧 Órgano' },
+  { q: '¿Quién preside el Consejo de Asuntos Exteriores?', a: 'El Alto Representante (AR), no el Presidente del Consejo UE', hint: '⚠️ Excepción' },
+  { q: '¿Quién es el AR actual y cuánto dura su mandato?', a: 'Kaja Kallas · 5 años · Nombrada por el Consejo Europeo', hint: '👤 Cargo actual' },
+  { q: '¿Cuántos miembros tienen el CDR y el CESE?', a: '329 miembros cada uno (21 de España)', hint: '🔢 Igual número' },
+  { q: '¿Cuál es la diferencia entre CDR y CESE?', a: 'CDR = representantes territoriales (regiones/municipios). CESE = representantes económicos y sociales', hint: '🆚 Diferencia' },
+  { q: '¿Dónde tiene su sede el Defensor del Pueblo Europeo?', a: 'Estrasburgo · Actual: Teresa Anjinho · Elegida por el PE · 5 años', hint: '📍 Sede' },
+  { q: '¿Cuánto tiempo tiene el ciudadano para reclamar ante el Defensor del Pueblo?', a: '2 años desde el conocimiento de los hechos', hint: '⏱️ Plazo' },
+  { q: '¿Cuánto tiempo tiene la institución para responder al Defensor del Pueblo?', a: '3 meses', hint: '⏱️ Plazo' },
+  { q: '¿Quién nombra a los miembros del Tribunal de Cuentas?', a: 'El Consejo, previa consulta al Parlamento Europeo', hint: '🏛️ Nombramiento' },
+  { q: '¿Cuál es la función de la OLAF?', a: 'Oficina Europea de Lucha contra el Fraude — recibe los informes del Tribunal de Cuentas sobre sospechas de fraude', hint: '🔍 OLAF' },
+  { q: '¿Qué institución tiene el monopolio de la iniciativa legislativa en la UE?', a: 'La Comisión Europea (solo ella puede proponer legislación)', hint: '⚡ Exclusiva' },
+  { q: '¿Dónde tiene sede la agencia ENISA?', a: 'Atenas (Grecia) — Agencia de la Unión para la Ciberseguridad', hint: '🌐 ENISA' },
+];
+
+let flashIdx = 0;
+let flashOrder = [...Array(flashcards.length).keys()];
+
+function renderFlash() {
+  const fc = document.getElementById('flashCard');
+  const q = document.getElementById('flashQ');
+  const a = document.getElementById('flashA');
+  const h = document.getElementById('flashHint');
+  const c = document.getElementById('flashCounter');
+  const idx = flashOrder[flashIdx];
+  fc.classList.remove('flipped');
+  q.textContent = flashcards[idx].q;
+  a.textContent = flashcards[idx].a;
+  h.textContent = flashcards[idx].hint;
+  c.textContent = `${flashIdx + 1} / ${flashcards.length}`;
+}
+
+function flipCard() {
+  document.getElementById('flashCard').classList.toggle('flipped');
+}
+function nextFlash() {
+  flashIdx = (flashIdx + 1) % flashcards.length;
+  renderFlash();
+}
+function prevFlash() {
+  flashIdx = (flashIdx - 1 + flashcards.length) % flashcards.length;
+  renderFlash();
+}
+function shuffleFlash() {
+  for (let i = flashOrder.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [flashOrder[i], flashOrder[j]] = [flashOrder[j], flashOrder[i]];
+  }
+  flashIdx = 0;
+  renderFlash();
+}
+
+document.addEventListener('keydown', (e) => {
+  const tab = document.getElementById('tab-flashcards');
+  if (!tab.classList.contains('visible')) return;
+  if (e.key === 'ArrowRight') nextFlash();
+  if (e.key === 'ArrowLeft') prevFlash();
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+});
+
+// ─────────────────────────────────────────────────────────────
+// QUIZ DATA
+// ─────────────────────────────────────────────────────────────
+const allQuestions = [
+  { q: '¿Dónde se reúne el Consejo de la UE en los meses de abril, junio y octubre?', opts: ['Bruselas', 'Luxemburgo', 'Estrasburgo', 'Fráncfort'], ans: 1, exp: '<strong>Luxemburgo</strong> acoge las sesiones del Consejo UE en abril, junio y octubre. El resto del año las reuniones se celebran en Bruselas.' },
+  { q: '¿Qué mayoría se requiere para que el Parlamento Europeo apruebe una moción de censura contra la Comisión?', opts: ['Mayoría simple', 'Mayoría absoluta', 'Mayoría de 2/3 de votos emitidos y mayoría absoluta de miembros', 'Unanimidad'], ans: 2, exp: 'La moción de censura requiere un <strong>doble requisito</strong>: 2/3 de los votos emitidos Y mayoría absoluta del total de miembros del PE. Es un mecanismo intencionadamente difícil.' },
+  { q: '¿Cuál es la composición de la doble mayoría cualificada en el Consejo de la UE?', opts: ['50% de EEMM que representen el 50% de la población', '55% de EEMM que representen el 65% de la población', '2/3 de EEMM que representen el 60% de la población', '60% de EEMM que representen el 70% de la población'], ans: 1, exp: 'La <strong>doble mayoría cualificada</strong> exige el 55% de los Estados miembros Y que representen el 65% de la población de la UE.' },
+  { q: '¿Quién preside el Consejo de Asuntos Exteriores del Consejo de la UE?', opts: ['El Presidente rotatorio del Consejo', 'El Presidente del Consejo Europeo', 'El Alto Representante para Asuntos Exteriores', 'El Presidente de la Comisión'], ans: 2, exp: 'El <strong>Alto Representante (AR)</strong> preside el Consejo de Asuntos Exteriores. Es la única formación del Consejo UE que no preside el titular de la presidencia rotatoria.' },
+  { q: '¿Cuántos eurodiputados tiene España en el Parlamento Europeo?', opts: ['54', '58', '61', '65'], ans: 2, exp: '<strong>España cuenta con 61 eurodiputados</strong>. El máximo total del PE es 750 aunque actualmente hay 719-720 parlamentarios.' },
+  { q: '¿Cuánto dura el mandato del Presidente del BCE y puede renovarse?', opts: ['5 años, renovable una vez', '8 años, renovable una vez', '8 años, NO renovable', '6 años, renovable indefinidamente'], ans: 2, exp: 'El Presidente del BCE tiene un mandato de <strong>8 años NO renovable</strong>. Es el único cargo en las instituciones UE con mandato no renovable para garantizar su independencia.' },
+  { q: '¿Qué institución de la UE tiene el monopolio de la iniciativa legislativa?', opts: ['El Consejo de la UE', 'El Parlamento Europeo', 'La Comisión Europea', 'El Consejo Europeo'], ans: 2, exp: 'La <strong>Comisión Europea</strong> tiene el monopolio (exclusiva) de la iniciativa legislativa en la UE. El PE y el Consejo pueden pedirle que proponga legislación, pero no pueden hacerlo directamente.' },
+  { q: '¿Cuál es la sede del Banco Central Europeo (BCE)?', opts: ['Bruselas', 'Luxemburgo', 'Ámsterdam', 'Fráncfort'], ans: 3, exp: 'El BCE tiene su sede en <strong>Fráncfort (Alemania)</strong>. Es la única gran institución UE con sede en Alemania.' },
+  { q: 'El Comité de Representantes Permanentes (COREPER) II se encarga de:', opts: ['Temas técnicos y sectoriales', 'Temas políticos e institucionales', 'Cuestiones de seguridad interior', 'Política monetaria'], ans: 1, exp: '<strong>COREPER II</strong> trata los temas políticos e institucionales (asistido por el grupo ANTICI). COREPER I se ocupa de temas técnicos y sectoriales (asistido por el grupo MERTENS).' },
+  { q: '¿Cuál es la sede del TJUE (Tribunal de Justicia de la UE)?', opts: ['Bruselas', 'La Haya', 'Luxemburgo', 'Estrasburgo'], ans: 2, exp: 'El <strong>TJUE tiene su sede en Luxemburgo</strong>. No confundir con el Tribunal de Estrasburgo, que es el Tribunal Europeo de Derechos Humanos (TEDH) y no forma parte de la UE.' },
+  { q: '¿Cuántos jueces componen el Tribunal General (TG) del TJUE?', opts: ['27 jueces (1 por EM)', '54 jueces (2 por EM)', '36 jueces', '81 jueces (3 por EM)'], ans: 1, exp: 'El <strong>Tribunal General tiene 54 jueces, 2 por cada Estado miembro</strong>. El Tribunal de Justicia (TJ) tiene 27 (1 por EM) más 11 abogados generales.' },
+  { q: '¿Quién nombra a los miembros del Tribunal de Cuentas de la UE?', opts: ['El Parlamento Europeo', 'La Comisión Europea', 'El Consejo, previa consulta al PE', 'El Consejo Europeo'], ans: 2, exp: 'Los miembros del Tribunal de Cuentas son nombrados por <strong>el Consejo, previa consulta al PE</strong>, para un mandato de 6 años renovables.' },
+  { q: '¿Qué organismo de la UE tiene como función investigar la mala administración en las instituciones?', opts: ['Tribunal de Cuentas UE', 'Defensor del Pueblo Europeo', 'TJUE - Tribunal General', 'Comité Económico y Social'], ans: 1, exp: 'El <strong>Defensor del Pueblo Europeo (Ombudsman)</strong> investiga casos de mala administración en las instituciones UE (excepto el TJUE). El ciudadano tiene 2 años para reclamar.' },
+  { q: '¿Cuántos miembros tienen el Comité de las Regiones (CDR) y el CESE respectivamente?', opts: ['CDR: 350, CESE: 329', 'CDR: 329, CESE: 350', 'Ambos tienen 329 miembros', 'CDR: 315, CESE: 329'], ans: 2, exp: 'Tanto el <strong>CDR como el CESE tienen exactamente 329 miembros</strong>, siendo 21 de ellos españoles en cada uno. Es un dato que se presta a confusión.' },
+  { q: '¿Dónde tiene su sede la ENISA (Agencia de Ciberseguridad de la UE)?', opts: ['Viena', 'Bilbao', 'Vilna', 'Atenas'], ans: 3, exp: '<strong>ENISA tiene su sede en Atenas (Grecia)</strong>. Viena: Agencia de Derechos Fundamentales. Bilbao: Agencia de Seguridad y Salud. Vilna: Instituto de Igualdad de Género.' },
+  { q: '¿Cuánto tiempo tiene la institución afectada para responder al Defensor del Pueblo?', opts: ['1 mes', '2 meses', '3 meses', '6 meses'], ans: 2, exp: 'La institución implicada tiene <strong>3 meses</strong> para responder al Defensor del Pueblo. El ciudadano tiene 2 años desde el conocimiento de los hechos para presentar la queja.' },
+  { q: '¿Cuántas Comisiones Permanentes tiene el Parlamento Europeo?', opts: ['18', '22', '27', '30'], ans: 1, exp: 'El PE tiene <strong>22 Comisiones Permanentes</strong> más 4 Subcomisiones. Las comisiones son las encargadas de preparar el trabajo legislativo del pleno.' },
+  { q: '¿En qué ciudad tiene sede la Agencia Europea de Seguridad y Salud en el Trabajo?', opts: ['Madrid', 'Barcelona', 'Bilbao', 'Sevilla'], ans: 2, exp: 'La Agencia Europea de Seguridad y Salud en el Trabajo tiene su sede en <strong>Bilbao (España)</strong>. Es la única agencia con sede española en este temario.' },
+  { q: '¿Cuál es el plazo para interponer un recurso de casación ante el Tribunal de Justicia?', opts: ['1 mes', '2 meses', '3 meses', '6 meses'], ans: 1, exp: 'El plazo para el <strong>recurso de casación ante el TJ es de 2 meses</strong>. Este recurso se interpone contra sentencias del Tribunal General (TG).' },
+  { q: '¿Cuál es el quórum del Consejo Europeo?', opts: ['Mayoría simple de miembros', '1/2 de los miembros', '2/3 de los miembros', 'Unanimidad'], ans: 2, exp: 'El quórum del <strong>Consejo Europeo es de 2/3 de sus miembros</strong>. El quórum del PE es más bajo: 1/3. El Consejo UE no tiene quórum específico mencionado en el temario.' },
+];
+
+let quizQuestions = [], quizIdx = 0, correct = 0, wrong = 0, answered = false;
+
+function startQuiz() {
+  const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+  quizQuestions = shuffled.slice(0, 20);
+  quizIdx = 0; correct = 0; wrong = 0;
+  document.getElementById('quizResults').classList.remove('show');
+  document.getElementById('quizMain').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = quizQuestions[quizIdx];
+  document.getElementById('questionNum').textContent = `Pregunta ${quizIdx + 1} de ${quizQuestions.length}`;
+  document.getElementById('quizScore').textContent = `Pregunta ${quizIdx + 1} de ${quizQuestions.length}`;
+  document.getElementById('quizPoints').textContent = `✅ ${correct} | ❌ ${wrong}`;
+  document.getElementById('quizProgressFill').style.width = `${((quizIdx) / quizQuestions.length) * 100}%`;
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('explanation').className = 'explanation';
+  document.getElementById('explanation').innerHTML = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span>${opt}`;
+    btn.onclick = () => selectAnswer(i);
+    container.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizQuestions[quizIdx];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[q.ans].classList.add('correct');
+  if (idx !== q.ans) { btns[idx].classList.add('wrong'); wrong++; }
+  else correct++;
+  document.getElementById('quizPoints').textContent = `✅ ${correct} | ❌ ${wrong}`;
+  const exp = document.getElementById('explanation');
+  exp.innerHTML = q.exp;
+  exp.classList.add('show');
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+  quizIdx++;
+  if (quizIdx >= quizQuestions.length) showResults();
+  else renderQuestion();
+}
+
+function showResults() {
+  document.getElementById('quizMain').style.display = 'none';
+  const pct = Math.round((correct / quizQuestions.length) * 100);
+  let label = pct >= 80 ? '🏆 ¡Excelente! Dominas el temario.' : pct >= 60 ? '👍 Bien, pero repasa los fallos.' : '📚 Necesitas más práctica. ¡Tú puedes!';
+  document.getElementById('resultScore').textContent = `${correct}/${quizQuestions.length}`;
+  document.getElementById('resultScore').style.color = pct >= 80 ? '#3fb950' : pct >= 60 ? '#f0c040' : '#f85149';
+  document.getElementById('resultLabel').textContent = label;
+  document.getElementById('quizResults').classList.add('show');
+}
+
+function restartQuiz() { startQuiz(); }
+
+// ─────────────────────────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────────────────────────
+function openModal(id) {
+  const inst = institutions[id];
+  if (!inst) return;
+  const chipsHtml = inst.chips.map(c => `
+    <div class="info-chip">
+      <div class="label">${c.label}</div>
+      <div class="value">${c.value}</div>
+    </div>`).join('');
+  const blocksHtml = inst.blocks.map(b => `
+    <div class="section-block" style="border-left-color:${b.color}">
+      <h4 style="color:${b.color}">${b.title}</h4>
+      ${b.items ? `<ul>${b.items.map(i => `<li>${i}</li>`).join('')}</ul>` : `<p>${b.text}</p>`}
+    </div>`).join('');
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-header" style="border-top:4px solid ${inst.color}">
+      <div class="modal-icon">${inst.icon}</div>
+      <div>
+        <h2>${inst.name}</h2>
+        <div class="sub">${inst.sub}</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="info-grid">${chipsHtml}</div>
+      ${blocksHtml}
+      ${inst.trick ? `<div class="trick-box"><h4>🧠 Truco de Memoria</h4><div class="trick-content">${inst.trick}</div></div>` : ''}
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalBg(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ─────────────────────────────────────────────────────────────
+// DETAIL TAB
+// ─────────────────────────────────────────────────────────────
+function showDetail(id) {
+  const inst = institutions[id];
+  if (!inst) return;
+  const chipsHtml = inst.chips.map(c => `
+    <div class="info-chip">
+      <div class="label">${c.label}</div>
+      <div class="value">${c.value}</div>
+    </div>`).join('');
+  const blocksHtml = inst.blocks.map(b => `
+    <div class="section-block" style="border-left-color:${b.color}">
+      <h4 style="color:${b.color}">${b.title}</h4>
+      ${b.items ? `<ul>${b.items.map(i => `<li>${i}</li>`).join('')}</ul>` : `<p>${b.text}</p>`}
+    </div>`).join('');
+  document.getElementById('detail-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+      <span style="font-size:40px">${inst.icon}</span>
+      <div>
+        <h2 style="font-size:20px;font-weight:700;color:${inst.color}">${inst.name}</h2>
+        <p style="color:var(--text2);font-size:13px">${inst.sub}</p>
+      </div>
+    </div>
+    <div class="info-grid">${chipsHtml}</div>
+    ${blocksHtml}
+    ${inst.trick ? `<div class="trick-box"><h4>🧠 Truco de Memoria</h4><div class="trick-content">${inst.trick}</div></div>` : ''}`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('visible');
+  const btns = document.querySelectorAll('.nav-btn');
+  const tabNames = ['resumen','sedes','presidentes','detalle','comparativa','flashcards','quiz'];
+  const idx = tabNames.indexOf(name);
+  if (btns[idx]) btns[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────
+renderFlash();
+startQuiz();
+</script>
+</body>
+</html>

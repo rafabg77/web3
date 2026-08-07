@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 21 · Derecho Procesal Penal · CNP Escala Básica</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#F7F3EA;--bone-deep:#EFE8D8;--ink:#1B1812;--navy:#0F1B2D;--navy-soft:#1B2940;--garnet:#8B2635;--garnet-deep:#6B1C28;--brass:#B8893E;--green:#2D5043;--green-soft:#E4ECE6;--garnet-soft:#F3DEE0;--brass-soft:#F2E6CC;--line:#D8CCAE;--shadow:0 1px 0 rgba(27,24,18,0.05);--transition:0.28s cubic-bezier(0.4,0,0.2,1);}
+[data-theme="dark"]{--bone:#111318;--bone-deep:#1A1D24;--ink:#E8E4DC;--navy:#C9D2DF;--navy-soft:#2A3548;--line:#2E3340;--garnet-soft:#2A1519;--brass-soft:#261E0D;--green-soft:#0D1A15;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bone);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background var(--transition),color var(--transition);}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 1px 1px,rgba(27,24,18,0.035) 1px,transparent 0);background-size:22px 22px;z-index:0;}
+#particles-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.35;}
+.wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 24px 120px;}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--garnet),var(--brass));z-index:100;width:0%;transition:width 0.1s;}
+.sidebar{position:fixed;left:16px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:8px;}
+.sb-dot{width:10px;height:10px;border-radius:50%;background:var(--line);border:2px solid transparent;cursor:pointer;transition:all var(--transition);position:relative;}
+.sb-dot::after{content:attr(data-label);position:absolute;left:18px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);background:var(--bone-deep);border:1px solid var(--line);padding:3px 8px;border-radius:4px;opacity:0;pointer-events:none;transition:opacity var(--transition);}
+.sb-dot:hover::after,.sb-dot.active::after{opacity:1;}
+.sb-dot.active{background:var(--garnet);border-color:var(--brass);transform:scale(1.35);}
+@media(max-width:1080px){.sidebar{display:none;}}
+.mode-bar{position:fixed;top:14px;right:14px;z-index:90;display:flex;gap:6px;align-items:center;}
+.mode-btn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.04em;border:1px solid var(--line);background:var(--bone);color:var(--ink);padding:5px 11px;border-radius:100px;cursor:pointer;transition:all var(--transition);user-select:none;}
+.mode-btn:hover{border-color:var(--garnet);color:var(--garnet);}
+.mode-btn.active{background:var(--navy);color:var(--brass);border-color:var(--navy);}
+.theme-toggle{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bone);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all var(--transition);}
+.theme-toggle:hover{border-color:var(--brass);}
+.sticky-label{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:80;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:var(--navy);color:var(--brass);padding:6px 18px;border-radius:100px;opacity:0;transition:opacity var(--transition);pointer-events:none;}
+.sticky-label.visible{opacity:1;}
+/* PORTADA */
+.cover{padding:72px 0 48px;text-align:center;position:relative;}
+.cover .stamp{width:128px;height:128px;margin:0 auto 28px;border-radius:50%;border:3px solid var(--garnet);display:flex;align-items:center;justify-content:center;position:relative;transform:rotate(-6deg);animation:stampPulse 4s ease-in-out infinite;}
+.cover .stamp::before{content:"";position:absolute;inset:8px;border:1.5px dashed var(--garnet);border-radius:50%;animation:rotate360 20s linear infinite;}
+@keyframes stampPulse{0%,100%{box-shadow:0 0 0 0 rgba(139,38,53,0);}50%{box-shadow:0 0 0 12px rgba(139,38,53,0.12);}}
+@keyframes rotate360{to{transform:rotate(360deg);}}
+.cover .stamp-text{font-family:'Fraunces',serif;font-weight:700;font-size:13px;letter-spacing:0.08em;color:var(--garnet);text-align:center;line-height:1.3;}
+.cover .stamp-text .big{display:block;font-size:30px;font-weight:900;}
+.cover .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--garnet);margin-bottom:18px;}
+.cover h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,6vw,56px);line-height:1.04;margin:0 0 14px;color:var(--navy);}
+.cover h1 em{font-style:italic;color:var(--garnet);font-weight:600;}
+.cover .sub{font-size:16.5px;color:#48433a;max-width:580px;margin:0 auto 30px;}
+.cover .meta-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.meta-chip{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.04em;border:1px solid var(--line);background:#fff;padding:6px 13px;border-radius:100px;color:#5a5446;}
+.meta-chip b{color:var(--ink);}
+.cover-divider{height:1px;background:repeating-linear-gradient(90deg,var(--garnet) 0 8px,transparent 8px 16px);margin:42px 0 0;opacity:0.55;}
+/* ÍNDICE */
+.toc{margin:46px 0 70px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:8px;box-shadow:0 18px 38px -22px rgba(15,27,45,0.25);}
+.toc-inner{border:1px dashed var(--line);border-radius:2px;padding:30px 26px;}
+.toc-title{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--garnet);margin-bottom:18px;font-weight:700;}
+.toc-list{list-style:none;}
+.toc-list li{display:flex;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--bone-deep);font-size:15px;cursor:pointer;transition:color var(--transition);}
+.toc-list li:hover .toc-text{color:var(--garnet);}
+.toc-list li:last-child{border-bottom:none;}
+.toc-num{font-family:'Fraunces',serif;font-weight:700;color:var(--garnet);font-size:18px;min-width:30px;}
+.toc-text{flex:1;color:var(--navy);font-weight:600;}
+.toc-page{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9a9180;}
+/* BLOQUE */
+.block{margin-bottom:6px;}
+.block-head{position:relative;background:var(--navy);border-radius:6px;padding:38px 34px 32px;margin:64px 0 36px;overflow:hidden;box-shadow:0 24px 48px -28px rgba(15,27,45,0.55);transition:transform 0.3s;}
+.block-head:hover{transform:translateY(-2px);}
+.block-head::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;border:1px solid rgba(255,255,255,0.08);border-radius:50%;}
+.block-head::before{content:"";position:absolute;right:10px;top:30px;width:120px;height:120px;border:1px solid rgba(255,255,255,0.06);border-radius:50%;}
+.block-eyebrow{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--brass);margin-bottom:14px;position:relative;z-index:1;}
+.block-eyebrow .seal{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--brass);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:13px;color:var(--brass);flex-shrink:0;}
+.block-head h2{font-family:'Fraunces',serif;font-weight:800;font-size:clamp(24px,3.6vw,32px);color:#fff;margin:0 0 10px;line-height:1.16;position:relative;z-index:1;}
+.block-head .hook{color:#C9D2DF;font-size:14.5px;font-style:italic;font-family:'Fraunces',serif;font-weight:500;max-width:560px;position:relative;z-index:1;}
+.block-head .pageref{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--brass);margin-top:14px;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.15);padding-top:12px;display:inline-block;}
+.block-progress{height:3px;background:rgba(255,255,255,0.15);border-radius:0 0 6px 6px;overflow:hidden;position:absolute;bottom:0;left:0;right:0;z-index:1;}
+.block-progress-fill{height:100%;background:linear-gradient(90deg,var(--brass),var(--garnet));width:0%;transition:width 0.5s;}
+/* ANIMACIONES */
+.will-animate{opacity:0;transform:translateY(24px);transition:opacity 0.6s cubic-bezier(0.4,0,0.2,1),transform 0.6s cubic-bezier(0.4,0,0.2,1);}
+.will-animate.from-left{transform:translateX(-32px);}
+.will-animate.from-right{transform:translateX(32px);}
+.will-animate.scale-in{transform:scale(0.94);}
+.will-animate.animated{opacity:1;transform:none;}
+.will-animate.delay-1{transition-delay:0.08s;}
+.will-animate.delay-2{transition-delay:0.16s;}
+.will-animate.delay-3{transition-delay:0.24s;}
+.will-animate.delay-4{transition-delay:0.32s;}
+/* SECCIONES */
+.sec{margin:34px 0;}
+.sec-title{display:flex;align-items:baseline;gap:12px;font-family:'Fraunces',serif;font-weight:700;font-size:21px;color:var(--navy);margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid var(--navy);}
+.sec-title .tag{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--garnet);font-weight:700;}
+.subsec{margin:20px 0 20px 2px;padding-left:16px;border-left:2px solid var(--line);}
+.subsec-title{font-style:italic;font-weight:600;font-size:15.5px;color:var(--garnet-deep);margin-bottom:6px;font-family:'Fraunces',serif;}
+p{font-size:15.3px;color:#2b2720;margin-bottom:13px;}
+[data-theme="dark"] p{color:#C5BFB4;}
+.art{font-weight:700;color:var(--garnet);background:var(--garnet-soft);padding:1px 7px;border-radius:4px;font-size:0.92em;white-space:nowrap;cursor:help;position:relative;}
+.plazo{font-family:'JetBrains Mono',monospace;font-weight:700;color:#7a5a16;background:var(--brass-soft);padding:1.5px 8px;border-radius:4px;font-size:0.86em;cursor:help;}
+.nuevo{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--green);color:#fff;padding:2px 8px;border-radius:4px;}
+/* TOOLTIP */
+.tooltip-wrap{position:relative;display:inline;}
+.tooltip-content{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--navy);color:#EDEFF3;font-size:12px;font-family:'Inter',sans-serif;font-style:normal;font-weight:400;line-height:1.4;padding:7px 11px;border-radius:5px;white-space:normal;max-width:240px;pointer-events:none;opacity:0;z-index:200;transition:opacity 0.18s;box-shadow:0 4px 14px rgba(15,27,45,0.35);}
+.tooltip-wrap:hover .tooltip-content{opacity:1;}
+/* LISTAS */
+ul.clean,ol.clean{margin:10px 0 16px;padding-left:0;list-style:none;}
+ul.clean li,ol.clean li{position:relative;padding-left:22px;margin-bottom:9px;font-size:15.2px;}
+ul.clean li::before{content:"—";position:absolute;left:0;color:var(--garnet);font-weight:700;}
+ol.clean{counter-reset:item;}
+ol.clean li{counter-increment:item;}
+ol.clean li::before{content:counter(item);position:absolute;left:0;top:1px;width:16px;height:16px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;}
+/* GOLD BOX */
+.gold-box{background:var(--navy);color:#fff;border-radius:6px;padding:22px 26px;margin:26px 0;border-left:5px solid var(--brass);position:relative;overflow:hidden;}
+.gold-box::after{content:"";position:absolute;right:-20px;bottom:-20px;width:80px;height:80px;border:1px solid rgba(184,137,62,0.2);border-radius:50%;}
+.gold-box .label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--brass);margin-bottom:8px;font-weight:700;}
+.gold-box p{color:#EDEFF3;margin:0;font-size:15px;}
+.gold-box strong{color:#fff;}
+/* ALERT */
+.alert{background:var(--brass-soft);border-left:4px solid var(--brass);border-radius:4px;padding:14px 18px;margin:18px 0;font-size:14.6px;}
+.alert .lbl{font-weight:700;color:#7a5a16;display:block;margin-bottom:3px;font-size:12.5px;letter-spacing:0.03em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+/* TABLAS */
+.tbl-wrap{margin:22px 0;overflow-x:auto;border-radius:6px;border:1px solid var(--line);}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:14px;min-width:480px;}
+[data-theme="dark"] table{background:var(--bone-deep);}
+thead th{background:var(--navy);color:#fff;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.04em;text-transform:uppercase;padding:12px 14px;text-align:left;font-weight:700;}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--bone-deep);vertical-align:top;color:#2b2720;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:nth-child(even){background:var(--bone);}
+tbody td:first-child{font-weight:700;color:var(--navy);}
+/* VS COMPARATIVA */
+.vs-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:24px 0;}
+.vs-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px;transition:transform var(--transition),box-shadow var(--transition);}
+[data-theme="dark"] .vs-card{background:var(--bone-deep);}
+.vs-card:hover{transform:translateY(-3px) rotate(-0.5deg);box-shadow:0 8px 24px rgba(15,27,45,0.12);}
+.vs-card h4{margin:0 0 10px;font-family:'Fraunces',serif;font-size:16px;color:var(--garnet-deep);border-bottom:1px solid var(--bone-deep);padding-bottom:8px;}
+.vs-card ul{margin:0;padding-left:18px;font-size:13.8px;}
+.vs-card li{margin-bottom:6px;}
+.vs-mid{font-family:'Fraunces',serif;font-weight:900;font-style:italic;color:var(--brass);font-size:15px;}
+@media(max-width:640px){.vs-wrap{grid-template-columns:1fr;}.vs-mid{text-align:center;}}
+/* CASO PRÁCTICO */
+.case{background:#fff;border:1px solid var(--line);border-radius:6px;margin:24px 0;overflow:hidden;box-shadow:var(--shadow);}
+[data-theme="dark"] .case{background:var(--bone-deep);}
+.case-h{background:var(--garnet-soft);color:var(--garnet-deep);font-weight:700;font-size:13px;padding:10px 18px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;letter-spacing:0.03em;}
+.case-b{padding:16px 18px;}
+.case-sol{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);}
+.case-sol .lbl{font-weight:700;color:var(--green);font-size:13px;display:block;margin-bottom:4px;}
+/* CIERRE */
+.closing{margin-top:46px;border-top:3px double var(--navy);padding-top:6px;}
+.panel{background:#fff;border:1px solid var(--line);border-radius:6px;margin:24px 0;padding:24px 26px;box-shadow:var(--shadow);}
+[data-theme="dark"] .panel{background:var(--bone-deep);}
+.panel-h{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:var(--navy);margin-bottom:16px;}
+.panel-h .ico{font-size:19px;}
+.resumen-list{list-style:none;}
+.resumen-list li{position:relative;padding:9px 0 9px 26px;border-bottom:1px solid var(--bone-deep);font-size:14.8px;}
+.resumen-list li:last-child{border-bottom:none;}
+.resumen-list li::before{content:"✓";position:absolute;left:0;top:9px;color:var(--green);font-weight:900;}
+.claves-list{list-style:none;}
+.claves-list li{padding:11px 0;border-bottom:1px solid var(--bone-deep);font-size:14.8px;}
+.claves-list li:last-child{border-bottom:none;}
+.claves-list .intro{color:var(--garnet);font-weight:700;}
+.errores-grid{display:grid;gap:14px;}
+.error-item{background:var(--bone);border-radius:6px;padding:14px 16px;border:1px solid var(--bone-deep);transition:transform var(--transition);}
+.error-item:hover{transform:translateX(4px);}
+.error-item .x{color:#A23B3B;font-weight:700;font-size:14.5px;}
+.error-item .ok{color:var(--green);font-weight:700;font-size:14.5px;display:block;margin-top:6px;}
+/* RADAR */
+.radar-box{background:linear-gradient(135deg,#0F1B2D 0%,#1B2940 100%);border-radius:8px;padding:24px 26px;margin:0 0 24px;border:1px solid rgba(184,137,62,0.35);}
+.radar-box .panel-h{color:var(--brass);margin-bottom:18px;}
+.radar-row{display:grid;grid-template-columns:140px 1fr;gap:8px 16px;align-items:baseline;margin-bottom:10px;}
+.radar-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:0.07em;color:var(--brass);text-transform:uppercase;}
+.radar-val{font-size:14px;color:#D7DEE8;}
+.radar-val strong{color:#fff;}
+/* QUIZ */
+.quiz-item{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--bone-deep);}
+.quiz-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.quiz-pattern{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 9px;border-radius:4px;margin-bottom:8px;background:var(--navy);color:var(--brass);}
+.quiz-q{font-weight:700;color:var(--navy);margin-bottom:12px;font-size:15px;}
+.quiz-opts{list-style:none;}
+.quiz-opts li{padding:9px 12px 9px 32px;position:relative;font-size:14.3px;border-radius:6px;margin-bottom:6px;cursor:pointer;border:1.5px solid transparent;transition:all 0.22s cubic-bezier(0.4,0,0.2,1);}
+.quiz-opts li:hover:not(.correct):not(.wrong){border-color:var(--line);background:var(--bone);}
+.quiz-opts li::before{content:attr(data-letter);position:absolute;left:8px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-weight:700;color:#9a9180;font-size:12px;}
+.quiz-opts li.correct{background:var(--green-soft);color:var(--green);font-weight:700;border-color:var(--green);}
+.quiz-opts li.correct::before{color:var(--green);}
+.quiz-opts li.wrong{background:var(--garnet-soft);color:var(--garnet-deep);font-weight:700;border-color:var(--garnet);animation:shake 0.35s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+.quiz-opts li.pending{pointer-events:none;opacity:0.55;}
+.quiz-explain{margin-top:12px;font-size:13.6px;color:#5a5446;background:var(--bone);border-radius:6px;padding:12px 16px;display:none;border-left:3px solid var(--navy);}
+.quiz-explain.visible{display:block;animation:fadeInUp 0.3s ease;}
+.quiz-explain b{color:var(--navy);}
+.quiz-score-row{display:flex;align-items:center;gap:10px;margin-top:16px;}
+.quiz-score-badge{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;background:var(--navy);color:var(--brass);}
+/* TIMER */
+.quiz-timer-wrap{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.timer-ring{width:38px;height:38px;flex-shrink:0;}
+.timer-ring circle{fill:none;stroke-width:3;stroke-linecap:round;}
+.timer-ring .bg{stroke:var(--line);}
+.timer-ring .fill{stroke:var(--brass);stroke-dasharray:100;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke 0.3s;transform:rotate(-90deg);transform-origin:center;}
+.timer-ring.urgent .fill{stroke:var(--garnet);}
+.timer-digits{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--ink);}
+/* FREQ */
+.freq-hot{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:#FFF3CD;color:#7a5a16;border:1px solid var(--brass);}
+.freq-trap{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--garnet-soft);color:var(--garnet-deep);border:1px solid var(--garnet);}
+.freq-kill{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;background:#1B1812;color:#fff;}
+/* FLASHCARD */
+.flashcard-wrap{perspective:1000px;margin:0;}
+.flashcard{width:100%;min-height:160px;border-radius:8px;position:relative;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);cursor:pointer;}
+.flashcard.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px 28px;}
+.fc-front{background:linear-gradient(135deg,var(--garnet) 0%,var(--garnet-deep) 100%);color:#fff;}
+.fc-back{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-soft) 100%);color:#fff;transform:rotateY(180deg);}
+.fc-hint{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;margin-bottom:10px;}
+.fc-acronym{font-family:'Fraunces',serif;font-weight:900;font-size:34px;letter-spacing:0.06em;margin-bottom:12px;}
+.fc-text{font-size:14px;opacity:0.9;text-align:center;line-height:1.5;}
+/* BRIDGE */
+.bridge{background:var(--navy-soft);color:#D7DEE8;border-radius:8px;padding:22px 26px;margin:24px 0 0;font-size:14.6px;font-style:italic;font-family:'Fraunces',serif;font-weight:500;}
+.bridge .panel-h{color:var(--brass);font-style:normal;}
+/* FIN DE BLOQUE */
+.end-block{text-align:center;margin:36px 0 0;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--garnet);font-weight:700;}
+.end-block .line{height:1px;background:repeating-linear-gradient(90deg,var(--garnet) 0 6px,transparent 6px 12px);margin:14px 0;opacity:0.5;}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,27,45,0.7);z-index:999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.28s;backdrop-filter:blur(4px);}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{background:var(--bone);border-radius:12px;padding:40px 44px;max-width:480px;width:90%;text-align:center;transform:scale(0.92);transition:transform 0.28s;box-shadow:0 32px 80px rgba(15,27,45,0.5);border:1px solid var(--line);}
+.modal-overlay.open .modal-box{transform:scale(1);}
+.modal-score{font-family:'Fraunces',serif;font-weight:900;font-size:72px;line-height:1;color:var(--navy);}
+.modal-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--garnet);margin-bottom:20px;font-weight:700;}
+.modal-msg{font-size:16px;color:#48433a;margin-bottom:28px;line-height:1.5;}
+.modal-close{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:var(--navy);color:var(--brass);border:none;padding:11px 28px;border-radius:6px;cursor:pointer;transition:opacity var(--transition);}
+.modal-close:hover{opacity:0.85;}
+/* TOAST */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:995;display:flex;flex-direction:column;gap:8px;}
+.toast{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:10px 18px;border-radius:6px;background:var(--navy);color:var(--brass);box-shadow:0 8px 24px rgba(15,27,45,0.35);transform:translateX(110%);transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);max-width:300px;}
+.toast.visible{transform:translateX(0);}
+/* PIE */
+.final-foot{margin-top:90px;padding:40px 0 0;text-align:center;border-top:1px solid var(--line);}
+.final-foot .stamp-text{font-size:12px;color:#9a9180;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;}
+/* MODOS */
+[data-mode="quick"] .sec,[data-mode="quick"] .closing>.panel:not(.panel-resumen),[data-mode="quick"] .bridge,[data-mode="quick"] .case{display:none;}
+[data-mode="quick"] .panel-resumen{display:block!important;}
+[data-mode="exam"] .quiz-explain{display:none!important;}
+[data-mode="exam"] .quiz-opts li.correct{background:none;color:var(--ink);font-weight:400;border-color:transparent;}
+[data-mode="exam"] .quiz-opts li.correct::before{color:#9a9180;}
+/* KEYFRAMES */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:1000;display:none;}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:3px;}
+@media print{.sidebar,.mode-bar,.progress-bar,.sticky-label,.toast-container,#particles-canvas,#confetti-canvas{display:none;}.block-head{break-inside:avoid;}.panel{break-inside:avoid;}}
+strong{color:var(--navy);}
+@media(max-width:600px){.block-head{padding:28px 22px 24px;}.panel{padding:20px 18px;}.wrap{padding:0 16px 100px;}.mode-bar{top:auto;bottom:14px;right:14px;}}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<canvas id="particles-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+<div class="sidebar"></div>
+<div class="sticky-label" id="stickyLabel"></div>
+<div class="mode-bar">
+  <button class="mode-btn active" data-mode="lecture">📖 Lectura</button>
+  <button class="mode-btn" data-mode="exam">⏱ Examen</button>
+  <button class="mode-btn" data-mode="quick">⚡ Repaso</button>
+  <button class="theme-toggle" id="themeToggle" title="Alternar modo oscuro">🌙</button>
+</div>
+<div class="modal-overlay" id="quizModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-label">Resultado del bloque</div>
+    <div class="modal-score" id="modalScore">0/5</div>
+    <p class="modal-msg" id="modalMsg"></p>
+    <button class="modal-close" id="modalClose">Continuar →</button>
+  </div>
+</div>
+<div class="toast-container"></div>
+
+<div class="wrap">
+
+  <!-- PORTADA -->
+  <div class="cover">
+    <div class="stamp">
+      <div class="stamp-text"><span class="big">21</span>CNP</div>
+    </div>
+    <div class="eyebrow">Ciencias Jurídicas · Escala Básica</div>
+    <h1>Derecho <em>Procesal</em> Penal</h1>
+    <p class="sub">Jurisdicción, órganos, detención, habeas corpus, Ministerio Fiscal y Policía Judicial. El tema que más plazos encierra y donde el tribunal más trampas tiende.</p>
+    <div class="meta-row">
+      <span class="meta-chip"><b>Leyes clave:</b> LECrim · LOPJ · LO 6/1984 · LO 5/1995</span>
+      <span class="meta-chip"><b>4 bloques</b> de estudio</span>
+      <span class="meta-chip"><b>20 preguntas</b> de autoevaluación</span>
+      <span class="meta-chip"><b>Novedad:</b> ISES 1/2024</span>
+    </div>
+    <div class="cover-divider"></div>
+  </div>
+
+  <!-- ÍNDICE -->
+  <div class="toc">
+    <div class="toc-inner">
+      <div class="toc-title">— Índice de bloques —</div>
+      <ul class="toc-list">
+        <li data-target="#block-1"><span class="toc-num">01</span><span class="toc-text">Jurisdicción, Competencia y Órganos</span><span class="toc-page">TS · AN · TJ · TSJ · AP</span></li>
+        <li data-target="#block-2"><span class="toc-num">02</span><span class="toc-text">Denuncia, Querella y Detención</span><span class="toc-page">Plazos · Derechos art. 520</span></li>
+        <li data-target="#block-3"><span class="toc-num">03</span><span class="toc-text">Habeas Corpus, Incomunicación e ISES 1/2024</span><span class="toc-page">LO 6/1984 · 24h · Procedimiento policial</span></li>
+        <li data-target="#block-4"><span class="toc-num">04</span><span class="toc-text">Ministerio Fiscal y Policía Judicial</span><span class="toc-page">FGE · Agente encubierto · Entrega vigilada</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════ BLOQUE 1 ══════════════════ -->
+  <div class="block" id="block-1">
+    <div class="block-head will-animate">
+      <div class="block-eyebrow"><span class="seal">1</span> Bloque I · Órganos jurisdiccionales</div>
+      <h2>Jurisdicción, Competencia y Órganos</h2>
+      <div class="hook">El tribunal pregunta qué órgano conoce de qué delito y con cuántos jurados. Olvida la teoría pura; memoriza las tablas.</div>
+      <div class="pageref">LECrim arts. 8-18 · LOPJ arts. 56-101 · LO 5/1995 arts. 1-2</div>
+      <div class="block-progress"><div class="block-progress-fill"></div></div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§1</span> Tribunal Supremo <span class="freq-hot">🔥 Muy preguntado</span></div>
+      <p>El TS tiene <strong>jurisdicción en toda España</strong> y es el órgano superior en todos los órdenes, salvo garantías constitucionales. <strong>Sede: Madrid.</strong></p>
+      <div class="tbl-wrap will-animate">
+        <table>
+          <thead><tr><th>Sala</th><th>Orden</th></tr></thead>
+          <tbody>
+            <tr><td>1ª</td><td>Civil</td></tr>
+            <tr><td>2ª</td><td>Penal ← <strong>la del CNP</strong></td></tr>
+            <tr><td>3ª</td><td>Contencioso-Administrativo</td></tr>
+            <tr><td>4ª</td><td>Social</td></tr>
+            <tr><td>5ª</td><td>Militar</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>La <strong>Sala Especial del art. 61 LOPJ</strong> (Sala Innominada) conoce, entre otros asuntos, la <strong>disolución de partidos políticos</strong> y los recursos de revisión contra sentencias dictadas en única instancia por la Sala 3ª.</p>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa de examen</span> El TS tiene <strong>5 salas</strong> numeradas (no 4 ni 6). La Sala Especial del art. 61 no cuenta como una sala más del listado.</div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§2</span> Audiencia Nacional <span class="freq-hot">🔥 Muy preguntado</span></div>
+      <p>Sede en Madrid. Jurisdicción en toda España. Salas: <strong>Apelación / Penal / Contencioso-Administrativo / Social</strong> (4 salas, no 5).</p>
+      <p>Competencia penal destacada: terrorismo y bandas armadas, tráfico de drogas por organizaciones con efectos en varias Audiencias, falsificación de moneda por organizaciones, delitos contra el titular de la Corona, delitos fuera del territorio nacional cuando corresponda a España.</p>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa</span> El Tribunal Central de Instancia (TCI) asume las competencias de los antiguos Juzgados Centrales. La AN conoce los <strong>recursos</strong> contra sus resoluciones, no los instruye directamente.</div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§3</span> Tribunal del Jurado <span class="freq-kill">💀 Eliminatorio</span></div>
+      <p>Regulado por <span class="art" data-tip="Ley Orgánica 5/1995, de 22 de mayo">LO 5/1995</span>. Composición: <strong>9 jurados + 1 magistrado-presidente</strong>. Asisten además <strong>2 jurados suplentes</strong>. Celebración solo en el ámbito de la <strong>Audiencia Provincial</strong>.</p>
+      <div class="gold-box will-animate">
+        <div class="label">💀 Datos que te eliminan si los confundes</div>
+        <p><strong>7 votos</strong> para declarar CULPABLE · <strong>5 votos</strong> para declarar INCULPABLE<br><strong>5 votos</strong> también para remisión condicional de la pena o indulto</p>
+      </div>
+      <div class="subsec">
+        <div class="subsec-title">Delitos competencia del Tribunal del Jurado (los que sí puede juzgar)</div>
+        <ul class="clean">
+          <li>Homicidio y asesinato (<span class="art" data-tip="arts. 138-140 CP">arts. 138-140</span>) — <strong>solo si es consumado</strong></li>
+          <li>Amenazas condicionales graves con pena &gt;2 años (<span class="art">art. 169.1</span>)</li>
+          <li>Omisión del deber de socorro (<span class="art">arts. 195 y 196</span>)</li>
+          <li>Allanamiento de morada (<span class="art">arts. 202 y 204</span>; <strong>NO el 203</strong>)</li>
+          <li>Infidelidad en custodia de documentos por funcionario</li>
+          <li>Cohecho, tráfico de influencias, malversación, fraudes y exacciones ilegales</li>
+          <li>Negociaciones prohibidas a funcionarios</li>
+          <li>Infidelidad en la custodia de presos</li>
+        </ul>
+      </div>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa clásica</span> <strong>NUNCA</strong> puede juzgar el Tribunal del Jurado el delito de <strong>prevaricación</strong> ni aquellos conexos cuyo enjuiciamiento pueda efectuarse por separado sin romper la continencia de la causa.</div>
+      <div class="subsec">
+        <div class="subsec-title">Requisitos para ser jurado <span class="freq-hot">🔥</span></div>
+        <ul class="clean">
+          <li>Ser español, mayor de edad, con pleno ejercicio de derechos políticos</li>
+          <li>Saber leer y escribir</li>
+          <li>Ser vecino (al tiempo de la designación) de la provincia donde se cometió el delito</li>
+          <li>Contar con aptitud suficiente (discapacidad ≠ exclusión; se proporcionan apoyos)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§4</span> Estructura territorial de órganos</div>
+      <div class="tbl-wrap will-animate">
+        <table>
+          <thead><tr><th>Ámbito</th><th>Órgano</th><th>Competencia penal clave</th></tr></thead>
+          <tbody>
+            <tr><td>Nacional</td><td>Tribunal Supremo</td><td>Aforados nacionales, casación</td></tr>
+            <tr><td>Nacional</td><td>Audiencia Nacional + TCI</td><td>Terrorismo, crimen organizado transnacional</td></tr>
+            <tr><td>Autonómico</td><td>TSJ (Sala Civil y Penal)</td><td>Aforados autonómicos, culmina organización CCAA</td></tr>
+            <tr><td>Provincial</td><td>Audiencia Provincial</td><td>Pena privativa &gt;5 años o cualquier otra &gt;10 años</td></tr>
+            <tr><td>Partido judicial</td><td>Tribunales de Instancia (TI)</td><td>Instrucción, juicio delitos menos graves</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert will-animate"><span class="lbl">🔥 Pregunta XLII</span> El tribunal que culmina la organización judicial en el ámbito de una CCAA es el <strong>Tribunal Superior de Justicia</strong>, no la Audiencia Provincial.</div>
+    </div>
+
+    <!-- CIERRE BLOQUE 1 -->
+    <div class="closing">
+      <div class="panel panel-resumen will-animate delay-1">
+        <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+        <ul class="resumen-list">
+          <li>TS: 5 salas (1ª-5ª) + Sala Especial art. 61 (disolución partidos). Sede Madrid.</li>
+          <li>AN: 4 salas (Apelación, Penal, C-A, Social). Terrorismo + crimen organizado.</li>
+          <li>TJ: 9 jurados + magistrado-presidente + 2 suplentes. Solo AP.</li>
+          <li>Votos TJ: 7 para culpabilidad · 5 para inculpabilidad/indulto/remisión.</li>
+          <li>TJ NO puede juzgar prevaricación.</li>
+          <li>TSJ culmina la organización judicial autonómica.</li>
+          <li>Homicidio/asesinato ante TJ: solo si es <strong>consumado</strong>.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-2">
+        <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+        <ul class="claves-list">
+          <li><span class="intro">Salas del TS:</span> son 5. Si el enunciado dice "4" o "6", es trampa.</li>
+          <li><span class="intro">Salas de la AN:</span> son 4 (no tiene Sala Militar ni Sala Civil).</li>
+          <li><span class="intro">Votos del Jurado:</span> asimetría deliberada — más fácil absolver (5) que condenar (7).</li>
+          <li><span class="intro">TSJ vs AP:</span> el TSJ es autonómico; la AP es provincial. El que "culmina" la organización autonómica es el TSJ.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-3">
+        <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones</div>
+        <div class="errores-grid">
+          <div class="error-item"><span class="x">✗ "El TJ puede juzgar la prevaricación por conexión"</span><span class="ok">✓ La prevaricación está expresamente excluida de la competencia del TJ incluso por conexión.</span></div>
+          <div class="error-item"><span class="x">✗ "Para absolver hacen falta 7 votos como para condenar"</span><span class="ok">✓ Inculpabilidad solo exige 5 votos. El umbral mayor es para condenar.</span></div>
+          <div class="error-item"><span class="x">✗ "El TJ conoce el allanamiento del art. 203"</span><span class="ok">✓ Solo arts. 202 y 204. El art. 203 está expresamente excluido del texto de la LO 5/1995.</span></div>
+          <div class="error-item"><span class="x">✗ "El asesinato no consumado (tentativa) lo juzga el TJ"</span><span class="ok">✓ Solo si el delito de homicidio/asesinato es <strong>consumado</strong>. Tentativa: NO.</span></div>
+        </div>
+      </div>
+      <div class="radar-box will-animate delay-4">
+        <div class="panel-h"><span class="ico">🎰</span> Radar del Tribunal</div>
+        <div class="radar-row"><span class="radar-label">Salas TS</span><span class="radar-val"><strong>Muy preguntado.</strong> Confusión con nº de salas y la Sala Especial art. 61.</span></div>
+        <div class="radar-row"><span class="radar-label">TJ Votos</span><span class="radar-val"><strong>Eliminatorio.</strong> 7/5 con asimetría explicada. Aparece en el 80% de las convocatorias.</span></div>
+        <div class="radar-row"><span class="radar-label">TJ Delitos</span><span class="radar-val">Prevaricación excluida y homicidio solo consumado son los dos distractores más usados.</span></div>
+        <div class="radar-row"><span class="radar-label">TSJ vs AP</span><span class="radar-val">Pregunta XLII confirmada: TSJ culmina organización autonómica. Respuesta incorrecta: AP.</span></div>
+      </div>
+      <div class="panel will-animate">
+        <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación — Bloque I</div>
+        <div class="quiz-timer-wrap">
+          <svg class="timer-ring" viewBox="0 0 38 38"><circle class="bg" cx="19" cy="19" r="15.5"/><circle class="fill" cx="19" cy="19" r="15.5" stroke-dasharray="100" stroke-dashoffset="0"/></svg>
+          <span class="timer-digits">7:00</span>
+          <span class="quiz-score-badge">0/5</span>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Memoria pura</span>
+          <div class="quiz-q">¿Cuántos jurados componen el Tribunal del Jurado según la LO 5/1995?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">7 jurados y 2 magistrados</li>
+            <li data-letter="B">9 jurados y 1 magistrado-presidente</li>
+            <li data-letter="C" data-correct="true">9 jurados, 1 magistrado-presidente y 2 suplentes</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> no son 7 sino 9 jurados y no hay 2 magistrados. <b>B incorrecta:</b> omite los 2 suplentes que siempre asisten. <b>C correcta:</b> el art. 2 LO 5/1995 establece 9 jurados + 1 magistrado-presidente + 2 jurados suplentes.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">EXCEPTO / INCORRECTO</span>
+          <div class="quiz-q">¿Cuál de los siguientes delitos NO es competencia del Tribunal del Jurado en ningún caso?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">Cohecho pasivo (art. 419 CP)</li>
+            <li data-letter="B">Homicidio consumado (art. 138 CP)</li>
+            <li data-letter="C" data-correct="true">Prevaricación judicial</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> el cohecho sí está dentro del catálogo del art. 1 LO 5/1995. <b>B incorrecta:</b> el homicidio consumado sí es competencia del TJ. <b>C correcta:</b> la prevaricación está expresamente excluida incluso por conexión.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Número / plazo</span>
+          <div class="quiz-q">¿Cuántos votos se necesitan para declarar la CULPABILIDAD de un acusado en el Tribunal del Jurado?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">5 votos de los 9 jurados</li>
+            <li data-letter="B" data-correct="true">7 votos de los 9 jurados</li>
+            <li data-letter="C">6 votos de los 9 jurados</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> 5 votos es el umbral para la inculpabilidad, no para la culpabilidad. <b>C incorrecta:</b> 6 no aparece en la ley. <b>B correcta:</b> el art. 59 LO 5/1995 exige 7 para culpabilidad y 5 para inculpabilidad.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Competencia territorial</span>
+          <div class="quiz-q">¿Qué órgano jurisdiccional culmina la organización judicial en el ámbito de la respectiva Comunidad Autónoma?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">La Audiencia Provincial</li>
+            <li data-letter="B">El Tribunal Constitucional</li>
+            <li data-letter="C" data-correct="true">El Tribunal Superior de Justicia</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> la AP tiene ámbito provincial, no autonómico. <b>B incorrecta:</b> el TC no forma parte de la organización judicial ordinaria. <b>C correcta:</b> el art. 70 LOPJ establece que el TSJ de la CCAA culmina la organización judicial en su ámbito territorial. Pregunta de examen oficial de la conv. XLII.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Número de salas</span>
+          <div class="quiz-q">¿Cuántas salas tiene la Audiencia Nacional?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">5 Salas (incluida la Militar)</li>
+            <li data-letter="B" data-correct="true">4 Salas: Apelación, Penal, Contencioso-Administrativo y Social</li>
+            <li data-letter="C">3 Salas: Penal, Contencioso-Administrativo y Social</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> la AN no tiene Sala Militar. <b>C incorrecta:</b> omite la Sala de Apelación. <b>B correcta:</b> el art. 64 LOPJ establece exactamente estas 4 salas.</div>
+        </div>
+        <div class="quiz-score-row"><span class="quiz-score-badge">0/5</span></div>
+      </div>
+      <div class="flashcard-wrap will-animate">
+        <div class="flashcard" tabindex="0" role="button" aria-label="Tarjeta mnemotécnica. Pulsa para girar." style="min-height:180px;">
+          <div class="fc-face fc-front">
+            <span class="fc-hint">Toca para ver la explicación</span>
+            <div class="fc-acronym">9·1·2 → 7/5</div>
+            <p class="fc-text">Composición y votos del Tribunal del Jurado</p>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-hint">Toca para volver</span>
+            <p class="fc-text"><strong>9</strong> jurados + <strong>1</strong> magistrado-presidente + <strong>2</strong> suplentes. Para condenar: <strong>7</strong> votos. Para absolver: <strong>5</strong> votos. Regla: siempre más fácil absolver que condenar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bridge will-animate">
+        <div class="panel-h"><span class="ico">🔗</span> Conexión con el siguiente bloque</div>
+        Conocidos los órganos, el siguiente bloque aborda cómo llegan los asuntos hasta ellos: la <em>denuncia</em> y la <em>querella</em> como formas de incoación, y la <em>detención</em> como primera medida cautelar personal que el futuro policía practicará en su día a día.
+      </div>
+    </div>
+    <div class="end-block"><div class="line"></div>FIN BLOQUE I<div class="line"></div></div>
+  </div>
+
+  <!-- ══════════════════ BLOQUE 2 ══════════════════ -->
+  <div class="block" id="block-2">
+    <div class="block-head will-animate">
+      <div class="block-eyebrow"><span class="seal">2</span> Bloque II · Incoación y detención</div>
+      <h2>Denuncia, Querella y Detención</h2>
+      <div class="hook">El bloque con más plazos del temario. Un error de 24 horas aquí vale una pregunta eliminada.</div>
+      <div class="pageref">LECrim arts. 259-280 · 489-527 · LORPM art. 17 · CE art. 17</div>
+      <div class="block-progress"><div class="block-progress-fill"></div></div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§1</span> Denuncia vs Querella <span class="freq-trap">⚡ Trampa del tribunal</span></div>
+      <div class="vs-wrap will-animate">
+        <div class="vs-card">
+          <h4>DENUNCIA</h4>
+          <ul>
+            <li>Declaración de <strong>conocimiento</strong> de hechos</li>
+            <li>No te convierte en parte del proceso</li>
+            <li><strong>No exige fianza</strong></li>
+            <li>No requiere Abogado ni Procurador</li>
+            <li>Puede ser escrita o verbal</li>
+            <li>Cualquier persona con obligación genérica</li>
+          </ul>
+        </div>
+        <div class="vs-mid">VS</div>
+        <div class="vs-card">
+          <h4>QUERELLA</h4>
+          <ul>
+            <li>Declaración de <strong>voluntad</strong> + pedir ser parte</li>
+            <li>Te conviertes en acusador particular</li>
+            <li><strong>Exige fianza</strong> (salvo excepciones)</li>
+            <li>Requiere Procurador + firma Letrado</li>
+            <li>Solo por escrito, en papel de oficio</li>
+            <li>Ciudadanos españoles (acción popular)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa clásica</span> La denuncia es declaración de CONOCIMIENTO; la querella es declaración de VOLUNTAD. El tribunal los intercambia. <strong>No exige fianza la denuncia</strong>; sí la querella (salvo el ofendido y sus herederos).</div>
+      <div class="subsec">
+        <div class="subsec-title">Excepción al pago de fianza en querella</div>
+        <ul class="clean">
+          <li>El ofendido y sus herederos / representantes legales</li>
+          <li>En homicidio/asesinato: cónyuge, ascendientes, descendientes, colaterales hasta 2º, herederos de la víctima y padres/madres e hijos del delincuente</li>
+          <li>Asociaciones de víctimas con autorización expresa de la víctima</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§2</span> La Detención: Plazos <span class="freq-kill">💀 Eliminatorio</span></div>
+      <div class="gold-box will-animate">
+        <div class="label">💀 Tabla de plazos — aprende esto antes que nada</div>
+        <p>
+          <strong>Regla general (<span class="art" data-tip="Art. 17.2 CE">art. 17.2 CE</span>):</strong> máx. <span class="plazo">72 h</span> → libertad o a disposición judicial.<br><br>
+          <strong>Terrorismo y bandas armadas (<span class="art" data-tip="Art. 520 bis LECrim">art. 520 bis</span>):</strong> <span class="plazo">72 h</span> + prórroga máx. <span class="plazo">48 h</span> (solicitada en las primeras 48h; autorizada por el juez en las siguientes <span class="plazo">24 h</span>).<br><br>
+          <strong>Menores (<span class="art" data-tip="Art. 17 LORPM">art. 17 LORPM</span>):</strong> máx. <span class="plazo">24 h</span> → libertad o a disposición del <strong>Ministerio Fiscal</strong>. El MF habrá de resolver en <span class="plazo">48 h</span> desde la detención.<br><br>
+          <strong>OEDE — mayor 18:</strong> a disposición del JCI en máx. <span class="plazo">72 h</span>.<br>
+          <strong>OEDE — menor +14:</strong> a disposición del JCM en máx. <span class="plazo">24 h</span>.<br><br>
+          <strong>Estado de excepción:</strong> hasta <span class="plazo">10 días</span>; comunicar al juez en <span class="plazo">24 h</span>.<br>
+          <strong>Espacio marino:</strong> máx. <span class="plazo">72 h</span>.
+        </p>
+      </div>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa clásica</span> El menor no va a disposición del <em>Juez</em>, sino del <strong>Ministerio Fiscal</strong> en 24h. El MF resuelve en 48h (no el juez directamente).</div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§3</span> Obligación de detener <span class="freq-hot">🔥 Muy preguntado</span></div>
+      <div class="tbl-wrap will-animate">
+        <table>
+          <thead><tr><th>Quién</th><th>Puede / Debe detener</th></tr></thead>
+          <tbody>
+            <tr><td>Cualquier particular (art. 490)</td><td>Puede detener: al que va a cometer un delito, al delincuente in fraganti, al fugado de establecimiento penal, al procesado en rebeldía</td></tr>
+            <tr><td>Autoridad / Agente PJ (art. 492)</td><td><strong>Debe detener:</strong> todos los casos del art. 490 + procesado por delito con pena superior a prisión correccional + al que haya indicios bastantes de delito y participación</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert will-animate"><span class="lbl">💀 Dato eliminatorio</span> <strong>No se puede detener</strong> por la presunta comisión de <strong>delitos leves</strong>. <strong>Excepción:</strong> el presunto reo no tiene domicilio conocido ni da fianza bastante (<span class="art">art. 495 LECrim</span>).</div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§4</span> Derechos del detenido (<span class="art" data-tip="Art. 520 LECrim, vigente tras reforma 2015">art. 520 LECrim</span>) <span class="freq-hot">🔥 Muy preguntado</span></div>
+      <p>El detenido tiene derecho a ser informado <strong>de forma inmediata</strong> y comprensible de sus derechos y razones de la detención. La detención se practicará de forma que <strong>menos perjudique</strong> al detenido en persona, reputación y patrimonio.</p>
+      <ul class="clean">
+        <li>Guardar silencio y no contestar preguntas</li>
+        <li>No declarar contra sí mismo ni confesarse culpable</li>
+        <li>Ser reconocido por el <strong>médico forense</strong> (o en su defecto por el de la institución o cualquier otro dependiente del Estado)</li>
+        <li>Designar abogado y ser asistido <strong>sin demora injustificada</strong>; si no puede ser de inmediato: comunicación telefónica o videoconferencia</li>
+        <li>Renuncia a asistencia letrada: <strong>solo si la detención es por delitos contra la seguridad del tráfico</strong></li>
+        <li>Solicitar asistencia jurídica gratuita</li>
+        <li>Poner en conocimiento de un familiar o persona su privación de libertad <strong>sin demora injustificada</strong></li>
+        <li>Comunicarse telefónicamente con un tercero (en presencia de funcionario)</li>
+        <li>Asistencia de intérprete gratuita (extranjeros, sordos, personas con dificultades del lenguaje)</li>
+      </ul>
+      <div class="alert will-animate"><span class="lbl">💀 Dato eliminatorio</span> El abogado designado debe comparecer en el centro de detención en un <strong>máximo de 3 horas</strong> desde la recepción del encargo. Si no comparece, el Colegio designa uno nuevo con el mismo plazo máximo de 3h.</div>
+      <div class="case will-animate">
+        <div class="case-h">⚖️ Caso práctico XLII — Pregunta oficial</div>
+        <div class="case-b">
+          <p>Un ciudadano es detenido por presunto delito contra la seguridad vial y trasladado a dependencias policiales sin ser informado de sus derechos y razones de detención. ¿Qué ocurre?</p>
+          <div class="case-sol"><span class="lbl">✓ Solución</span>El agente comete un <strong>delito contra las garantías constitucionales</strong> por no informar inmediatamente y de forma comprensible de sus derechos al detenido. La obligación es inmediata e incondicionada.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIERRE BLOQUE 2 -->
+    <div class="closing">
+      <div class="panel panel-resumen will-animate delay-1">
+        <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+        <ul class="resumen-list">
+          <li>Denuncia = conocimiento, sin fianza. Querella = voluntad, con fianza + Procurador.</li>
+          <li>Detención general: máx. 72h → libertad o juzgado.</li>
+          <li>Terrorismo: 72h + 48h prórroga (solicitada en primeras 48h; juez autoriza en 24h).</li>
+          <li>Menores: máx. 24h → a disposición del <strong>MF</strong> (no del juez). MF resuelve en 48h.</li>
+          <li>No se puede detener por delitos leves (salvo sin domicilio conocido).</li>
+          <li>Abogado designado: máx. 3h para comparecer.</li>
+          <li>Renuncia a abogado: solo en delitos contra seguridad del tráfico.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-2">
+        <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+        <ul class="claves-list">
+          <li><span class="intro">Menor detenido:</span> a disposición del MF, no del juez de instrucción ni del juez de menores.</li>
+          <li><span class="intro">Prórroga terrorismo:</span> 48h más (no 72h adicionales). La solicitud debe hacerse en las primeras 48h.</li>
+          <li><span class="intro">Médico forense:</span> el detenido tiene derecho a ser reconocido por él; es un derecho, no una obligación del detenido.</li>
+          <li><span class="intro">Delito leve:</span> sin detención posible, salvo domicilio desconocido o sin fianza.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-3">
+        <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones</div>
+        <div class="errores-grid">
+          <div class="error-item"><span class="x">✗ "El menor pasa a disposición del Juez de Menores en 24h"</span><span class="ok">✓ Pasa a disposición del Ministerio Fiscal en 24h. Es el MF quien decide en 48h.</span></div>
+          <div class="error-item"><span class="x">✗ "La denuncia requiere fianza si es de extranjero"</span><span class="ok">✓ La denuncia nunca exige fianza. Es la querella de extranjero la que exige fianza (salvo tratado o reciprocidad).</span></div>
+          <div class="error-item"><span class="x">✗ "Se puede detener por delito leve siempre"</span><span class="ok">✓ La regla general es que NO. Solo si no tiene domicilio conocido ni da fianza (art. 495).</span></div>
+          <div class="error-item"><span class="x">✗ "El agente puede recomendar un abogado al detenido"</span><span class="ok">✓ Ninguna autoridad/agente puede efectuar recomendaciones sobre el abogado a designar.</span></div>
+        </div>
+      </div>
+      <div class="radar-box will-animate delay-4">
+        <div class="panel-h"><span class="ico">🎰</span> Radar del Tribunal</div>
+        <div class="radar-row"><span class="radar-label">Plazos detención</span><span class="radar-val"><strong>Eliminatorio.</strong> La tabla 72/48/24h aparece en cada convocatoria. 1-2 preguntas garantizadas.</span></div>
+        <div class="radar-row"><span class="radar-label">Menores → MF</span><span class="radar-val"><strong>Trampa recurrente.</strong> El tribunal pone "Juez de Menores" como distractor. La respuesta siempre es Ministerio Fiscal.</span></div>
+        <div class="radar-row"><span class="radar-label">Denuncia vs Querella</span><span class="radar-val">Se intercambian los adjetivos "conocimiento" / "voluntad" y la presencia o ausencia de fianza.</span></div>
+        <div class="radar-row"><span class="radar-label">Abogado 3h</span><span class="radar-val">Dato numérico concreto muy preguntado en tests de academia.</span></div>
+      </div>
+      <div class="panel will-animate">
+        <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación — Bloque II</div>
+        <div class="quiz-timer-wrap">
+          <svg class="timer-ring" viewBox="0 0 38 38"><circle class="bg" cx="19" cy="19" r="15.5"/><circle class="fill" cx="19" cy="19" r="15.5" stroke-dasharray="100" stroke-dashoffset="0"/></svg>
+          <span class="timer-digits">7:00</span>
+          <span class="quiz-score-badge">0/5</span>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Plazo — eliminatorio</span>
+          <div class="quiz-q">Un menor es detenido por delito común. ¿Cuál es el plazo máximo de detención y ante quién debe ponerse a disposición?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">72 horas · Juez de Instrucción</li>
+            <li data-letter="B">48 horas · Juez de Menores</li>
+            <li data-letter="C" data-correct="true">24 horas · Ministerio Fiscal</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> 72h es el plazo para mayores y el órgano es el Juez de Instrucción, no el de menores. <b>B incorrecta:</b> 48h es el plazo que tiene el MF para resolver, no el de la detención. <b>C correcta:</b> art. 17 LORPM: máx. 24h y a disposición del MF (Sección de Menores de la Fiscalía).</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Trampa — EXCEPTO</span>
+          <div class="quiz-q">¿Cuál de las siguientes afirmaciones sobre la denuncia es INCORRECTA?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">La denuncia es una declaración de conocimiento</li>
+            <li data-letter="B">Puede hacerse por escrito o verbalmente</li>
+            <li data-letter="C" data-correct="true">El denunciante queda constituido automáticamente como parte en el proceso</li>
+          </ul>
+          <div class="quiz-explain"><b>A y B son correctas.</b> <b>C es incorrecta</b> (que es lo que pide el enunciado): por la simple denuncia, el denunciante NO se convierte en parte del proceso. La querella sí implica esa voluntad de ser parte.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Plazo terrorismo</span>
+          <div class="quiz-q">En una detención por pertenencia a banda armada, ¿cuánto tiempo adicional puede prorrogarse la detención más allá de las 72 horas iniciales?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">24 horas, previa solicitud al juez</li>
+            <li data-letter="B" data-correct="true">48 horas, solicitada en las primeras 48h y autorizada por el juez en las 24h siguientes</li>
+            <li data-letter="C">72 horas adicionales sin autorización judicial</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> la prórroga es de 48h, no de 24. <b>C incorrecta:</b> siempre se necesita autorización judicial. <b>B correcta:</b> art. 520 bis LECrim: prórroga de hasta 48h solicitada en las primeras 48h de la detención y autorizada por el juez en las 24h siguientes.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Obligación de no detener</span>
+          <div class="quiz-q">Regla general: ¿en qué casos NO se puede practicar detención?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">Cuando el sujeto es extranjero sin documentación</li>
+            <li data-letter="B" data-correct="true">Por la presunta comisión de delitos leves (salvo domicilio desconocido sin fianza)</li>
+            <li data-letter="C">Cuando el sujeto tiene inmunidad diplomática honoraria</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> la nacionalidad no determina la posibilidad de detención. <b>C incorrecta:</b> el cónsul honorario no tiene inviolabilidad total. <b>B correcta:</b> art. 495 LECrim prohíbe detener por delito leve salvo que no tenga domicilio conocido o no dé fianza.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Derechos del detenido</span>
+          <div class="quiz-q">¿En qué supuesto puede el detenido renunciar válidamente a la asistencia letrada?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">En cualquier delito leve, con información previa</li>
+            <li data-letter="B">Nunca; la asistencia letrada es irrenunciable</li>
+            <li data-letter="C" data-correct="true">Solo si la detención es por delitos contra la seguridad del tráfico</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> no es para cualquier delito leve sino específicamente para delitos contra la seguridad del tráfico. <b>B incorrecta:</b> la renuncia sí es posible en el supuesto específico. <b>C correcta:</b> art. 520.8 LECrim: renuncia solo si la detención lo es por delitos contra la seguridad del tráfico, con información clara de las consecuencias.</div>
+        </div>
+        <div class="quiz-score-row"><span class="quiz-score-badge">0/5</span></div>
+      </div>
+      <div class="flashcard-wrap will-animate">
+        <div class="flashcard" tabindex="0" role="button" aria-label="Tarjeta mnemotécnica plazos" style="min-height:180px;">
+          <div class="fc-face fc-front">
+            <span class="fc-hint">Toca para ver la explicación</span>
+            <div class="fc-acronym">72 · 24 · 48</div>
+            <p class="fc-text">Los tres plazos clave de la detención</p>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-hint">Toca para volver</span>
+            <p class="fc-text"><strong>72h</strong> regla general (mayor de edad, adulto). <strong>24h</strong> menores → al MF. <strong>48h</strong> prórroga máxima en terrorismo. Recuerda: el MF tiene luego <strong>48h</strong> para resolver lo del menor. Orden: 72 — 24 — 48.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bridge will-animate">
+        <div class="panel-h"><span class="ico">🔗</span> Conexión con el siguiente bloque</div>
+        Una vez detenida la persona, puede producirse su <em>incomunicación</em> por orden judicial o, si la detención es ilegal, activarse el procedimiento de <em>habeas corpus</em>. El siguiente bloque también incluye la novedad de la ISES 1/2024, la instrucción policial que regula en detalle cómo debe practicarse la detención.
+      </div>
+    </div>
+    <div class="end-block"><div class="line"></div>FIN BLOQUE II<div class="line"></div></div>
+  </div>
+
+  <!-- ══════════════════ BLOQUE 3 ══════════════════ -->
+  <div class="block" id="block-3">
+    <div class="block-head will-animate">
+      <div class="block-eyebrow"><span class="seal">3</span> Bloque III · Garantías y procedimiento policial</div>
+      <h2>Habeas Corpus, Incomunicación e <em>ISES 1/2024</em></h2>
+      <div class="hook">El Habeas Corpus es "rentable por hora estudiada". Solo 9 artículos, pero con una densidad de datos preguntables altísima.</div>
+      <div class="pageref">LO 6/1984 · LECrim arts. 509-510, 527 · ISES 1/2024</div>
+      <div class="block-progress"><div class="block-progress-fill"></div></div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§1</span> Habeas Corpus — LO 6/1984 <span class="freq-kill">💀 Eliminatorio</span></div>
+      <p>Mandato constitucional (<span class="art" data-tip="Constitución Española, art. 17.4">art. 17.4 CE</span>). Desarrollado por <span class="art" data-tip="Ley Orgánica 6/1984, de 24 de mayo">LO 6/1984 de 24 de mayo</span>. Principios: <strong>agilidad</strong> (finaliza en 24 horas), <strong>sencillez y carencia de formalismos</strong> (puede hacerse verbalmente, sin abogado ni procurador), <strong>generalidad</strong> y <strong>universalidad</strong>.</p>
+      <div class="gold-box will-animate">
+        <div class="label">💀 Competente para conocer el HC — orden de prelación</div>
+        <p>
+          1º <strong>Juez de Instrucción del lugar</strong> donde se encuentre el privado de libertad.<br>
+          2º Si no consta: del lugar de la detención.<br>
+          3º En defecto: del lugar de las últimas noticias.<br><br>
+          <strong>Excepción art. 55.2 CE (LO de bandas armadas):</strong> Juez Central de Instrucción.<br>
+          <strong>Jurisdicción Militar:</strong> Juez Togado Militar de Instrucción.
+        </p>
+      </div>
+      <div class="alert will-animate"><span class="lbl">💀 Trampa XLII — Pregunta oficial</span> Si el HC lo solicita un <strong>menor de edad</strong>, el competente NO es el Juez de Menores. Es el <strong>Juez de Instrucción</strong> ordinario (LO 6/1984, art. 2). Esta pregunta apareció en la conv. XLII.</div>
+      <div class="subsec">
+        <div class="subsec-title">Legitimados para instar el HC</div>
+        <ul class="clean">
+          <li>El propio privado de libertad</li>
+          <li>Cónyuge / persona con análoga relación; descendientes, ascendientes y hermanos</li>
+          <li>Representante legal (para menores o personas con discapacidad y medidas de apoyo judiciales)</li>
+          <li>El <strong>Ministerio Fiscal</strong></li>
+          <li>El <strong>Defensor del Pueblo</strong></li>
+          <li>El Juez competente (de oficio)</li>
+        </ul>
+      </div>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa</span> El Abogado defensor <strong>NO tiene legitimación propia</strong> para solicitar el HC, aunque sí puede presentar la solicitud en nombre del detenido.</div>
+      <div class="subsec">
+        <div class="subsec-title">Personas ilegalmente detenidas (art. 1 LO 6/1984)</div>
+        <ul class="clean">
+          <li>Detenidas sin que concurran los supuestos legales o sin cumplirse las formalidades</li>
+          <li>Ilícitamente internadas en cualquier establecimiento o lugar</li>
+          <li>Detenidas por plazo superior al señalado sin ser puestas en libertad o a disposición judicial</li>
+          <li>Cuando no se les respetan los derechos que la CE y las leyes procesales garantizan</li>
+        </ul>
+      </div>
+      <p>Incoado el HC, el juez dicta auto. Tramitación: oye al privado de libertad, a su representante y abogado (si lo hubiera), al MF, y a la autoridad que ordenó la detención. Dicta auto motivado: archivo; puesta en libertad; continuar privación en lugar distinto; o puesta inmediata a disposición judicial si ya transcurrió el plazo legal. <strong>Plazo: 24 horas desde la incoación.</strong></p>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§2</span> Incomunicación <span class="freq-trap">⚡ Trampa del tribunal</span></div>
+      <p>Acordada por el Juez de Instrucción / Tribunal mediante <strong>auto con resolución motivada</strong>. Solo de forma <strong>excepcional</strong>.</p>
+      <div class="tbl-wrap will-animate">
+        <table>
+          <thead><tr><th>Supuesto</th><th>Duración máxima</th></tr></thead>
+          <tbody>
+            <tr><td>Regla general</td><td><strong>5 días</strong></td></tr>
+            <tr><td>Bandas armadas / terrorismo / crimen organizado (≥2 personas)</td><td><strong>5 + 5 = 10 días</strong> (prórroga máx. otros 5)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert will-animate"><span class="lbl">💀 Dato eliminatorio</span> <strong>En ningún caso</strong> podrá ser objeto de detención incomunicada los <strong>menores de 16 años</strong> (no menores de 18, sino de 16).</div>
+      <p>Derechos del incomunicado: no puede designar abogado de su confianza (solo de oficio), no puede comunicar su detención, no puede entrevistarse reservadamente con su letrado. Reconocimientos médicos al incomunicado: mínimo <strong>2 reconocimientos cada 24h</strong>.</p>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§3</span> ISES 1/2024 — Procedimiento Integral de la Detención Policial <span class="nuevo">✦ NUEVO</span> <span class="freq-hot">🔥 Novedad a explotar</span></div>
+      <p>Instrucción de Seguridad del año 2024 que sistematiza y actualiza el procedimiento policial en toda detención practicada por las FCSE.</p>
+      <div class="subsec">
+        <div class="subsec-title">Oportunidad y uso de la fuerza — Principios COP</div>
+        <p>Siempre que se requiera fuerza, los agentes deben actuar conforme a los principios de <strong>Oportunidad, Congruencia y Proporcionalidad (COP):</strong></p>
+        <ul class="clean">
+          <li><strong>Oportunidad:</strong> necesidad o no de recurrir a la coacción física</li>
+          <li><strong>Congruencia:</strong> elegir el medio más idóneo y adecuado a la situación concreta</li>
+          <li><strong>Proporcionalidad:</strong> adecuar la intensidad; proscrito todo exceso</li>
+        </ul>
+        <p>Uso del arma de fuego: <strong>último recurso</strong>, solo ante riesgo racionalmente grave para la vida o integridad física de los agentes, terceros o grave riesgo para la seguridad ciudadana.</p>
+      </div>
+      <div class="subsec">
+        <div class="subsec-title">Registro personal</div>
+        <p>Prospección superficial externa del cuerpo y vestiduras. <strong>Preceptivo</strong> en toda detención y previo al ingreso en área de custodia. Lo realiza personal del <strong>mismo sexo</strong> (salvo urgencia). En caso de discrepancia entre identidad legal e identidad de género: se deja constancia escrita del consentimiento.</p>
+        <p><strong>Desnudo integral:</strong> forma excepcional, solo con indicios racionales, en lugar cerrado y reservado, por personal del mismo sexo (o según identidad de género manifestada), con constancia escrita de su necesidad.</p>
+      </div>
+      <div class="subsec">
+        <div class="subsec-title">Identificación del detenido</div>
+        <ul class="clean">
+          <li><strong>Reseña decadactilar:</strong> si el detenido se niega, se procede de forma <strong>coactiva</strong>. <strong>No necesita autorización judicial.</strong></li>
+          <li><strong>Reseña genética (ADN):</strong> requiere <strong>consentimiento</strong> en presencia de letrado, salvo autorización judicial. Si se niega a toma de muestra (frotis bucal), es <strong>indispensable auto judicial</strong>.</li>
+          <li>Menores de 14 años: reseña solo a <strong>fines puramente identificativos</strong>.</li>
+        </ul>
+      </div>
+      <div class="subsec">
+        <div class="subsec-title">Videovigilancia en ACUDE</div>
+        <p>Las grabaciones se conservan al menos <strong>30 días</strong>. Vigilancia en celdas: si hay cámaras, comprobación cada <strong>hora</strong>; si no hay cámaras, rondas cada <strong>30 minutos</strong> como mínimo.</p>
+      </div>
+      <div class="alert will-animate"><span class="lbl">🔥 Novedad explotable</span> La ISES 1/2024 es nueva. El tribunal típicamente pregunta sobre ella en las 2-3 convocatorias siguientes a su publicación. Foco en: principios COP, reseña decadactilar sin autorización judicial, ADN con autorización judicial si hay negativa.</div>
+    </div>
+
+    <!-- CIERRE BLOQUE 3 -->
+    <div class="closing">
+      <div class="panel panel-resumen will-animate delay-1">
+        <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+        <ul class="resumen-list">
+          <li>HC: LO 6/1984 · Agilidad (24h) · sin abogado ni procurador · competente = Juez Instrucción (siempre, también para menores).</li>
+          <li>Legitimados HC: el detenido, familia, MF, Defensor del Pueblo, Juez de oficio. El abogado NO tiene legitimación propia.</li>
+          <li>Incomunicación: 5 días (regla general) · 5+5 (terrorismo) · Menores de 16 NUNCA.</li>
+          <li>ISES 1/2024: principios COP · Reseña decadactilar = coactiva sin auto · ADN = auto judicial si se niega.</li>
+          <li>Reconocimientos médicos incomunicado: mínimo 2 cada 24h.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-2">
+        <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+        <ul class="claves-list">
+          <li><span class="intro">HC para menor:</span> Juez de Instrucción, no Juez de Menores. Pregunta XLII.</li>
+          <li><span class="intro">Incomunicación menores:</span> la línea es 16 años, no 18. Un menor de 16 NUNCA puede ser incomunicado.</li>
+          <li><span class="intro">Reseña decadactilar:</span> sin auto judicial; coactiva si el detenido se niega.</li>
+          <li><span class="intro">Reseña genética (ADN):</span> necesita consentimiento o auto judicial; frotis sin consentimiento = auto obligatorio.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-3">
+        <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones</div>
+        <div class="errores-grid">
+          <div class="error-item"><span class="x">✗ "El HC para menor lo tramita el Juez de Menores"</span><span class="ok">✓ Siempre el Juez de Instrucción. La LO 6/1984 no distingue entre adultos y menores para la competencia.</span></div>
+          <div class="error-item"><span class="x">✗ "Los menores de 18 años no pueden ser incomunicados"</span><span class="ok">✓ La prohibición es para menores de 16. Un menor de 17 años puede ser incomunicado.</span></div>
+          <div class="error-item"><span class="x">✗ "Para tomar las huellas dactilares al detenido hace falta auto judicial"</span><span class="ok">✓ La reseña decadactilar no requiere autorización judicial. Se puede realizar de forma coactiva.</span></div>
+          <div class="error-item"><span class="x">✗ "El Habeas Corpus requiere abogado y procurador"</span><span class="ok">✓ Expresamente no son preceptivos (principio de sencillez y carencia de formalismos).</span></div>
+        </div>
+      </div>
+      <div class="radar-box will-animate delay-4">
+        <div class="panel-h"><span class="ico">🎰</span> Radar del Tribunal</div>
+        <div class="radar-row"><span class="radar-label">HC menor</span><span class="radar-val"><strong>Trampa confirmada conv. XLII.</strong> La respuesta incorrecta más elegida es "Juez de Menores". Siempre: Juez de Instrucción.</span></div>
+        <div class="radar-row"><span class="radar-label">HC legitimados</span><span class="radar-val">El tribunal añade "el abogado defensor" como opción. No tiene legitimación propia.</span></div>
+        <div class="radar-row"><span class="radar-label">ISES 1/2024</span><span class="radar-val"><strong>Novedad reciente.</strong> Alta probabilidad de pregunta en convocatorias XLII-XLIV sobre COP y reseña genética.</span></div>
+        <div class="radar-row"><span class="radar-label">Incomunicación 16</span><span class="radar-val">El tribunal pone "menores de 18" como distractor. El límite real es 16 años.</span></div>
+      </div>
+      <div class="panel will-animate">
+        <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación — Bloque III</div>
+        <div class="quiz-timer-wrap">
+          <svg class="timer-ring" viewBox="0 0 38 38"><circle class="bg" cx="19" cy="19" r="15.5"/><circle class="fill" cx="19" cy="19" r="15.5" stroke-dasharray="100" stroke-dashoffset="0"/></svg>
+          <span class="timer-digits">7:00</span>
+          <span class="quiz-score-badge">0/5</span>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Competencia HC — trampa XLII</span>
+          <div class="quiz-q">¿Cuál es la autoridad competente para tramitar un procedimiento de habeas corpus cuando lo solicita un menor de edad?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">Juez de Menores</li>
+            <li data-letter="B">Fiscalía de Menores</li>
+            <li data-letter="C" data-correct="true">Juez de Instrucción</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> trampa clásica. El Juez de Menores no tiene competencia para el habeas corpus. <b>B incorrecta:</b> el MF puede instar el HC pero no es el competente para tramitarlo. <b>C correcta:</b> el art. 2 LO 6/1984 atribuye la competencia al Juez de Instrucción sin distinguir si el detenido es mayor o menor de edad. Pregunta oficial conv. XLII.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Incomunicación — edad límite</span>
+          <div class="quiz-q">¿A partir de qué edad puede acordarse la incomunicación de un detenido?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">No existe límite de edad; puede acordarse para cualquier persona</li>
+            <li data-letter="B">16 años; los menores de 16 nunca pueden ser incomunicados</li>
+            <li data-letter="C" data-correct="true">16 años; los menores de 16 no pueden ser objeto de detención incomunicada en ningún caso</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> existe el límite de los 16 años. <b>B y C son idénticas en contenido</b> — ambas son correctas técnicamente; en examen se elegiría la más completa. El art. 509 LECrim establece que en ningún caso podrá ser objeto de detención incomunicada quien sea menor de 16 años.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">ISES 1/2024 — nuevo</span>
+          <div class="quiz-q">Según la ISES 1/2024, si un detenido se niega a que le sean tomadas las huellas dactilares (reseña decadactilar), ¿qué debe hacer el agente?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">Solicitar autorización judicial mediante auto antes de proceder</li>
+            <li data-letter="B">Desistir y reflejarlo en el atestado</li>
+            <li data-letter="C" data-correct="true">Proceder de forma coactiva; no es necesaria autorización judicial</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> el auto judicial es necesario para la reseña genética (ADN), no para la decadactilar. <b>B incorrecta:</b> el agente no puede simplemente desistir; la identificación es obligatoria. <b>C correcta:</b> ISES 1/2024: la reseña decadactilar se realiza coactivamente sin necesidad de autorización judicial si el detenido se niega.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Legitimación HC</span>
+          <div class="quiz-q">¿Cuál de las siguientes personas NO puede instar directamente el procedimiento de habeas corpus?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">El Defensor del Pueblo</li>
+            <li data-letter="B" data-correct="true">El abogado defensor, en su propio nombre</li>
+            <li data-letter="C">El Ministerio Fiscal</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> el Defensor del Pueblo sí está expresamente legitimado (art. 3 LO 6/1984). <b>C incorrecta:</b> el MF también está legitimado. <b>B correcta:</b> el abogado defensor no tiene legitimación propia para instar el HC; solo puede hacerlo en nombre del detenido.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Principios COP — ISES 1/2024</span>
+          <div class="quiz-q">Los principios que rigen el uso de la fuerza en la detención según la ISES 1/2024 son:</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">Necesidad, adecuación y moderación</li>
+            <li data-letter="B">Legalidad, proporcionalidad y oportunidad</li>
+            <li data-letter="C" data-correct="true">Oportunidad, congruencia y proporcionalidad</li>
+          </ul>
+          <div class="quiz-explain"><b>A y B incorrectas:</b> esos son principios genéricos pero no los que denomina específicamente la ISES 1/2024. <b>C correcta:</b> la ISES 1/2024 establece expresamente los principios OCP (Oportunidad, Congruencia, Proporcionalidad) como los que deben regir toda intervención con uso de fuerza en la detención.</div>
+        </div>
+        <div class="quiz-score-row"><span class="quiz-score-badge">0/5</span></div>
+      </div>
+      <div class="flashcard-wrap will-animate">
+        <div class="flashcard" tabindex="0" role="button" aria-label="Tarjeta mnemotécnica habeas corpus" style="min-height:180px;">
+          <div class="fc-face fc-front">
+            <span class="fc-hint">Toca para ver la explicación</span>
+            <div class="fc-acronym">HC→JI·24h</div>
+            <p class="fc-text">Habeas Corpus: competente y plazo</p>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-hint">Toca para volver</span>
+            <p class="fc-text"><strong>HC → Juez de Instrucción</strong> (aunque el detenido sea menor). Plazo para resolver: <strong>24 horas</strong>. Sin abogado ni procurador. Lo puede instar el MF y el Defensor del Pueblo. El abogado: solo en nombre del detenido.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bridge will-animate">
+        <div class="panel-h"><span class="ico">🔗</span> Conexión con el siguiente bloque</div>
+        Garantizados los derechos del detenido y los mecanismos de control de su legalidad, el último bloque aborda los dos órganos que más preguntas generan en la parte institucional del Tema 21: el <em>Ministerio Fiscal</em> —con su Fiscal General y sus plazos de investigación— y la <em>Policía Judicial</em> en sentido estricto, el agente encubierto y la entrega vigilada.
+      </div>
+    </div>
+    <div class="end-block"><div class="line"></div>FIN BLOQUE III<div class="line"></div></div>
+  </div>
+
+  <!-- ══════════════════ BLOQUE 4 ══════════════════ -->
+  <div class="block" id="block-4">
+    <div class="block-head will-animate">
+      <div class="block-eyebrow"><span class="seal">4</span> Bloque IV · Instituciones procesales</div>
+      <h2>Ministerio Fiscal y Policía Judicial</h2>
+      <div class="hook">El FGE tiene 4 años de mandato y es nombrado por el Rey. El agente encubierto necesita identidad del MI por 6 meses. Esos dos datos valen dos preguntas.</div>
+      <div class="pageref">CE art. 124 · Ley 50/1981 EOMF · LECrim arts. 282, 282 bis, 263 bis · RD 769/87</div>
+      <div class="block-progress"><div class="block-progress-fill"></div></div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§1</span> Ministerio Fiscal <span class="freq-hot">🔥 Muy preguntado</span></div>
+      <p>Art. 124 CE: misión del MF = defender la <strong>legalidad, los derechos ciudadanos y el interés público</strong>. Ejerce sus funciones por órganos propios conforme a los principios de <strong>unidad de actuación y dependencia jerárquica</strong> y con sujeción a los de <strong>legalidad e imparcialidad</strong>.</p>
+      <div class="gold-box will-animate">
+        <div class="label">🔥 Fiscal General del Estado — datos eliminatorios</div>
+        <p>
+          Nombrado por el <strong>Rey</strong>, a <strong>propuesta del Gobierno</strong>, <strong>oído el CGPJ</strong>.<br>
+          Requisitos: jurista español de reconocido prestigio + <strong>más de 15 años</strong> de ejercicio efectivo.<br>
+          Mandato: <strong>4 años</strong>.<br>
+          Puede renovarse si el titular ostentó el cargo por <strong>menos de 2 años</strong>.<br>
+          Cesa también con el Gobierno que lo propuso.
+        </p>
+      </div>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa clásica</span> El mandato del FGE es de <strong>4 años</strong>, no 5. El de los presidentes de órganos judiciales (AN, TSJ, AP) es 5 años renovable por otros 5. Fácil confusión.</div>
+      <div class="subsec">
+        <div class="subsec-title">Diligencias de investigación del MF</div>
+        <ul class="clean">
+          <li>El MF puede recibir denuncias y archivarlas sin remitirlas al juez si no hay fundamento</li>
+          <li>Duración: regla general máx. <span class="plazo">6 meses</span>. Corrupción y criminalidad organizada: máx. <span class="plazo">12 meses</span></li>
+          <li>El MF <strong>puede ordenar la detención preventiva</strong> pero no puede adoptar medidas limitativas de derechos fundamentales (eso es del juez)</li>
+        </ul>
+      </div>
+      <div class="subsec">
+        <div class="subsec-title">Consejo Fiscal y Junta de Fiscales de Sala</div>
+        <p><strong>Consejo Fiscal:</strong> 12 miembros (FGE + Teniente Fiscal TS + Fiscal Inspector Jefe + 9 fiscales de cualquier categoría; mandato 4 años). Asiste al FGE.</p>
+        <p><strong>Junta de Fiscales de Sala:</strong> FGE + Teniente Fiscal TS + Fiscales de Sala + Secretario (Fiscal Jefe Secretaría Técnica). Asiste al FGE en materia doctrinal y técnica.</p>
+      </div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§2</span> Policía Judicial <span class="freq-hot">🔥 Muy preguntado</span></div>
+      <p>Art. 126 CE: funciones ejercidas por las FCSE. Con carácter colaborador: policía de CCAA y Corporaciones Locales. Las Unidades Orgánicas de PJ en sentido estricto: integradas por miembros del CNP y GC.</p>
+      <p>Dependencia: <strong>orgánicamente</strong> del Ministerio del Interior; <strong>funcionalmente</strong> de los Jueces, Tribunales o MF que conocen del asunto. Desempeñan sus funciones con carácter <strong>exclusivo</strong>. No pueden ser removidos de una investigación sin autorización del Juez o Fiscal competente.</p>
+      <div class="alert will-animate"><span class="lbl">🔥 Dato</span> Las Comisiones Nacionales de Coordinación de la PJ se reúnen con periodicidad <strong>trimestral</strong>. Las Comisiones Provinciales: periodicidad <strong>mensual</strong>.</div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§3</span> Agente Encubierto (<span class="art" data-tip="Art. 282 bis LECrim">art. 282 bis LECrim</span>) <span class="freq-hot">🔥 Muy preguntado</span></div>
+      <p>Autorización: <strong>potestativa, nunca obligatoria</strong> para el agente. La otorga el <strong>Juez de Instrucción competente</strong> o el <strong>MF</strong> (este último dando cuenta inmediata al Juez). Mediante resolución <strong>reservada</strong>, conservada fuera de las actuaciones.</p>
+      <p>La <strong>identidad supuesta</strong> la otorga el <strong>Ministerio del Interior</strong>, con una duración de <strong>6 meses</strong> prorrogables por periodos iguales.</p>
+      <p>Utilización: solo para investigaciones que afecten a <strong>delincuencia organizada</strong>. La información debe ponerse a la mayor brevedad a conocimiento de quien autorizó.</p>
+      <div class="alert will-animate"><span class="lbl">⚡ Trampa</span> El <strong>agente provocador</strong> (instigación a delinquir para descubrir al autor) <strong>NO es lo mismo</strong> que el agente encubierto. El agente provocador actúa con finalidad de descubrir/castigar al provocado; sus actos no están amparados legalmente.</div>
+    </div>
+
+    <div class="sec will-animate">
+      <div class="sec-title"><span class="tag">§4</span> Entrega Vigilada (<span class="art" data-tip="Art. 263 bis LECrim">art. 263 bis LECrim</span>)</div>
+      <p>Permite que remesas ilícitas o sospechosas circulen por territorio español <strong>sin interferencia obstativa</strong> y bajo vigilancia, para descubrir a las personas involucradas.</p>
+      <p>Pueden autorizarla: Jefes de Unidades Orgánicas de PJ y mandos superiores (dan cuenta inmediata al MF y, si hay procedimiento abierto, al J.Ins) · El MF · El Juez de Instrucción competente.</p>
+    </div>
+
+    <!-- CIERRE BLOQUE 4 -->
+    <div class="closing">
+      <div class="panel panel-resumen will-animate delay-1">
+        <div class="panel-h"><span class="ico">🔑</span> Resumen ejecutivo</div>
+        <ul class="resumen-list">
+          <li>MF: principios = unidad de actuación + dependencia jerárquica + legalidad + imparcialidad.</li>
+          <li>FGE: nombrado por el Rey a propuesta del Gobierno oído CGPJ · 15 años ejercicio · mandato 4 años.</li>
+          <li>Diligencias MF: 6 meses (regla general) · 12 meses (corrupción y crimen organizado).</li>
+          <li>PJ: orgánicamente del MI; funcionalmente del juez o fiscal. Carácter exclusivo.</li>
+          <li>Agente encubierto: J.Ins o MF autorizan; MI otorga identidad supuesta por 6 meses. Solo delincuencia organizada.</li>
+          <li>Comisión Nacional: trimestral · Comisiones Provinciales: mensual.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-2">
+        <div class="panel-h"><span class="ico">🎯</span> Claves de examen</div>
+        <ul class="claves-list">
+          <li><span class="intro">Mandato FGE:</span> 4 años. Los presidentes de AN, TSJ y AP: 5+5. No confundir.</li>
+          <li><span class="intro">Identidad supuesta:</span> la da el MI, no el juez. Duración inicial: 6 meses.</li>
+          <li><span class="intro">Agente encubierto vs agente provocador:</span> el segundo instiga al delito; no está amparado legalmente.</li>
+          <li><span class="intro">PJ dependencia:</span> la doble dependencia (orgánica/funcional) es preguntable en cualquier convocatoria.</li>
+        </ul>
+      </div>
+      <div class="panel will-animate delay-3">
+        <div class="panel-h"><span class="ico">⚠️</span> Errores y confusiones</div>
+        <div class="errores-grid">
+          <div class="error-item"><span class="x">✗ "El FGE tiene mandato de 5 años como los presidentes de Sala"</span><span class="ok">✓ El FGE tiene mandato de 4 años (EOMF). El de presidentes de AN/TSJ/AP es 5 años.</span></div>
+          <div class="error-item"><span class="x">✗ "La identidad supuesta del agente encubierto la otorga el juez"</span><span class="ok">✓ La otorga el Ministerio del Interior. El juez o el MF autorizan la operación, pero la identidad es del MI.</span></div>
+          <div class="error-item"><span class="x">✗ "El agente puede ser obligado a actuar como agente encubierto"</span><span class="ok">✓ La autorización es potestativa; nunca se puede obligar al agente a actuar bajo identidad supuesta.</span></div>
+          <div class="error-item"><span class="x">✗ "Las Comisiones Provinciales de PJ se reúnen trimestralmente"</span><span class="ok">✓ Las Comisiones Provinciales son mensuales. La Comisión Nacional es la que tiene periodicidad trimestral.</span></div>
+        </div>
+      </div>
+      <div class="radar-box will-animate delay-4">
+        <div class="panel-h"><span class="ico">🎰</span> Radar del Tribunal</div>
+        <div class="radar-row"><span class="radar-label">FGE mandato</span><span class="radar-val"><strong>Muy preguntado.</strong> 4 años, no 5. La confusión con presidentes de AN/TSJ/AP aparece en tests de academia.</span></div>
+        <div class="radar-row"><span class="radar-label">FGE nombramiento</span><span class="radar-val">Rey + propuesta Gobierno + oído CGPJ. El orden importa: el tribunal los mezcla.</span></div>
+        <div class="radar-row"><span class="radar-label">Agente encubierto</span><span class="radar-val">Quién autoriza (J.Ins o MF) vs quién otorga identidad (MI). Duración 6 meses.</span></div>
+        <div class="radar-row"><span class="radar-label">PJ dependencia</span><span class="radar-val">Orgánica → MI. Funcional → Juez/MF. Preguntable como EXCEPTO.</span></div>
+      </div>
+      <div class="panel will-animate">
+        <div class="panel-h"><span class="ico">📝</span> Preguntas de autoevaluación — Bloque IV</div>
+        <div class="quiz-timer-wrap">
+          <svg class="timer-ring" viewBox="0 0 38 38"><circle class="bg" cx="19" cy="19" r="15.5"/><circle class="fill" cx="19" cy="19" r="15.5" stroke-dasharray="100" stroke-dashoffset="0"/></svg>
+          <span class="timer-digits">7:00</span>
+          <span class="quiz-score-badge">0/5</span>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">FGE — mandato y nombramiento</span>
+          <div class="quiz-q">El Fiscal General del Estado es nombrado:</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">Por las Cortes Generales, a propuesta del Gobierno, por un mandato de 5 años</li>
+            <li data-letter="B" data-correct="true">Por el Rey, a propuesta del Gobierno, oído el CGPJ, por un mandato de 4 años</li>
+            <li data-letter="C">Por el Rey, a propuesta del CGPJ, oído el Gobierno, por un mandato de 4 años</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> no es por las Cortes y el mandato es 4 años, no 5. <b>C incorrecta:</b> el orden está invertido: es el GOBIERNO quien propone, y el CGPJ quien es oído. <b>B correcta:</b> art. 29 EOMF: el FGE es nombrado por el Rey, a propuesta del Gobierno, oído el CGPJ. Mandato de 4 años.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">PJ dependencia</span>
+          <div class="quiz-q">Los funcionarios adscritos a las Unidades Orgánicas de Policía Judicial dependen:</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">Orgánicamente de los Jueces y Tribunales, y funcionalmente del Ministerio del Interior</li>
+            <li data-letter="B">Orgánicamente del Ministerio Fiscal y funcionalmente del Ministerio del Interior</li>
+            <li data-letter="C" data-correct="true">Orgánicamente del Ministerio del Interior y funcionalmente de los Jueces, Tribunales o MF que conocen del asunto</li>
+          </ul>
+          <div class="quiz-explain"><b>A y B incorrectas:</b> la dependencia orgánica y funcional están invertidas. <b>C correcta:</b> LOFCS y art. 286 LECrim: orgánicamente del MI; funcionalmente del Juez/Tribunal/MF que conoce el asunto.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Agente encubierto — identidad</span>
+          <div class="quiz-q">¿Quién otorga la identidad supuesta al agente encubierto y cuál es su duración inicial?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">El Juez de Instrucción; 3 meses prorrogables</li>
+            <li data-letter="B">El Ministerio Fiscal; 6 meses improrrogables</li>
+            <li data-letter="C" data-correct="true">El Ministerio del Interior; 6 meses prorrogables por periodos iguales</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> el J.Ins autoriza la operación pero no otorga la identidad; la duración tampoco es 3 meses. <b>B incorrecta:</b> la identidad la otorga el MI, no el MF. <b>C correcta:</b> art. 282 bis LECrim: la identidad supuesta la otorga el MI por 6 meses prorrogables por períodos de igual duración.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">Diligencias MF — plazos</span>
+          <div class="quiz-q">¿Cuál es el plazo máximo de las diligencias de investigación del Ministerio Fiscal en asuntos de corrupción y criminalidad organizada?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">6 meses, igual que la regla general</li>
+            <li data-letter="B" data-correct="true">12 meses, ampliable con prórroga del FGE</li>
+            <li data-letter="C">18 meses sin posibilidad de prórroga</li>
+          </ul>
+          <div class="quiz-explain"><b>A incorrecta:</b> 6 meses es la regla general para todo tipo de delitos; corrupción tiene plazo ampliado. <b>C incorrecta:</b> el plazo es 12 meses, y puede prorrogarse mediante decreto motivado del FGE. <b>B correcta:</b> EOMF: regla general 6 meses; corrupción y criminalidad organizada, 12 meses, prorrogable por el FGE.</div>
+        </div>
+        <div class="quiz-item">
+          <span class="quiz-pattern">EXCEPTO — Comisiones PJ</span>
+          <div class="quiz-q">¿Cuál de las siguientes afirmaciones sobre las Comisiones de Coordinación de la PJ es INCORRECTA?</div>
+          <ul class="quiz-opts">
+            <li data-letter="A">La Comisión Nacional se reúne con periodicidad trimestral</li>
+            <li data-letter="B" data-correct="true">Las Comisiones Provinciales se reúnen con periodicidad trimestral</li>
+            <li data-letter="C">La Comisión Nacional la preside el Presidente del TS y CGPJ</li>
+          </ul>
+          <div class="quiz-explain"><b>A y C son correctas.</b> <b>B es incorrecta</b> (la que busca el enunciado): las Comisiones Provinciales se reúnen con periodicidad <strong>mensual</strong>, no trimestral. RD 769/87.</div>
+        </div>
+        <div class="quiz-score-row"><span class="quiz-score-badge">0/5</span></div>
+      </div>
+      <div class="flashcard-wrap will-animate">
+        <div class="flashcard" tabindex="0" role="button" aria-label="Tarjeta FGE" style="min-height:180px;">
+          <div class="fc-face fc-front">
+            <span class="fc-hint">Toca para ver la explicación</span>
+            <div class="fc-acronym">R·G·CJ·4</div>
+            <p class="fc-text">Fórmula del nombramiento del FGE</p>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-hint">Toca para volver</span>
+            <p class="fc-text"><strong>R</strong>ey nombra · <strong>G</strong>obierno propone · <strong>C</strong>GPJ es oído · <strong>J</strong>urista ≥15 años · Mandato <strong>4</strong> años. Recuerda: el 4 es el FGE; el 5 es para los presidentes de órganos judiciales.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="end-block"><div class="line"></div>FIN BLOQUE IV · FIN DEL TEMA 21<div class="line"></div></div>
+  </div>
+
+  <!-- PIE FINAL -->
+  <div class="final-foot">
+    <div class="stamp-text">TEMA 21 · DERECHO PROCESAL PENAL · CNP ESCALA BÁSICA<br>Elaborado con base en la convocatoria XLII y legislación vigente a 2024-2025 · ISES 1/2024 incluida</div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+(function(){
+'use strict';
+
+// ── 02. THEME MANAGER
+function initTheme(){
+  const saved=localStorage.getItem('cnp-theme')||'';
+  document.documentElement.setAttribute('data-theme',saved);
+  const btn=document.getElementById('themeToggle');
+  btn.textContent=saved==='dark'?'☀️':'🌙';
+  btn.addEventListener('click',()=>{
+    const cur=document.documentElement.getAttribute('data-theme');
+    const next=cur==='dark'?'':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('cnp-theme',next);
+    btn.textContent=next==='dark'?'☀️':'🌙';
+    showToast(next==='dark'?'🌙 Modo oscuro':'☀️ Modo claro');
+  });
+}
+
+// ── 03. PARTICLE ENGINE
+function initParticles(){
+  const mq=window.matchMedia('(prefers-reduced-motion:reduce)');
+  if(mq.matches)return;
+  const canvas=document.getElementById('particles-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  const particles=Array.from({length:50},()=>({
+    x:Math.random()*canvas.width,y:Math.random()*canvas.height,
+    r:Math.random()*3+2,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,
+    alpha:Math.random()*0.08+0.06
+  }));
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
+      if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(139,38,53,${p.alpha})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── 04. ENTRANCE ANIMATIONS
+function initEntrances(){
+  const targets=document.querySelectorAll('.panel,.sec,.alert,.gold-box,.tbl-wrap,.vs-wrap,.case,.block-head,.flashcard-wrap,.bridge,.radar-box');
+  targets.forEach(el=>{if(!el.classList.contains('will-animate'))el.classList.add('will-animate');});
+  // Stagger closing panels
+  document.querySelectorAll('.closing').forEach(cl=>{
+    const panels=cl.querySelectorAll('.panel');
+    panels.forEach((p,i)=>{if(i>0&&i<5)p.classList.add('delay-'+i);});
+  });
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('animated');obs.unobserve(e.target);}
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.will-animate').forEach(el=>obs.observe(el));
+}
+
+// ── 05. READING PROGRESS
+function initProgress(){
+  window.addEventListener('scroll',()=>{
+    const h=document.documentElement;
+    const pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+    document.getElementById('progressBar').style.width=pct+'%';
+    document.querySelectorAll('.block').forEach(block=>{
+      const fill=block.querySelector('.block-progress-fill');
+      if(!fill)return;
+      const rect=block.getBoundingClientRect();
+      const pctB=Math.min(100,Math.max(0,(-rect.top/(rect.height-window.innerHeight))*100));
+      fill.style.width=pctB+'%';
+    });
+  },{passive:true});
+}
+
+// ── 06. SIDEBAR NAVIGATION
+function initSidebar(){
+  const sidebar=document.querySelector('.sidebar');
+  const blocks=document.querySelectorAll('.block');
+  blocks.forEach((block,i)=>{
+    const dot=document.createElement('div');
+    dot.className='sb-dot';
+    dot.setAttribute('data-label',block.querySelector('h2')?.textContent?.slice(0,30)||'Bloque '+(i+1));
+    dot.addEventListener('click',()=>block.scrollIntoView({behavior:'smooth'}));
+    sidebar.appendChild(dot);
+  });
+  const sbObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      const i=[...blocks].indexOf(e.target);
+      sidebar.querySelectorAll('.sb-dot')[i]?.classList.toggle('active',e.isIntersecting);
+    });
+  },{threshold:0.4});
+  blocks.forEach(b=>sbObs.observe(b));
+}
+
+// ── 07. STICKY BLOCK LABEL
+function initStickyLabel(){
+  const label=document.getElementById('stickyLabel');
+  const blocks=document.querySelectorAll('.block');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const i=[...blocks].indexOf(e.target);
+        const h2=e.target.querySelector('h2');
+        label.textContent='BLOQUE '+(i+1)+' — '+(h2?.textContent?.slice(0,22)||'');
+        label.classList.add('visible');
+      }
+    });
+  },{threshold:0.3});
+  blocks.forEach(b=>obs.observe(b));
+}
+
+// ── 08. MODE MANAGER
+function initModeManager(){
+  const saved=localStorage.getItem('cnp-mode')||'lecture';
+  setMode(saved);
+  document.querySelectorAll('.mode-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      setMode(btn.dataset.mode);
+    });
+  });
+}
+function setMode(mode){
+  document.body.setAttribute('data-mode',mode);
+  localStorage.setItem('cnp-mode',mode);
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  const msgs={'lecture':'📖 Modo lectura','exam':'⏱ Modo examen','quick':'⚡ Repaso rápido'};
+  showToast(msgs[mode]||'');
+  if(mode==='exam'){
+    document.querySelectorAll('.quiz-explain.visible').forEach(el=>el.classList.remove('visible'));
+  }
+}
+
+// ── 09. QUIZ ENGINE
+var blockQuizState={};
+function initQuiz(){
+  document.querySelectorAll('.panel').forEach(panel=>{
+    const items=panel.querySelectorAll('.quiz-item');
+    if(!items.length)return;
+    const pid='panel_'+Math.random().toString(36).substr(2,5);
+    panel.dataset.quizId=pid;
+    blockQuizState[pid]={total:items.length,correct:0,answered:0};
+    items.forEach(item=>{
+      const opts=item.querySelectorAll('.quiz-opts li');
+      let answered=false;
+      opts.forEach(opt=>{
+        opt.addEventListener('click',()=>{
+          if(answered)return;
+          answered=true;
+          const isCorrect=opt.dataset.correct==='true';
+          if(isCorrect){
+            opt.classList.add('correct');
+            playCorrectSound();
+            blockQuizState[pid].correct++;
+          } else {
+            opt.classList.add('wrong');
+            setTimeout(()=>{
+              opts.forEach(o=>{
+                if(o!==opt)o.classList.add('pending');
+                if(o.dataset.correct==='true')o.classList.add('correct');
+              });
+            },450);
+            playWrongSound();
+          }
+          item.querySelector('.quiz-explain')?.classList.add('visible');
+          blockQuizState[pid].answered++;
+          updateBlockScore(panel);
+        });
+      });
+    });
+    // Start timer on panel enter view
+    const timerObs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting&&!panel.dataset.timerStarted){
+          panel.dataset.timerStarted='1';
+          if(document.body.getAttribute('data-mode')==='exam'){
+            startBlockTimer(panel,420);
+          }
+        }
+      });
+    },{threshold:0.3});
+    timerObs.observe(panel);
+  });
+}
+function updateBlockScore(panel){
+  const pid=panel.dataset.quizId;
+  if(!pid)return;
+  const state=blockQuizState[pid];
+  const badges=panel.querySelectorAll('.quiz-score-badge');
+  badges.forEach(b=>b.textContent=state.correct+'/'+state.total);
+  if(state.answered>=state.total){
+    setTimeout(()=>showModal(state.correct,state.total),600);
+  }
+}
+
+// ── 10. TIMER ENGINE
+function startBlockTimer(panelEl,totalSeconds){
+  let elapsed=0;
+  const ring=panelEl.querySelector('.timer-ring .fill');
+  const digits=panelEl.querySelector('.timer-digits');
+  if(!ring||!digits)return;
+  const interval=setInterval(()=>{
+    elapsed++;
+    const pct=elapsed/totalSeconds*100;
+    ring.style.strokeDashoffset=pct;
+    const rem=totalSeconds-elapsed;
+    digits.textContent=Math.floor(rem/60)+':'+(rem%60).toString().padStart(2,'0');
+    if(rem<=60)ring.closest('.timer-ring').classList.add('urgent');
+    if(elapsed>=totalSeconds){clearInterval(interval);showToast('⏰ Tiempo agotado en este bloque');}
+  },1000);
+  return interval;
+}
+
+// ── 11. FLASHCARD ENGINE
+function initFlashcards(){
+  document.querySelectorAll('.flashcard').forEach(card=>{
+    card.addEventListener('click',()=>card.classList.toggle('flipped'));
+    card.setAttribute('tabindex','0');
+    card.addEventListener('keydown',e=>{
+      if(e.key===' '||e.key==='Enter'){e.preventDefault();card.classList.toggle('flipped');}
+    });
+  });
+}
+
+// ── 12. MODAL SYSTEM
+function initModal(){
+  const overlay=document.getElementById('quizModal');
+  document.getElementById('modalClose').addEventListener('click',()=>overlay.classList.remove('open'));
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open');});
+}
+function showModal(score,total){
+  const overlay=document.getElementById('quizModal');
+  document.getElementById('modalScore').textContent=score+'/'+total;
+  const msgs={5:'¡Perfecto! Bloque dominado.',4:'Casi perfecto. Un repaso rápido.',3:'Bien. Refuerza los errores.',2:'Revisa el bloque completo.',1:'Este bloque necesita más trabajo.',0:'Repasa desde el principio.'};
+  document.getElementById('modalMsg').textContent=msgs[score]||'Continúa estudiando.';
+  overlay.classList.add('open');
+  if(score===total)triggerConfetti();
+}
+
+// ── 13. TOAST SYSTEM
+function showToast(msg,duration){
+  duration=duration||2800;
+  const c=document.querySelector('.toast-container');
+  const toasts=c.querySelectorAll('.toast');
+  if(toasts.length>=3)toasts[0].remove();
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('visible')));
+  setTimeout(()=>{t.classList.remove('visible');setTimeout(()=>t.remove(),350);},duration);
+}
+
+// ── 14. CONFETTI ENGINE
+function triggerConfetti(){
+  const cvs=document.getElementById('confetti-canvas');
+  cvs.style.display='block';
+  cvs.width=window.innerWidth;cvs.height=window.innerHeight;
+  const ctx2=cvs.getContext('2d');
+  const colors=['#8B2635','#B8893E','#2D5043','#ffffff','#1B2940'];
+  const particles=Array.from({length:160},()=>({
+    x:Math.random()*cvs.width,y:cvs.height*0.4,
+    vx:(Math.random()-0.5)*10,vy:-(Math.random()*10+6),
+    gravity:0.38,rotation:Math.random()*360,rotSpeed:(Math.random()-0.5)*8,
+    color:colors[Math.random()*colors.length|0],
+    size:Math.random()*8+5,alpha:1,shape:Math.random()>0.5?'rect':'circle'
+  }));
+  function draw(){
+    ctx2.clearRect(0,0,cvs.width,cvs.height);
+    let alive=0;
+    particles.forEach(p=>{
+      p.vy+=p.gravity;p.x+=p.vx;p.y+=p.vy;
+      p.rotation+=p.rotSpeed;p.alpha-=0.012;
+      if(p.alpha<=0)return;alive++;
+      ctx2.save();ctx2.globalAlpha=Math.max(0,p.alpha);ctx2.fillStyle=p.color;
+      ctx2.translate(p.x,p.y);ctx2.rotate(p.rotation*Math.PI/180);
+      if(p.shape==='circle'){ctx2.beginPath();ctx2.arc(0,0,p.size/2,0,Math.PI*2);ctx2.fill();}
+      else{ctx2.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);}
+      ctx2.restore();
+    });
+    if(alive>0)requestAnimationFrame(draw);
+    else cvs.style.display='none';
+  }
+  draw();
+}
+
+// ── 15. WEB AUDIO
+function playCorrectSound(){
+  try{
+    const ac=new(window.AudioContext||window.webkitAudioContext)();
+    [329,392].forEach((freq,i)=>{
+      const osc=ac.createOscillator();const gain=ac.createGain();
+      osc.connect(gain);gain.connect(ac.destination);
+      gain.gain.setValueAtTime(0.1,ac.currentTime+i*0.09);
+      gain.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+i*0.09+0.08);
+      osc.frequency.value=freq;osc.start(ac.currentTime+i*0.09);osc.stop(ac.currentTime+i*0.09+0.09);
+    });
+  }catch(e){}
+}
+function playWrongSound(){
+  try{
+    const ac=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ac.createOscillator();const gain=ac.createGain();
+    osc.type='sawtooth';osc.frequency.value=110;
+    gain.gain.setValueAtTime(0.07,ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.18);
+    osc.connect(gain);gain.connect(ac.destination);
+    osc.start();osc.stop(ac.currentTime+0.18);
+  }catch(e){}
+}
+
+// ── 16. TOOLTIPS
+function initTooltips(){
+  document.querySelectorAll('[data-tip]').forEach(el=>{
+    const tip=document.createElement('span');
+    tip.className='tooltip-content';tip.textContent=el.dataset.tip;
+    el.style.position='relative';el.appendChild(tip);
+  });
+}
+
+// ── 17. KEYBOARD SHORTCUTS
+function initKeyboard(){
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT')return;
+    if(e.key==='?')showToast('⌨️  d=dark  1/2/3=modos  ↑↓=bloques  Esc=cerrar',4000);
+    if(e.key==='d')document.getElementById('themeToggle').click();
+    if(e.key==='1')setMode('lecture');
+    if(e.key==='2')setMode('exam');
+    if(e.key==='3')setMode('quick');
+    if(e.key==='Escape')document.getElementById('quizModal')?.classList.remove('open');
+    if(e.key==='ArrowDown'&&!e.shiftKey)navigateBlock(1);
+    if(e.key==='ArrowUp'&&!e.shiftKey)navigateBlock(-1);
+  });
+}
+function navigateBlock(dir){
+  const blocks=[...document.querySelectorAll('.block')];
+  const current=blocks.findIndex(b=>b.getBoundingClientRect().top>-10);
+  const idx=current<0?0:current;
+  const target=blocks[Math.max(0,Math.min(blocks.length-1,idx+dir))];
+  if(target)target.scrollIntoView({behavior:'smooth'});
+}
+
+// ── 18. TOC SCROLL
+function initTocScroll(){
+  document.querySelectorAll('.toc-list li').forEach(li=>{
+    li.addEventListener('click',()=>{
+      const target=li.dataset.target;
+      if(target){
+        const el=document.querySelector(target);
+        if(el)el.scrollIntoView({behavior:'smooth'});
+      }
+    });
+  });
+}
+
+// ── 19. INIT
+document.addEventListener('DOMContentLoaded',()=>{
+  initTheme();
+  initParticles();
+  initEntrances();
+  initProgress();
+  initSidebar();
+  initStickyLabel();
+  initModeManager();
+  initQuiz();
+  initFlashcards();
+  initModal();
+  initTooltips();
+  initKeyboard();
+  initTocScroll();
+  setTimeout(()=>showToast('⌨️ Pulsa ? para ver atajos de teclado',3500),800);
+});
+
+})();
+</script>
+</body>
+</html>

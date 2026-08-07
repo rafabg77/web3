@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test CNP · 100 preguntas · Temas 3, 4 y 27</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bone: #F7F3EA;
+            --bone-deep: #EFE8D8;
+            --ink: #1B1812;
+            --navy: #0F1B2D;
+            --navy-soft: #1B2940;
+            --garnet: #8B2635;
+            --garnet-deep: #6B1C28;
+            --brass: #B8893E;
+            --green: #2D5043;
+            --green-soft: #E4ECE6;
+            --garnet-soft: #F3DEE0;
+            --brass-soft: #F2E6CC;
+            --line: #D8CCAE;
+            --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="dark"] {
+            --bone: #111318;
+            --bone-deep: #1A1D24;
+            --ink: #E8E4DC;
+            --navy: #C9D2DF;
+            --navy-soft: #2A3548;
+            --line: #2E3340;
+            --garnet-soft: #2A1519;
+            --brass-soft: #261E0D;
+            --green-soft: #0D1A15;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: var(--bone);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background var(--transition), color var(--transition);
+            padding: 20px;
+        }
+        .wrap {
+            max-width: 820px;
+            margin: 0 auto;
+            background: var(--bone-deep);
+            border-radius: 20px;
+            padding: 30px 30px 50px;
+            box-shadow: 0 20px 40px -20px rgba(15, 27, 45, 0.25);
+            border: 1px solid var(--line);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 30px;
+            padding-bottom: 18px;
+            border-bottom: 2px solid var(--line);
+        }
+        .header h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--navy);
+        }
+        .header h1 span {
+            color: var(--garnet);
+        }
+        .theme-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--line);
+            background: var(--bone);
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+        }
+        .progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .progress-bar-bg {
+            flex: 1;
+            height: 6px;
+            background: var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--garnet), var(--brass));
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+        .progress-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--navy);
+            min-width: 60px;
+            text-align: right;
+        }
+        .question-container {
+            background: var(--bone);
+            border-radius: 16px;
+            padding: 28px 28px 24px;
+            border: 1px solid var(--line);
+            margin-bottom: 20px;
+        }
+        .q-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--garnet);
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .q-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 22px;
+            line-height: 1.4;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background: var(--bone-deep);
+            border: 2px solid var(--line);
+            border-radius: 10px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .option:hover:not(.disabled) {
+            border-color: var(--brass);
+            background: var(--brass-soft);
+            transform: translateX(4px);
+        }
+        .option .letter {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--garnet);
+            background: var(--garnet-soft);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+            font-size: 13px;
+        }
+        .option.correct {
+            border-color: #16a34a;
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .option.correct .letter {
+            background: #16a34a;
+            color: #fff;
+        }
+        .option.wrong {
+            border-color: #dc2626;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .option.wrong .letter {
+            background: #dc2626;
+            color: #fff;
+        }
+        .option.disabled {
+            cursor: default;
+            opacity: 0.85;
+        }
+        .option.disabled:hover {
+            transform: none;
+            border-color: var(--line);
+            background: var(--bone-deep);
+        }
+        .option.correct.disabled:hover,
+        .option.wrong.disabled:hover {
+            transform: none;
+        }
+        .feedback {
+            margin-top: 18px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            display: none;
+            font-size: 14px;
+            border-left: 4px solid transparent;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.ok {
+            background: #dcfce7;
+            border-left-color: #16a34a;
+            color: #166534;
+        }
+        .feedback.fail {
+            background: #fee2e2;
+            border-left-color: #dc2626;
+            color: #991b1b;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 24px;
+            border-radius: 60px;
+            border: 2px solid var(--line);
+            background: var(--bone);
+            color: var(--navy);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover:not(:disabled) {
+            background: var(--navy);
+            color: var(--brass);
+            border-color: var(--navy);
+            transform: scale(1.02);
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-primary {
+            background: var(--garnet);
+            border-color: var(--garnet);
+            color: #fff;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--garnet-deep);
+            border-color: var(--garnet-deep);
+            color: #fff;
+        }
+        .btn-secondary {
+            background: var(--brass);
+            border-color: var(--brass);
+            color: #fff;
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: #a07534;
+            border-color: #a07534;
+            color: #fff;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0 14px;
+            padding: 14px;
+            background: var(--bone-deep);
+            border-radius: 16px;
+            border: 1px solid var(--line);
+        }
+        .stat-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--navy);
+        }
+        .stat-item strong {
+            color: var(--garnet);
+            font-size: 18px;
+        }
+        .reset-btn {
+            display: block;
+            margin: 16px auto 0;
+            background: var(--navy);
+            color: var(--brass);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .reset-btn:hover {
+            transform: scale(1.05);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #9a9180;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.05em;
+        }
+        @media (max-width: 600px) {
+            .wrap {
+                padding: 16px;
+            }
+            .q-text {
+                font-size: 16px;
+            }
+            .option {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+            .header h1 {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap" id="app">
+        <div class="header">
+            <h1>📘 <span>CNP</span> · Test 100</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-bar-bg">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0/100</div>
+        </div>
+
+        <div id="questionContainer">
+            <!-- Dinámico -->
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-item">✅ Acertadas: <strong id="correctCount">0</strong></div>
+            <div class="stat-item">❌ Falladas: <strong id="wrongCount">0</strong></div>
+            <div class="stat-item">📊 Aciertos: <strong id="percentCount">0%</strong></div>
+        </div>
+
+        <button class="reset-btn" onclick="resetQuiz()">⟳ Reiniciar test</button>
+        <div class="footer">100 preguntas · Sin tiempo límite · Basado en Temas 3, 4 y 27</div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  BANCO DE 100 PREGUNTAS (generado a partir del contenido)
+        //  Cada pregunta: { id, text, options: [], correct: índice, explanation }
+        //  Los distractores son respuestas correctas de otras preguntas.
+        // ============================================================
+        const QUESTIONS = [{
+            id: 1,
+            text: '¿Cuál es el orden de sucesión al trono según el artículo 57 de la CE?',
+            options: [
+                'Línea → Grado → Sexo → Edad',
+                'Grado → Línea → Edad → Sexo',
+                'Sexo → Edad → Línea → Grado',
+                'Edad → Sexo → Grado → Línea'
+            ],
+            correct: 0,
+            explanation: 'Art. 57 CE: Línea (anterior > posterior), Grado (próximo > remoto), Sexo (varón > mujer), Edad (mayor > menor).'
+        }, {
+            id: 2,
+            text: 'El Rey es inviolable y no está sujeto a responsabilidad. ¿Quién refrenda sus actos?',
+            options: [
+                'El Presidente del Gobierno',
+                'El Ministro competente',
+                'El Presidente del Congreso (en casos específicos)',
+                'Todas las anteriores, según el caso'
+            ],
+            correct: 3,
+            explanation: 'Art. 64 CE: regla general Presidente o Ministro; excepción (propuesta/nombramiento Presi Gobierno y disolución art.99) refrenda Presidente del Congreso.'
+        }, {
+            id: 3,
+            text: '¿Cuántos diputados componen el Congreso como mínimo y como máximo?',
+            options: [
+                'Mínimo 250, máximo 350',
+                'Mínimo 300, máximo 400',
+                'Mínimo 350, máximo 450',
+                'Mínimo 200, máximo 300'
+            ],
+            correct: 1,
+            explanation: 'Art. 68 CE: entre 300 y 400. Actualmente 350.'
+        }, {
+            id: 4,
+            text: '¿Cuántos senadores elige cada provincia en la regla general?',
+            options: ['3', '4', '5', '2'],
+            correct: 1,
+            explanation: 'Art. 69 CE: 4 senadores por provincia (regla general).'
+        }, {
+            id: 5,
+            text: 'Las islas mayores (Gran Canaria, Mallorca, Tenerife) eligen:',
+            options: ['2 senadores', '3 senadores', '4 senadores', '1 senador'],
+            correct: 1,
+            explanation: 'Art. 69: 3 senadores para las islas mayores.'
+        }, {
+            id: 6,
+            text: '¿Cuántos senadores corresponden a Ceuta y Melilla?',
+            options: ['1 cada una', '2 cada una', '3 cada una', '4 cada una'],
+            correct: 1,
+            explanation: 'Art. 69: 2 senadores para Ceuta y Melilla.'
+        }, {
+            id: 7,
+            text: '¿Qué órgano de la Cámara asume las facultades cuando las Cortes están disueltas?',
+            options: ['La Mesa', 'La Diputación Permanente', 'Los Grupos Parlamentarios', 'El Pleno'],
+            correct: 1,
+            explanation: 'Art. 78 CE: Diputación Permanente (≥21 miembros).'
+        }, {
+            id: 8,
+            text: '¿Cuántos vocales componen el CGPJ?',
+            options: ['16', '20', '24', '12'],
+            correct: 1,
+            explanation: 'Art. 122 CE: 20 vocales nombrados por el Rey para 5 años (no reelegibles).'
+        }, {
+            id: 9,
+            text: '¿Quién nombra al Fiscal General del Estado?',
+            options: ['El Rey a propuesta del Gobierno', 'El Rey a propuesta del CGPJ', 'El Congreso', 'El Senado'],
+            correct: 0,
+            explanation: 'Art. 124 CE: El Rey, a propuesta del Gobierno, oído el CGPJ.'
+        }, {
+            id: 10,
+            text: 'El Tribunal Constitucional se compone de:',
+            options: ['10 miembros', '12 miembros', '15 miembros', '20 miembros'],
+            correct: 1,
+            explanation: 'Art. 159 CE: 12 miembros, mandato 9 años, renovación por terceras partes cada 3 años.'
+        }, {
+            id: 11,
+            text: '¿Cuántos miembros del TC son propuestos por el Congreso?',
+            options: ['2', '4', '6', '3'],
+            correct: 1,
+            explanation: 'Art. 159: 4 por el Congreso (3/5), 4 por el Senado (3/5), 2 por el Gobierno, 2 por el CGPJ.'
+        }, {
+            id: 12,
+            text: '¿Qué mayoría se requiere para la aprobación de una Ley Orgánica en el Congreso?',
+            options: ['Mayoría simple', 'Mayoría absoluta', 'Mayoría de 3/5', 'Mayoría de 2/3'],
+            correct: 1,
+            explanation: 'Art. 81 CE: mayoría absoluta del Congreso en votación final sobre el conjunto.'
+        }, {
+            id: 13,
+            text: 'El decreto-ley debe ser convalidado o derogado por el Congreso en un plazo de:',
+            options: ['20 días naturales', '30 días', '48 horas', '2 meses'],
+            correct: 1,
+            explanation: 'Art. 86 CE: 30 días para convalidación o derogación.'
+        }, {
+            id: 14,
+            text: '¿Qué mayoría requiere el veto del Senado a un proyecto de ley?',
+            options: ['Mayoría simple', 'Mayoría absoluta', 'Mayoría de 3/5', 'Mayoría de 2/3'],
+            correct: 1,
+            explanation: 'Art. 90 CE: el veto requiere mayoría absoluta del Senado.'
+        }, {
+            id: 15,
+            text: 'En el procedimiento de investidura, ¿cuánto tiempo después de la primera votación se celebra la segunda?',
+            options: ['24 horas', '48 horas', '72 horas', '5 días'],
+            correct: 1,
+            explanation: 'Art. 99 CE: segunda votación 48 horas después, basta mayoría simple.'
+        }, {
+            id: 16,
+            text: 'La moción de censura necesita ser firmada por al menos:',
+            options: ['1/5 de los diputados', '1/10 de los diputados', '1/4 de los diputados', 'Mayoría absoluta'],
+            correct: 1,
+            explanation: 'Art. 113 CE: al menos 1/10 de los diputados y debe incluir candidato alternativo.'
+        }, {
+            id: 17,
+            text: 'El estado de alarma puede durar inicialmente un máximo de:',
+            options: ['15 días', '30 días', '60 días', '6 meses'],
+            correct: 0,
+            explanation: 'Art. 116.2: 15 días; cualquier prórroga requiere autorización del Congreso.'
+        }, {
+            id: 18,
+            text: 'El estado de excepción puede ser prorrogado por periodos de:',
+            options: ['15 días', '30 días', '60 días', '90 días'],
+            correct: 1,
+            explanation: 'Art. 116: excepción 30 días, prorrogable otros 30 días.'
+        }, {
+            id: 19,
+            text: '¿Quién puede proponer la disolución de las Cortes?',
+            options: ['El Rey', 'El Presidente del Gobierno', 'El Congreso', 'El Senado'],
+            correct: 1,
+            explanation: 'Art. 115 CE: solo el Presidente del Gobierno, bajo su exclusiva responsabilidad.'
+        }, {
+            id: 20,
+            text: '¿Cuántos miembros tiene la Diputación Permanente como mínimo?',
+            options: ['15', '21', '25', '30'],
+            correct: 1,
+            explanation: 'Art. 78 CE: al menos 21 miembros en ambas Cámaras.'
+        }, {
+            id: 21,
+            text: 'La reforma constitucional agravada (Art. 168) se aplica a:',
+            options: [
+                'El Título Preliminar, Título I Cap. II Sec. 1ª y Título II',
+                'El Título III y IV',
+                'El Título VI y IX',
+                'El Título V y VIII'
+            ],
+            correct: 0,
+            explanation: 'Art. 168: revisión total, Título Preliminar, Título I Cap. II Sección 1ª (DDHH) y Título II (Corona).'
+        }, {
+            id: 22,
+            text: 'En la reforma ordinaria (Art. 167), si no hay acuerdo entre Cámaras, se puede aprobar con:',
+            options: [
+                'Mayoría absoluta del Senado y 2/3 del Congreso',
+                '2/3 de cada Cámara',
+                'Mayoría simple de ambas',
+                '3/5 de cada Cámara'
+            ],
+            correct: 0,
+            explanation: 'Art. 167: 3/5 cada Cámara; si no, MA Senado + 2/3 Congreso.'
+        }, {
+            id: 23,
+            text: 'La iniciativa popular para presentar proposiciones de ley requiere un mínimo de firmas de:',
+            options: ['100.000', '300.000', '500.000', '1.000.000'],
+            correct: 2,
+            explanation: 'Art. 87 CE: 500.000 firmas acreditadas.'
+        }, {
+            id: 24,
+            text: '¿Cuál de los siguientes NO puede ser objeto de iniciativa popular?',
+            options: ['Ley ordinaria', 'Ley orgánica', 'Materia tributaria', 'Tratados internacionales'],
+            correct: 1,
+            explanation: 'Art. 87: no cabe en LO, tributaria, internacional ni prerrogativa de gracia.'
+        }, {
+            id: 25,
+            text: 'El Rey sanciona las leyes en un plazo de:',
+            options: ['10 días', '15 días', '20 días', '30 días'],
+            correct: 1,
+            explanation: 'Art. 91 CE: 15 días y ordena su publicación inmediata.'
+        }, {
+            id: 26,
+            text: '¿Qué órgano es competente para conocer de las causas penales contra diputados y senadores?',
+            options: ['Tribunal Constitucional', 'Tribunal Supremo (Sala de lo Penal)', 'Audiencia Nacional', 'Tribunal Superior de Justicia'],
+            correct: 1,
+            explanation: 'Art. 71.3: Sala de lo Penal del Tribunal Supremo.'
+        }, {
+            id: 27,
+            text: 'La inmunidad parlamentaria impide:',
+            options: [
+                'Ser detenido en flagrante delito',
+                'Ser procesado sin autorización de la Cámara',
+                'Ser investigado por delitos cometidos antes del mandato',
+                'Ser juzgado por el Tribunal Supremo'
+            ],
+            correct: 1,
+            explanation: 'Art. 71: solo pueden ser detenidos en flagrante; necesitan suplicatorio para ser procesados.'
+        }, {
+            id: 28,
+            text: '¿Cuántos miembros del Consejo de Seguridad de la ONU son permanentes con derecho a veto?',
+            options: ['3', '5', '7', '10'],
+            correct: 1,
+            explanation: '5 permanentes: EE.UU., RU, Francia, Rusia, China.'
+        }, {
+            id: 29,
+            text: 'La DUDH fue proclamada por la Asamblea General de la ONU el:',
+            options: ['10 de diciembre de 1945', '10 de diciembre de 1948', '4 de noviembre de 1950', '16 de diciembre de 1966'],
+            correct: 1,
+            explanation: '10/12/1948, Resolución 217 A III, París.'
+        }, {
+            id: 30,
+            text: 'La CEDH (Convenio Europeo de Derechos Humanos) fue firmada en:',
+            options: ['París (1948)', 'Roma (1950)', 'Nueva York (1966)', 'Turín (1961)'],
+            correct: 1,
+            explanation: 'Firmada en Roma el 04/11/1950, en vigor 03/09/1953.'
+        }, {
+            id: 31,
+            text: '¿Cuántos jueces componen el Tribunal Europeo de Derechos Humanos (TEDH)?',
+            options: ['46', '47', '27', '15'],
+            correct: 0,
+            explanation: '46 jueces (uno por cada Estado parte), mandato 9 años no reelegibles.'
+        }, {
+            id: 32,
+            text: 'El plazo para presentar una demanda ante el TEDH desde la última decisión interna definitiva es:',
+            options: ['6 meses', '4 meses', '1 año', '2 meses'],
+            correct: 1,
+            explanation: 'Desde el Protocolo 15 (2021) el plazo es de 4 meses.'
+        }, {
+            id: 33,
+            text: 'La Carta de los Derechos Fundamentales de la UE está estructurada en:',
+            options: ['59 artículos en 3 títulos', '53 artículos en 3 partes', '54 artículos en 7 títulos', '30 artículos en un preámbulo'],
+            correct: 2,
+            explanation: '54 artículos en 7 títulos; vigor 01/12/2009 con Lisboa.'
+        }, {
+            id: 34,
+            text: 'El PIDCP (Pacto Internacional de Derechos Civiles y Políticos) entró en vigor en:',
+            options: ['1966', '1976', '1979', '1980'],
+            correct: 1,
+            explanation: 'Firmado 16/12/1966, vigor 23/03/1976.'
+        }, {
+            id: 35,
+            text: '¿Cuántos expertos componen el Comité de Derechos Humanos de la ONU (CCPR) que supervisa el PIDCP?',
+            options: ['10', '18', '25', '46'],
+            correct: 1,
+            explanation: '18 expertos, mandato 4 años reelegible.'
+        }, {
+            id: 36,
+            text: 'El PIDESC (Pacto de Derechos Económicos, Sociales y Culturales) entró en vigor en:',
+            options: ['1966', '1976', '1979', '1980'],
+            correct: 1,
+            explanation: 'Firmado 16/12/1966, vigor 03/01/1976.'
+        }, {
+            id: 37,
+            text: 'El Comité de Expertos del PIDESC presenta informes cada:',
+            options: ['2 años', '3 años', '5 años', '4 años'],
+            correct: 2,
+            explanation: 'Informes cada 5 años.'
+        }, {
+            id: 38,
+            text: 'La Carta Social Europea fue firmada en:',
+            options: ['Roma (1950)', 'Turín (1961)', 'París (1948)', 'Niza (2000)'],
+            correct: 1,
+            explanation: 'Turín, 1961; en vigor 1965; 38 artículos.'
+        }, {
+            id: 39,
+            text: '¿Cuántos miembros tiene el Subcomité para la Prevención de la Tortura (SPT) de la ONU?',
+            options: ['10', '25', '46', '18'],
+            correct: 1,
+            explanation: '25 miembros, mandato 4 años reelegible una vez.'
+        }, {
+            id: 40,
+            text: 'El Comité Europeo para la Prevención de la Tortura (CPT) tiene:',
+            options: ['10 expertos', '25 miembros', '46 miembros (igual que Altas Partes)', '47 miembros'],
+            correct: 2,
+            explanation: '46 miembros, elegidos por MA del Comité de Ministros del Consejo de Europa.'
+        }, {
+            id: 41,
+            text: 'El Estatuto de Roma que crea la CPI entró en vigor el:',
+            options: ['17/07/1998', '01/07/2002', '01/12/2009', '04/10/1979'],
+            correct: 1,
+            explanation: 'Estatuto de Roma 17/07/1998, vigor 01/07/2002.'
+        }, {
+            id: 42,
+            text: '¿Cuántos magistrados componen la Corte Penal Internacional?',
+            options: ['15', '18', '20', '27'],
+            correct: 1,
+            explanation: '18 magistrados, distribuidos en tercios de 3, 6 y 9 años.'
+        }, {
+            id: 43,
+            text: 'La Agencia de los Derechos Fundamentales de la UE tiene su sede en:',
+            options: ['Bruselas', 'Viena', 'Estrasburgo', 'La Haya'],
+            correct: 1,
+            explanation: 'Sede en Viena.'
+        }, {
+            id: 44,
+            text: 'La Agencia Europea de Seguridad y Salud en el Trabajo se encuentra en:',
+            options: ['Bilbao', 'Varsovia', 'Budapest', 'Luxemburgo'],
+            correct: 0,
+            explanation: 'Sede en Bilbao.'
+        }, {
+            id: 45,
+            text: 'El Instituto Europeo de Igualdad de Género tiene su sede en:',
+            options: ['Vilna', 'Atenas', 'Bruselas', 'Estrasburgo'],
+            correct: 0,
+            explanation: 'Sede en Vilna.'
+        }, {
+            id: 46,
+            text: 'ENISA (Agencia de Ciberseguridad) tiene su sede en:',
+            options: ['Atenas', 'Vilna', 'Bilbao', 'Budapest'],
+            correct: 0,
+            explanation: 'Sede en Atenas.'
+        }, {
+            id: 47,
+            text: 'El Tratado de Maastricht (TUE) entró en vigor el:',
+            options: ['07/02/1992', '01/11/1993', '01/05/1999', '01/02/2003'],
+            correct: 1,
+            explanation: 'Firmado 07/02/1992, vigor 01/11/1993.'
+        }, {
+            id: 48,
+            text: 'El Tratado de Ámsterdam entró en vigor el:',
+            options: ['02/10/1997', '01/05/1999', '01/02/2003', '01/12/2009'],
+            correct: 1,
+            explanation: 'Firmado 02/10/1997, vigor 01/05/1999.'
+        }, {
+            id: 49,
+            text: 'El Tratado de Niza entró en vigor el:',
+            options: ['26/02/2001', '01/02/2003', '01/12/2009', '01/05/1999'],
+            correct: 1,
+            explanation: 'Firmado 26/02/2001, vigor 01/02/2003.'
+        }, {
+            id: 50,
+            text: '¿Cuál de los siguientes tratados NO entró en vigor?',
+            options: ['Tratado de Lisboa', 'Tratado Constitucional', 'Tratado de Ámsterdam', 'Tratado de Niza'],
+            correct: 1,
+            explanation: 'El Tratado Constitucional (2004) fue rechazado en referendos en Francia y Países Bajos.'
+        }, {
+            id: 51,
+            text: 'El Tratado de Lisboa entró en vigor el:',
+            options: ['13/12/2007', '01/12/2009', '01/01/2010', '01/05/2009'],
+            correct: 1,
+            explanation: 'Firmado 13/12/2007, vigor 01/12/2009.'
+        }, {
+            id: 52,
+            text: 'El lema de la UE es:',
+            options: ['Unida en la diversidad', 'Progreso y solidaridad', 'Paz y prosperidad', 'Libre y unida'],
+            correct: 0,
+            explanation: '"Unida en la diversidad" es el lema oficial desde 2000.'
+        }, {
+            id: 53,
+            text: 'El Día de Europa se celebra el:',
+            options: ['9 de mayo', '1 de mayo', '5 de mayo', '25 de marzo'],
+            correct: 0,
+            explanation: '9 de mayo, en conmemoración de la Declaración Schuman (1950).'
+        }, {
+            id: 54,
+            text: 'El himno de la UE está basado en:',
+            options: ['El "Ode to Joy" de Beethoven', 'El "Bolero" de Ravel', 'La "Marsellesa"', 'El "Himno a la Alegría" de Schiller'],
+            correct: 0,
+            explanation: '"Oda a la Alegría" de la Novena Sinfonía de Beethoven.'
+        }, {
+            id: 55,
+            text: '¿Cuántos Estados miembros tiene actualmente la UE?',
+            options: ['25', '27', '28', '30'],
+            correct: 1,
+            explanation: '27 Estados (Croacia 2013, RU salió 2020).'
+        }, {
+            id: 56,
+            text: 'El Consejo Europeo está compuesto por:',
+            options: ['Jefes de Estado o Gobierno de los 27 + Pdte. Consejo + Pdte. Comisión', 'Ministros de los 27', 'Comisarios de los 27', 'Diputados del PE'],
+            correct: 0,
+            explanation: 'Art. 15 TUE: Jefes de Estado o Gobierno, Presidente del Consejo Europeo y Presidente de la Comisión.'
+        }, {
+            id: 57,
+            text: 'El Presidente del Consejo Europeo es elegido por un mandato de:',
+            options: ['2,5 años renovable una vez', '5 años no renovable', '6 meses rotatorio', '4 años renovable'],
+            correct: 0,
+            explanation: '2,5 años renovable una vez.'
+        }, {
+            id: 58,
+            text: 'La Comisión Europea tiene un mandato de:',
+            options: ['4 años', '5 años', '6 años', '2,5 años'],
+            correct: 1,
+            explanation: '5 años (igual que el Parlamento Europeo).'
+        }, {
+            id: 59,
+            text: 'El Parlamento Europeo tiene un máximo de escaños de:',
+            options: ['705', '750', '800', '900'],
+            correct: 1,
+            explanation: 'Máximo 750 (actualmente ~720).'
+        }, {
+            id: 60,
+            text: '¿Cuántos escaños corresponden a España en el Parlamento Europeo?',
+            options: ['54', '59', '61', '65'],
+            correct: 2,
+            explanation: '61 escaños (actualmente).'
+        }, {
+            id: 61,
+            text: 'El Tribunal de Justicia de la UE (TJUE) tiene su sede en:',
+            options: ['Estrasburgo', 'Luxemburgo', 'Bruselas', 'La Haya'],
+            correct: 1,
+            explanation: 'Sede en Luxemburgo.'
+        }, {
+            id: 62,
+            text: 'El Tribunal de Cuentas de la UE tiene su sede en:',
+            options: ['Bruselas', 'Luxemburgo', 'Estrasburgo', 'Frankfurt'],
+            correct: 1,
+            explanation: 'Sede en Luxemburgo.'
+        }, {
+            id: 63,
+            text: 'El Banco Central Europeo tiene su sede en:',
+            options: ['Bruselas', 'Frankfurt', 'Luxemburgo', 'La Haya'],
+            correct: 1,
+            explanation: 'Sede en Frankfurt.'
+        }, {
+            id: 64,
+            text: 'El Presidente del BCE es nombrado por un mandato de:',
+            options: ['5 años renovable', '8 años no renovable', '6 años renovable', '4 años no renovable'],
+            correct: 1,
+            explanation: '8 años, no renovable.'
+        }, {
+            id: 65,
+            text: 'El Consejo de la UE (de Ministros) tiene una presidencia rotatoria de:',
+            options: ['2,5 años', '6 meses', '1 año', '5 años'],
+            correct: 1,
+            explanation: 'Presidencia rotatoria cada 6 meses.'
+        }, {
+            id: 66,
+            text: 'El espacio Schengen lo integran actualmente:',
+            options: ['25 países', '27 países', '29 países', '31 países'],
+            correct: 2,
+            explanation: '29 países (UE menos Irlanda y Chipre, más Islandia, Suiza, Noruega, Liechtenstein).'
+        }, {
+            id: 67,
+            text: 'El Acuerdo de Schengen se incorporó al acervo de la UE mediante el Tratado de:',
+            options: ['Maastricht', 'Ámsterdam', 'Niza', 'Lisboa'],
+            correct: 1,
+            explanation: 'Tratado de Ámsterdam (1997) incorporó Schengen.'
+        }, {
+            id: 68,
+            text: 'EUROPOL tiene su sede en:',
+            options: ['Lyon', 'La Haya', 'Varsovia', 'Budapest'],
+            correct: 1,
+            explanation: 'Sede en La Haya (Países Bajos).'
+        }, {
+            id: 69,
+            text: 'EUROJUST tiene su sede en:',
+            options: ['La Haya', 'Luxemburgo', 'Estrasburgo', 'Bruselas'],
+            correct: 0,
+            explanation: 'También en La Haya.'
+        }, {
+            id: 70,
+            text: 'FRONTEX tiene su sede en:',
+            options: ['Varsovia', 'La Haya', 'Budapest', 'Lyon'],
+            correct: 0,
+            explanation: 'Varsovia (Polonia).'
+        }, {
+            id: 71,
+            text: 'CEPOL (formación policial) tiene su sede en:',
+            options: ['Budapest', 'Varsovia', 'La Haya', 'Lyon'],
+            correct: 0,
+            explanation: 'Budapest (Hungría).'
+        }, {
+            id: 72,
+            text: 'INTERPOL tiene su sede en:',
+            options: ['Lyon', 'La Haya', 'Viena', 'París'],
+            correct: 0,
+            explanation: 'Lyon (Francia).'
+        }, {
+            id: 73,
+            text: 'El Secretario General de INTERPOL es elegido por un mandato de:',
+            options: ['3 años', '5 años reelegible', '4 años', '6 años'],
+            correct: 1,
+            explanation: '5 años, reelegible.'
+        }, {
+            id: 74,
+            text: 'La notificación INTERPOL para personas buscadas es de color:',
+            options: ['Roja', 'Amarilla', 'Azul', 'Verde'],
+            correct: 0,
+            explanation: 'Notificación Roja: buscada para detención y extradición.'
+        }, {
+            id: 75,
+            text: 'La notificación INTERPOL para personas desaparecidas es de color:',
+            options: ['Roja', 'Amarilla', 'Azul', 'Naranja'],
+            correct: 1,
+            explanation: 'Amarilla: personas desaparecidas (menores o adultos vulnerables).'
+        }, {
+            id: 76,
+            text: 'La notificación INTERPOL para solicitar información sobre personas es de color:',
+            options: ['Azul', 'Verde', 'Morada', 'Gris'],
+            correct: 0,
+            explanation: 'Azul: para obtener información adicional sobre una persona.'
+        }, {
+            id: 77,
+            text: 'La Orden Europea de Detención y Entrega (OEDE) se aplica en:',
+            options: ['Todos los países de la UE', 'Países Schengen', 'Todos los países de la UE excepto Dinamarca e Irlanda', 'Solo los 27 Estados miembros'],
+            correct: 3,
+            explanation: 'Aplica en todos los Estados miembros de la UE (27).'
+        }, {
+            id: 78,
+            text: 'En la OEDE, si el detenido consiente, la resolución judicial debe dictarse en:',
+            options: ['10 días', '30 días', '60 días', '15 días'],
+            correct: 0,
+            explanation: '10 días desde la audiencia si consiente.'
+        }, {
+            id: 79,
+            text: 'En la OEDE, si el detenido no consiente, el plazo para resolver es de:',
+            options: ['30 días', '60 días (prorrogable 30)', '90 días', '120 días'],
+            correct: 1,
+            explanation: '60 días desde la detención, prorrogable 30 días más.'
+        }, {
+            id: 80,
+            text: 'El plazo máximo para entregar al detenido tras la resolución judicial en OEDE es de:',
+            options: ['5 días', '10 días', '15 días', '20 días'],
+            correct: 1,
+            explanation: '10 días desde la resolución judicial firme.'
+        }, {
+            id: 81,
+            text: 'La Fiscalía Europea (EPPO) tiene su sede en:',
+            options: ['Luxemburgo', 'La Haya', 'Bruselas', 'Estrasburgo'],
+            correct: 0,
+            explanation: 'Sede en Luxemburgo.'
+        }, {
+            id: 82,
+            text: 'El Fiscal General Europeo es nombrado por un mandato de:',
+            options: ['5 años renovable', '7 años no renovable', '6 años renovable', '8 años no renovable'],
+            correct: 1,
+            explanation: '7 años, no renovable.'
+        }, {
+            id: 83,
+            text: 'La Carta de las Naciones Unidas fue firmada en:',
+            options: ['Nueva York (1945)', 'San Francisco (1945)', 'París (1948)', 'Londres (1945)'],
+            correct: 1,
+            explanation: 'Firmada en San Francisco el 26/06/1945.'
+        }, {
+            id: 84,
+            text: 'El Consejo de Seguridad de la ONU tiene 15 miembros, de los cuales 10 son:',
+            options: ['Permanentes con veto', 'No permanentes elegidos por 2 años', 'Elegidos por la Asamblea General por 3 años', 'Rotatorios por 1 año'],
+            correct: 1,
+            explanation: '5 permanentes + 10 no permanentes elegidos por 2 años.'
+        }, {
+            id: 85,
+            text: 'El Consejo de Derechos Humanos de la ONU fue creado en:',
+            options: ['1946', '2006', '1993', '2010'],
+            correct: 1,
+            explanation: 'Creado en 2006, reemplazó a la Comisión de DDHH.'
+        }, {
+            id: 86,
+            text: 'El Consejo de Derechos Humanos de la ONU tiene un número de miembros de:',
+            options: ['47', '53', '46', '58'],
+            correct: 0,
+            explanation: '47 miembros elegidos por la AGONU, mandato 3 años.'
+        }, {
+            id: 87,
+            text: 'El Consejo de Europa fue fundado el:',
+            options: ['05/05/1949', '04/11/1950', '10/12/1948', '25/03/1957'],
+            correct: 0,
+            explanation: 'Fundado el 5 de mayo de 1949 en Londres.'
+        }, {
+            id: 88,
+            text: 'Actualmente el Consejo de Europa cuenta con:',
+            options: ['46 Estados miembros', '47 Estados miembros', '27 Estados miembros', '50 Estados miembros'],
+            correct: 0,
+            explanation: '46 Estados (Rusia fue expulsada en 2022).'
+        }, {
+            id: 89,
+            text: 'La Convención de la ONU contra la Tortura (CAT) tiene un Comité de:',
+            options: ['10 expertos', '18 expertos', '25 expertos', '46 expertos'],
+            correct: 0,
+            explanation: '10 expertos, mandato 4 años reelegible.'
+        }, {
+            id: 90,
+            text: 'El Mecanismo Nacional de Prevención (MNP) en España es:',
+            options: ['El CGPJ', 'El Defensor del Pueblo', 'El Tribunal Constitucional', 'El Fiscal General'],
+            correct: 1,
+            explanation: 'El Defensor del Pueblo es el MNP en España.'
+        }, {
+            id: 91,
+            text: 'El Estado debe designar su MNP en un plazo de:',
+            options: ['6 meses', '1 año', '2 años', '3 años'],
+            correct: 1,
+            explanation: '1 año desde la ratificación del Protocolo Facultativo de la CAT.'
+        }, {
+            id: 92,
+            text: 'La Carta Magna (1215) es un antecedente de los DDHH que se firmó en:',
+            options: ['Francia', 'Inglaterra', 'España', 'Italia'],
+            correct: 1,
+            explanation: 'Carta Magna inglesa (1215).'
+        }, {
+            id: 93,
+            text: 'La Declaración de los Derechos del Hombre y del Ciudadano fue proclamada en:',
+            options: ['1789 (Francia)', '1776 (EE.UU.)', '1791 (España)', '1689 (Inglaterra)'],
+            correct: 0,
+            explanation: '1789, Francia.'
+        }, {
+            id: 94,
+            text: 'La primera generación de DDHH (derechos fundamentales) se caracteriza por:',
+            options: ['Ser derechos de libertad (negativos)', 'Ser derechos de igualdad (positivos)', 'Ser derechos de solidaridad', 'Ser derechos de protección de datos'],
+            correct: 0,
+            explanation: '1ª generación: derechos civiles y políticos, de libertad (negativos).'
+        }, {
+            id: 95,
+            text: 'La segunda generación de DDHH se refiere a derechos de:',
+            options: ['Libertad', 'Igualdad (económicos, sociales, culturales)', 'Solidaridad', 'Protección ante avances tecnológicos'],
+            correct: 1,
+            explanation: '2ª generación: derechos económicos, sociales y culturales (positivos).'
+        }, {
+            id: 96,
+            text: 'La tercera generación de DDHH incluye derechos como:',
+            options: ['Paz, desarrollo, medio ambiente', 'Libertad de expresión', 'Trabajo y educación', 'Protección de datos'],
+            correct: 0,
+            explanation: '3ª generación: derechos de solidaridad (paz, desarrollo, medio ambiente).'
+        }, {
+            id: 97,
+            text: 'La cuarta generación de DDHH abarca:',
+            options: ['Protección de datos y bioética', 'Derechos de los pueblos indígenas', 'Derechos de los animales', 'Derechos digitales'],
+            correct: 0,
+            explanation: '4ª generación: avances tecnológicos, protección de datos, bioética.'
+        }, {
+            id: 98,
+            text: 'El artículo 5 de la DUDH prohíbe:',
+            options: ['La tortura y los tratos crueles, inhumanos o degradantes', 'La detención arbitraria', 'La esclavitud', 'La discriminación racial'],
+            correct: 0,
+            explanation: 'Art. 5 DUDH: nadie será sometido a tortura ni a penas o tratos crueles, inhumanos o degradantes.'
+        }, {
+            id: 99,
+            text: 'El artículo 9 de la DUDH prohíbe:',
+            options: ['La tortura', 'La detención arbitraria', 'La esclavitud', 'La discriminación'],
+            correct: 1,
+            explanation: 'Art. 9 DUDH: nadie será arbitrariamente detenido, preso ni desterrado.'
+        }, {
+            id: 100,
+            text: 'El artículo 30 de la DUDH establece que:',
+            options: [
+                'Ningún Estado puede suprimir los derechos reconocidos en la Declaración',
+                'Los derechos son limitables en estados de excepción',
+                'Los derechos pueden ser restringidos por ley',
+                'Los derechos se aplican solo a ciudadanos'
+            ],
+            correct: 0,
+            explanation: 'Art. 30: nada en la Declaración puede interpretarse en el sentido de que confiere derecho alguno al Estado a suprimir los derechos proclamados.'
+        }];
+
+        // ============================================================
+        //  LÓGICA DE LA APLICACIÓN
+        // ============================================================
+        let currentQuestion = 0;
+        let userAnswers = {}; // { questionId: selectedIndex }
+        let questionStates = {}; // { questionId: { correct: bool, answered: bool } }
+        let totalCorrect = 0;
+
+        const container = document.getElementById('questionContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const correctCount = document.getElementById('correctCount');
+        const wrongCount = document.getElementById('wrongCount');
+        const percentCount = document.getElementById('percentCount');
+
+        function renderQuestion(index) {
+            const q = QUESTIONS[index];
+            const answered = questionStates[q.id] && questionStates[q.id].answered;
+            const userChoice = userAnswers[q.id];
+
+            let optionsHtml = q.options.map((opt, i) => {
+                let classes = 'option';
+                if (answered) {
+                    classes += ' disabled';
+                    if (i === q.correct) classes += ' correct';
+                    if (userChoice === i && i !== q.correct) classes += ' wrong';
+                }
+                const letter = String.fromCharCode(65 + i);
+                return `<div class="${classes}" data-index="${i}" onclick="selectOption(${q.id}, ${i})">
+                            <span class="letter">${letter}</span>
+                            <span>${opt}</span>
+                        </div>`;
+            }).join('');
+
+            let feedbackHtml = '';
+            if (answered) {
+                const isCorrect = userChoice === q.correct;
+                feedbackHtml = `<div class="feedback show ${isCorrect ? 'ok' : 'fail'}">
+                                    ${isCorrect ? '✅ Correcto.' : '❌ Incorrecto.'} 
+                                    ${q.explanation}
+                                </div>`;
+            }
+
+            const html = `
+                        <div class="question-container">
+                            <span class="q-number">Pregunta ${index+1} de ${QUESTIONS.length}</span>
+                            <div class="q-text">${q.text}</div>
+                            <div class="options">${optionsHtml}</div>
+                            ${feedbackHtml}
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="btn" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>← Anterior</button>
+                            <button class="btn btn-primary" onclick="nextQuestion()" ${index === QUESTIONS.length-1 ? 'disabled' : ''}>Siguiente →</button>
+                        </div>
+                    `;
+
+            container.innerHTML = html;
+            updateProgress();
+            updateStats();
+        }
+
+        function selectOption(qid, selected) {
+            if (questionStates[qid] && questionStates[qid].answered) return;
+            const q = QUESTIONS.find(p => p.id === qid);
+            if (!q) return;
+
+            const isCorrect = selected === q.correct;
+            userAnswers[qid] = selected;
+            questionStates[qid] = { answered: true, correct: isCorrect };
+            if (isCorrect) totalCorrect++;
+            renderQuestion(currentQuestion);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < QUESTIONS.length - 1) {
+                currentQuestion++;
+                renderQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const total = QUESTIONS.length;
+            const answered = Object.keys(questionStates).filter(id => questionStates[id].answered).length;
+            const pct = Math.round((answered / total) * 100);
+            progressFill.style.width = pct + '%';
+            progressText.textContent = `${answered}/${total}`;
+        }
+
+        function updateStats() {
+            const total = Object.keys(questionStates).length;
+            const corrects = Object.values(questionStates).filter(s => s.correct).length;
+            const wrongs = total - corrects;
+            const pct = total > 0 ? Math.round((corrects / total) * 100) : 0;
+            correctCount.textContent = corrects;
+            wrongCount.textContent = wrongs;
+            percentCount.textContent = pct + '%';
+        }
+
+        function resetQuiz() {
+            if (confirm('¿Reiniciar el test? Se perderá el progreso.')) {
+                currentQuestion = 0;
+                userAnswers = {};
+                questionStates = {};
+                totalCorrect = 0;
+                renderQuestion(0);
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = current === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Inicializar
+        renderQuestion(0);
+    </script>
+</body>
+</html>

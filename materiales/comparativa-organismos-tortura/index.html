@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNP · CAT · SPT · CPT — Los cuatro guardianes</title>
+<style>
+  :root{
+    --ink:#1a1f2e;
+    --paper:#eceae3;
+    --paper-2:#ffffff;
+    --line:#c9c5b8;
+    --nacional:#3f6b4f;
+    --cat:#a3762b;
+    --spt:#5b4b8a;
+    --cpt:#8a3a3a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:56px 28px 100px;}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    margin-bottom:64px;
+  }
+  .eyebrow{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#6b6455;
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:clamp(34px,5.2vw,54px);
+    line-height:1.05;
+    margin:0 0 18px;
+    font-weight:400;
+    letter-spacing:-.01em;
+  }
+  h1 em{
+    font-style:italic;
+    color:#6b6455;
+  }
+  .hero-sub{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:15.5px;
+    color:#4a4438;
+    max-width:620px;
+    margin:0;
+  }
+
+  /* ---------- RINGS DIAGRAM (signature element) ---------- */
+  .rings-section{
+    margin:0 0 72px;
+    padding:44px 20px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:2px;
+  }
+  .rings-title{
+    text-align:center;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#6b6455;
+    margin:0 0 36px;
+  }
+  .rings{
+    position:relative;
+    width:100%;
+    max-width:640px;
+    aspect-ratio:1/1;
+    margin:0 auto;
+  }
+  .ring{
+    position:absolute;
+    border-radius:50%;
+    border:1.5px dashed var(--line);
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+  }
+  .ring-1{width:100%;height:100%;}
+  .ring-2{width:66%;height:66%;}
+  .ring-3{width:32%;height:32%;background:var(--nacional);border:none;
+    display:flex;align-items:center;justify-content:center;}
+  .ring-3 span{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    color:#fff;font-size:13px;font-weight:600;letter-spacing:.03em;
+    text-align:center;line-height:1.25;
+  }
+  .ring-label{
+    position:absolute;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#6b6455;
+  }
+  .ring-label.mundo{top:2%;left:50%;transform:translateX(-50%);}
+  .ring-label.europa{top:19%;left:50%;transform:translateX(-50%);}
+
+  .node{
+    position:absolute;
+    width:104px;
+    padding:9px 10px;
+    border-radius:3px;
+    text-align:center;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:12px;
+    font-weight:600;
+    color:#fff;
+    box-shadow:0 3px 10px rgba(0,0,0,.14);
+  }
+  .node small{
+    display:block;
+    font-weight:400;
+    font-size:9.5px;
+    opacity:.85;
+    margin-top:2px;
+    letter-spacing:.02em;
+  }
+  .node.cat{ background:var(--cat); top:8%; left:8%; }
+  .node.spt{ background:var(--spt); top:8%; right:8%; }
+  .node.cpt{ background:var(--cpt); bottom:16%; left:50%; transform:translateX(-50%); }
+
+  .rings-caption{
+    max-width:520px;
+    margin:30px auto 0;
+    text-align:center;
+    font-size:13.5px;
+    color:#4a4438;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin:0 0 22px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+  .section-head h2{
+    font-size:22px;
+    font-weight:400;
+    margin:0;
+  }
+  .section-head .tag{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#8a8372;
+  }
+
+  /* ---------- CARDS ---------- */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-bottom:70px;
+  }
+  .card{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-top:4px solid var(--c);
+    padding:22px 22px 24px;
+  }
+  .card.nacional{--c:var(--nacional);}
+  .card.cat{--c:var(--cat);}
+  .card.spt{--c:var(--spt);}
+  .card.cpt{--c:var(--cpt);}
+
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:12px;
+  }
+  .card-acronym{
+    font-size:28px;
+    font-weight:400;
+    color:var(--c);
+  }
+  .card-scope{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#fff;
+    background:var(--c);
+    padding:4px 9px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .card-name{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    color:#4a4438;
+    margin:0 0 16px;
+    font-weight:600;
+  }
+  .card dl{
+    margin:0;
+    font-size:13.5px;
+  }
+  .card dl div{
+    display:flex;
+    gap:8px;
+    padding:7px 0;
+    border-top:1px solid #ece9df;
+  }
+  .card dl div:first-of-type{border-top:none;}
+  .card dt{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:#8a8372;
+    flex:0 0 92px;
+    padding-top:1px;
+  }
+  .card dd{margin:0;flex:1;}
+
+  /* ---------- COMPARISON TABLE ---------- */
+  .table-wrap{
+    overflow-x:auto;
+    margin-bottom:70px;
+    border:1px solid var(--line);
+    background:var(--paper-2);
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    min-width:640px;
+  }
+  th,td{
+    text-align:left;
+    padding:12px 16px;
+    border-bottom:1px solid #ece9df;
+    vertical-align:top;
+  }
+  thead th{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#6b6455;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:12px;
+  }
+  tbody th{
+    font-weight:600;
+    white-space:nowrap;
+  }
+  tbody tr:last-child td, tbody tr:last-child th{border-bottom:none;}
+  .dot{
+    display:inline-block;
+    width:8px;height:8px;
+    border-radius:50%;
+    margin-right:7px;
+    position:relative;top:-1px;
+  }
+  tr[data-org="nacional"] th .dot{background:var(--nacional);}
+  tr[data-org="cat"] th .dot{background:var(--cat);}
+  tr[data-org="spt"] th .dot{background:var(--spt);}
+  tr[data-org="cpt"] th .dot{background:var(--cpt);}
+
+  /* ---------- MNEMONIC ---------- */
+  .mnemonic{
+    background:var(--ink);
+    color:var(--paper);
+    padding:36px 32px;
+    margin-bottom:70px;
+  }
+  .mnemonic h2{
+    font-size:18px;
+    font-weight:400;
+    margin:0 0 14px;
+    color:#fff;
+  }
+  .mnemonic p{
+    font-size:14.5px;
+    color:#d8d4c6;
+    margin:0 0 10px;
+  }
+  .mnemonic strong{color:#fff;font-weight:600;}
+  .flow{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:13px;
+    letter-spacing:.02em;
+    margin-top:18px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+  }
+  .flow span.step{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18);
+    padding:6px 12px;
+    border-radius:20px;
+  }
+  .flow span.arrow{color:#8a8372;}
+
+  /* ---------- NUMBERS STRIP ---------- */
+  .numbers{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:70px;
+  }
+  .numbers .cell{
+    background:var(--paper-2);
+    padding:24px 18px;
+    text-align:center;
+  }
+  .numbers .cell .n{
+    font-size:34px;
+    color:var(--c);
+  }
+  .numbers .cell:nth-child(1){--c:var(--nacional);}
+  .numbers .cell:nth-child(2){--c:var(--cat);}
+  .numbers .cell:nth-child(3){--c:var(--spt);}
+  .numbers .cell:nth-child(4){--c:var(--cpt);}
+  .numbers .cell .l{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#6b6455;
+    margin-top:4px;
+  }
+
+  /* ---------- FOOTER NOTE ---------- */
+  footer{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:11.5px;
+    color:#8a8372;
+    text-align:center;
+    padding-top:30px;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:680px){
+    .cards{grid-template-columns:1fr;}
+    .numbers{grid-template-columns:repeat(2,1fr);}
+    .node{width:88px;font-size:11px;}
+    .card dt{flex-basis:78px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Prevención de la tortura · Esquema de estudio</div>
+    <h1>Cuatro nombres,<br><em>un mismo objetivo:</em> mirar dentro de los lugares cerrados.</h1>
+    <p class="hero-sub">MNP, CAT, SPT y CPT se confunden porque comparten materia — pero actúan en niveles distintos: casa, Europa y la ONU (con su cara política y su cara operativa). Este mapa los distingue de una vez.</p>
+  </header>
+
+  <section class="rings-section">
+    <div class="rings-title">El ámbito lo explica casi todo</div>
+    <div class="rings">
+      <div class="ring-label mundo">ONU · mundo</div>
+      <div class="ring ring-1"></div>
+      <div class="ring-label europa">Consejo de Europa</div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"><span>ESPAÑA<br>MNP</span></div>
+      <div class="node cat">CAT<small>ONU · despacho</small></div>
+      <div class="node spt">SPT<small>ONU · visitas</small></div>
+      <div class="node cpt">CPT<small>Europa · visitas</small></div>
+    </div>
+    <p class="rings-caption">El MNP vive dentro de España; el CPT vigila toda Europa; el CAT y el SPT operan a escala mundial desde Ginebra — uno tramitando papel, el otro visitando cárceles.</p>
+  </section>
+
+  <div class="section-head">
+    <h2>Los cuatro organismos</h2>
+    <span class="tag">Ficha por ficha</span>
+  </div>
+
+  <div class="cards">
+
+    <div class="card nacional">
+      <div class="card-top">
+        <div class="card-acronym">MNP</div>
+        <div class="card-scope">Nacional</div>
+      </div>
+      <p class="card-name">Mecanismo Nacional de Prevención — ejercido por el Defensor del Pueblo</p>
+      <dl>
+        <div><dt>Base legal</dt><dd>Disposición final única, LO 3/1981 del Defensor del Pueblo</dd></div>
+        <div><dt>Vela por</dt><dd>Arts. 15 (integridad física) y 17 (libertad) de la Constitución</dd></div>
+        <div><dt>Cómo actúa</dt><dd>Visitas preventivas, de oficio, sin previo aviso, a comisarías, prisiones, centros de menores, CIE, etc.</dd></div>
+        <div><dt>Se apoya en</dt><dd>Consejo Asesor con los Adjuntos del Defensor + vocales técnicos externos</dd></div>
+        <div><dt>Rinde cuentas</dt><dd>Informe anual a las Cortes Generales</dd></div>
+      </dl>
+    </div>
+
+    <div class="card cat">
+      <div class="card-top">
+        <div class="card-acronym">CAT</div>
+        <div class="card-scope">ONU · político</div>
+      </div>
+      <p class="card-name">Comité contra la Tortura</p>
+      <dl>
+        <div><dt>Base legal</dt><dd>Convención de la ONU contra la Tortura, 1984 (art. 17)</dd></div>
+        <div><dt>Sede</dt><dd>Ginebra</dd></div>
+        <div><dt>Cómo actúa</dt><dd>Trabajo "de despacho": examina informes periódicos de los Estados y tramita denuncias individuales</dd></div>
+        <div><dt>No hace</dt><dd>Visitas sorpresa sistemáticas — su labor no es sobre el terreno</dd></div>
+        <div><dt>Sesiones</dt><dd>Públicas, por regla general</dd></div>
+      </dl>
+    </div>
+
+    <div class="card spt">
+      <div class="card-top">
+        <div class="card-acronym">SPT</div>
+        <div class="card-scope">ONU · operativo</div>
+      </div>
+      <p class="card-name">Subcomité para la Prevención de la Tortura</p>
+      <dl>
+        <div><dt>Base legal</dt><dd>Protocolo Facultativo de la Convención, 2002 (OPCAT, en vigor 2006)</dd></div>
+        <div><dt>Sede</dt><dd>Ginebra</dd></div>
+        <div><dt>Cómo actúa</dt><dd>Visitas reales a los Estados parte; asesora y da recomendaciones a los MNP de cada país</dd></div>
+        <div><dt>Relación con España</dt><dd>Es quien "supervisa" y orienta al MNP (Defensor del Pueblo)</dd></div>
+        <div><dt>Sesiones</dt><dd>Privadas — confidencialidad estricta</dd></div>
+      </dl>
+    </div>
+
+    <div class="card cpt">
+      <div class="card-top">
+        <div class="card-acronym">CPT</div>
+        <div class="card-scope">Europa</div>
+      </div>
+      <p class="card-name">Comité Europeo para la Prevención de la Tortura</p>
+      <dl>
+        <div><dt>Base legal</dt><dd>Convenio Europeo para la Prevención de la Tortura, 1987 (Consejo de Europa, no UE)</dd></div>
+        <div><dt>Sede</dt><dd>Estrasburgo</dd></div>
+        <div><dt>Cómo actúa</dt><dd>Visitas sin previo aviso a lugares de detención en cualquier Estado del Consejo de Europa</dd></div>
+        <div><dt>Miembros</dt><dd>Uno por cada Estado parte del Convenio (hoy, 46 — tras la salida de Rusia en 2022)</dd></div>
+        <div><dt>Sesiones</dt><dd>A puerta cerrada</dd></div>
+      </dl>
+    </div>
+
+  </div>
+
+  <div class="section-head">
+    <h2>Comparativa completa</h2>
+    <span class="tag">Vista de conjunto</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Organismo</th>
+          <th>Ámbito</th>
+          <th>Origen / norma</th>
+          <th>Función principal</th>
+          <th>Sesiones</th>
+          <th>Miembros</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-org="nacional">
+          <th><span class="dot"></span>MNP (Defensor)</th>
+          <td>Nacional (España)</td>
+          <td>LO 3/1981, disp. final única</td>
+          <td>Visitas preventivas en España</td>
+          <td>Informe anual a las Cortes</td>
+          <td>Consejo Asesor: máx. 10 vocales + Adjuntos</td>
+        </tr>
+        <tr data-org="cat">
+          <th><span class="dot"></span>CAT</th>
+          <td>Mundial (ONU)</td>
+          <td>Convención de la ONU, 1984</td>
+          <td>Revisa informes estatales y tramita denuncias</td>
+          <td>Públicas</td>
+          <td>10 expertos</td>
+        </tr>
+        <tr data-org="spt">
+          <th><span class="dot"></span>SPT</th>
+          <td>Mundial (ONU)</td>
+          <td>Protocolo Facultativo, 2002</td>
+          <td>Visitas preventivas a los Estados y apoyo a los MNP</td>
+          <td>Privadas</td>
+          <td>25 expertos</td>
+        </tr>
+        <tr data-org="cpt">
+          <th><span class="dot"></span>CPT</th>
+          <td>Europa (Consejo de Europa)</td>
+          <td>Convenio Europeo, 1987</td>
+          <td>Visitas preventivas a los Estados europeos</td>
+          <td>A puerta cerrada</td>
+          <td>Uno por Estado parte (46 actualmente)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="numbers">
+    <div class="cell"><div class="n">≤10</div><div class="l">vocales · Consejo Asesor MNP</div></div>
+    <div class="cell"><div class="n">10</div><div class="l">expertos · CAT</div></div>
+    <div class="cell"><div class="n">25</div><div class="l">expertos · SPT</div></div>
+    <div class="cell"><div class="n">46</div><div class="l">miembros · CPT</div></div>
+  </div>
+
+  <div class="mnemonic">
+    <h2>El truco para no liarte más</h2>
+    <p><strong>Regla 1 — el ámbito lo dice todo:</strong> si la pregunta menciona "España" es el MNP; si menciona "Europa" o "Estrasburgo" es el CPT; si menciona "Ginebra" u "ONU" es CAT o SPT.</p>
+    <p><strong>Regla 2 — dentro de la ONU, la palabra clave separa CAT de SPT:</strong> "informes", "denuncias" o "públicas" → CAT. "Visitas", "confidencial" o "2002" → SPT.</p>
+    <p><strong>Regla 3 — el nivel de publicidad va de más a menos según se acerca al terreno:</strong></p>
+    <div class="flow">
+      <span class="step">CAT · públicas</span>
+      <span class="arrow">→</span>
+      <span class="step">SPT · privadas</span>
+      <span class="arrow">→</span>
+      <span class="step">CPT · puerta cerrada</span>
+      <span class="arrow">→</span>
+      <span class="step">MNP · informe anual</span>
+    </div>
+  </div>
+
+  <footer>
+    Contenido verificado con fuentes oficiales (OHCHR, Consejo de Europa, Defensor del Pueblo, BOE) a fecha de julio de 2026.
+  </footer>
+
+</div>
+</body>
+</html>

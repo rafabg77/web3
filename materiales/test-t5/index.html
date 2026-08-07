@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tema 5 — CNP Escala Básica · Tests por Página</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0f0f1a;
+    --surface:  #181826;
+    --card:     #1e1e30;
+    --border:   #2a2a42;
+    --p1:       #7c6aff;   /* Página 1 — índigo */
+    --p2:       #00c9a7;   /* Página 2 — esmeralda */
+    --p3:       #ff6b6b;   /* Página 3 — coral */
+    --p4:       #ffd166;   /* Página 4 — dorado */
+    --text:     #e8e8f0;
+    --muted:    #8888a8;
+    --white:    #ffffff;
+    --correct:  #06d6a0;
+    --wrong:    #ef476f;
+    --radius:   14px;
+    --font-h:   'Space Grotesk', sans-serif;
+    --font-b:   'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-b);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a1a30 0%, #0f0f1e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px 24px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--font-h);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--p1);
+    border: 1px solid var(--p1);
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: var(--font-h);
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  header h1 span { color: var(--p1); }
+  header p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── PAGE SELECTOR ── */
+  #page-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    max-width: 1100px;
+    margin: 36px auto;
+    padding: 0 20px;
+  }
+
+  .page-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: transform .18s, border-color .18s, box-shadow .18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .page-card[data-page="1"]::before { background: var(--p1); }
+  .page-card[data-page="2"]::before { background: var(--p2); }
+  .page-card[data-page="3"]::before { background: var(--p3); }
+  .page-card[data-page="4"]::before { background: var(--p4); }
+
+  .page-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  }
+  .page-card[data-page="1"]:hover { border-color: var(--p1); }
+  .page-card[data-page="2"]:hover { border-color: var(--p2); }
+  .page-card[data-page="3"]:hover { border-color: var(--p3); }
+  .page-card[data-page="4"]:hover { border-color: var(--p4); }
+
+  .page-num {
+    font-family: var(--font-h);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .page-card[data-page="1"] .page-num { color: var(--p1); }
+  .page-card[data-page="2"] .page-num { color: var(--p2); }
+  .page-card[data-page="3"] .page-num { color: var(--p3); }
+  .page-card[data-page="4"] .page-num { color: var(--p4); }
+
+  .page-card h2 {
+    font-family: var(--font-h);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    line-height: 1.35;
+  }
+  .page-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .start-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-h);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bg);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: opacity .15s, transform .15s;
+  }
+  .start-btn:hover { opacity: .9; transform: scale(1.03); }
+  .page-card[data-page="1"] .start-btn { background: var(--p1); }
+  .page-card[data-page="2"] .start-btn { background: var(--p2); }
+  .page-card[data-page="3"] .start-btn { background: var(--p3); }
+  .page-card[data-page="4"] .start-btn { background: var(--p4); }
+
+  .score-pill {
+    display: none;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    margin-top: 12px;
+  }
+  .score-pill.show { display: inline-block; }
+
+  /* ── QUIZ CONTAINER ── */
+  #quiz-container {
+    display: none;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+  #quiz-container.active { display: block; }
+
+  .quiz-topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .back-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-b);
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: color .15s, border-color .15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .back-btn:hover { color: var(--text); border-color: var(--text); }
+
+  .quiz-title {
+    font-family: var(--font-h);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .quiz-title span { color: var(--white); }
+
+  /* Progress */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width .3s ease;
+    background: var(--p1);
+  }
+  #quiz-container.p2 .progress-fill { background: var(--p2); }
+  #quiz-container.p3 .progress-fill { background: var(--p3); }
+  #quiz-container.p4 .progress-fill { background: var(--p4); }
+
+  #progress-text {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 500;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  /* Question card */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 30px 28px;
+  }
+  .qnum {
+    font-family: var(--font-h);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .qtext {
+    font-family: var(--font-h);
+    font-size: clamp(15px, 3vw, 18px);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .1s;
+    user-select: none;
+  }
+  .option:hover:not(.disabled) {
+    border-color: var(--p1);
+    background: #1e1e38;
+    transform: translateX(3px);
+  }
+  #quiz-container.p2 .option:hover:not(.disabled) { border-color: var(--p2); background: #1a2e2a; }
+  #quiz-container.p3 .option:hover:not(.disabled) { border-color: var(--p3); background: #2e1a1a; }
+  #quiz-container.p4 .option:hover:not(.disabled) { border-color: var(--p4); background: #2e2a1a; }
+
+  .option.disabled { cursor: default; }
+  .option.correct {
+    border-color: var(--correct);
+    background: rgba(6,214,160,.08);
+  }
+  .option.incorrect {
+    border-color: var(--wrong);
+    background: rgba(239,71,111,.08);
+  }
+
+  .letter {
+    width: 28px; height: 28px;
+    min-width: 28px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-h);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: background .15s, color .15s;
+  }
+  .option.correct .letter { background: var(--correct); color: #000; }
+  .option.incorrect .letter { background: var(--wrong); color: #fff; }
+
+  .option div:last-child {
+    font-size: 14px;
+    line-height: 1.5;
+    padding-top: 4px;
+    color: var(--text);
+  }
+
+  /* Feedback */
+  .feedback {
+    background: var(--surface);
+    border-left: 4px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 22px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { border-color: var(--correct); }
+  .feedback.bad { border-color: var(--wrong); }
+  .feedback b { color: var(--text); }
+
+  /* Nav buttons */
+  .nav-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+  .nav-btn {
+    font-family: var(--font-h);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 22px;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
+    transition: opacity .15s, transform .1s;
+  }
+  .nav-btn:hover:not(:disabled) { opacity: .85; transform: translateY(-1px); }
+  .nav-btn:disabled { opacity: .35; cursor: default; }
+  .nav-btn { background: var(--p1); color: #fff; }
+  #quiz-container.p2 .nav-btn { background: var(--p2); color: #000; }
+  #quiz-container.p3 .nav-btn { background: var(--p3); color: #fff; }
+  #quiz-container.p4 .nav-btn { background: var(--p4); color: #000; }
+  .nav-btn.secondary { background: var(--card); color: var(--muted); border: 1px solid var(--border); }
+
+  /* ── RESULT SCREEN ── */
+  #result-screen {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 28px;
+    text-align: center;
+    margin-top: 18px;
+  }
+  #result-screen.show { display: block; }
+
+  .score-circle {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--p1);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+  #quiz-container.p2 .score-circle { border-color: var(--p2); }
+  #quiz-container.p3 .score-circle { border-color: var(--p3); }
+  #quiz-container.p4 .score-circle { border-color: var(--p4); }
+
+  #big-score {
+    font-family: var(--font-h);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .score-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+  #result-screen h2 {
+    font-family: var(--font-h);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  #result-msg {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 440px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+
+  .result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .res-btn {
+    font-family: var(--font-h);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 11px 22px;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .res-btn:hover { opacity: .85; }
+  .res-btn.primary { background: var(--p1); color: #fff; }
+  #quiz-container.p2 .res-btn.primary { background: var(--p2); color: #000; }
+  #quiz-container.p3 .res-btn.primary { background: var(--p3); color: #fff; }
+  #quiz-container.p4 .res-btn.primary { background: var(--p4); color: #000; }
+  .res-btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+
+  #topic-breakdown { text-align: left; max-width: 500px; margin: 0 auto; }
+  #topic-breakdown h3 { font-family: var(--font-h); font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+  .topic-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .topic-row:last-child { border-bottom: none; }
+  .tag-good { color: var(--correct); font-weight: 600; }
+  .tag-bad  { color: var(--wrong);   font-weight: 600; }
+
+  /* ── footer ── */
+  footer {
+    text-align: center;
+    padding: 28px;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 500px) {
+    .question-card { padding: 20px 16px; }
+    .nav-buttons { flex-direction: column; }
+    .nav-btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">CNP · Escala Básica</div>
+  <h1>Tema 5 — <span>AGE y Gobierno</span></h1>
+  <p>4 tests de 20 preguntas de alta dificultad, uno por página de la transcripción. Completa cada página antes de hacer su test.</p>
+</header>
+
+<!-- ── PAGE SELECTOR ── -->
+<div id="page-selector">
+
+  <div class="page-card" data-page="1">
+    <div class="page-num">Página 1 · Test 1</div>
+    <h2>Principios, Sector Público, estructura y nombramientos</h2>
+    <p>Principios AAPP, Sector Público Institucional, modelos de organización, órganos superiores/directivos y cuadro de nombramientos.</p>
+    <button class="start-btn" onclick="startQuiz(1)">Empezar test ▶</button><br>
+    <span class="score-pill" id="score-pill-1"></span>
+  </div>
+
+  <div class="page-card" data-page="2">
+    <div class="page-num">Página 2 · Test 2</div>
+    <h2>Jerarquía, competencias y administración periférica</h2>
+    <p>Competencias detalladas de cada órgano, representación territorial, órganos de coordinación y relaciones interadministrativas.</p>
+    <button class="start-btn" onclick="startQuiz(2)">Empezar test ▶</button><br>
+    <span class="score-pill" id="score-pill-2"></span>
+  </div>
+
+  <div class="page-card" data-page="3">
+    <div class="page-num">Página 3 · Test 3</div>
+    <h2>El Gobierno: colegiados, colaboración y consultivos</h2>
+    <p>Composición y funciones del Consejo de Ministros, Comisiones Delegadas, Comisión General de SE y Subsecretarios, Secretariado y órganos consultivos.</p>
+    <button class="start-btn" onclick="startQuiz(3)">Empezar test ▶</button><br>
+    <span class="score-pill" id="score-pill-3"></span>
+  </div>
+
+  <div class="page-card" data-page="4">
+    <div class="page-num">Página 4 · Test 4</div>
+    <h2>AGE en el exterior, delegación y control del Gobierno</h2>
+    <p>Misiones diplomáticas, representaciones consulares, régimen de delegación de competencias y mecanismos de control político y judicial.</p>
+    <button class="start-btn" onclick="startQuiz(4)">Empezar test ▶</button><br>
+    <span class="score-pill" id="score-pill-4"></span>
+  </div>
+
+</div>
+
+<!-- ── QUIZ CONTAINER ── -->
+<div id="quiz-container">
+
+  <div class="quiz-topbar">
+    <button class="back-btn" onclick="goBack()">← Volver</button>
+    <span class="quiz-title" id="quiz-title">Test · <span>Página 1</span></span>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span id="progress-text">Pregunta 1/20</span>
+  </div>
+
+  <div id="question-area"></div>
+
+  <div id="result-screen">
+    <div class="score-circle">
+      <span id="big-score">0/20</span>
+      <span class="score-label">aciertos</span>
+    </div>
+    <h2>Resultado</h2>
+    <p id="result-msg"></p>
+    <div class="result-actions">
+      <button class="res-btn primary" onclick="restartQuiz()">🔄 Repetir test</button>
+      <button class="res-btn ghost" onclick="goBack()">← Elegir otro test</button>
+    </div>
+    <div id="topic-breakdown"></div>
+  </div>
+
+</div>
+
+<footer>Tema 5 AGE · Preguntas basadas en el temario oficial CNP Escala Básica vigente</footer>
+
+<script>
+// ============================================================
+// BANCO DE PREGUNTAS — TEMA 5 AGE — CNP ESCALA BÁSICA
+// 4 tests × 20 preguntas · Distractores cruzados
+// ============================================================
+const QUESTION_BANK = {
+
+// ────────────────────────────────────────────────────────────
+// PÁGINA 1
+// ────────────────────────────────────────────────────────────
+1: [
+{q:"Según el art. 103 CE y el art. 3 LRJSP, ¿bajo qué principios deben actuar las AAPP al servir los intereses generales?",
+ options:["Eficacia, jerarquía, descentralización, desconcentración y coordinación","Economía, eficiencia y planificación por objetivos","Simplicidad, claridad y proximidad al ciudadano","Lealtad institucional y buena fe"],
+ correct:0,
+ explanation:"El art. 103 CE y el art. 3 LRJSP recogen como principios organizativos: eficacia, jerarquía, descentralización, desconcentración y coordinación, con sometimiento pleno a la Constitución, la ley y el Derecho."},
+
+{q:"¿Cuál de los siguientes NO forma parte del Sector Público Institucional?",
+ options:["Organismos/entidades de derecho público vinculadas o dependientes de las AAPP","Entidades de derecho privado vinculadas o dependientes de las AAPP","Universidades públicas","Las Delegaciones del Gobierno en las CCAA"],
+ correct:3,
+ explanation:"El Sector Público Institucional comprende organismos/entidades de derecho público, entidades de derecho privado vinculadas a las AAPP y las Universidades públicas. Las Delegaciones del Gobierno son órganos territoriales de la AGE, no del Sector Público Institucional."},
+
+{q:"El principio de presencia equilibrada de hombres y mujeres en los órganos superiores y directivos de la AGE se traduce en que ningún sexo supere:",
+ options:["El 60%","El 50%","El 40%","El 30%"],
+ correct:2,
+ explanation:"El principio de presencia equilibrada fija en el 60% el límite máximo para cualquier sexo (lo que equivale a que el otro no baje del 40%) en los órganos superiores y directivos de la AGE."},
+
+{q:"¿Cuál de los siguientes es un principio de FUNCIONAMIENTO (no organizativo) de las AAPP según la LRJSP?",
+ options:["Jerarquía","Desconcentración","Simplicidad, claridad y proximidad a los ciudadanos","Economía y eficiencia en la asignación de recursos públicos"],
+ correct:2,
+ explanation:"Entre los principios de funcionamiento se incluyen: servicio efectivo a los ciudadanos, simplicidad, claridad y proximidad, participación ciudadana, objetividad, transparencia, agilidad, buena fe y lealtad institucional. Jerarquía y desconcentración son principios organizativos."},
+
+{q:"La descentralización funcional consiste en:",
+ options:["El traspaso de competencias entre órganos dentro de la misma Administración","El traspaso de competencias a un ente con personalidad jurídica propia y distinta","La creación de Comisiones Delegadas del Gobierno","La representación del Estado en las CCAA mediante Delegados del Gobierno"],
+ correct:1,
+ explanation:"La descentralización funcional implica el traspaso de competencias de un ente a otro con personalidad jurídica propia y distinta de la del ente que transfiere. Ello la diferencia de la desconcentración, que es interna a la misma Administración."},
+
+{q:"La desconcentración funcional o territorial implica:",
+ options:["Traspaso de competencias entre órganos dentro de la misma Administración (de superior a inferior)","Traspaso de competencias a un ente con personalidad jurídica distinta","La creación de Subsecretarías por orden del Ministro","La fijación de objetivos por el Consejo de Ministros"],
+ correct:0,
+ explanation:"La desconcentración funcional o territorial es el traspaso de competencias entre órganos dentro de la misma Administración, normalmente del órgano superior al inferior, sin que cambie la personalidad jurídica titular de la competencia."},
+
+{q:"Según el art. 55 LRJSP, la estructura de la AGE se organiza conforme a dos principios. ¿Cuáles son?",
+ options:["Jerarquía y coordinación","División funcional (Departamentos ministeriales) y gestión territorial (Delegaciones del Gobierno)","Centralización y desconcentración","Eficacia y economía"],
+ correct:1,
+ explanation:"El art. 55 LRJSP establece que la AGE se organiza conforme a los principios de división funcional, materializada en los Departamentos ministeriales, y de gestión territorial, a través de las Delegaciones del Gobierno en las CCAA."},
+
+{q:"¿A qué Ministerio corresponden las competencias de organización de la AGE no atribuidas expresamente a otro órgano?",
+ options:["Ministerio de Hacienda","Ministerio de Política Territorial y Memoria Democrática","Ministerio de Transformación Digital y de la Función Pública","Ministerio de la Presidencia"],
+ correct:2,
+ explanation:"Las competencias de organización no atribuidas expresamente a otro Ministerio corresponden al Ministerio de Transformación Digital y de la Función Pública."},
+
+{q:"¿Qué órganos de la AGE tienen la condición de alto cargo?",
+ options:["Todos los órganos superiores y directivos, sin excepción","Los órganos superiores y directivos, EXCEPTO los Subdirectores Generales y asimilados","Únicamente los Ministros y Secretarios de Estado","Solo los órganos directivos, no los superiores"],
+ correct:1,
+ explanation:"Los órganos superiores y directivos de la AGE tienen condición de alto cargo, con la excepción de los Subdirectores Generales y asimilados, que son órganos directivos pero no altos cargos."},
+
+{q:"Dentro de la organización central de la AGE, ¿qué función corresponde a los órganos SUPERIORES frente a los DIRECTIVOS?",
+ options:["Los superiores establecen los planes de actuación; los directivos su desarrollo y ejecución","Los superiores ejecutan; los directivos planifican","Ambos planifican y ejecutan por igual","Los superiores solo tienen funciones consultivas"],
+ correct:0,
+ explanation:"Los órganos superiores (Ministros y Secretarios de Estado) establecen los planes de actuación, mientras que los órganos directivos (Subsecretarios, Secretarios Generales, Directores Generales, etc.) se encargan de su desarrollo y ejecución."},
+
+{q:"¿Mediante qué instrumento se crea o modifica un Ministerio?",
+ options:["Ley Orgánica","Real Decreto del Consejo de Ministros","Real Decreto del Presidente del Gobierno","Orden Ministerial"],
+ correct:2,
+ explanation:"La creación o modificación de un Ministerio se realiza mediante Real Decreto del Presidente del Gobierno, siendo además un órgano superior de carácter obligatorio."},
+
+{q:"¿Quién nombra a los Ministros, según el cuadro de nombramientos del Gobierno?",
+ options:["El Consejo de Ministros","El Rey, a propuesta del Presidente del Gobierno","El Presidente del Gobierno directamente","El Congreso de los Diputados"],
+ correct:1,
+ explanation:"Los Ministros son nombrados por el Rey, a propuesta del Presidente del Gobierno. Para ello se requiere ser español, mayor de 18 años, con capacidad electoral y no estar inhabilitado."},
+
+{q:"La Secretaría de Estado, ¿es un órgano obligatorio dentro de un Departamento ministerial?",
+ options:["Sí, todos los Ministerios deben tener al menos una","No, su creación es potestativa y se crea por RD del Presidente","Solo es obligatoria en los Ministerios con competencias exteriores","Es obligatoria únicamente si lo decide el Consejo de Ministros"],
+ correct:1,
+ explanation:"La Secretaría de Estado no es un órgano obligatorio. Se crea o modifica mediante Real Decreto del Presidente, y se nombra por RD del Consejo de Ministros a propuesta del Ministerio o del Presidente. No exige requisito específico de cuerpo funcionarial."},
+
+{q:"¿Qué requisito de cuerpo funcionarial se exige, con carácter general, para ser Subsecretario?",
+ options:["No se exige ningún requisito","Ser funcionario del Subgrupo A2","Ser funcionario del Subgrupo A1 (pudiendo ser jubilado)","Ser funcionario del Subgrupo C1"],
+ correct:2,
+ explanation:"La Subsecretaría, órgano directivo y de creación obligatoria, requiere ser funcionario del Subgrupo A1, admitiéndose que pueda tratarse de un funcionario jubilado."},
+
+{q:"¿Es la Secretaría General un órgano de creación obligatoria en todos los Ministerios?",
+ options:["Sí, siempre","No, su creación no es obligatoria y requiere RD del CM a iniciativa del Ministerio y propuesta del Ministerio de Transformación Digital","Sí, pero solo en Ministerios con competencias territoriales","No, se crea por orden del Ministro"],
+ correct:1,
+ explanation:"La Secretaría General no es obligatoria. Se crea o modifica por Real Decreto del Consejo de Ministros, a iniciativa del Ministerio correspondiente y a propuesta del Ministerio de Transformación Digital y de la Función Pública, exigiéndose perfil cualificado con experiencia."},
+
+{q:"La Secretaría General Técnica y la Dirección General, ¿son órganos de creación obligatoria?",
+ options:["No, son potestativas","Sí, son de creación obligatoria y requieren funcionario del Subgrupo A1 (salvo excepción reglamentaria)","Solo la Dirección General es obligatoria","Solo la Secretaría General Técnica es obligatoria"],
+ correct:1,
+ explanation:"Tanto la Secretaría General Técnica como la Dirección General son órganos directivos de creación obligatoria, exigiendo funcionario del Subgrupo A1 (puede ser jubilado). El RD de estructura puede autorizar excepción para la Dirección General."},
+
+{q:"¿Quién nombra a los titulares de las Subdirecciones Generales?",
+ options:["El Rey a propuesta del Presidente","El Consejo de Ministros mediante Real Decreto","El Ministro, el Secretario de Estado o el Subsecretario","El Delegado del Gobierno correspondiente"],
+ correct:2,
+ explanation:"La Subdirección General, órgano directivo no obligatorio (y no alto cargo), se crea por RD del CM, y su titular es nombrado por el Ministro, el Secretario de Estado o el Subsecretario, según dependencia."},
+
+{q:"Los órganos de nivel inferior a la Subdirección General se crean mediante:",
+ options:["Real Decreto del Consejo de Ministros","Real Decreto del Presidente del Gobierno","Orden del Ministro respectivo","Resolución del Subdirector General"],
+ correct:2,
+ explanation:"Los órganos de nivel inferior a la Subdirección General se crean por Orden del Ministro respectivo, mientras que las unidades administrativas (que no son órganos) se crean mediante las Relaciones de Puestos de Trabajo (RPT)."},
+
+{q:"¿Cómo se crean las unidades administrativas que no tienen la consideración de órganos?",
+ options:["Por Real Decreto del Consejo de Ministros","Mediante las Relaciones de Puestos de Trabajo (RPT)","Por Orden Ministerial publicada en el BOE","Por acuerdo de la Comisión General de Secretarios de Estado y Subsecretarios"],
+ correct:1,
+ explanation:"Las unidades administrativas que no son órganos se crean mediante las Relaciones de Puestos de Trabajo (RPT), a diferencia de los órganos de nivel inferior a Subdirección General, que se crean por Orden del Ministro."},
+
+{q:"Los Delegados del Gobierno en las CCAA, ¿de qué Ministerio dependen orgánicamente y a propuesta de quién se nombran?",
+ options:["Dependen del Ministerio de Hacienda; propuesta del Ministro de Hacienda","Están adscritos al Ministerio de Política Territorial y Memoria Democrática, dependen orgánicamente del Presidente del Gobierno, y se nombran a propuesta del Presidente","Dependen del Ministerio del Interior; propuesta del Ministro del Interior","Se nombran a propuesta del Consejo de Estado"],
+ correct:1,
+ explanation:"Los Delegados del Gobierno, con rango de Subsecretario, están adscritos al Ministerio de Política Territorial y Memoria Democrática, pero dependen orgánicamente del Presidente del Gobierno, y son nombrados por RD del Consejo de Ministros a propuesta del Presidente."}
+],
+
+// ────────────────────────────────────────────────────────────
+// PÁGINA 2
+// ────────────────────────────────────────────────────────────
+2: [
+{q:"¿Quiénes son los superiores jerárquicos directos de los Secretarios de Estado y Subsecretarios?",
+ options:["Los Directores Generales","Los Ministros","Los Delegados del Gobierno","El Consejo de Ministros"],
+ correct:1,
+ explanation:"Los Ministros son los jefes superiores del Departamento y los superiores jerárquicos directos de los Secretarios de Estado y Subsecretarios."},
+
+{q:"¿Cuál es la función principal de los Secretarios de Estado dentro de la estructura jerárquica?",
+ options:["Representación ordinaria del Ministerio y dirección de los servicios comunes","Ejecución de la acción del Gobierno en un sector de actividad específica","Gestión de áreas funcionalmente homogéneas","Ejecución de proyectos y gestión ordinaria"],
+ correct:1,
+ explanation:"Los Secretarios de Estado tienen como función la ejecución de la acción del Gobierno en un sector de actividad específica de un Departamento."},
+
+{q:"¿A quién corresponde la representación ordinaria del Ministerio y la dirección de los servicios comunes?",
+ options:["Al Secretario de Estado","Al Subsecretario","Al Secretario General Técnico","Al Director General"],
+ correct:1,
+ explanation:"La representación ordinaria del Ministerio y la dirección de los servicios comunes corresponde al Subsecretario, quien además ejerce la jefatura superior de personal."},
+
+{q:"¿Qué órgano tiene encomendadas las competencias sobre servicios comunes (normativa, asistencia jurídica y publicaciones)?",
+ options:["La Secretaría General","La Secretaría General Técnica","La Subdirección General","El Gabinete del Ministro"],
+ correct:1,
+ explanation:"Las Secretarías Generales Técnicas tienen competencias sobre servicios comunes como normativa, asistencia jurídica y publicaciones, bajo dependencia inmediata del Subsecretario."},
+
+{q:"¿Qué órganos directivos se encargan de la gestión de áreas funcionalmente homogéneas?",
+ options:["Los Subdirectores Generales","Los Secretarios Generales Técnicos","Los Directores Generales","Los Subsecretarios"],
+ correct:2,
+ explanation:"Los Directores Generales gestionan áreas funcionalmente homogéneas, proponiendo proyectos, dirigiendo su ejecución y controlando su cumplimiento."},
+
+{q:"¿Qué competencia ejercen los Ministros respecto al personal en relación con faltas muy graves?",
+ options:["Pueden imponer la sanción de separación del servicio","Solo pueden imponer apercibimiento","No tienen potestad disciplinaria, corresponde al Subsecretario","Solo el Consejo de Ministros puede sancionar faltas muy graves"],
+ correct:0,
+ explanation:"Entre las competencias de los Ministros se incluye la imposición de la sanción de separación del servicio por faltas muy graves, además de ejercer la potestad reglamentaria y aprobar los estados de gasto de su Departamento."},
+
+{q:"¿Quién ejerce la potestad disciplinaria por faltas graves o muy graves del personal de un Ministerio, SALVO la sanción de separación del servicio?",
+ options:["El Subsecretario","El Secretario de Estado","El Director General","El Delegado del Gobierno"],
+ correct:0,
+ explanation:"El Subsecretario coordina la política de personal y ejerce la potestad disciplinaria por faltas graves o muy graves, exceptuando la sanción de separación del servicio, que corresponde al Ministro."},
+
+{q:"¿Qué órgano de la AGE tiene rango de Subsecretario y representa al Gobierno en una Comunidad Autónoma?",
+ options:["El Subdelegado del Gobierno","El Delegado del Gobierno","El Director Insular","El Secretario General Técnico"],
+ correct:1,
+ explanation:"El Delegado del Gobierno, con rango de Subsecretario, representa al Gobierno en la Comunidad Autónoma, ejerciendo la jefatura de las Fuerzas y Cuerpos de Seguridad del Estado en dicho territorio."},
+
+{q:"¿Qué rango tiene el Subdelegado del Gobierno y en qué ámbito territorial existe?",
+ options:["Rango de Subsecretario, existe en cada CCAA","Rango de Subdirector General, existe en cada provincia de las CCAA pluriprovinciales","Rango de Director General, existe en todas las islas","Rango de Ministro, existe en cada provincia"],
+ correct:1,
+ explanation:"El Subdelegado del Gobierno tiene rango de Subdirector General y existe en cada provincia de las Comunidades Autónomas pluriprovinciales, siendo nombrado por el Delegado entre funcionarios del Subgrupo A1."},
+
+{q:"¿Cómo se cubre la suplencia del Delegado del Gobierno?",
+ options:["Por el Presidente del Gobierno directamente","Por el Subdelegado que designe; en su defecto, el de la sede; en CCAA uniprovinciales sin subdelegado, por el Secretario General","Únicamente por el Secretario General Técnico del Ministerio del Interior","Por el Director Insular más próximo"],
+ correct:1,
+ explanation:"La suplencia del Delegado del Gobierno corresponde al Subdelegado que él designe; en su defecto, al Subdelegado de la sede de la Delegación; y en las CCAA uniprovinciales sin subdelegado, al Secretario General de la Delegación."},
+
+{q:"¿En qué islas existe la figura del Director Insular?",
+ options:["Mallorca, Tenerife y Gran Canaria","Menorca, Ibiza-Formentera, Lanzarote, Fuerteventura, La Palma, El Hierro y La Gomera","Únicamente en Mallorca","En todas las islas españolas sin excepción"],
+ correct:1,
+ explanation:"El Director Insular existe en Menorca, Ibiza-Formentera, Lanzarote, Fuerteventura, La Palma, El Hierro y La Gomera, es nombrado por el Delegado del Gobierno y ejerce competencias similares a las de un Subdelegado."},
+
+{q:"¿Quién suple al Director Insular en caso de ausencia?",
+ options:["El Delegado del Gobierno","El Secretario General de la Dirección Insular","El Subdelegado del Gobierno de otra provincia","El Presidente de la Comunidad Autónoma"],
+ correct:1,
+ explanation:"El Director Insular es suplido por el Secretario General de la Dirección Insular, de forma análoga a como el Subdelegado del Gobierno es suplido por el Secretario General de la Subdelegación."},
+
+{q:"¿Qué órgano coordina la administración periférica del Estado con los distintos ministerios?",
+ options:["CICAPE","CNAL","La Conferencia de Presidentes","La Comisión General de Secretarios de Estado y Subsecretarios"],
+ correct:0,
+ explanation:"El CICAPE (Comisión Interministerial de Coordinación de la Administración Periférica del Estado) coordina la administración periférica con los distintos ministerios."},
+
+{q:"¿En qué CCAA pluriprovinciales se constituye la Comisión Territorial de Asistencia al Delegado y quién la preside?",
+ options:["Presidida por el Subdelegado de mayor antigüedad","Presidida por el Delegado del Gobierno, con los Subdelegados como miembros","Presidida por el Presidente de la CCAA","Presidida por el Director Insular"],
+ correct:1,
+ explanation:"En las Comunidades Autónomas pluriprovinciales se constituye la Comisión Territorial de Asistencia al Delegado, presidida por el propio Delegado del Gobierno, con la participación de los Subdelegados."},
+
+{q:"¿Qué órgano es competente para la cooperación entre la AGE y la Administración Local?",
+ options:["CICAPE","CNAL (Comisión Nacional de Administración Local)","Conferencias Sectoriales","Comisiones Bilaterales"],
+ correct:1,
+ explanation:"La CNAL (Comisión Nacional de Administración Local) es el órgano de cooperación entre la AGE y la Administración Local."},
+
+{q:"¿Qué diferencia a las Conferencias Sectoriales de las Comisiones Bilaterales?",
+ options:["Las Conferencias Sectoriales son cooperación en sectores específicos; las Comisiones Bilaterales son entre el Estado y una CCAA concreta","Las Comisiones Bilaterales son órganos de cooperación multilateral entre todas las CCAA","Las Conferencias Sectoriales solo existen para temas de seguridad","No existe diferencia, son sinónimos"],
+ correct:0,
+ explanation:"Las Conferencias Sectoriales son órganos de cooperación en sectores específicos de actividad pública, mientras que las Comisiones Bilaterales son de cooperación entre el Estado y una Comunidad Autónoma concreta."},
+
+{q:"Los Secretarios de Estado pueden nombrar y cesar a los Subdirectores Generales de sus órganos dependientes. Además, ¿qué otras competencias tienen en materia económica?",
+ options:["Aprueban los Presupuestos Generales del Estado","Administran los créditos de sus órganos y resuelven recursos","Aprueban los estados de gasto de todo el Departamento","Controlan el gasto de las CCAA"],
+ correct:1,
+ explanation:"Los Secretarios de Estado administran los créditos de sus órganos y resuelven los recursos que les correspondan, además de nombrar y cesar a los Subdirectores Generales de sus órganos dependientes."},
+
+{q:"La 'ejecución de proyectos y la gestión ordinaria' corresponde, dentro de la jerarquía de la AGE, a:",
+ options:["Los Subdirectores Generales","Los Secretarios Generales","Los Ministros","Los Delegados del Gobierno"],
+ correct:0,
+ explanation:"Los Subdirectores Generales se encargan de la ejecución de proyectos y la gestión ordinaria, impulsando y supervisando dicha gestión bajo la supervisión del Director General."},
+
+{q:"El Delegado del Gobierno ejerce la potestad sancionadora y expropiatoria. Además, ¿qué obligación tiene respecto al Gobierno al final de cada año?",
+ options:["Presentar los presupuestos de la Delegación para el año siguiente","Informar anualmente al Gobierno sobre el funcionamiento de los servicios en la CCAA","Nombrar a los Subdelegados para el año entrante","Publicar en el BOE un informe de gestión"],
+ correct:1,
+ explanation:"El Delegado del Gobierno, además de la jefatura de las FCSE y la potestad sancionadora y expropiatoria, está obligado a informar anualmente al Gobierno sobre el funcionamiento de los servicios de la AGE en la Comunidad Autónoma."},
+
+{q:"¿Cuál de las siguientes funciones corresponde al Subdelegado del Gobierno?",
+ options:["Dirigir la política de defensa y a las Fuerzas Armadas","Coordinación con administraciones locales, dirección de las FCSE en la provincia, gestión de protección civil y supervisión de servicios de la AGE","Aprobar los Reales Decretos-leyes","Presidir la Comisión General de Secretarios de Estado y Subsecretarios"],
+ correct:1,
+ explanation:"El Subdelegado del Gobierno se encarga de la coordinación con las administraciones locales, la dirección de las FCSE en la provincia, la gestión de la protección civil y la supervisión de los servicios de la AGE."}
+],
+
+// ────────────────────────────────────────────────────────────
+// PÁGINA 3
+// ────────────────────────────────────────────────────────────
+3: [
+{q:"¿Qué dirige el Gobierno según el art. 97 CE?",
+ options:["Únicamente la política exterior","La política interior y exterior, la Administración civil y militar y la defensa del Estado","Solo la Administración civil","La política económica de las CCAA"],
+ correct:1,
+ explanation:"El Gobierno dirige la política interior y exterior, la Administración civil y militar y la defensa del Estado, ejerciendo la función ejecutiva y la potestad reglamentaria."},
+
+{q:"¿De quiénes se compone el Gobierno?",
+ options:["Presidente, Vicepresidente(s) y Ministros","Presidente, Secretarios de Estado y Subsecretarios","Rey, Presidente y Consejo de Estado","Presidente y Delegados del Gobierno"],
+ correct:0,
+ explanation:"El Gobierno se compone del Presidente, el Vicepresidente o Vicepresidentes (en su caso) y los Ministros."},
+
+{q:"¿Cuáles son los órganos COLEGIADOS del Gobierno?",
+ options:["Consejo de Estado y Consejo Económico y Social","Consejo de Ministros y Comisiones Delegadas del Gobierno","Secretariado del Gobierno y Gabinetes","Comisión General de SE y Subsecretarios"],
+ correct:1,
+ explanation:"Los órganos colegiados del Gobierno son el Consejo de Ministros y las Comisiones Delegadas del Gobierno. Los de colaboración y apoyo son la Comisión General de SE y Subsecretarios, el Secretariado del Gobierno, los Gabinetes y los Secretarios de Estado; y los consultivos son el Consejo de Estado y el Consejo Económico y Social."},
+
+{q:"¿Cuáles son los órganos CONSULTIVOS dentro de la organización del Gobierno?",
+ options:["Consejo de Ministros y Comisiones Delegadas","Secretariado del Gobierno y Gabinetes","Consejo de Estado y Consejo Económico y Social","Comisión General de SE y Subsecretarios"],
+ correct:2,
+ explanation:"Los órganos consultivos del Gobierno son el Consejo de Estado (supremo órgano consultivo) y el Consejo Económico y Social (consultivo en materia socioeconómica y laboral)."},
+
+{q:"¿Ante qué órgano plantea el Presidente del Gobierno la cuestión de confianza?",
+ options:["Ante el Senado","Ante el Consejo de Estado","Ante el Congreso de los Diputados","Ante el Tribunal Constitucional"],
+ correct:2,
+ explanation:"El Presidente del Gobierno plantea la cuestión de confianza ante el Congreso de los Diputados, previa deliberación del Consejo de Ministros."},
+
+{q:"¿Qué función del Presidente del Gobierno está relacionada con la disolución de las Cámaras o la convocatoria de referéndum consultivo?",
+ options:["Las decide directamente sin intervención de otro órgano","Las propone al Rey","Las propone al Consejo de Ministros","Las acuerda con el Consejo de Estado"],
+ correct:1,
+ explanation:"El Presidente del Gobierno propone al Rey la disolución de las Cámaras (Congreso y Senado, o ambas) y la convocatoria de un referéndum consultivo."},
+
+{q:"¿Quién dirige la política de defensa y a las Fuerzas Armadas?",
+ options:["El Ministro de Defensa exclusivamente","El Presidente del Gobierno","El Consejo de Ministros en pleno","El Vicepresidente designado al efecto"],
+ correct:1,
+ explanation:"El Presidente del Gobierno dirige la política de defensa y a las Fuerzas Armadas, función que se encuadra entre sus atribuciones de dirección de la acción de Gobierno."},
+
+{q:"¿Mediante qué instrumento crea, modifica y suprime el Presidente del Gobierno los Departamentos ministeriales?",
+ options:["Ley Orgánica","Real Decreto","Decreto-ley aprobado en Consejo de Ministros","Orden del Ministerio de la Presidencia"],
+ correct:1,
+ explanation:"El Presidente del Gobierno crea, modifica y suprime los Departamentos ministeriales y las Secretarías de Estado mediante Real Decreto, y también refrenda actos del Rey e interpone recursos de inconstitucionalidad."},
+
+{q:"¿Puede haber más de un Vicepresidente del Gobierno?",
+ options:["No, solo puede haber uno","Sí, puede haber uno, varios o ninguno, según decida el Presidente","Siempre debe haber al menos dos","El número lo fija el Consejo de Estado"],
+ correct:1,
+ explanation:"Puede haber uno, varios Vicepresidentes o ninguno. Sus funciones son determinadas por el Presidente, y si el Vicepresidente es titular de un Ministerio, ostenta también la condición de Ministro."},
+
+{q:"¿Pueden existir Ministros 'sin cartera'?",
+ options:["No, todos los Ministros deben estar al frente de un Departamento","Sí, puede haber Ministros sin cartera a los que el Presidente encomiende funciones específicas","Solo si lo autoriza el Congreso de los Diputados","Sí, pero solo si existe un Vicepresidente"],
+ correct:1,
+ explanation:"El ordenamiento prevé la posibilidad de Ministros sin cartera, a quienes el Presidente les encomiende responsabilidades gubernamentales concretas sin estar al frente de un Departamento ministerial."},
+
+{q:"¿Quién preside el Consejo de Ministros y quién actúa como secretario?",
+ options:["Lo preside el Vicepresidente; el Subsecretario de Presidencia actúa como secretario","Lo preside el Presidente del Gobierno; el Ministro de la Presidencia actúa como secretario","Lo preside el Ministro de turno; el Secretariado del Gobierno actúa como secretario","Lo preside el Presidente del Congreso; el Presidente del Gobierno actúa como secretario"],
+ correct:1,
+ explanation:"El Consejo de Ministros está presidido por el Presidente del Gobierno, actuando el Ministro de la Presidencia como secretario. Sus deliberaciones son secretas y no cabe recurso administrativo contra sus decisiones."},
+
+{q:"¿Cuántas Comisiones Delegadas del Gobierno existen actualmente y cuáles son sus ámbitos?",
+ options:["3: Defensa, Exteriores e Interior","5: Asuntos Económicos, Inteligencia, Reto Demográfico, Agenda 2030 y Consejo de Seguridad Nacional","7: una por cada Vicepresidencia","2: Economía y Seguridad Nacional"],
+ correct:1,
+ explanation:"Actualmente existen 5 Comisiones Delegadas: Asuntos Económicos, Inteligencia, Reto Demográfico, Agenda 2030 y Consejo de Seguridad Nacional, creadas por RD del Consejo de Ministros a propuesta del Presidente."},
+
+{q:"¿Quién forma la Comisión General de Secretarios de Estado y Subsecretarios y quién la preside?",
+ options:["Solo los Ministros, presidida por el Presidente del Gobierno","Secretarios de Estado, Subsecretarios y el Abogado General del Estado, presidida por un Vicepresidente o el Ministro de la Presidencia","Únicamente los Subsecretarios, presidida por el Subsecretario de la Presidencia","Los Directores Generales, presidida por el Secretariado del Gobierno"],
+ correct:1,
+ explanation:"La Comisión General de Secretarios de Estado y Subsecretarios está formada por los Secretarios de Estado, los Subsecretarios y el Abogado General del Estado, y la preside un Vicepresidente o, en su defecto, el Ministro de la Presidencia. Sus deliberaciones son reservadas."},
+
+{q:"¿A qué Ministerio está integrado el Secretariado del Gobierno y cuál es una de sus funciones principales?",
+ options:["Al Ministerio del Interior; tramita expedientes disciplinarios","Al Ministerio de la Presidencia; vela por la publicación en el BOE de los actos del Gobierno y del Rey","Al Ministerio de Justicia; emite dictámenes vinculantes","Al Ministerio de Hacienda; aprueba los PGE"],
+ correct:1,
+ explanation:"El Secretariado del Gobierno está integrado en el Ministerio de la Presidencia, presta apoyo técnico y administrativo al Consejo de Ministros y a las Comisiones Delegadas, tramita los actos del Rey y del Presidente, y vela por su correcta publicación en el BOE."},
+
+{q:"Respecto a los Gabinetes de apoyo político y técnico, ¿pueden sus Directores dictar actos administrativos?",
+ options:["No, ningún miembro del Gabinete puede dictar actos administrativos","Sí, sus Directores pueden dictar actos administrativos propios de la gestión de su unidad, aunque el Gabinete en sí no adopta resoluciones","Solo si lo autoriza el Consejo de Estado","Sí, pero únicamente en materia de personal"],
+ correct:1,
+ explanation:"Los Gabinetes ofrecen apoyo político y técnico y no tienen capacidad para adoptar resoluciones como órgano colegiado; sin embargo, sus Directores sí pueden dictar actos administrativos propios de la gestión de su unidad."},
+
+{q:"¿Cómo se conforma el Consejo de Estado y qué tipo de dictámenes emite con carácter general?",
+ options:["Pleno, Comisión Permanente y Comisión de Estudios; emite dictámenes vinculantes siempre","Pleno, Comisión Permanente y Comisión de Estudios; emite dictámenes no vinculantes salvo que la ley diga lo contrario","Solo Pleno; emite dictámenes vinculantes en materia económica","Pleno y Comisión Delegada; emite informes anuales al Congreso"],
+ correct:1,
+ explanation:"El Consejo de Estado, supremo órgano consultivo, está formado por el Pleno, la Comisión Permanente y la Comisión de Estudios. Sus dictámenes son no vinculantes, salvo que una ley disponga expresamente lo contrario."},
+
+{q:"¿Pueden las deliberaciones del Consejo de Ministros ser objeto de recurso administrativo?",
+ options:["Sí, siempre que el afectado sea un particular","No, sus deliberaciones son secretas y no cabe recurso administrativo contra sus decisiones","Sí, ante el Consejo de Estado","Solo si el acuerdo infringe la Constitución"],
+ correct:1,
+ explanation:"Las deliberaciones del Consejo de Ministros son secretas y no cabe recurso administrativo contra sus decisiones (aunque sí puede haber control judicial de sus actos materiales)."},
+
+{q:"¿Cuál es la diferencia entre el Consejo de Estado y el Consejo Económico y Social en cuanto a su ámbito consultivo?",
+ options:["El Consejo de Estado se ocupa de economía; el CES de cuestiones jurídicas","El Consejo de Estado es el supremo órgano consultivo general; el CES es consultivo en materia socioeconómica y laboral","Ambos tienen el mismo ámbito y son intercambiables","El CES asesora al Congreso; el Consejo de Estado al Gobierno"],
+ correct:1,
+ explanation:"El Consejo de Estado es el supremo órgano consultivo del Gobierno con competencia general, mientras que el Consejo Económico y Social (CES) tiene una función consultiva específica en materia socioeconómica y laboral."},
+
+{q:"¿Pueden las Comisiones Delegadas del Gobierno tomar decisiones con efectos jurídicos propios?",
+ options:["No, solo preparan asuntos para el Consejo de Ministros","Sí, pueden aprobar disposiciones y resolver asuntos en las materias que les han sido delegadas","Solo si lo autoriza el Tribunal Constitucional","Solo el Consejo de Ministros puede tomar decisiones con efectos jurídicos"],
+ correct:1,
+ explanation:"Las Comisiones Delegadas del Gobierno pueden aprobar disposiciones y resolver asuntos en las materias de su competencia delegada, con deliberaciones que son secretas, como las del Consejo de Ministros."},
+
+{q:"¿Cuál es el quórum necesario para que el Consejo de Ministros se constituya válidamente?",
+ options:["Mayoría absoluta de sus miembros","La presencia del Presidente y del Ministro de la Presidencia es suficiente","No se requiere quórum especial, basta la presencia del Presidente y un número suficiente de Ministros según el Reglamento","Todos los Ministros deben estar presentes"],
+ correct:2,
+ explanation:"El Consejo de Ministros no exige un quórum especial expresamente fijado por ley más allá de la dirección presidencial; su funcionamiento se rige por lo establecido en su reglamento interno y la presidencia del Presidente es elemento esencial."}
+],
+
+// ────────────────────────────────────────────────────────────
+// PÁGINA 4
+// ────────────────────────────────────────────────────────────
+4: [
+{q:"¿Qué tipo de misión de la AGE en el exterior representa a España ante un Estado de forma permanente y está dirigida por un embajador?",
+ options:["Misión diplomática especial","Misión diplomática permanente","Representación permanente","Oficina consular"],
+ correct:1,
+ explanation:"Las misiones diplomáticas permanentes representan a España ante otros Estados de forma estable y están dirigidas por un embajador."},
+
+{q:"¿Qué tipo de misión de la AGE en el exterior se encarga de tareas concretas ante organismos o conferencias internacionales?",
+ options:["Misión diplomática permanente","Misión diplomática especial","Representación permanente","Delegación"],
+ correct:1,
+ explanation:"Las misiones diplomáticas especiales se encargan de tareas concretas ante organismos internacionales o conferencias, a diferencia de las permanentes, que representan a España de forma estable ante un Estado."},
+
+{q:"¿Qué órgano de la AGE en el exterior representa a España ante organismos internacionales y está liderado por embajadores representantes permanentes?",
+ options:["Oficinas consulares","Delegaciones","Representaciones permanentes","Misiones diplomáticas especiales"],
+ correct:2,
+ explanation:"Las representaciones permanentes representan a España ante organismos internacionales y están lideradas por embajadores representantes permanentes."},
+
+{q:"¿Bajo la jefatura de quién pueden actuar las Delegaciones de la AGE en el exterior en actos específicos?",
+ options:["Únicamente del Ministro de Exteriores","Del Rey, el Presidente del Gobierno o el Ministro de Asuntos Exteriores","Del Delegado del Gobierno de la CCAA","Del embajador permanente ante la ONU"],
+ correct:1,
+ explanation:"Las Delegaciones representan a España en actos específicos bajo la jefatura del Rey, del Presidente del Gobierno o del Ministro de Asuntos Exteriores, según corresponda al acto."},
+
+{q:"¿Quién dirige las Oficinas consulares y cuál es su función principal?",
+ options:["Un embajador; representan a España ante un organismo internacional","Un cónsul; asisten a los ciudadanos españoles en el extranjero","Un Subdelegado del Gobierno; coordinan la política exterior","Un Director General; gestionan tratados internacionales"],
+ correct:1,
+ explanation:"Las Oficinas consulares están dirigidas por cónsules y tienen como función principal asistir a los ciudadanos españoles que se encuentran en el extranjero."},
+
+{q:"¿En quiénes puede delegar el Presidente del Gobierno sus competencias?",
+ options:["En cualquier funcionario del Subgrupo A1","En los Vicepresidentes y Ministros","En los Subdelegados del Gobierno únicamente","En el Consejo de Estado"],
+ correct:1,
+ explanation:"El Presidente del Gobierno puede delegar sus competencias en los Vicepresidentes y en los Ministros, dentro de los límites legalmente establecidos."},
+
+{q:"¿En qué órganos pueden los Ministros delegar sus competencias?",
+ options:["En los Secretarios de Estado, Subsecretarios, Delegados del Gobierno y órganos directivos","Únicamente en los Subdirectores Generales","En el Consejo de Estado y el Consejo Económico y Social","En las Cortes Generales"],
+ correct:0,
+ explanation:"Los Ministros pueden delegar sus competencias en los Secretarios de Estado, Subsecretarios, Delegados del Gobierno y órganos directivos de su Departamento."},
+
+{q:"¿Cuáles de las siguientes competencias NO son delegables?",
+ options:["Las competencias de gestión ordinaria de las Subdirecciones Generales","Las competencias constitucionales, el nombramiento de altos cargos, las de órganos colegiados (salvo excepción legal) y las prohibidas por ley","Las competencias de los Secretarios de Estado en materia de contratación","Las competencias de los Directores Generales sobre proyectos"],
+ correct:1,
+ explanation:"No son delegables las competencias atribuidas directamente por la Constitución, el nombramiento de altos cargos, las de órganos colegiados (salvo que la ley lo permita expresamente) y aquellas cuya delegación esté prohibida por ley."},
+
+{q:"¿En qué órganos puede el Consejo de Ministros delegar funciones administrativas?",
+ options:["En las Cortes Generales","En las Comisiones Delegadas del Gobierno","En el Consejo de Estado","En los Delegados del Gobierno de las CCAA"],
+ correct:1,
+ explanation:"El Consejo de Ministros puede delegar funciones administrativas en las Comisiones Delegadas del Gobierno, dentro de los límites que establezca la normativa correspondiente."},
+
+{q:"¿A qué tipo de ordenamiento jurídico está sujeto el Gobierno en su actuación?",
+ options:["Únicamente a sus propios reglamentos internos","A la Constitución y al ordenamiento jurídico en su totalidad","Solo a las Cortes Generales","Solo al Tribunal Constitucional"],
+ correct:1,
+ explanation:"El Gobierno, en el ejercicio de sus funciones, está sujeto a la Constitución y al resto del ordenamiento jurídico, lo que se concreta a través de los controles político y judicial."},
+
+{q:"¿Quién ejerce el control político del Gobierno?",
+ options:["El Tribunal Constitucional","Las Cortes Generales","El Consejo de Estado","La Comisión General de Secretarios de Estado y Subsecretarios"],
+ correct:1,
+ explanation:"El control político del Gobierno corresponde a las Cortes Generales, mientras que el control judicial se ejerce mediante los recursos ante la jurisdicción contencioso-administrativa y, en su caso, ante el Tribunal Constitucional."},
+
+{q:"¿Ante qué jurisdicción se interponen los recursos para el control judicial de los actos del Gobierno, con carácter general?",
+ options:["Jurisdicción civil","Jurisdicción contencioso-administrativa y, según proceda, ante el Tribunal Constitucional","Jurisdicción penal exclusivamente","Jurisdicción social"],
+ correct:1,
+ explanation:"El control judicial del Gobierno se realiza mediante recursos ante la jurisdicción contencioso-administrativa y, cuando proceda (por ejemplo, recursos de inconstitucionalidad), ante el Tribunal Constitucional."},
+
+{q:"Si una competencia está atribuida directamente por la Constitución a un órgano, ¿puede dicho órgano delegarla en otro?",
+ options:["Sí, siempre que lo autorice el Consejo de Ministros","No, las competencias atribuidas directamente por la Constitución son indelegables","Sí, pero solo en el Vicepresidente","Sí, si lo solicita el Congreso"],
+ correct:1,
+ explanation:"Las competencias atribuidas directamente por la Constitución a un órgano son indelegables, junto con el nombramiento de altos cargos, las competencias de órganos colegiados (salvo excepción legal) y las que una norma con rango de ley prohíba delegar."},
+
+{q:"¿Qué tipo de misión de la AGE en el exterior NO está dirigida por un embajador, sino por un cónsul?",
+ options:["Misión diplomática permanente","Representación permanente","Oficina consular","Misión diplomática especial"],
+ correct:2,
+ explanation:"Las Oficinas consulares, dirigidas por cónsules, se diferencian de las misiones diplomáticas (permanentes y especiales) y de las representaciones permanentes, que están dirigidas por embajadores."},
+
+{q:"¿Qué órgano comprueba la conformidad de la actuación normativa del Gobierno con la Constitución mediante recursos de inconstitucionalidad?",
+ options:["El Consejo de Estado","El Tribunal Constitucional","Las Cortes Generales en exclusiva","El Defensor del Pueblo"],
+ correct:1,
+ explanation:"El Tribunal Constitucional conoce de los recursos de inconstitucionalidad, que el Presidente del Gobierno puede interponer y que constituyen una vía de control de la actuación normativa con incidencia constitucional."},
+
+{q:"Las Delegaciones de la AGE en el exterior, ¿se diferencian de las Delegaciones del Gobierno en las CCAA?",
+ options:["No, son la misma figura con distinto nombre","Sí: las del exterior son representaciones en actos específicos bajo jefatura del Rey, Presidente o Ministro de Exteriores; las de las CCAA son órganos territoriales con rango de Subsecretario","Sí, pero solo en el aspecto presupuestario","Ambas dependen del Consejo de Estado"],
+ correct:1,
+ explanation:"Son figuras distintas: en el ámbito exterior, las 'Delegaciones' son representaciones de España en actos específicos bajo la jefatura del Rey, el Presidente o el Ministro de Asuntos Exteriores; mientras que los Delegados del Gobierno en las CCAA son órganos territoriales con rango de Subsecretario."},
+
+{q:"¿Puede el Gobierno delegar competencias de carácter constitucional en las Comisiones Delegadas?",
+ options:["Sí, sin ningún límite","No; el Consejo de Ministros solo puede delegar funciones administrativas, no competencias constitucionales","Sí, si lo aprueba el Tribunal Constitucional","Sí, solo en la Comisión de Asuntos Económicos"],
+ correct:1,
+ explanation:"El Consejo de Ministros puede delegar funciones administrativas en las Comisiones Delegadas, pero las competencias constitucionales son indelegables en cualquier caso."},
+
+{q:"En el régimen de control del Gobierno, ¿qué relación existe entre el control político y el control judicial?",
+ options:["Son excluyentes: solo puede aplicarse uno de los dos","Son complementarios: el control político corresponde a las Cortes Generales y el judicial a los tribunales","El control judicial sustituye siempre al político","Solo existe control judicial; el político no está previsto"],
+ correct:1,
+ explanation:"El Gobierno está sujeto a un doble control complementario: el control político, ejercido por las Cortes Generales, y el control judicial, ejercido mediante recursos ante la jurisdicción contencioso-administrativa y, cuando proceda, ante el Tribunal Constitucional."},
+
+{q:"¿En qué figura de la AGE en el exterior recae la dirección de la política de protección consular de los ciudadanos españoles?",
+ options:["En el embajador de la misión diplomática permanente","En el cónsul, titular de la Oficina consular","En el Delegado del Gobierno de la CCAA de origen del ciudadano","En el Secretario de Estado de Asuntos Exteriores"],
+ correct:1,
+ explanation:"La asistencia y protección de los ciudadanos españoles en el extranjero corresponde al cónsul, titular de la Oficina consular, que es la figura de la AGE en el exterior con funciones específicas de protección consular."},
+
+{q:"¿Qué consecuencia tiene para la validez de los actos del órgano delegante el hecho de que un órgano delegue competencias no delegables?",
+ options:["El acto delegado es válido si el delegante lo ratifica","El acto es nulo de pleno derecho al haberse ejercido una competencia sin cobertura normativa suficiente","El acto es anulable pero no nulo","El acto surte efectos provisionales hasta que el Tribunal Constitucional se pronuncie"],
+ correct:1,
+ explanation:"Si un órgano delega competencias que la ley considera indelegables y el órgano delegado actúa, el acto es nulo de pleno derecho por haber sido dictado por órgano manifiestamente incompetente, conforme a los principios generales de nulidad en el Derecho administrativo."}
+]
+
+};
+
+// ────────────────────────────────────────────────────────────
+// LÓGICA DE LA APLICACIÓN
+// ────────────────────────────────────────────────────────────
+const colorMap = { 1:'p1', 2:'p2', 3:'p3', 4:'p4' };
+let currentPage = null, currentQuestion = 0, userAnswers = [], answered = false;
+
+function startQuiz(page){
+  currentPage = page;
+  currentQuestion = 0;
+  userAnswers = new Array(QUESTION_BANK[page].length).fill(null);
+  answered = false;
+
+  const qc = document.getElementById('quiz-container');
+  qc.className = 'active ' + colorMap[page];
+
+  const fill = document.getElementById('progress-fill');
+  const p1c = getComputedStyle(document.documentElement).getPropertyValue('--p1').trim();
+  const p2c = getComputedStyle(document.documentElement).getPropertyValue('--p2').trim();
+  const p3c = getComputedStyle(document.documentElement).getPropertyValue('--p3').trim();
+  const p4c = getComputedStyle(document.documentElement).getPropertyValue('--p4').trim();
+  const colors = { 1:p1c, 2:p2c, 3:p3c, 4:p4c };
+  fill.style.background = colors[page];
+
+  document.getElementById('page-selector').style.display = 'none';
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('quiz-title').innerHTML = `Test · <span>Página ${page}</span>`;
+  renderQuestion();
+}
+
+function goBack(){
+  document.getElementById('page-selector').style.display = 'grid';
+  document.getElementById('quiz-container').classList.remove('active');
+  document.getElementById('result-screen').classList.remove('show');
+  currentPage = null;
+}
+
+function restartQuiz(){ startQuiz(currentPage); }
+
+function renderQuestion(){
+  const data = QUESTION_BANK[currentPage];
+  const q = data[currentQuestion];
+  const total = data.length;
+  answered = userAnswers[currentQuestion] !== null;
+
+  const pct = (currentQuestion / total) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `Pregunta ${currentQuestion+1}/${total}`;
+
+  const letters = ['A','B','C','D'];
+  let optsHtml = '';
+  q.options.forEach((opt, idx) => {
+    let cls = 'option';
+    if(answered){
+      cls += ' disabled';
+      if(idx === q.correct) cls += ' correct';
+      else if(idx === userAnswers[currentQuestion] && idx !== q.correct) cls += ' incorrect';
+    }
+    optsHtml += `<div class="${cls}" data-idx="${idx}" onclick="selectOption(${idx})">
+        <div class="letter">${letters[idx]}</div>
+        <div>${opt}</div>
+      </div>`;
+  });
+
+  let feedbackHtml = '';
+  if(answered){
+    const isCorrect = userAnswers[currentQuestion] === q.correct;
+    feedbackHtml = `<div class="feedback show ${isCorrect ? 'ok':'bad'}">
+        ${isCorrect ? '✅ <b>¡Correcto!</b>' : '❌ <b>Incorrecto.</b>'} ${q.explanation}
+      </div>`;
+  }
+
+  const html = `
+    <div class="question-card">
+      <div class="qnum">Pregunta ${currentQuestion+1} de ${total}</div>
+      <div class="qtext">${q.q}</div>
+      <div class="options">${optsHtml}</div>
+      ${feedbackHtml}
+      <div class="nav-buttons">
+        <button class="nav-btn secondary" onclick="prevQuestion()" ${currentQuestion===0 ? 'disabled':''}>⬅ Anterior</button>
+        <button class="nav-btn" id="next-btn" onclick="nextQuestion()" ${!answered ? 'disabled':''}>
+          ${currentQuestion === total-1 ? 'Ver resultados 🏁' : 'Siguiente ➡'}
+        </button>
+      </div>
+    </div>
+  `;
+  document.getElementById('question-area').innerHTML = html;
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('question-area').style.display = 'block';
+}
+
+function selectOption(idx){
+  if(answered) return;
+  userAnswers[currentQuestion] = idx;
+  answered = true;
+  renderQuestion();
+}
+
+function nextQuestion(){
+  const data = QUESTION_BANK[currentPage];
+  if(currentQuestion < data.length - 1){
+    currentQuestion++;
+    answered = userAnswers[currentQuestion] !== null;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function prevQuestion(){
+  if(currentQuestion > 0){
+    currentQuestion--;
+    answered = userAnswers[currentQuestion] !== null;
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  const data = QUESTION_BANK[currentPage];
+  let correctCount = 0;
+  data.forEach((q,i)=>{ if(userAnswers[i] === q.correct) correctCount++; });
+
+  document.getElementById('question-area').style.display = 'none';
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-text').textContent = `${data.length}/${data.length}`;
+
+  const pct = Math.round((correctCount/data.length)*100);
+  let msg = '';
+  if(pct === 100) msg = '🌟 ¡Perfecto! Dominas esta página al 100%.';
+  else if(pct >= 85) msg = '🎯 Muy buen nivel. Repasa los fallos y a por el 100%.';
+  else if(pct >= 60) msg = '📘 Bien, pero repasa algunos conceptos clave antes de continuar.';
+  else msg = '📖 Te recomendamos repasar la página antes de seguir adelante.';
+
+  document.getElementById('big-score').textContent = `${correctCount}/${data.length}`;
+  document.getElementById('result-screen').querySelector('h2').textContent = pct === 100 ? '¡Página superada! 🏆' : 'Resultado del test';
+  document.getElementById('result-msg').textContent = msg + ` (${pct}%)`;
+
+  let breakdownHtml = '<h3>📊 Revisión de preguntas</h3>';
+  data.forEach((q,i)=>{
+    const ok = userAnswers[i] === q.correct;
+    breakdownHtml += `<div class="topic-row">
+        <span>Pregunta ${i+1}: ${q.q.substring(0,55)}…</span>
+        <span class="${ok ? 'tag-good':'tag-bad'}">${ok ? '✔':'✘'}</span>
+      </div>`;
+  });
+  document.getElementById('topic-breakdown').innerHTML = breakdownHtml;
+  document.getElementById('result-screen').classList.add('show');
+
+  const pill = document.getElementById(`score-pill-${currentPage}`);
+  pill.textContent = `Última: ${correctCount}/${data.length} (${pct}%)`;
+  pill.classList.add('show');
+  if(pct === 100) pill.style.background = 'rgba(6,214,160,0.15)';
+  else if(pct >= 60) pill.style.background = 'rgba(255,209,102,0.15)';
+  else pill.style.background = 'rgba(239,71,111,0.15)';
+}
+</script>
+</body>
+</html>

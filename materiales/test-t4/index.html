@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST NIVEL DIOS — Tema 4: La Unión Europea</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@700;800&display=swap');
+
+  :root {
+    --bg: #f7f5ff;
+    --card: #ffffff;
+    --accent1: #b8a9f8;
+    --accent2: #fbc4ab;
+    --accent3: #a8d8b9;
+    --accent4: #fde68a;
+    --accent5: #f9a8d4;
+    --txt: #2d2640;
+    --txt-light: #7c6f9a;
+    --correct-bg: #d1fae5;
+    --correct-border: #34d399;
+    --wrong-bg: #ffe4e6;
+    --wrong-border: #f87171;
+    --selected-bg: #ede9fe;
+    --selected-border: #7c3aed;
+    --progress-h: 6px;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(100,70,200,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--txt);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  header {
+    background: linear-gradient(135deg, #c4b5fd 0%, #fbcfe8 50%, #a5f3c0 100%);
+    padding: 28px 24px 22px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(120,80,220,0.12);
+  }
+  header h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
+    font-weight: 800;
+    color: #3b0764;
+    letter-spacing: -0.5px;
+  }
+  header p.subtitle {
+    font-size: 0.78rem;
+    color: #6b21a8;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  #progress-wrap {
+    background: rgba(255,255,255,0.6);
+    padding: 10px 24px 6px;
+    position: sticky;
+    top: 78px;
+    z-index: 99;
+  }
+  #progress-bar-outer {
+    background: #e9e3ff;
+    border-radius: 99px;
+    height: var(--progress-h);
+    overflow: hidden;
+    width: 100%;
+  }
+  #progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, #7c3aed, #ec4899);
+    border-radius: 99px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  #progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--txt-light);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  #score-display {
+    font-size: 0.7rem;
+    color: #7c3aed;
+    font-weight: 700;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+
+  .category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+  }
+
+  .question-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 24px 20px;
+    animation: slideIn 0.35s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-number {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--txt-light);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: clamp(0.92rem, 2.5vw, 1.05rem);
+    font-weight: 600;
+    line-height: 1.55;
+    color: var(--txt);
+    margin-bottom: 20px;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+  }
+
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 13px 16px;
+    border-radius: 12px;
+    border: 2px solid #e8e0ff;
+    background: #faf8ff;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--txt);
+    line-height: 1.45;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent1);
+    background: var(--selected-bg);
+    transform: translateX(2px);
+  }
+  .option-letter {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ede9fe;
+    color: #6d28d9;
+    font-weight: 700;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .option-btn.correct { border-color: var(--correct-border); background: var(--correct-bg); }
+  .option-btn.correct .option-letter { background: #34d399; color: #fff; }
+  .option-btn.wrong { border-color: var(--wrong-border); background: var(--wrong-bg); }
+  .option-btn.wrong .option-letter { background: #f87171; color: #fff; }
+  .option-btn:disabled { cursor: default; }
+
+  .explanation {
+    margin-top: 16px;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    display: none;
+    border-left: 4px solid;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+  .explanation.correct-exp { background: #ecfdf5; border-color: #34d399; color: #065f46; }
+  .explanation.wrong-exp { background: #fff1f2; border-color: #f87171; color: #9f1239; }
+  .explanation strong { font-weight: 700; }
+
+  #next-btn {
+    display: none;
+    margin-top: 18px;
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #7c3aed, #db2777);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    letter-spacing: 0.3px;
+  }
+  #next-btn:hover { opacity: 0.88; }
+
+  #results-screen {
+    display: none;
+    text-align: center;
+    padding: 20px 16px 60px;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: slideIn 0.4s ease;
+  }
+  .results-trophy { font-size: 4rem; margin-bottom: 12px; }
+  .results-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #3b0764;
+    margin-bottom: 8px;
+  }
+  .results-score {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 12px 0;
+  }
+  .results-detail { font-size: 0.88rem; color: var(--txt-light); margin-bottom: 28px; line-height: 1.6; }
+  .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 28px; }
+  .result-stat { background: var(--card); border-radius: var(--radius); padding: 16px 12px; box-shadow: var(--shadow); }
+  .result-stat .stat-num { font-family: 'Sora', sans-serif; font-size: 1.6rem; font-weight: 800; }
+  .result-stat .stat-lbl { font-size: 0.72rem; color: var(--txt-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .results-msg { background: linear-gradient(135deg, #ede9fe, #fce7f3); border-radius: var(--radius); padding: 16px 20px; font-size: 0.85rem; color: #4c1d95; font-weight: 500; margin-bottom: 24px; line-height: 1.55; }
+  #restart-btn { padding: 14px 36px; border-radius: 14px; border: none; background: linear-gradient(135deg, #7c3aed, #db2777); color: #fff; font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s; margin-top: 8px; }
+  #restart-btn:hover { opacity: 0.88; }
+
+  .cat-tratados   { background: #ede9fe; color: #5b21b6; }
+  .cat-inst       { background: #fce7f3; color: #9d174d; }
+  .cat-derecho    { background: #d1fae5; color: #065f46; }
+  .cat-paises     { background: #fef3c7; color: #92400e; }
+  .cat-agencias   { background: #e0f2fe; color: #0c4a6e; }
+  .cat-schengen   { background: #f3e8ff; color: #6b21a8; }
+  .cat-misc       { background: #fff1f2; color: #9f1239; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ TEST NIVEL DIOS — Tema 4: La Unión Europea</h1>
+  <p class="subtitle">Escala Básica CNP · Distractores = respuestas correctas de otras preguntas</p>
+</header>
+
+<div id="progress-wrap">
+  <div id="progress-bar-outer"><div id="progress-bar-inner"></div></div>
+  <div id="progress-label">
+    <span id="q-counter">Pregunta 1 / <span id="total-q">?</span></span>
+    <span id="score-display">✓ 0 &nbsp;✗ 0</span>
+  </div>
+</div>
+
+<main>
+  <div id="quiz-area">
+    <span class="category-badge" id="cat-badge"></span>
+    <div class="question-card">
+      <div class="q-number" id="q-num-label"></div>
+      <div class="q-text" id="q-text"></div>
+      <ul class="options-list" id="options-list"></ul>
+      <div class="explanation" id="explanation"></div>
+      <button id="next-btn">Siguiente pregunta →</button>
+    </div>
+  </div>
+
+  <div id="results-screen">
+    <div class="results-trophy" id="trophy-emoji">🏆</div>
+    <div class="results-title" id="results-title">¡Test completado!</div>
+    <div class="results-score" id="results-score"></div>
+    <div class="results-detail" id="results-detail"></div>
+    <div class="results-grid">
+      <div class="result-stat"><div class="stat-num" style="color:#34d399" id="stat-correct">0</div><div class="stat-lbl">Correctas</div></div>
+      <div class="result-stat"><div class="stat-num" style="color:#f87171" id="stat-wrong">0</div><div class="stat-lbl">Incorrectas</div></div>
+      <div class="result-stat"><div class="stat-num" style="color:#7c3aed" id="stat-total">0</div><div class="stat-lbl">Total preguntas</div></div>
+      <div class="result-stat"><div class="stat-num" style="color:#db2777" id="stat-pct">0%</div><div class="stat-lbl">Precisión</div></div>
+    </div>
+    <div class="results-msg" id="results-msg"></div>
+    <button id="restart-btn" onclick="startQuiz()">🔄 Repetir test</button>
+  </div>
+</main>
+
+<script>
+const PREGUNTAS = [
+
+// ── BLOQUE 1: TRATADOS ─────────────────────────────────────────────
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿En qué fecha entró en vigor el Tratado de París (CECA)?",
+ opts:["23/07/1952","01/01/1958","01/07/1967"],correct:0,
+ exp:"El Tratado de París se <strong>firmó el 18/04/1951</strong> y entró en vigor el <strong>23/07/1952</strong>. El 01/01/1958 corresponde al Tratado de Roma y el 01/07/1967 al Tratado de Fusión."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"El Tratado de Roma (1957) creó la CEE y además la Comunidad Europea de la Energía Atómica. ¿Cómo se abrevia esta segunda?",
+ opts:["EURATOM","CECA","CAAS"],correct:0,
+ exp:"<strong>EURATOM</strong> (Comunidad Europea de la Energía Atómica) fue creada por el Tratado de Roma en 1957. La CECA ya existía desde 1951 y el CAAS es el Convenio de Aplicación del Acuerdo Schengen."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Cuál fue el objetivo principal del Tratado de Bruselas / Tratado de Fusión (1965)?",
+ opts:["Fusionar las instituciones ejecutivas de CECA, CEE y EURATOM en un único Consejo y Comisión","Crear el mercado interior con libre circulación de personas","Establecer los tres pilares de la UE"],correct:0,
+ exp:"El Tratado de Fusión <strong>unificó los ejecutivos</strong> de las tres Comunidades en una sola Comisión y un solo Consejo. El mercado interior se consolidó en el Acta Única y los tres pilares son de Maastricht."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Qué reforma introdujo el Acta Única Europea (1986) en relación con el Parlamento Europeo?",
+ opts:["Oficializó el nombre 'Parlamento Europeo' e introdujo los procedimientos de dictamen conforme y cooperación","Le otorgó el derecho de aprobación del Presidente de la Comisión","Equiparó sus poderes legislativos con los del Consejo"],correct:0,
+ exp:"El Acta Única hizo oficial el nombre <strong>'Parlamento Europeo'</strong> e introdujo los procedimientos de <strong>dictamen conforme y cooperación</strong>. La aprobación del Presidente la otorgó Ámsterdam y la equiparación de poderes corresponde a Lisboa."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"El Tratado de Maastricht estructuró la UE en tres pilares. ¿Cuál era el contenido del 3.er pilar?",
+ opts:["Cooperación en Justicia y Asuntos de Interior (JAI), incluida la creación de Europol","Política Exterior y Seguridad Común (PESC)","Comunidades Europeas, mercado único y unión económica y monetaria"],correct:0,
+ exp:"El <strong>3.er pilar</strong> era la <strong>Cooperación en JAI</strong>: fronteras, terrorismo, tráfico de drogas, inmigración irregular y la <strong>creación de Europol</strong>. El 2.º era la PESC y el 1.º las Comunidades Europeas."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Qué requisito político exigen los criterios de Copenhague (1993) para la adhesión a la UE?",
+ opts:["Gobiernos democráticos instaurados","Economía de mercado viable","Instituciones eficaces para cumplir el acervo comunitario"],correct:0,
+ exp:"El <strong>criterio político</strong> de Copenhague exige <strong>democracia, Estado de derecho y respeto de los derechos humanos</strong>. El económico pide economía de mercado viable y el de acervo, capacidad de aplicar el derecho de la UE."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Qué cargo clave en política exterior creó el Tratado de Ámsterdam (1997)?",
+ opts:["Alto Representante de Política Exterior y Seguridad Común (Mr. PESC)","Presidente del Consejo Europeo","Servicio Europeo de Acción Exterior (SEAE)"],correct:0,
+ exp:"Ámsterdam creó el cargo de <strong>Alto Representante PESC</strong>. El Presidente permanente del Consejo Europeo y el SEAE fueron creados por Lisboa."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Cuántos Estados miembros mínimos se necesitan para establecer una cooperación reforzada?",
+ opts:["9 países","7 países","5 países"],correct:0,
+ exp:"El mínimo es de <strong>9 países</strong>. El número 7 aparece en la Iniciativa Ciudadana Europea (ICE) y en otras reglas de representación, pero no en la cooperación reforzada."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Por qué fracasó el Tratado Constitucional de 2004?",
+ opts:["Francia y Países Bajos lo rechazaron en referéndum","El Consejo Europeo no lo aprobó por unanimidad","España y Portugal lo vetaron en el Consejo"],correct:0,
+ exp:"El Tratado Constitucional fue ratificado por la mayoría de los EM, pero <strong>Francia y Países Bajos lo rechazaron en referéndum</strong> (2005), por lo que nunca entró en vigor."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Cómo pasó a denominarse la codecisión con el Tratado de Lisboa?",
+ opts:["Procedimiento legislativo ordinario","Procedimiento especial de consulta","Dictamen conforme reforzado"],correct:0,
+ exp:"Lisboa rebautizó la <strong>codecisión</strong> como <strong>procedimiento legislativo ordinario</strong>, ampliándola a nuevos ámbitos y equiparando los poderes del PE con los del Consejo."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Cuántas firmas y condiciones exige la Iniciativa Ciudadana Europea (ICE)?",
+ opts:["1 millón de firmas en al menos 7 EM, impulsada por al menos 7 ciudadanos de 7 EM","500.000 firmas en al menos 5 EM","2 millones de firmas en al menos 14 EM"],correct:0,
+ exp:"La <strong>ICE</strong> requiere un grupo de al menos <strong>7 ciudadanos de 7 EM</strong> diferentes y recoger <strong>1 millón de firmas</strong> en al menos 7 EM."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"Según el art. 50 TUE (cláusula de retirada), ¿cuánto tiempo tienen los Tratados para dejar de aplicarse si no hay acuerdo?",
+ opts:["2 años desde la notificación al Consejo Europeo","1 año desde la ratificación del acuerdo","4 años desde el referéndum de salida"],correct:0,
+ exp:"El art. 50 TUE establece <strong>2 años desde la notificación</strong> al Consejo Europeo, salvo que entre antes en vigor el acuerdo de retirada o que el Consejo Europeo decida por unanimidad prorrogar el plazo."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Qué tratado incorporó el Acuerdo de Schengen al acervo de la UE?",
+ opts:["El Tratado de Ámsterdam","El Tratado de Maastricht","El Tratado de Lisboa"],correct:0,
+ exp:"Fue el <strong>Tratado de Ámsterdam</strong> (en vigor 01/05/1999) el que incorporó Schengen al acervo comunitario."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Qué institución formalizó jurídicamente el Tratado de Maastricht junto con el Tribunal de Cuentas?",
+ opts:["El Consejo Europeo","El Banco Central Europeo","El Parlamento Europeo"],correct:0,
+ exp:"Maastricht <strong>institucionalizó el Consejo Europeo</strong> e institucional izó también el <strong>Tribunal de Cuentas</strong>. El BCE fue creado por Maastricht pero institucionalizado formalmente por Lisboa."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Cuándo entraron en vigor el Tratado de Roma y el Tratado de Ámsterdam respectivamente?",
+ opts:["01/01/1958 y 01/05/1999","23/07/1952 y 01/11/1993","01/07/1987 y 01/02/2003"],correct:0,
+ exp:"El Tratado de Roma entró en vigor el <strong>01/01/1958</strong>. El Tratado de Ámsterdam lo hizo el <strong>01/05/1999</strong>. La CECA es de 23/07/1952 y Maastricht de 01/11/1993."},
+
+{cat:"cat-tratados",catLabel:"Tratados Fundacionales",
+ q:"¿Cuándo entró en vigor el Tratado de Lisboa y cuándo el Tratado de Niza?",
+ opts:["Lisboa: 01/12/2009; Niza: 01/02/2003","Lisboa: 01/01/2010; Niza: 01/01/2004","Lisboa: 01/07/2009; Niza: 01/05/2004"],correct:0,
+ exp:"El Tratado de <strong>Niza</strong> entró en vigor el <strong>01/02/2003</strong> y el de <strong>Lisboa</strong> el <strong>01/12/2009</strong>."},
+
+// ── BLOQUE 2: INSTITUCIONES ─────────────────────────────────────────
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cuál es la excepción a la presidencia rotatoria del Consejo de la UE?",
+ opts:["El Consejo de Asuntos Exteriores, presidido siempre por el Alto Representante (AR)","El Consejo Económico y Financiero (ECOFIN), presidido por la presidencia rotatoria","El Consejo de Justicia e Interior (JAI), presidido por la Comisión"],correct:0,
+ exp:"De las 10 formaciones del Consejo, la presidencia rotatoria preside todas EXCEPTO el <strong>Consejo de Asuntos Exteriores</strong>, que preside siempre el <strong>Alto Representante</strong>."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cuál es la mayoría necesaria para adoptar decisiones ordinarias en el Consejo de la UE?",
+ opts:["Doble mayoría cualificada: 55% de los EM que representen el 65% de la población","Mayoría simple de los 27 EM","Unanimidad de todos los EM"],correct:0,
+ exp:"Las decisiones ordinarias requieren <strong>doble mayoría cualificada</strong>: al menos el <strong>55% de los EM</strong> (mínimo 15) que representen al menos el <strong>65% de la población</strong>."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Qué función cumple el COREPER II y con qué grupo de trabajo está asistido?",
+ opts:["Prepara los asuntos políticos e institucionales; asistido por el grupo ANTICI","Prepara los asuntos técnicos y sectoriales; asistido por el grupo MERTENS","Coordina la cooperación en seguridad interior (COSI)"],correct:0,
+ exp:"El <strong>COREPER II</strong> trata los asuntos <strong>políticos e institucionales</strong> y está asistido por el grupo <strong>ANTICI</strong>. El COREPER I gestiona los técnicos con el grupo MERTENS."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Quién preside el Consejo Europeo y cuánto dura su mandato?",
+ opts:["Antonio Costa; 2,5 años renovables una vez, elegido por mayoría cualificada","Ursula von der Leyen; 5 años, elegida por el PE","Roberta Metsola; 2,5 años renovables"],correct:0,
+ exp:"El Consejo Europeo está presidido por <strong>Antonio Costa</strong>, elegido por <strong>mayoría cualificada</strong> para <strong>2,5 años renovables una vez</strong>."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Con qué quórum se reúne el Consejo Europeo?",
+ opts:["2/3 de sus miembros","1/3 de sus miembros","Mayoría absoluta de sus miembros"],correct:0,
+ exp:"El Consejo Europeo opera con quórum de <strong>2/3</strong> de sus miembros. El quórum de 1/3 corresponde al Parlamento Europeo."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cómo se estructura internamente la Comisión Europea?",
+ opts:["1 Presidente + 6 Vicepresidentes (5 ejecutivos + el AR) + 20 comisarios = Colegio de 27","1 Presidente + 5 Vicepresidentes + 21 comisarios","1 Presidente + 8 Vicepresidentes + 18 comisarios"],correct:0,
+ exp:"La Comisión es un <strong>Colegio de 27</strong>: 1 Presidente (<strong>Ursula von der Leyen</strong>), <strong>6 Vicepresidentes</strong> (5 ejecutivos + el AR como Vicepresidenta) y 20 comisarios."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cuántos eurodiputados tiene el Parlamento Europeo y cuántos corresponden a España?",
+ opts:["719-720 en total; 61 de España","750 en total; 59 de España","705 en total; 54 de España"],correct:0,
+ exp:"El PE cuenta con <strong>719-720 eurodiputados</strong> (máximo legal 750 sin el Presidente), con <strong>61 escaños</strong> para España."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Qué mayoría necesita el PE para aprobar una moción de censura contra la Comisión?",
+ opts:["2/3 de los votos emitidos que representen la mayoría de los miembros del PE","Mayoría absoluta de los miembros","Mayoría simple de los votos emitidos"],correct:0,
+ exp:"La moción de censura requiere <strong>2/3 de los votos emitidos</strong> que representen también la <strong>mayoría de los miembros</strong> del PE."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cuántos grupos políticos tiene el PE y cuántos eurodiputados se necesitan mínimo para formar uno?",
+ opts:["8 grupos; mínimo 23 eurodiputados de al menos 1/4 de los EM","6 grupos; mínimo 30 eurodiputados","10 grupos; mínimo 15 eurodiputados"],correct:0,
+ exp:"El PE tiene <strong>8 grupos políticos</strong>, cada uno con mínimo <strong>23 eurodiputados</strong> procedentes de al menos <strong>1/4 de los EM</strong>."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cuántos jueces tiene el Tribunal General (TG) del TJUE?",
+ opts:["54 jueces (2 por EM)","27 jueces (1 por EM)","46 jueces"],correct:0,
+ exp:"El <strong>Tribunal General</strong> tiene <strong>2 jueces por EM = 54 en total</strong>. El Tribunal de Justicia tiene 27 (1 por EM) y el TEDH tiene 46 (1 por Estado parte del Consejo de Europa)."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cuántos miembros tiene el Comité Ejecutivo del BCE y cuánto dura su mandato?",
+ opts:["6 miembros (Presidente + Vicepresidente + 4); mandato de 8 años no renovable","5 miembros; mandato de 6 años renovable","27 miembros; mandato de 5 años"],correct:0,
+ exp:"El Comité Ejecutivo del BCE se compone de <strong>6 miembros</strong> con mandato de <strong>8 años no renovable</strong>: Presidente, Vicepresidente y otros 4."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Quién preside actualmente el Banco Central Europeo?",
+ opts:["Christine Lagarde","Nadia Calviño","Koen Lenaerts"],correct:0,
+ exp:"La Presidenta del BCE es <strong>Christine Lagarde</strong>. Nadia Calviño preside el BEI y Koen Lenaerts es Presidente del Tribunal de Justicia."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Dónde tiene su sede el Tribunal de Cuentas y cuántos miembros tiene?",
+ opts:["Luxemburgo; 27 miembros (1 por EM)","Bruselas; 27 miembros elegidos por el PE","Estrasburgo; 46 miembros"],correct:0,
+ exp:"El Tribunal de Cuentas tiene sede en <strong>Luxemburgo</strong> y cuenta con <strong>27 miembros</strong> (1 por EM), nombrados por el Consejo previa consulta al PE, por mandatos de 6 años renovables."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Qué tres sedes utiliza el Parlamento Europeo y para qué función se usa cada una?",
+ opts:["Estrasburgo (plenarias), Bruselas (comisiones y sesiones adicionales), Luxemburgo (Secretariado)","Bruselas (plenarias), Estrasburgo (Secretariado), Luxemburgo (comisiones)","Estrasburgo (todo), Bruselas (presupuesto), La Haya (seguridad)"],correct:0,
+ exp:"El PE funciona en tres ciudades: <strong>Estrasburgo</strong> (plenarias mensuales), <strong>Bruselas</strong> (comisiones y sesiones adicionales) y <strong>Luxemburgo</strong> (Secretariado General)."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Cuánto dura el mandato del Presidente del TJ y quién lo elige?",
+ opts:["3 años renovables; elegido por los propios jueces del TJ","6 años; elegido por el Consejo","5 años; elegido por el PE por mayoría absoluta"],correct:0,
+ exp:"El Presidente del TJ es elegido <strong>por los propios jueces</strong> para un mandato de <strong>3 años renovables</strong>. Actualmente es <strong>Koen Lenaerts</strong>."},
+
+{cat:"cat-inst",catLabel:"Instituciones UE",
+ q:"¿Qué institución de la UE tiene poder de iniciativa legislativa casi en exclusiva?",
+ opts:["La Comisión Europea","El Parlamento Europeo","El Consejo de la UE"],correct:0,
+ exp:"La <strong>Comisión Europea</strong> tiene prácticamente el monopolio del derecho de iniciativa legislativa. El PE y el Consejo pueden solicitar a la Comisión que proponga, pero no proponen directamente."},
+
+// ── BLOQUE 3: OTROS ORGANISMOS ──────────────────────────────────────
+{cat:"cat-inst",catLabel:"Otros Organismos UE",
+ q:"¿Cuántos miembros tienen el CdR y el CESE, y cuántos corresponden a España en cada uno?",
+ opts:["329 miembros cada uno; 21 de España en cada uno","350 miembros; 24 de España","270 miembros; 18 de España"],correct:0,
+ exp:"Tanto el <strong>CdR</strong> (Comité de las Regiones) como el <strong>CESE</strong> (Comité Económico y Social) tienen <strong>329 miembros</strong> con <strong>21 representantes españoles</strong> en cada uno."},
+
+{cat:"cat-inst",catLabel:"Otros Organismos UE",
+ q:"¿Cuál es la función del Alto Representante (AR) y quién ocupa actualmente ese cargo?",
+ opts:["Máxima responsable de política exterior; preside el Consejo de Asuntos Exteriores y es Vicepresidenta de la Comisión. Actualmente: Kaja Kallas","Presidenta de la Comisión Europea. Actualmente: Ursula von der Leyen","Presidenta del Consejo Europeo. Actualmente: Roberta Metsola"],correct:0,
+ exp:"El AR dirige la política exterior de la UE, preside el Consejo de Asuntos Exteriores y es <strong>Vicepresidenta de la Comisión</strong>. El cargo lo ocupa <strong>Kaja Kallas</strong>."},
+
+{cat:"cat-inst",catLabel:"Otros Organismos UE",
+ q:"¿Quién preside el Banco Europeo de Inversiones y cuánto dura su mandato?",
+ opts:["Nadia Calviño; 6 años renovables","Christine Lagarde; 8 años no renovable","Tony Murphy; 6 años renovables"],correct:0,
+ exp:"El BEI está presidido por <strong>Nadia Calviño</strong> para un mandato de <strong>6 años renovables</strong>. Christine Lagarde preside el BCE y Tony Murphy el Tribunal de Cuentas."},
+
+{cat:"cat-inst",catLabel:"Otros Organismos UE",
+ q:"¿Quién es el actual Defensor del Pueblo Europeo y cuál es su sede?",
+ opts:["Teresa Anjinho; Estrasburgo","Kaja Kallas; Bruselas","Roberta Metsola; Estrasburgo"],correct:0,
+ exp:"El Defensor del Pueblo Europeo es actualmente <strong>Teresa Anjinho</strong> y tiene su sede en <strong>Estrasburgo</strong>."},
+
+{cat:"cat-inst",catLabel:"Otros Organismos UE",
+ q:"¿Ante qué institución reclama el ciudadano por mala administración y en qué plazo?",
+ opts:["Ante el Defensor del Pueblo Europeo, en los 2 años siguientes al conocimiento de los hechos","Ante el TJUE, en plazo de 2 meses","Ante el Tribunal de Cuentas, en plazo de 6 meses"],correct:0,
+ exp:"Se reclama ante el <strong>Defensor del Pueblo Europeo</strong> en un plazo de <strong>2 años</strong> desde el conocimiento de los hechos (salvo demoras administrativas excepcionales)."},
+
+{cat:"cat-inst",catLabel:"Otros Organismos UE",
+ q:"¿En qué ciudad tienen su sede el BEI y el Fondo Europeo de Inversiones?",
+ opts:["Luxemburgo","Bruselas","Frankfurt"],correct:0,
+ exp:"Tanto el <strong>BEI</strong> como el <strong>Fondo Europeo de Inversiones</strong> tienen sede en <strong>Luxemburgo</strong>. El BCE está en Frankfurt."},
+
+{cat:"cat-inst",catLabel:"Otros Organismos UE",
+ q:"La Agencia ENISA (ciberseguridad de la UE), ¿dónde tiene su sede?",
+ opts:["Atenas (Grecia)","Bilbao (España)","Viena (Austria)"],correct:0,
+ exp:"<strong>ENISA</strong> tiene sede en <strong>Atenas</strong>. En Bilbao está la Agencia Europea de Seguridad y Salud en el Trabajo, y en Viena la Agencia de los Derechos Fundamentales."},
+
+// ── BLOQUE 4: DERECHO COMUNITARIO ──────────────────────────────────
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"¿Cuál es el plazo general de transposición de las Directivas europeas?",
+ opts:["2 años","20 días desde su publicación en el DOUE","6 meses"],correct:0,
+ exp:"Las directivas deben ser transpuestas por los EM en un plazo general de <strong>2 años</strong>. Los Reglamentos son directamente aplicables a los <strong>20 días</strong> de su publicación en el DOUE."},
+
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"¿Qué acto de Derecho derivado es vinculante en todos sus elementos, de alcance general y tiene efecto directo sin transposición?",
+ opts:["El Reglamento","La Directiva","La Recomendación"],correct:0,
+ exp:"El <strong>Reglamento</strong> es la norma de mayor rango del derecho derivado: vinculante en todos sus elementos, de alcance general y con <strong>efecto directo</strong> automático desde el DOUE."},
+
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"¿Qué diferencia hay entre un Libro Blanco y un Libro Verde de la UE?",
+ opts:["Los Libros Blancos anuncian medidas propuestas para objetivos concretos; los Libros Verdes son documentos de consulta a los interesados","Los Libros Verdes anuncian medidas y los Blancos consultan","Son documentos equivalentes, sin distinción funcional"],correct:0,
+ exp:"Los <strong>Libros Blancos</strong> anuncian medidas propuestas para objetivos determinados, mientras que los <strong>Libros Verdes</strong> son documentos de consulta abierta antes de legislar."},
+
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"¿Qué principio establece que la UE solo actúa si los objetivos no pueden alcanzarse suficientemente a nivel nacional?",
+ opts:["Subsidiariedad","Proporcionalidad","Atribución"],correct:0,
+ exp:"El principio de <strong>subsidiariedad</strong>: la UE solo actúa cuando los Estados miembros no pueden lograr los objetivos por sí solos. La <strong>proporcionalidad</strong> limita la acción a lo necesario y la <strong>atribución</strong> exige competencia conferida por los tratados."},
+
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"¿Cuáles son las competencias EXCLUSIVAS de la UE?",
+ opts:["Unión aduanera, competencia en el mercado interior, política monetaria del euro, recursos biológicos marinos y política comercial común","Mercado interior, política social, medio ambiente y transportes","Salud humana, cultura, turismo y educación"],correct:0,
+ exp:"Las competencias <strong>exclusivas</strong> incluyen: unión aduanera, normas de competencia del mercado interior, política monetaria del euro, recursos biológicos marinos y política comercial común. Las compartidas incluyen el mercado interior, social, medio ambiente, etc."},
+
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"En el procedimiento legislativo ordinario, ¿quién propone y quiénes adoptan la norma?",
+ opts:["La Comisión propone; el Consejo y el PE la adoptan conjuntamente","El Consejo propone; solo el PE la adopta","El PE propone; solo el Consejo la adopta"],correct:0,
+ exp:"En el <strong>procedimiento legislativo ordinario</strong>, la <strong>Comisión propone</strong> y el <strong>Consejo + PE</strong> co-legislan. Si no hay acuerdo, un Comité de Conciliación busca texto común para la 3.ª lectura."},
+
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"¿Cuándo entran en vigor los Reglamentos si no se especifica otra fecha en el DOUE?",
+ opts:["A los 20 días de su publicación","A los 2 años de su publicación","En la fecha de su firma"],correct:0,
+ exp:"Los Reglamentos entran en vigor <strong>a los 20 días de su publicación en el DOUE</strong> si no se determina otra fecha. Las Directivas tienen plazo general de transposición de 2 años."},
+
+{cat:"cat-derecho",catLabel:"Derecho Comunitario",
+ q:"¿Qué son los Actos Delegados en el derecho de la UE?",
+ opts:["Normas no legislativas de alcance general adoptadas por la Comisión para completar o modificar elementos no esenciales de un acto legislativo","Actos adoptados por el Consejo en casos de urgencia","Recomendaciones sin carácter vinculante de la Comisión"],correct:0,
+ exp:"Los <strong>Actos Delegados</strong> (art. 290 TFUE) son normas no legislativas adoptadas por la <strong>Comisión</strong> para completar o modificar elementos no esenciales de un acto legislativo, sujetos a control del PE y el Consejo."},
+
+// ── BLOQUE 5: PAÍSES Y ADHESIONES ──────────────────────────────────
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"¿Cuáles son los 6 países fundadores firmantes del Tratado de Roma (1957)?",
+ opts:["Alemania, Bélgica, Francia, Italia, Luxemburgo y Países Bajos","Alemania, Francia, España, Italia, Portugal y Países Bajos","Francia, Bélgica, Dinamarca, Irlanda, Italia y Alemania"],correct:0,
+ exp:"Los <strong>6 fundadores</strong> del Tratado de Roma: <strong>Alemania, Bélgica, Francia, Italia, Luxemburgo y Países Bajos</strong>. España y Portugal se incorporaron en 1986."},
+
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"¿En qué año se adhirió España a la Comunidad Económica Europea?",
+ opts:["1986","1981","1995"],correct:0,
+ exp:"España (junto con Portugal) ingresó en la CEE en <strong>1986</strong>. Grecia lo hizo en 1981 y Austria, Finlandia y Suecia en 1995."},
+
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"¿Cuántos países componen la Eurozona actualmente y cuál es el siguiente previsto?",
+ opts:["20 países; Bulgaria prevista para 2026","19 países; Rumanía prevista para 2025","27 países; ninguno pendiente"],correct:0,
+ exp:"La Eurozona la forman <strong>20 países</strong>. <strong>Bulgaria</strong> está prevista para incorporarse en <strong>2026</strong>."},
+
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"¿Qué país fue el último en incorporarse a la UE y en qué año?",
+ opts:["Croacia, en 2013","Bulgaria, en 2007","Rumanía, en 2007"],correct:0,
+ exp:"<strong>Croacia</strong> fue el último Estado en incorporarse a la UE, en <strong>2013</strong>. Bulgaria y Rumanía lo hicieron en 2007."},
+
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"¿Qué integra el Espacio Económico Europeo (EEE) y qué país queda fuera siendo AELC?",
+ opts:["UE (27) + Islandia, Liechtenstein y Noruega. Suiza tiene acuerdo bilateral pero NO está en el EEE","UE (27) + todos los países de Schengen","Solo los 20 países de la Eurozona"],correct:0,
+ exp:"El <strong>EEE</strong> = UE (27) + <strong>Islandia, Liechtenstein y Noruega</strong> (AELC). <strong>Suiza</strong> también es AELC pero tiene acuerdos bilaterales y <strong>no pertenece al EEE</strong>."},
+
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"Según el art. 49 TUE, ¿qué mayoría necesita el Consejo para aceptar una solicitud de adhesión?",
+ opts:["Unanimidad","Doble mayoría cualificada","Mayoría simple"],correct:0,
+ exp:"El art. 49 TUE establece que el Consejo decide por <strong>unanimidad</strong> sobre las solicitudes de adhesión, tras consultar a la Comisión y obtener la aprobación del PE."},
+
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"¿Cuáles son los símbolos oficiales de la Unión Europea?",
+ opts:["Lema 'Unida en la diversidad'; bandera azul con 12 estrellas doradas; himno 'Oda a la alegría' de Beethoven; Día de Europa: 9 de mayo","Lema 'In varietate concordia'; bandera con 27 estrellas; himno de Schiller","Lema 'Una Europa fuerte'; himno de Beethoven; Día de Europa: 5 de mayo"],correct:0,
+ exp:"Símbolos de la UE: lema <strong>'Unida en la diversidad'</strong>, bandera azul con <strong>12 estrellas doradas</strong>, himno <strong>'Oda a la alegría'</strong> de Beethoven, <strong>Día de Europa: 9 de mayo</strong> (Declaración Schuman, 1950)."},
+
+{cat:"cat-paises",catLabel:"Países y Adhesiones",
+ q:"¿Cuántos Estados miembros tiene actualmente la UE y cuál fue el último en salir?",
+ opts:["27 EM; Reino Unido salió el 31/01/2020 (Brexit)","28 EM; Noruega salió en 2016","25 EM; Grecia fue suspendida en 2015"],correct:0,
+ exp:"La UE tiene <strong>27 Estados miembros</strong> tras la salida del <strong>Reino Unido el 31/01/2020</strong> (Brexit). El acuerdo de retirada entró en vigor ese mismo día."},
+
+// ── BLOQUE 6: SCHENGEN ──────────────────────────────────────────────
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Cuántos países integran el Espacio Schengen y cuáles son los EM de la UE que no participan?",
+ opts:["29 países; Irlanda y Chipre son los únicos EM de la UE que no participan","27 países; solo los miembros de la UE","25 países; quedan fuera Irlanda, Chipre y Dinamarca"],correct:0,
+ exp:"Schengen integra <strong>29 países</strong>: 27 EM de la UE menos <strong>Irlanda y Chipre</strong>, más Islandia, Suiza, Noruega y Liechtenstein. Dinamarca sí participa en Schengen."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Cuándo se incorporó España al espacio Schengen?",
+ opts:["1991 (Acuerdo firmado en 1985)","1995 (entrada en vigor del CAAS)","1999 (Tratado de Ámsterdam)"],correct:0,
+ exp:"España se incorporó al espacio Schengen en <strong>1991</strong>. El Acuerdo Schengen original se firmó el <strong>14 de junio de 1985</strong>. El CAAS (Convenio de Aplicación) entró en vigor en 1995."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Cuánto tiempo puede prolongarse la vigilancia transfronteriza si el agente cruza la frontera sin autorización previa?",
+ opts:["Cesa tras 5 horas sin obtener autorización del EM en cuyo territorio se opera","Puede continuar indefinidamente si hay urgencia","Cesa inmediatamente al cruzar la frontera"],correct:0,
+ exp:"La vigilancia transfronteriza <strong>cesa automáticamente a las 5 horas</strong> si no se obtiene autorización del Estado en cuyo territorio se opera."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Cuáles son los límites específicos de la persecución transfronteriza en Francia y en Portugal?",
+ opts:["Francia: 10 km; Portugal: 50 km o 2 horas","Francia: 50 km; Portugal: 10 km","Francia: 5 horas; Portugal: 20 km"],correct:0,
+ exp:"Los límites específicos pactados: <strong>Francia: 10 km</strong> y <strong>Portugal: 50 km o 2 horas</strong>."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Qué cuerpos policiales españoles tienen competencia en vigilancia y persecución transfronteriza?",
+ opts:["Policía Nacional, Guardia Civil, Ertzaintza, Mossos d'Esquadra y Vigilancia Aduanera","Solo Policía Nacional y Guardia Civil","Policía Nacional, Guardia Civil y Policías Locales"],correct:0,
+ exp:"Tienen competencia transfronteriza en España: <strong>Policía Nacional, Guardia Civil, Ertzaintza, Mossos d'Esquadra y Vigilancia Aduanera</strong>."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Cuánto tiempo máximo puede estar retenida una persona extranjera tras una persecución transfronteriza sin solicitud de extradición?",
+ opts:["6 horas","24 horas","72 horas"],correct:0,
+ exp:"Si el retenido <strong>no es nacional del país</strong> donde se le retiene, se le libera en un máximo de <strong>6 horas</strong>, salvo solicitud de extradición en ese plazo."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Qué sistema de información policial actualizó el SIS RECAST de 2018?",
+ opts:["El SIS (Sistema de Información Schengen), activo en su versión actualizada desde 2023","El VIS (Sistema de Información de Visados)","El EES (Sistema de Entrada/Salida)"],correct:0,
+ exp:"El <strong>SIS RECAST</strong> (2018, operativo desde 2023) actualizó el <strong>SIS</strong>, base de datos central de cooperación policial. El C-SIS centralizado está en <strong>Estrasburgo</strong>."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Dónde tiene su sede EU-LISA y cuáles son sus ubicaciones operativas?",
+ opts:["Sede en Tallin; sede operativa en Estrasburgo; respaldo en Austria","Sede en Varsovia; operativa en La Haya","Sede en Luxemburgo; operativa en Bruselas"],correct:0,
+ exp:"<strong>EU-LISA</strong> gestiona los sistemas de información de la UE; sede en <strong>Tallin</strong>, sede operativa en <strong>Estrasburgo</strong> y sistema de respaldo en <strong>Austria</strong>."},
+
+{cat:"cat-schengen",catLabel:"Schengen y Cooperación Policial",
+ q:"¿Qué es el SISNET en el contexto del Espacio Schengen?",
+ opts:["La red de comunicaciones cifrada que conecta los puntos nacionales de acceso al SIS","El sistema biométrico de control de fronteras exteriores","El sistema de información de visados de Schengen"],correct:0,
+ exp:"El <strong>SISNET</strong> es la red de comunicaciones cifrada que conecta los puntos nacionales de acceso (N.SIS) al C-SIS central en Estrasburgo, garantizando la seguridad de los datos."},
+
+// ── BLOQUE 7: AGENCIAS POLICIALES ──────────────────────────────────
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Dónde tiene su sede EUROPOL y cuántos países lo integran?",
+ opts:["La Haya; 26 países (Dinamarca colabora pero no es miembro pleno)","Lyon; 196 países","Varsovia; todos los EM de la UE"],correct:0,
+ exp:"<strong>EUROPOL</strong> tiene sede en <strong>La Haya</strong> e integra <strong>26 países</strong> (Dinamarca colabora sin ser miembro pleno). Lyon es la sede de Interpol."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Cuáles son los principales informes periódicos de EUROPOL?",
+ opts:["SOCTA (cada 4 años), IOCTA y TE-SAT (anuales)","SOCTA y TE-SAT (anuales), IOCTA (cada 4 años)","Solo SOCTA y TE-SAT bienales"],correct:0,
+ exp:"EUROPOL elabora: <strong>SOCTA</strong> (cada 4 años, evaluación crimen organizado), <strong>IOCTA</strong> (anual, internet) y <strong>TE-SAT</strong> (anual, terrorismo)."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Qué centro de EUROPOL se especializa en la lucha contra el terrorismo?",
+ opts:["CELT (Centro Europeo de Lucha contra el Terrorismo)","EC3 (Centro Europeo de Ciberdelincuencia)","EMSC (Centro Europeo contra el Tráfico de Migrantes)"],correct:0,
+ exp:"El <strong>CELT</strong> es el centro antiterrorismo de EUROPOL. El <strong>EC3</strong> se ocupa de ciberdelincuencia y el <strong>EMSC</strong> del tráfico de migrantes."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Dónde tiene su sede EUROJUST y desde qué año opera?",
+ opts:["La Haya; desde 2002","Varsovia; desde 2004","Budapest; desde 2005"],correct:0,
+ exp:"<strong>EUROJUST</strong> tiene sede en <strong>La Haya</strong> y opera desde <strong>2002</strong>. Frontex es de 2004 (Varsovia) y CEPOL de 2005 (Budapest)."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Cuál es la sede de FRONTEX y qué función principal desempeña?",
+ opts:["Varsovia; gestión de fronteras exteriores, vigilancia aérea, apoyo en retornos y Guardia Europea de Fronteras y Costas","La Haya; coordinación policial y equipos conjuntos de investigación","Budapest; formación de fuerzas policiales europeas"],correct:0,
+ exp:"<strong>FRONTEX</strong> (desde 2004) tiene sede en <strong>Varsovia</strong> y gestiona las fronteras exteriores, vigilancia aérea, retornos y la Guardia Europea de Fronteras y Costas."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Cuántos países miembros tiene INTERPOL y dónde está su sede?",
+ opts:["196 países; Lyon (Francia)","27 países; Bruselas","46 países; Estrasburgo"],correct:0,
+ exp:"<strong>INTERPOL</strong> tiene <strong>196 países miembros</strong> y su sede general está en <strong>Lyon, Francia</strong>. Su Complejo Mundial para la Innovación (IGCI) está en Singapur."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Qué notificación de INTERPOL se usa para personas desaparecidas?",
+ opts:["Notificación Amarilla","Notificación Roja","Notificación Verde"],correct:0,
+ exp:"La <strong>notificación Amarilla</strong> de INTERPOL se usa para personas desaparecidas. La <strong>Roja</strong> es para personas buscadas pendientes de extradición y la <strong>Verde</strong> para avisos y advertencias."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Qué color de notificación de INTERPOL corresponde a un cadáver no identificado?",
+ opts:["Negra","Naranja","Morada"],correct:0,
+ exp:"La <strong>notificación Negra</strong> se usa para <strong>cadáveres no identificados</strong>. La <strong>Naranja</strong> advierte de peligros (personas, materiales) y la <strong>Morada</strong> describe el modus operandi."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿En qué ciudad está el Complejo Mundial para la Innovación (IGCI) de INTERPOL?",
+ opts:["Singapur","Lyon","La Haya"],correct:0,
+ exp:"El <strong>IGCI</strong> de INTERPOL está en <strong>Singapur</strong>. La sede central de INTERPOL es Lyon y EUROPOL/EUROJUST están en La Haya."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Cuál es la función de CEPOL y dónde tiene su sede?",
+ opts:["Formación de fuerzas y cuerpos de seguridad europeos; Budapest","Investigación de delitos financieros; Luxemburgo","Gestión de fronteras exteriores; Varsovia"],correct:0,
+ exp:"<strong>CEPOL</strong> (2005) tiene sede en <strong>Budapest</strong> y organiza cursos de formación para las fuerzas y cuerpos de seguridad europeos."},
+
+{cat:"cat-agencias",catLabel:"Agencias de Cooperación Policial",
+ q:"¿Cuántos colores de notificación tiene INTERPOL y cuál es la notificación para grupos criminales?",
+ opts:["8 colores; la Naranja avisa de peligros de grupos/individuos de alto riesgo","6 colores; la Verde avisa de grupos criminales","7 colores; la Morada es específica para grupos terroristas"],correct:0,
+ exp:"INTERPOL tiene <strong>8 tipos de notificación</strong> por colores. La <strong>Naranja</strong> avisa de peligros representados por personas, objetos, materiales u otros. La <strong>INTERPOL-ONU</strong> es específica para sanciones del Consejo de Seguridad."},
+
+// ── BLOQUE 8: EPPO / OEDE / TEDH ────────────────────────────────────
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿Dónde tiene su sede la Fiscalía Europea (EPPO) y qué delitos investiga?",
+ opts:["Luxemburgo; delitos contra los intereses financieros de la UE (fraude IVA >10M€, subvenciones, malversación…)","La Haya; delincuencia organizada transfronteriza","Bruselas; terrorismo y tráfico de drogas"],correct:0,
+ exp:"La <strong>EPPO</strong> tiene sede en <strong>Luxemburgo</strong> e investiga delitos contra los intereses financieros de la UE: fraude al IVA >10 M€ en 2+ EM, subvenciones, blanqueo, cohecho, malversación."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿Cuántos países participan en la EPPO (Fiscalía Europea)?",
+ opts:["24 países (sin Dinamarca, Irlanda ni Hungría)","27 países (todos los EM)","26 países (sin Dinamarca)"],correct:0,
+ exp:"En la EPPO participan <strong>24 países</strong>; quedan fuera <strong>Dinamarca, Irlanda y Hungría</strong>."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿Qué órgano jurisdiccional español enjuicia los asuntos de la Fiscalía Europea (EPPO)?",
+ opts:["La Audiencia Nacional","El Tribunal Supremo","Los Juzgados Centrales de Instrucción"],correct:0,
+ exp:"En España, la <strong>Audiencia Nacional</strong> es el órgano competente para enjuiciar los asuntos de la EPPO."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"OEDE: ¿qué plazo tiene la autoridad española cuando el reclamado NO consiente la entrega?",
+ opts:["Vista en máx. 3 días desde la detención; resolución en 60 días (prorrogable 30 días)","Resolución en 10 días tras la audiencia","Plazo de 24 horas para resolución judicial"],correct:0,
+ exp:"Si el reclamado <strong>no consiente</strong>: vista en máximo <strong>3 días</strong> desde la detención y resolución en <strong>60 días</strong> (con posible prórroga de 30). Si consiente, resolución en 10 días."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"La OEDE permite la entrega para delitos sin doble tipificación. ¿Cuál es la pena mínima requerida?",
+ opts:["Pena superior a 3 años","Pena superior a 12 meses","Pena superior a 4 meses"],correct:0,
+ exp:"Para delitos <strong>sin doble tipificación</strong>, la pena debe ser superior a <strong>3 años</strong>. Para acciones penales en general: >12 meses; para cumplimiento de condena: >4 meses."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿Cuántos jueces tiene el TEDH y cuánto dura su mandato?",
+ opts:["46 jueces (1 por Estado parte del Consejo de Europa); mandato de 9 años no reelegibles","27 jueces (1 por EM de la UE); mandato de 6 años","54 jueces; mandato de 3 años renovables"],correct:0,
+ exp:"El <strong>TEDH</strong> tiene <strong>46 jueces</strong> (uno por Estado parte del Consejo de Europa), con mandato de <strong>9 años no reelegibles</strong>. Deben ser menores de 65 años al ser candidatos."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿En qué plazo puede acudirse al TEDH tras agotar las vías judiciales internas en España?",
+ opts:["4 meses desde la resolución definitiva interna (incluido el recurso de amparo ante el TC)","6 meses","2 años"],correct:0,
+ exp:"En España, tras agotar todas las vías internas —incluido el <strong>recurso de amparo ante el TC</strong>— se dispone de <strong>4 meses</strong> para acudir al TEDH."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿Cómo se organiza el TEDH para resolver casos repetitivos?",
+ opts:["Comités de 3 jueces","Salas de 7 jueces","Gran Sala de 17 jueces"],correct:0,
+ exp:"Los <strong>Comités de 3 jueces</strong> del TEDH resuelven los casos repetitivos o bien establecidos. Las <strong>Salas de 7 jueces</strong> dictan sentencias definitivas y la <strong>Gran Sala de 17</strong> conoce los casos más importantes."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿Cuándo fue creado el TEDH y a qué organización pertenece?",
+ opts:["1959 (reformado en 1998); pertenece al Consejo de Europa","1952; pertenece a la Unión Europea","1999; creado por el Tratado de Ámsterdam"],correct:0,
+ exp:"El <strong>TEDH</strong> fue creado en <strong>1959</strong> con el Convenio Europeo de Derechos Humanos (reformado en 1998) y pertenece al <strong>Consejo de Europa</strong>, organización distinta de la UE."},
+
+{cat:"cat-misc",catLabel:"EPPO / OEDE / TEDH",
+ q:"¿Cuántos jueces forman la Gran Sala del TEDH y qué tipos de casos resuelve?",
+ opts:["17 jueces; casos de gran importancia o que impliquen reinterpretar el CEDH","7 jueces; casos de importancia media","3 jueces; casos repetitivos o urgentes"],correct:0,
+ exp:"La <strong>Gran Sala</strong> del TEDH se compone de <strong>17 jueces</strong> y resuelve los asuntos de mayor importancia o que impliquen una reinterpretación del Convenio Europeo de Derechos Humanos."},
+
+];
+
+// ── FUNCIONES ─────────────────────────────────────────────────────────
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+let questions = [];
+let current = 0;
+let score = 0;
+let wrong = 0;
+
+function startQuiz() {
+  questions = shuffle([...PREGUNTAS]);
+  questions = questions.map(q => {
+    const correctText = q.opts[q.correct];
+    const shuffled = shuffle([...q.opts]);
+    return { ...q, opts: shuffled, correct: shuffled.indexOf(correctText) };
+  });
+  current = 0; score = 0; wrong = 0;
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const total = questions.length;
+  const pct = (current / total) * 100;
+  document.getElementById('progress-bar-inner').style.width = pct + '%';
+  document.getElementById('q-counter').innerHTML = `Pregunta ${current + 1} / ${total}`;
+  document.getElementById('score-display').innerHTML = `✓ ${score} &nbsp;✗ ${wrong}`;
+
+  const badge = document.getElementById('cat-badge');
+  badge.className = 'category-badge ' + q.cat;
+  badge.textContent = q.catLabel;
+
+  document.getElementById('q-num-label').textContent = `Pregunta ${current + 1} de ${total}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
+  const letters = ['A','B','C'];
+  q.opts.forEach((opt, i) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.addEventListener('click', () => selectOption(i, btn));
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+
+  const exp = document.getElementById('explanation');
+  exp.style.display = 'none';
+  exp.innerHTML = '';
+  document.getElementById('next-btn').style.display = 'none';
+}
+
+function selectOption(idx, btn) {
+  const q = questions[current];
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const exp = document.getElementById('explanation');
+  const nextBtn = document.getElementById('next-btn');
+
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    score++;
+    exp.className = 'explanation correct-exp';
+    exp.innerHTML = '✅ <strong>¡Correcto!</strong> ' + q.exp;
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.correct].classList.add('correct');
+    wrong++;
+    exp.className = 'explanation wrong-exp';
+    exp.innerHTML = '❌ <strong>Incorrecto.</strong> ' + q.exp;
+  }
+
+  document.getElementById('score-display').innerHTML = `✓ ${score} &nbsp;✗ ${wrong}`;
+  exp.style.display = 'block';
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current + 1 < questions.length ? 'Siguiente pregunta →' : 'Ver resultados →';
+}
+
+document.getElementById('next-btn').addEventListener('click', () => {
+  current++;
+  if (current < questions.length) renderQuestion();
+  else showResults();
+});
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('results-score').textContent = pct + '%';
+  document.getElementById('stat-correct').textContent = score;
+  document.getElementById('stat-wrong').textContent = wrong;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pct').textContent = pct + '%';
+
+  let trophy, title, msg;
+  if (pct === 100) {
+    trophy = '🏆'; title = '¡NIVEL DIOS ALCANZADO!';
+    msg = 'Perfecto absoluto. Has demostrado dominar al 100% el Tema 4. Puedes ir al examen CNP con total seguridad.';
+  } else if (pct >= 90) {
+    trophy = '🥇'; title = '¡Excelente dominio!';
+    msg = `${pct}% de precisión. Rozas el nivel dios. Repasa los errores y repite el test para alcanzar la perfección.`;
+  } else if (pct >= 75) {
+    trophy = '🥈'; title = 'Buen nivel';
+    msg = `${pct}%. Sólido, pero el examen CNP exige precisión quirúrgica. Repasa especialmente los bloques donde fallaste.`;
+  } else if (pct >= 60) {
+    trophy = '🥉'; title = 'Base correcta, pero insuficiente';
+    msg = `${pct}%. Necesitas consolidar la teoría antes del examen. Vuelve a los apuntes y repite el test.`;
+  } else {
+    trophy = '📚'; title = 'Más estudio necesario';
+    msg = `${pct}%. El nivel dios está lejos todavía. Estudia el tema en profundidad y vuelve a intentarlo.`;
+  }
+
+  document.getElementById('trophy-emoji').textContent = trophy;
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-msg').textContent = msg;
+  document.getElementById('results-detail').textContent =
+    `Has respondido ${total} preguntas cubriendo el 100% de la teoría del Tema 4.`;
+}
+
+startQuiz();
+</script>
+</body>
+</html>

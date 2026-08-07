@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST T7 – Ministerio del Interior: Estructura Orgánica</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+    --border: #30363d; --accent: #1f6feb; --accent2: #388bfd;
+    --green: #238636; --red: #da3633; --yellow: #d29922;
+    --text: #e6edf3; --text2: #8b949e; --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; }
+  #app { max-width: 860px; margin: 0 auto; padding: 20px; }
+  h1 { text-align: center; font-size: 1.5rem; color: var(--accent2); margin-bottom: 6px; }
+  .subtitle { text-align: center; color: var(--text2); font-size: 0.9rem; margin-bottom: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 16px; }
+  .progress-bar-wrap { background: var(--surface2); border-radius: 20px; height: 10px; overflow: hidden; margin-bottom: 14px; }
+  .progress-bar { height: 10px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 20px; transition: width .4s; }
+  .stats-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat { background: var(--surface2); border-radius: 8px; padding: 8px 14px; font-size: 0.85rem; border: 1px solid var(--border); }
+  .stat span { font-weight: bold; }
+  .stat.ok span { color: #3fb950; }
+  .stat.err span { color: #f85149; }
+  .stat.time span { color: var(--accent2); }
+  .stat.prog span { color: var(--yellow); }
+  .question-num { font-size: 0.8rem; color: var(--text2); margin-bottom: 8px; }
+  .question-text { font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin-bottom: 18px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn { background: var(--surface2); border: 1.5px solid var(--border); color: var(--text); border-radius: 8px; padding: 12px 16px; text-align: left; cursor: pointer; font-size: 0.95rem; line-height: 1.4; transition: border-color .2s, background .2s; }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: #1c2333; }
+  .option-btn.correct { border-color: #3fb950; background: #0d2218; color: #3fb950; }
+  .option-btn.wrong { border-color: #f85149; background: #2d0f0f; color: #f85149; }
+  .option-btn.reveal { border-color: #3fb950; background: #0d2218; color: #3fb950; }
+  .option-btn:disabled { cursor: default; }
+  .explanation { background: #1c2027; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-top: 14px; font-size: 0.9rem; line-height: 1.6; color: #cdd9e5; display: none; }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--accent2); }
+  .btn { border: none; border-radius: 8px; padding: 10px 22px; font-size: 0.95rem; cursor: pointer; font-weight: 600; transition: opacity .2s; }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-red { background: var(--red); color: #fff; }
+  .nav-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+  .badge-sdg { background: #1a3a5c; color: #7dd3fc; }
+  .badge-dg { background: #1a3a1a; color: #86efac; }
+  .badge-ses { background: #3a1a1a; color: #fca5a5; }
+  /* Final report */
+  #report { display: none; }
+  .report-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 18px; }
+  .report-card { background: var(--surface2); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+  .report-card .big { font-size: 2rem; font-weight: bold; }
+  .report-card .label { font-size: 0.8rem; color: var(--text2); margin-top: 4px; }
+  .error-list { list-style: none; }
+  .error-list li { padding: 10px; border-bottom: 1px solid var(--border); font-size: 0.88rem; line-height: 1.5; }
+  .error-list li:last-child { border-bottom: none; }
+  .tag-wrong { color: #f85149; font-weight: bold; }
+  .tag-right { color: #3fb950; font-weight: bold; }
+  .rank-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+  .rank-item:last-child { border-bottom: none; }
+  /* Start screen */
+  #start-screen { text-align: center; padding: 30px 10px; }
+  #start-screen p { color: var(--text2); margin: 10px 0; font-size: 0.95rem; }
+  .big-icon { font-size: 3rem; margin-bottom: 10px; }
+  h2 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent2); }
+  .mode-select { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 18px 0; }
+  .mode-card { background: var(--surface2); border: 2px solid var(--border); border-radius: 10px; padding: 16px 20px; cursor: pointer; width: 200px; transition: border-color .2s; }
+  .mode-card:hover, .mode-card.selected { border-color: var(--accent); }
+  .mode-card h3 { font-size: 1rem; margin-bottom: 6px; }
+  .mode-card p { font-size: 0.8rem; color: var(--text2); }
+  .spaced-tag { background: #2d1b69; color: #a78bfa; font-size: 0.7rem; padding: 2px 7px; border-radius: 20px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <h1>🏛️ TEST TEMA 7 — Ministerio del Interior</h1>
+  <p class="subtitle">Estructura Orgánica · Oposiciones FCSE · Alta Dificultad</p>
+
+  <!-- START SCREEN -->
+  <div id="start-screen" class="card">
+    <div class="big-icon">🛡️</div>
+    <h2>Plataforma de Evaluación Avanzada</h2>
+    <p>Cubre el 100% del contenido del Tema 7.<br>Preguntas de máxima dificultad con repetición espaciada.</p>
+    <div class="mode-select">
+      <div class="mode-card selected" onclick="selectMode('exam')" id="mode-exam">
+        <h3>📝 Examen</h3>
+        <p>Preguntas aleatorias. Resultado al final.</p>
+      </div>
+      <div class="mode-card" onclick="selectMode('learn')" id="mode-learn">
+        <h3>📚 Aprendizaje</h3>
+        <p>Explicación inmediata al fallar.</p>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="color:var(--text2);font-size:0.9rem;">Número de preguntas: </label>
+      <select id="num-q" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:0.9rem;">
+        <option value="20">20</option>
+        <option value="40">40</option>
+        <option value="60">60</option>
+        <option value="0" selected>Todas (110)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="startTest()" style="font-size:1.1rem;padding:12px 36px;">Comenzar Test</button>
+  </div>
+
+  <!-- QUIZ AREA -->
+  <div id="quiz-area" style="display:none;">
+    <div class="stats-row">
+      <div class="stat ok">✅ Aciertos: <span id="s-ok">0</span></div>
+      <div class="stat err">❌ Errores: <span id="s-err">0</span></div>
+      <div class="stat time">⏱️ <span id="s-time">00:00</span></div>
+      <div class="stat prog">📋 <span id="s-prog">0/0</span></div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+    <div class="card" id="q-card">
+      <div class="question-num" id="q-num"></div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+      <div class="explanation" id="q-explanation"></div>
+      <div class="nav-row">
+        <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()" style="display:none;">Siguiente →</button>
+        <button class="btn btn-secondary" onclick="showReport()" style="font-size:0.8rem;">Finalizar ya</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL REPORT -->
+  <div id="report" class="card">
+    <h2 style="margin-bottom:18px;">📊 Informe Final</h2>
+    <div class="report-grid" id="report-grid"></div>
+    <h2 style="margin-bottom:10px;">🏆 Órganos más problemáticos</h2>
+    <div class="card" id="rank-topics" style="margin-bottom:18px;"></div>
+    <h2 style="margin-bottom:10px;">❌ Errores cometidos</h2>
+    <div class="card">
+      <ul class="error-list" id="error-list"></ul>
+    </div>
+    <div style="margin-top:20px;text-align:center;">
+      <button class="btn btn-primary" onclick="location.reload()">🔄 Reiniciar</button>
+      <button class="btn btn-green" onclick="startReview()" style="margin-left:10px;">📚 Repasar falladas</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== BANK OF QUESTIONS =====================
+const ALL_QUESTIONS = [
+// ---- MINISTERIO DEL INTERIOR ----
+{
+  id:1, topic:"MI-General",
+  q:"¿Qué rango tiene el Director del Gabinete del Ministerio del Interior?",
+  opts:["Rango de Dirección General (DG)","Rango de Subdirección General (SDG)","Rango de Subsecretario","Rango de Secretario de Estado"],
+  correct:0,
+  exp:"El Gabinete del MI está compuesto por 1 Director con rango de DG y un máximo de 5 asesores con rango de SDG. No confundir con el Gabinete de la SES, cuyos asesores también tienen rango SDG pero son solo hasta 3."
+},
+{
+  id:2, topic:"MI-General",
+  q:"¿Cuántos asesores puede tener como máximo el Gabinete del Ministerio del Interior?",
+  opts:["3 asesores con rango de SDG","5 asesores con rango de SDG","4 asesores con rango de SDG","7 asesores con rango de DG"],
+  correct:1,
+  exp:"El Gabinete del MI tiene 1 Director (rango DG) y máximo 5 asesores con rango SDG. El Gabinete de la SES, en cambio, tiene hasta 3 asesores."
+},
+{
+  id:3, topic:"MI-General",
+  q:"¿Qué rango tiene la Oficina de Comunicación del Ministerio del Interior?",
+  opts:["Rango de Dirección General","Rango de Subdirección General","Rango de Subsecretario","Rango de Secretaría General"],
+  correct:1,
+  exp:"La Oficina de Comunicación tiene rango de SDG (Subdirección General) y depende directamente del Ministro."
+},
+{
+  id:4, topic:"MI-General",
+  q:"¿De quién depende directamente la Oficina de Comunicación del MI?",
+  opts:["Del Secretario de Estado de Seguridad","Del Subsecretario del Interior","Del Ministro del Interior","De la Secretaría General Técnica"],
+  correct:2,
+  exp:"La Oficina de Comunicación depende directamente del Ministro. No depende de la SES ni del Subsecretario."
+},
+{
+  id:5, topic:"MI-General",
+  q:"¿Cuál de las siguientes funciones corresponde al Ministerio del Interior y NO a otro órgano inferior?",
+  opts:["Coordinar la cooperación policial internacional con EUROPOL","El mando superior y la dirección y coordinación de las FCSE","La dirección del SNPIC","Ejercer la secretaría del Comité Especializado contra el terrorismo"],
+  correct:1,
+  exp:"El mando superior y la dirección y coordinación de las FCSE es función del MI. La cooperación con EUROPOL es de la SES. La dirección del SNPIC también es de la SES. La secretaría del Comité antiterrorista la ejerce el CITCO."
+},
+{
+  id:6, topic:"MI-General",
+  q:"¿Cuál de las siguientes materias NO figura entre las competencias del Ministerio del Interior?",
+  opts:["Seguridad privada","Extranjería y protección internacional","Relaciones exteriores y cooperación internacional","Tráfico, seguridad vial y movilidad sostenible"],
+  correct:2,
+  exp:"Las relaciones exteriores corresponden al Ministerio de Asuntos Exteriores. El MI tiene competencias sobre seguridad privada, extranjería, protección internacional y tráfico."
+},
+// ---- SES ----
+{
+  id:7, topic:"SES-General",
+  q:"¿Qué tipo de órgano es la Secretaría de Estado de Seguridad (SES)?",
+  opts:["Órgano directivo con rango de Subsecretario","Órgano superior","Órgano de apoyo y asistencia","Órgano colegiado de coordinación"],
+  correct:1,
+  exp:"La SES es un órgano superior del MI, igual que el propio Ministerio. Los subsecretarios y secretarías generales son órganos directivos."
+},
+{
+  id:8, topic:"SES-General",
+  q:"¿Quién preside el Comité Especializado contra el Terrorismo?",
+  opts:["El Director del CITCO","La Secretaría de Estado de Seguridad","El Director General de Coordinación y Estudios","El Ministro del Interior"],
+  correct:1,
+  exp:"La SES preside el Comité Especializado contra el Terrorismo. Las reuniones se celebran cada 2 meses. La secretaría la ejerce el CITCO."
+},
+{
+  id:9, topic:"SES-General",
+  q:"¿Quién ejerce la secretaría del Comité Especializado contra el Terrorismo?",
+  opts:["La SES","El CITCO","La DG de Coordinación y Estudios","La Inspección de Personal y Servicio de Seguridad"],
+  correct:1,
+  exp:"El CITCO ejerce la secretaría del Comité Especializado contra el Terrorismo, cuya presidencia corresponde a la SES."
+},
+{
+  id:10, topic:"SES-General",
+  q:"¿Con qué periodicidad se reúne el Comité Especializado contra el Terrorismo?",
+  opts:["Cada mes","Cada 2 meses","Cada 3 meses","Cada 6 meses"],
+  correct:1,
+  exp:"El Comité Especializado contra el Terrorismo se reúne cada 2 meses. Presidencia: SES. Secretaría: CITCO."
+},
+{
+  id:11, topic:"SES-General",
+  q:"¿Cuál de los siguientes organismos internacionales NO figura expresamente en las funciones de cooperación policial internacional de la SES?",
+  opts:["EUROPOL","INTERPOL","SIRENE","CEPOL"],
+  correct:3,
+  exp:"La SES coordina la cooperación policial internacional especialmente con EUROPOL, INTERPOL, SIRENE, SIS y CCPA (Aduanera). CEPOL (Unidad Nacional ante CEPOL) se gestiona a través de la DG de Coordinación y Estudios."
+},
+{
+  id:12, topic:"SES-General",
+  q:"¿Cuál de las siguientes funciones corresponde a la SES y NO al Ministerio en su conjunto?",
+  opts:["La administración de instituciones penitenciarias","La dirección del SNPIC (Sistema Nacional de Protección de Infraestructuras Críticas)","La expedición de permisos de conducción","El Registro Nacional de Asociaciones"],
+  correct:1,
+  exp:"La SES dirige el SNPIC. Las instituciones penitenciarias son del MI pero se gestionan por la Secretaría General. Los permisos de conducción los gestiona la DGT. El Registro de Asociaciones es de la Secretaría General Técnica."
+},
+{
+  id:13, topic:"SES-COMITE",
+  q:"¿Quién ejerce la presidencia del Comité Ejecutivo de Coordinación?",
+  opts:["El Ministro del Interior","El Subsecretario del Interior","La Secretaría de Estado de Seguridad","El Director General de la Policía"],
+  correct:2,
+  exp:"El Comité Ejecutivo de Coordinación está bajo la dirección y supervisión del MI, pero su presidencia corresponde a la SES."
+},
+{
+  id:14, topic:"SES-COMITE",
+  q:"¿Qué órgano ejerce la secretaría del Comité Ejecutivo de Coordinación?",
+  opts:["El CITCO","La DG de Coordinación y Estudios","El Gabinete del Ministro","La Inspección de Personal y Servicio de Seguridad"],
+  correct:1,
+  exp:"La DG de Coordinación y Estudios ejerce la secretaría del Comité Ejecutivo de Coordinación."
+},
+{
+  id:15, topic:"SES-COMITE",
+  q:"¿Cuáles de los siguientes NO forman parte del Comité Ejecutivo de Coordinación?",
+  opts:["El Subsecretario de Interior","Los Directores Adjuntos de la Policía y Guardia Civil","El Director General de Protección Civil","El Director General de Relaciones Internacionales y Extranjería"],
+  correct:2,
+  exp:"El Comité Ejecutivo incluye SES (presidente), Subsecretario de Interior, DGP y DGGC, DAQ de la Policía y GC, SG de Instituciones Penitenciarias, Gabinete del Ministro, DG Relaciones Internacionales y Extranjería, y DG Coordinación y Estudios (secretaría). El DG de Protección Civil no está."
+},
+{
+  id:16, topic:"SES-COMITE",
+  q:"¿Cuántos asesores puede tener como máximo el Gabinete de la SES?",
+  opts:["5 asesores con rango SDG","3 asesores con rango SDG","4 asesores con rango DG","2 asesores con rango SDG"],
+  correct:1,
+  exp:"El Gabinete de la SES tiene 1 Director y hasta 3 asesores (todos con rango SDG). El Gabinete del MI tiene hasta 5 asesores."
+},
+{
+  id:17, topic:"SES-COMITE",
+  q:"¿Qué función adicional especial ejerce el Gabinete de la SES?",
+  opts:["Ejercerá de punto focal de la ORA","Ejercerá de Relatoría Nacional contra la Trata de Seres Humanos","Dirigirá el CETSE","Gestionará la ONIP"],
+  correct:1,
+  exp:"El Gabinete de la SES ejercerá de Relatoría Nacional contra la Trata de Seres Humanos y coordinará las dos Subdirecciones Generales de la SES."
+},
+// ---- SDG PLANIFICACIÓN INFRAESTRUCTURAS ----
+{
+  id:18, topic:"SES-SDGs",
+  q:"¿Cuál es la función de la SDG de Planificación y Gestión de Infraestructuras y Medios para la Seguridad?",
+  opts:["Gestionar las inversiones en sistemas de información y comunicaciones","Gestionar el patrimonio inmobiliario y proponer proyectos y obras","Coordinar e implantar las bases de datos de FCSE","Dirigir el Centro Tecnológico de Seguridad (CETSE)"],
+  correct:1,
+  exp:"La SDG de Planificación y Gestión de Infraestructuras se encarga de planes de inversiones, proponer proyectos y obras, gestionar el patrimonio inmobiliario y mantener el inventario. El CETSE y las bases de datos corresponden a la SDG de Sistemas de Información y Comunicaciones."
+},
+{
+  id:19, topic:"SES-SDGs",
+  q:"¿Con qué organismo mantiene relaciones la SDG de Planificación y Gestión de Infraestructuras y Medios para la Seguridad?",
+  opts:["Con EUROPOL","Con la Dirección General del Patrimonio del Estado","Con el Centro Tecnológico de Seguridad","Con Eu-Lisa"],
+  correct:1,
+  exp:"Esta SDG mantiene las relaciones con la Dirección General del Patrimonio del Estado. Las relaciones con EUROPOL corresponden a la SES. Eu-Lisa y CETSE pertenecen a la otra SDG."
+},
+// ---- SDG SISTEMAS INFORMACIÓN ----
+{
+  id:20, topic:"SES-SDGs",
+  q:"¿Qué SDG dirige el Centro Tecnológico de Seguridad (CETSE)?",
+  opts:["SDG de Planificación y Gestión de Infraestructuras y Medios para la Seguridad","SDG de Sistemas de Información y Comunicaciones para la Seguridad","SDG de Cooperación Policial Internacional","SDG de Análisis e Inspección"],
+  correct:1,
+  exp:"El CETSE es dirigido por la SDG de Sistemas de Información y Comunicaciones para la Seguridad."
+},
+{
+  id:21, topic:"SES-SDGs",
+  q:"¿Cuál de las siguientes bases de datos coordina e implanta la SDG de Sistemas de Información y Comunicaciones para la Seguridad?",
+  opts:["Sistema VioGén","SIRDEE y SIS","Base de datos de la CIAR","Registro Nacional de Víctimas de Accidentes"],
+  correct:1,
+  exp:"Esta SDG coordina e implanta Eu-Lisa, el Sistema Schengen (SIS) y SIRDEE. El Sistema VioGén corresponde a la DG de Coordinación y Estudios."
+},
+// ---- CITCO ----
+{
+  id:22, topic:"CITCO",
+  q:"¿Qué rango orgánico tiene el CITCO?",
+  opts:["Dirección General","Subdirección General","Secretaría General","Dirección Adjunta"],
+  correct:1,
+  exp:"El CITCO (Centro de Inteligencia contra el Terrorismo y el Crimen Organizado) tiene rango de SDG (Subdirección General)."
+},
+{
+  id:23, topic:"CITCO",
+  q:"¿Qué unidad dentro del CITCO actúa como Unidad de Información sobre Pasajeros (PIU) nacional?",
+  opts:["TEPOL","UNECI","ONIP","ORA"],
+  correct:2,
+  exp:"La ONIP (Oficina Nacional de Información sobre Pasajeros) actúa como Unidad de Información sobre Pasajeros (PIU) nacional. Forma parte del CITCO."
+},
+{
+  id:24, topic:"CITCO",
+  q:"¿Qué unidad del CITCO se encarga de los delitos de terrorismo en la Policía Judicial?",
+  opts:["UNECI","ONIP","ORA","TEPOL"],
+  correct:3,
+  exp:"TEPOL es la Unidad de Policía Judicial para Delitos de Terrorismo, integrada en el CITCO."
+},
+{
+  id:25, topic:"CITCO",
+  q:"¿Qué siglas corresponden a la unidad del CITCO encargada de retirar contenidos ilícitos en Internet?",
+  opts:["ONIP","ORA","UNECI","TEPOL"],
+  correct:2,
+  exp:"UNECI = Unidad Nacional de Retirada de Contenidos Ilícitos en Internet. Forma parte del CITCO."
+},
+{
+  id:26, topic:"CITCO",
+  q:"¿Cuál de las siguientes funciones NO corresponde al CITCO?",
+  opts:["Elaborar estadísticas oficiales sobre drogas y crimen organizado","Coordinar la destrucción de alijos de drogas","Dirigir el Centro Tecnológico de Seguridad (CETSE)","Realizar informes anuales y evaluaciones periódicas de amenazas"],
+  correct:2,
+  exp:"El CETSE lo dirige la SDG de Sistemas de Información y Comunicaciones para la Seguridad, no el CITCO. Las demás opciones sí son funciones del CITCO."
+},
+{
+  id:27, topic:"CITCO",
+  q:"¿El CITCO actúa como Punto Nacional de Contacto en Localización y Recuperación de Activos. ¿Cuáles son las siglas de esta oficina?",
+  opts:["ONIP","PIU","TEPOL","ORA"],
+  correct:3,
+  exp:"ORA = Punto Nacional de Contacto en Localización y Recuperación de Activos. Integrado en el CITCO."
+},
+{
+  id:28, topic:"CITCO",
+  q:"¿Qué función ejerce el CITCO en relación con la Relatoría Nacional contra la Trata de Seres Humanos?",
+  opts:["Es el punto focal dentro del CITCO","Es el titular de la Relatoría","Ejerce la presidencia de la Relatoría","Coordina la Relatoría desde el Gabinete de la SES"],
+  correct:0,
+  exp:"El CITCO actúa como punto focal de la Relatoría Nacional contra la Trata de Seres Humanos. La función de Relatoría la ejerce el Gabinete de la SES."
+},
+// ---- DG COORDINACIÓN Y ESTUDIOS ----
+{
+  id:29, topic:"DG-COORD",
+  q:"¿Cuál de las siguientes opciones describe mejor la función del CEPIC?",
+  opts:["Centro de Coordinación y Planificación de la Información de Seguridad Ciudadana","Centro Europeo de Policía e Inteligencia Criminal","Comisión Especializada de Prevención e Investigación Criminal","Centro de Estandarización y Protocolos de Información Criminal"],
+  correct:0,
+  exp:"CEPIC = Centro de Coordinación y Planificación de la Información de Seguridad Ciudadana. Centraliza la información operativa generada por las FCS, bajo la DG de Coordinación y Estudios."
+},
+{
+  id:30, topic:"DG-COORD",
+  q:"¿Qué sistema de seguimiento de violencia de género gestiona la DG de Coordinación y Estudios?",
+  opts:["Sistema CENEM","Sistema VioGén","Sistema SIRDEE","Sistema EUROSUR"],
+  correct:1,
+  exp:"El Sistema VioGén (Servicio Central de Violencia de Género) está bajo la DG de Coordinación y Estudios."
+},
+{
+  id:31, topic:"DG-COORD",
+  q:"¿Qué oficina integrada en el Área de Violencia de Género se encarga de las violencias sexuales?",
+  opts:["ONDOD","CNDES","ONVIOSEX","OCC"],
+  correct:2,
+  exp:"ONVIOSEX = Oficina Nacional contra las Violencias Sexuales. Está integrada en el Área de Violencia de Género de la DG de Coordinación y Estudios."
+},
+{
+  id:32, topic:"DG-COORD",
+  q:"¿Qué oficina dirige la DG de Coordinación y Estudios en materia de Delitos de Odio?",
+  opts:["ONVIOSEX","CNDES","ONDOD","OCC"],
+  correct:2,
+  exp:"ONDOD = Oficina Nacional de Delitos de Odio. Dirigida desde la DG de Coordinación y Estudios."
+},
+{
+  id:33, topic:"DG-COORD",
+  q:"¿Cuál es la denominación completa del CNDES?",
+  opts:["Centro Nacional de Delitos y Estadísticas de Seguridad","Centro Nacional de Desaparecidos","Comisión Nacional de Documentación y Estadística de Seguridad","Centro Neurológico de Desapariciones del Estado"],
+  correct:1,
+  exp:"CNDES = Centro Nacional de Desaparecidos. Está bajo la dirección de la DG de Coordinación y Estudios."
+},
+{
+  id:34, topic:"DG-COORD",
+  q:"¿Cuál de las siguientes funciones de ciberseguridad ejerce la DG de Coordinación y Estudios a través de la OCC?",
+  opts:["Dirigir el CETSE","Actuar como canal entre los CSIRT nacionales y la SES","Coordinar la participación en EUROSUR","Gestionar el SIRDEE"],
+  correct:1,
+  exp:"La OCC (Oficina de Coordinación de Ciberseguridad) actúa como canal entre los CSIRT nacionales y la SES. El CETSE y el SIRDEE son de la SDG de Sistemas de Información y Comunicaciones."
+},
+{
+  id:35, topic:"DG-COORD",
+  q:"¿Qué siglas corresponden al apoyo cibernético a la Policía Judicial gestionado por la OCC?",
+  opts:["CNPIC","CSIRT-MIRPJ","CEPIC","OCC-PJ"],
+  correct:1,
+  exp:"CSIRT-MIRPJ es el nombre del apoyo cibernético a la Policía Judicial, bajo la OCC dentro de la DG de Coordinación y Estudios."
+},
+{
+  id:36, topic:"DG-COORD",
+  q:"¿Ante qué organismo europeo actúa como Unidad Nacional la DG de Coordinación y Estudios en materia de formación policial?",
+  opts:["EUROPOL","FRONTEX","CEPOL","EUROJUST"],
+  correct:2,
+  exp:"La DG de Coordinación y Estudios actúa como Unidad Nacional ante CEPOL (Agencia de la Unión Europea para la Formación Policial)."
+},
+{
+  id:37, topic:"DG-COORD",
+  q:"¿Qué registro documental clasificado mantiene la DG de Coordinación y Estudios?",
+  opts:["Registro Nacional de Asociaciones","Subregistro principal OTAN/EU/ESA","Registro Nacional de Víctimas de Accidentes","Sistema de Registro de Pasajeros PNR"],
+  correct:1,
+  exp:"La DG de Coordinación y Estudios mantiene el Subregistro principal OTAN/EU/ESA de documentación clasificada."
+},
+{
+  id:38, topic:"DG-COORD",
+  q:"¿Cuál es el papel de la DG de Coordinación y Estudios respecto a la Estadística Nacional de Criminalidad?",
+  opts:["La recibe del INE para analizarla","La recoge y analiza directamente","La publica como órgano del INE","La supervisa desde la Secretaría General Técnica"],
+  correct:1,
+  exp:"La DG de Coordinación y Estudios desarrolla directamente la Estadística Nacional de Criminalidad (recolección y análisis)."
+},
+// ---- INSPECCIÓN PERSONAL ----
+{
+  id:39, topic:"SES-SDGs",
+  q:"¿Qué SDG de la SES promueve la integridad profesional y deontológica de las FCSE?",
+  opts:["SDG de Sistemas de Información y Comunicaciones para la Seguridad","SDG de Planificación y Gestión de Infraestructuras y Medios para la Seguridad","Inspección de Personal y Servicio de Seguridad","CITCO"],
+  correct:2,
+  exp:"La Inspección de Personal y Servicio de Seguridad (SDG) promueve iniciativas que fomenten la integridad profesional y deontológica de los miembros de las FCSE."
+},
+{
+  id:40, topic:"SES-SDGs",
+  q:"¿Cuál es la función de la Inspección de Personal y Servicio de Seguridad en materia laboral?",
+  opts:["Gestiona las nóminas y retribuciones de las FCSE","Planifica la actividad inspectora y ejerce funciones de prevención de riesgos laborales","Tramita los expedientes disciplinarios penitenciarios","Coordina la formación policial europea"],
+  correct:1,
+  exp:"Esta SDG planifica la actividad inspectora y ejerce funciones en materia de prevención de riesgos laborales de las FCSE."
+},
+// ---- ONGADH ----
+{
+  id:41, topic:"SES-ONGADH",
+  q:"¿Cuál es la denominación completa de la ONGADH?",
+  opts:["Organización Nacional de Garantías de los Derechos Humanos","Oficina Nacional de Garantías de los Derechos Humanos","Organización de Garantías y Ayuda a los Derechos Humanos","Oficina Nacional de Gestión y Atención de Derechos Humanos"],
+  correct:1,
+  exp:"ONGADH = Oficina Nacional de Garantías de los Derechos Humanos. Creada por ISES 1/2022."
+},
+{
+  id:42, topic:"SES-ONGADH",
+  q:"¿Cada cuánto tiempo deben actualizarse los expedientes activos de la ONGADH?",
+  opts:["Cada mes","Cada 3 meses","Al menos cada 6 meses","Cada año"],
+  correct:2,
+  exp:"Los expedientes activos de la ONGADH deben actualizarse al menos cada 6 meses."
+},
+{
+  id:43, topic:"SES-ONGADH",
+  q:"¿Qué función específica ejerce la ONGADH en relación con FRONTEX?",
+  opts:["Coordina las operaciones de FRONTEX en España","Actúa como punto de contacto nacional para el mecanismo de denuncias de FRONTEX","Gestiona el NCC de EUROSUR","Ejerce la secretaría del Comité de Frontex en el MI"],
+  correct:1,
+  exp:"La ONGADH actúa como punto de contacto nacional para el mecanismo de denuncias de FRONTEX."
+},
+{
+  id:44, topic:"SES-ONGADH",
+  q:"¿Qué norma creó la ONGADH?",
+  opts:["ISES 1/2022","RD 2/2020","LO 4/2015","RD 1/2023"],
+  correct:0,
+  exp:"La ONGADH fue creada por ISES 1/2022 (Instrucción del Secretario de Estado de Seguridad 1/2022)."
+},
+// ---- DG RELACIONES INTERNACIONALES ----
+{
+  id:45, topic:"DG-RRINT",
+  q:"¿Qué SDG de la DG de Relaciones Internacionales y Extranjería coordina las relaciones con FRONTEX?",
+  opts:["SDG de Cooperación Policial Internacional","SDG de Relaciones Internacionales, Inmigración y Extranjería","SDG de Asuntos Europeos","SDG de Planificación y Gestión de Infraestructuras"],
+  correct:1,
+  exp:"La SDG de Relaciones Internacionales, Inmigración y Extranjería coordina las relaciones con FRONTEX y con el Ministerio de Asuntos Exteriores. Gestiona el NFPOC y el NCC."
+},
+{
+  id:46, topic:"DG-RRINT",
+  q:"¿Qué siglas corresponden al Centro Nacional de Coordinación de EUROSUR?",
+  opts:["NCC","NFPOC","CCPA","CCP"],
+  correct:0,
+  exp:"NCC = Centro Nacional de Coordinación de Eurosur. Gestionado por la SDG de Relaciones Internacionales, Inmigración y Extranjería."
+},
+{
+  id:47, topic:"DG-RRINT",
+  q:"¿Qué SDG realiza el seguimiento de las actuaciones de la UE que afectan al MI en el Espacio de Libertad, Seguridad y Justicia?",
+  opts:["SDG de Cooperación Policial Internacional","SDG de Relaciones Internacionales, Inmigración y Extranjería","SDG de Asuntos Europeos","SDG de Planificación y Gestión de Infraestructuras"],
+  correct:2,
+  exp:"La SDG de Asuntos Europeos realiza el seguimiento de las actuaciones de la UE en el Espacio de Libertad, Seguridad y Justicia."
+},
+{
+  id:48, topic:"DG-RRINT",
+  q:"¿Cuál de las siguientes funciones corresponde a la SDG de Cooperación Policial Internacional?",
+  opts:["Gestionar el Punto Nacional de Contacto NFPOC","Coordinar la cooperación policial internacional y organizar actuaciones en Misiones Diplomáticas","Realizar el seguimiento del Espacio de Libertad, Seguridad y Justicia de la UE","Coordinar la representación del Dpto. ante la UE"],
+  correct:1,
+  exp:"La SDG de Cooperación Policial Internacional coordina la cooperación policial internacional y organiza e inspecciona las actuaciones del MI en las Misiones Diplomáticas."
+},
+// ---- DGPN y DGGC ----
+{
+  id:49, topic:"FCSE-DG",
+  q:"¿Qué rango tiene el titular de la Dirección General de la Policía (DGP)?",
+  opts:["Rango de Secretario de Estado","Rango de Subsecretario","Rango de Director General ordinario","Rango de Secretario General"],
+  correct:1,
+  exp:"El titular de la DGP tiene rango de subsecretario. Lo mismo que el titular de la DGGC."
+},
+{
+  id:50, topic:"FCSE-DG",
+  q:"¿Bajo dependencia de quién ejerce el mando directo de la Policía Nacional el Director General de la Policía?",
+  opts:["Del Ministro del Interior directamente","De la Secretaría de Estado de Seguridad","Del Subsecretario del Interior","De la Secretaría General Técnica"],
+  correct:1,
+  exp:"El Director General de la Policía ejerce el mando directo de la Policía Nacional bajo dependencia de la SES."
+},
+{
+  id:51, topic:"FCSE-DG",
+  q:"¿Cuáles son los dos organismos adscritos a la Dirección General de la Guardia Civil?",
+  opts:["Consejo Superior de la Guardia Civil y Consejo de la Guardia Civil","Comité Ejecutivo de Coordinación y Consejo Superior de la Guardia Civil","Mando de Operaciones y Mando de Personal","Dirección Adjunta Operativa y Consejo de la Guardia Civil"],
+  correct:0,
+  exp:"A la DGGC se adscriben el Consejo Superior de la Guardia Civil y el Consejo de la Guardia Civil."
+},
+{
+  id:52, topic:"FCSE-DG",
+  q:"¿Cuál de los siguientes Mandos depende directamente del titular de la DGGC?",
+  opts:["Mando de Fronteras y Policía Marítima","Comité Ejecutivo de Coordinación","Dirección General de Coordinación y Estudios","Inspección de Personal y Servicio de Seguridad"],
+  correct:0,
+  exp:"Dependen directamente del titular de la DGGC: Dirección Adjunta Operativa, Mando de Operaciones, Mando de Fronteras y Policía Marítima, Mando de Personal y Mando de Apoyo."
+},
+{
+  id:53, topic:"FCSE-DG",
+  q:"¿Cuántos Mandos dependen directamente del titular de la Dirección General de la Guardia Civil (excluyendo la Dirección Adjunta Operativa)?",
+  opts:["2","3","4","5"],
+  correct:2,
+  exp:"Dependen directamente: Dirección Adjunta Operativa, Mando de Operaciones, Mando de Fronteras y Policía Marítima, Mando de Personal y Mando de Apoyo = 4 mandos + la DAO."
+},
+// ---- SGIP ----
+{
+  id:54, topic:"SGIP",
+  q:"¿Qué rango tiene el titular de la Secretaría General de Instituciones Penitenciarias?",
+  opts:["Rango de Secretario de Estado","Rango de Subsecretario","Rango de Director General","Rango de Subdirector General"],
+  correct:1,
+  exp:"La Secretaría General de Instituciones Penitenciarias es un órgano directivo cuyo titular tiene rango de Subsecretario."
+},
+{
+  id:55, topic:"SGIP",
+  q:"¿Cómo se denomina la sociedad con la que mantiene relaciones la Secretaría General de Instituciones Penitenciarias en materia de infraestructuras?",
+  opts:["SIEPSE (Sociedad de Infraestructuras y Equipamientos Penitenciarios y de la Seguridad del Estado)","CETSE (Centro Tecnológico de Seguridad)","CNPIC (Centro Nacional de Protección de Infraestructuras Críticas)","CENEM (Centro Nacional de Seguimiento y Coordinación de Emergencias)"],
+  correct:0,
+  exp:"SIEPSE = Sociedad de Infraestructuras y Equipamientos Penitenciarios y de la Seguridad del Estado, S.M.E., S.A."
+},
+{
+  id:56, topic:"SGIP",
+  q:"¿Cuál de las siguientes Subdirecciones NO depende de la Secretaría General de Instituciones Penitenciarias directamente (sino de la DG de Ejecución Penal)?",
+  opts:["SDG de Recursos Humanos","SDG de Análisis e Inspección","SDG de Medio Abierto y de Penas y Medidas Alternativas","SDG de Planificación y Gestión Económica"],
+  correct:2,
+  exp:"La SDG de Medio Abierto y de Penas y Medidas Alternativas depende de la DG de Ejecución Penal y Reinserción Social. Las demás son SDGs directamente dependientes de la SGIP."
+},
+{
+  id:57, topic:"SGIP",
+  q:"¿Qué organismo preside y se adscribe a la Secretaría General de Instituciones Penitenciarias?",
+  opts:["SIEPSE","Trabajo Penitenciario y Formación para el Empleo","Centro Nacional de Desaparecidos","Consejo Superior de la Guardia Civil"],
+  correct:1,
+  exp:"La SGIP preside y se adscribe a Trabajo Penitenciario y Formación para el Empleo."
+},
+{
+  id:58, topic:"SGIP-DGEPR",
+  q:"¿Qué dos SDG dependen de la Dirección General de Ejecución Penal y Reinserción Social?",
+  opts:["SDG de Recursos Humanos y SDG de Análisis e Inspección","SDG de Medio Abierto y de Penas y Medidas Alternativas y SDG de Sanidad Penitenciaria","SDG de Planificación y Gestión Económica y SDG de Relaciones Institucionales","SDG de Sanidad Penitenciaria y SDG de Recursos Humanos"],
+  correct:1,
+  exp:"De la DG de Ejecución Penal y Reinserción Social dependen: SDG de Medio Abierto y de Penas y Medidas Alternativas y SDG de Sanidad Penitenciaria."
+},
+// ---- SUBSECRETARÍA ----
+{
+  id:59, topic:"SUBSEC",
+  q:"¿Cuál de los siguientes órganos colegiados preside la Subsecretaría del Interior?",
+  opts:["Comisión Interministerial de Asilo y Refugio (CIAR)","Comité Especializado contra el Terrorismo","Comisión Ministerial de Administración Digital (CMAD)","Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible"],
+  correct:2,
+  exp:"La Subsecretaría del Interior preside la CMAD, la Comisión de Retribuciones y el CSSI. La CIAR la preside la DG de Protección Internacional. El Consejo Superior de Tráfico lo preside el MI."
+},
+{
+  id:60, topic:"SUBSEC",
+  q:"¿Qué órgano ejerce la vicepresidencia del Comité Superior de Seguridad de la Información (CSSI)?",
+  opts:["La Oficina Presupuestaria","El Gabinete de la Subsecretaría","La Secretaría General Técnica","La DG de Política Interior"],
+  correct:2,
+  exp:"El CSSI es presidido por la Subsecretaría del Interior, y la Secretaría General Técnica ejerce la vicepresidencia."
+},
+{
+  id:61, topic:"SUBSEC",
+  q:"¿Cuál de las siguientes competencias corresponde a la Subsecretaría del Interior y NO a otro órgano?",
+  opts:["La dirección y coordinación de la cooperación policial internacional","La gestión electoral y de partidos políticos (registro, financiación y subvenciones)","La elaboración de estadísticas de criminalidad","La presidencia del Comité Especializado contra el Terrorismo"],
+  correct:1,
+  exp:"La gestión electoral y de partidos políticos es competencia propia de la Subsecretaría. La cooperación policial internacional es de la SES. Las estadísticas de criminalidad, de la DG de Coordinación y Estudios. El Comité antiterrorista lo preside la SES."
+},
+{
+  id:62, topic:"SUBSEC",
+  q:"¿Cuál es la función específica de la Oficina Presupuestaria de la Subsecretaría?",
+  opts:["Elaborar estudios e informes para los altos cargos","Informe y tramitación de anteproyectos de ley","Formulación, seguimiento y evaluación de programas de gasto","Gestión del Registro Nacional de Asociaciones"],
+  correct:2,
+  exp:"La Oficina Presupuestaria se encarga de la formulación, seguimiento, evaluación y revisión de programas de gasto, instrucciones presupuestarias y expedientes plurianuales."
+},
+// ---- SECRETARÍA GENERAL TÉCNICA ----
+{
+  id:63, topic:"SGT",
+  q:"¿Qué órgano coordina el Plan Anual Normativo y las relaciones con el Defensor del Pueblo en el MI?",
+  opts:["La DG de Política Interior","La Oficina Presupuestaria","La Secretaría General Técnica","El Gabinete de la Subsecretaría"],
+  correct:2,
+  exp:"La Secretaría General Técnica coordina el Plan Anual Normativo y las relaciones con el Defensor del Pueblo."
+},
+{
+  id:64, topic:"SGT",
+  q:"¿Qué comisión preside la Secretaría General Técnica?",
+  opts:["CMAD","CSSI","CIPAE","CIAR"],
+  correct:2,
+  exp:"La Secretaría General Técnica preside la CIPAE. La CMAD y el CSSI los preside la Subsecretaría."
+},
+{
+  id:65, topic:"SGT",
+  q:"¿Qué función ejerce la Secretaría General Técnica como Unidad de Igualdad?",
+  opts:["Impulsar políticas de igualdad y prevención del acoso en las FCSE","Ejercer funciones de Unidad de Igualdad del MI","Coordinar la Oficina Nacional contra las Violencias Sexuales","Gestionar el Servicio Central de Violencia de Género"],
+  correct:1,
+  exp:"La Secretaría General Técnica ejerce funciones de Unidad de Igualdad del MI. Las FCSE y el sistema VioGén corresponden a otros órganos."
+},
+{
+  id:66, topic:"SGT",
+  q:"¿Qué Registro Nacional gestiona la Secretaría General Técnica?",
+  opts:["Registro Nacional de Víctimas de Accidentes","Registro Nacional de Asociaciones","Registro de Partidos Políticos","Registro de Protección Internacional"],
+  correct:1,
+  exp:"La Secretaría General Técnica gestiona el Registro Nacional de Asociaciones. El de víctimas de accidentes lo gestiona la DGT. El de partidos políticos, la DG de Política Interior."
+},
+// ---- DG POLÍTICA INTERIOR ----
+{
+  id:67, topic:"DGPI",
+  q:"¿Cuál de las siguientes funciones corresponde a la DG de Política Interior?",
+  opts:["Gestionar las solicitudes de asilo y apatridia","Organizar y coordinar los procesos electorales","Coordinar la participación ciudadana en el Consejo Superior de Tráfico","Preside la Comisión Interministerial de Asilo y Refugio"],
+  correct:1,
+  exp:"La DG de Política Interior organiza y coordina los procesos electorales. El asilo es de la DG de Protección Internacional. La DGT coordina el Consejo de Tráfico."
+},
+{
+  id:68, topic:"DGPI",
+  q:"¿Qué materia adicional gestiona la DG de Política Interior más allá de los procesos electorales?",
+  opts:["Extranjería y protección temporal","Ciberseguridad electoral y relaciones con CCAA en materia electoral","Coordinar la seguridad vial","Gestionar el Sistema VioGén"],
+  correct:1,
+  exp:"La DG de Política Interior también coordina los sistemas informáticos y la ciberseguridad electoral, y mantiene relaciones con las CCAA en estas materias."
+},
+// ---- DG PROTECCIÓN INTERNACIONAL ----
+{
+  id:69, topic:"DGPROT",
+  q:"¿Quién preside y ejerce la secretaría de la Comisión Interministerial de Asilo y Refugio (CIAR)?",
+  opts:["La Subsecretaría del Interior","La DG de Política Interior","La DG de Protección Internacional","La Secretaría General Técnica"],
+  correct:2,
+  exp:"La DG de Protección Internacional preside Y ejerce la secretaría de la CIAR (ambas funciones recaen en el mismo órgano)."
+},
+{
+  id:70, topic:"DGPROT",
+  q:"¿Cuáles son las tres figuras que gestiona la DG de Protección Internacional?",
+  opts:["Asilo, apatridia y protección temporal","Asilo, extranjería y apatridia","Refugio, protección temporal y emigración","Inmigración, asilo y trata de personas"],
+  correct:0,
+  exp:"La DG de Protección Internacional gestiona asilo, apatridia y protección temporal."
+},
+// ---- DGT ----
+{
+  id:71, topic:"DGT",
+  q:"¿Quién preside el Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible?",
+  opts:["El Director General de Tráfico","El Ministro del Interior","La Subsecretaría del Interior","El Secretario de Estado de Seguridad"],
+  correct:1,
+  exp:"El Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible lo preside el MI (Ministerio del Interior). La DGT ejerce su secretaría."
+},
+{
+  id:72, topic:"DGT",
+  q:"¿Qué órgano ejerce la secretaría del Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible?",
+  opts:["La Subsecretaría del Interior","La DG de Protección Civil","La DGT (Dirección General de Tráfico)","La Secretaría General Técnica"],
+  correct:2,
+  exp:"La DGT ejerce la secretaría del Consejo Superior de Tráfico. El MI lo preside."
+},
+{
+  id:73, topic:"DGT",
+  q:"¿Cuál de los siguientes centros dirige la DGT?",
+  opts:["Centro Nacional de Seguimiento y Coordinación de Emergencias (CENEM)","Centro de Tratamiento de Denuncias Automatizadas (CTDA)","Centro Tecnológico de Seguridad (CETSE)","Centro de Coordinación y Planificación de la Información de Seguridad Ciudadana (CEPIC)"],
+  correct:1,
+  exp:"La DGT dirige el Centro de Tratamiento de Denuncias Automatizadas (CTDA) y los Centros de Gestión de Tráfico (CGT). El CENEM es de la DG de Protección Civil. El CETSE es de la SDG de Sistemas de Información y Comunicaciones."
+},
+{
+  id:74, topic:"DGT",
+  q:"¿Qué registro gestiona la DGT relacionado con accidentes de tráfico?",
+  opts:["Registro Nacional de Asociaciones","Registro Nacional de Víctimas de Accidentes","Registro de Protección Internacional","Registro Nacional de Sanciones de Tráfico"],
+  correct:1,
+  exp:"La DGT gestiona el Registro Nacional de Víctimas de Accidentes de tráfico."
+},
+// ---- DG PROTECCIÓN CIVIL ----
+{
+  id:75, topic:"DGPCE",
+  q:"¿Cuál es la denominación del centro de coordinación de emergencias nacional bajo la DG de Protección Civil?",
+  opts:["CEPIC","CETSE","CENEM","CNDES"],
+  correct:2,
+  exp:"CENEM = Centro Nacional de Seguimiento y Coordinación de Emergencias. Bajo la DG de Protección Civil y Emergencias."
+},
+{
+  id:76, topic:"DGPCE",
+  q:"¿Cuál es la denominación completa de la RAN en protección civil?",
+  opts:["Red de Alerta Nuclear","Red de Alerta Nacional","Red de Actuación de Necesidades","Red de Apoyo Nacional"],
+  correct:1,
+  exp:"RAN = Red de Alerta Nacional. Bajo la DG de Protección Civil y Emergencias."
+},
+{
+  id:77, topic:"DGPCE",
+  q:"¿Cuál es la función de la DG de Protección Civil y Emergencias como punto de contacto europeo?",
+  opts:["Punto de contacto con EUROPOL en emergencias","Punto de contacto nacional con el Mecanismo Europeo de Protección Civil","Punto de contacto con FRONTEX en crisis","Punto de contacto con el CPT"],
+  correct:1,
+  exp:"La DG de Protección Civil actúa como punto de contacto nacional con el Mecanismo Europeo de Protección Civil."
+},
+// ---- DG VÍCTIMAS TERRORISMO ----
+{
+  id:78, topic:"DGVT",
+  q:"¿Cuál de las siguientes afirmaciones describe MEJOR la función principal de la DG de Apoyo a Víctimas del Terrorismo?",
+  opts:["Coordinar investigaciones antiterroristas con el CITCO","Asistencia integral a víctimas desde el primer momento, gestionando ayudas económicas y apoyo psicológico","Elaborar la estadística oficial sobre terrorismo","Presidir el Comité Especializado contra el Terrorismo"],
+  correct:1,
+  exp:"La DG de Apoyo a Víctimas del Terrorismo se centra en asistencia integral, ayudas económicas, apoyo psicológico y preservar la memoria de las víctimas. Las investigaciones antiterroristas son del CITCO."
+},
+// ---- COMBINADAS / CONFUSIÓN ----
+{
+  id:79, topic:"CONFUSIÓN",
+  q:"¿Cuál de los siguientes órganos tiene rango de Dirección General (DG) en el Gabinete del Ministerio del Interior?",
+  opts:["El Director del Gabinete de la SES","El Director del Gabinete del MI","Los asesores del Gabinete del MI","Los asesores del Gabinete de la SES"],
+  correct:1,
+  exp:"Solo el Director del Gabinete del MI tiene rango de DG. El Director del Gabinete de la SES tiene rango SDG. Todos los asesores en ambos gabinetes tienen rango SDG."
+},
+{
+  id:80, topic:"CONFUSIÓN",
+  q:"¿Cuál de las siguientes Subdirecciones Generales NO pertenece a la Secretaría de Estado de Seguridad (SES)?",
+  opts:["SDG de Planificación y Gestión de Infraestructuras y Medios para la Seguridad","Inspección de Personal y Servicio de Seguridad","SDG de Relaciones Internacionales, Inmigración y Extranjería","SDG de Análisis e Inspección"],
+  correct:3,
+  exp:"La SDG de Análisis e Inspección pertenece a la Secretaría General de Instituciones Penitenciarias (SGIP), no a la SES."
+},
+{
+  id:81, topic:"CONFUSIÓN",
+  q:"¿Cuál de las siguientes opciones corresponde a una función del Gabinete del Ministro (MI) y NO al Gabinete de la SES?",
+  opts:["Coordinar las dos Subdirecciones Generales de la SES","Ejercer de Relatoría Nacional contra la Trata de Seres Humanos","Supervisar los servicios de protocolo del Ministerio","Asistir directamente al Secretario de Estado"],
+  correct:2,
+  exp:"La supervisión de servicios de protocolo corresponde al Gabinete del MI. El Gabinete de la SES ejerce la Relatoría contra la Trata y coordina las SDGs de la SES."
+},
+{
+  id:82, topic:"CONFUSIÓN",
+  q:"¿Qué siglas corresponden a la Dirección General de la Policía?",
+  opts:["DGPN","DGP","DGGC","DGPI"],
+  correct:1,
+  exp:"DGP = Dirección General de la Policía. DGGC = Guardia Civil. DGPI = política interior. DGPN no se usa en el texto."
+},
+{
+  id:83, topic:"CONFUSIÓN",
+  q:"¿Cuál de las siguientes funciones ejerce la SES 'a través de la DG de Relaciones Internacionales y Extranjería'?",
+  opts:["Gestionar el patrimonio inmobiliario del MI","Coordinar las operaciones transnacionales que puedan dirigir cualquiera de las FCSE","Elaborar estadísticas de criminalidad","Gestionar el Registro Nacional de Asociaciones"],
+  correct:1,
+  exp:"La SES coordina las operaciones transnacionales de las FCSE a través de la DG de Relaciones Internacionales y Extranjería."
+},
+{
+  id:84, topic:"CONFUSIÓN",
+  q:"¿Cuál de los siguientes órganos preside la Subsecretaría del Interior, y NO el Ministerio en su conjunto ni la SES?",
+  opts:["Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible","Comité Especializado contra el Terrorismo","Comisión Ministerial de Administración Digital (CMAD)","Comisión Interministerial de Asilo y Refugio (CIAR)"],
+  correct:2,
+  exp:"La Subsecretaría preside la CMAD. El Consejo de Tráfico lo preside el MI. El Comité antiterrorista lo preside la SES. La CIAR la preside la DG de Protección Internacional."
+},
+{
+  id:85, topic:"CONFUSIÓN",
+  q:"¿Cuál de las siguientes unidades está integrada DENTRO del Área de Violencia de Género de la DG de Coordinación y Estudios?",
+  opts:["ONDOD","CITCO","ONVIOSEX","OCC"],
+  correct:2,
+  exp:"ONVIOSEX (Oficina Nacional contra las Violencias Sexuales) está integrada en el Área de Violencia de Género de la DG de Coordinación y Estudios."
+},
+{
+  id:86, topic:"CONFUSIÓN",
+  q:"¿Qué órgano ejerce funciones de apoyo al SES en la coordinación de ciberseguridad y del SNPIC?",
+  opts:["CITCO","SDG de Sistemas de Información y Comunicaciones para la Seguridad","DG de Coordinación y Estudios","Inspección de Personal y Servicio de Seguridad"],
+  correct:2,
+  exp:"La DG de Coordinación y Estudios apoya al SES en la coordinación de ciberseguridad (SNPIC) y protección de infraestructuras críticas (CNPIC)."
+},
+{
+  id:87, topic:"CONFUSIÓN",
+  q:"¿Cuál de los siguientes centros es mantenido por la DG de Protección Civil y NO por otro órgano?",
+  opts:["CEPIC","CNDES","CENEM","CETSE"],
+  correct:2,
+  exp:"El CENEM (Centro Nacional de Seguimiento y Coordinación de Emergencias) es organizado y mantenido por la DG de Protección Civil y Emergencias."
+},
+{
+  id:88, topic:"CONFUSIÓN",
+  q:"¿Qué órgano NO forma parte de la Dirección General de la Guardia Civil como organismo adscrito?",
+  opts:["Consejo Superior de la Guardia Civil","Mando de Fronteras y Policía Marítima","Consejo de la Guardia Civil","Dirección Adjunta Operativa"],
+  correct:1,
+  exp:"El Mando de Fronteras y Policía Marítima depende directamente del titular de la DGGC, pero NO está adscrito como organismo autónomo; es un mando orgánico. Los organismos adscritos son el Consejo Superior y el Consejo de la Guardia Civil."
+},
+{
+  id:89, topic:"CONFUSIÓN",
+  q:"¿Cuál es la diferencia principal entre la SDG de Planificación y Gestión de Infraestructuras y la SDG de Sistemas de Información y Comunicaciones, ambas de la SES?",
+  opts:["La primera gestiona medios físicos (inmuebles, material) y la segunda gestiona sistemas digitales e informáticos","La primera coordina FCSE y la segunda coordina FRONTEX","Son la misma SDG con distinto nombre","La primera depende del MI y la segunda de la SES"],
+  correct:0,
+  exp:"La SDG de Planificación gestiona infraestructuras físicas (patrimonio inmobiliario, proyectos de obras). La SDG de Sistemas gestiona bases de datos, comunicaciones digitales y el CETSE."
+},
+{
+  id:90, topic:"CONFUSIÓN",
+  q:"¿Qué órgano centraliza la información operativa de las FCS mediante el CEPIC?",
+  opts:["CITCO","Inspección de Personal y Servicio de Seguridad","DG de Coordinación y Estudios","SDG de Sistemas de Información y Comunicaciones"],
+  correct:2,
+  exp:"La DG de Coordinación y Estudios centraliza la información operativa generada por las FCS a través del CEPIC."
+},
+{
+  id:91, topic:"CONFUSIÓN",
+  q:"¿Cuál de los siguientes NO es un órgano con rango de Subsecretario dentro del Ministerio del Interior?",
+  opts:["Subsecretario del Interior","Secretario General de Instituciones Penitenciarias","Director General de la Policía","Director del Gabinete del MI"],
+  correct:3,
+  exp:"El Director del Gabinete del MI tiene rango de Director General (DG), no de Subsecretario. Los rangos de Subsecretario los tienen: Subsecretario del Interior, SGIP, DGP y DGGC."
+},
+{
+  id:92, topic:"CONFUSIÓN",
+  q:"¿Cuál de las siguientes funciones de la DGT corresponde al Consejo Superior de Tráfico y NO a otro órgano?",
+  opts:["Gestionar el CTDA","Expedir permisos de conducción","Coordinar la participación ciudadana","Dirigir los CGT"],
+  correct:2,
+  exp:"La DGT coordina la participación ciudadana a través del Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible. El CTDA y los CGT son centros directamente gestionados por la DGT."
+},
+{
+  id:93, topic:"SIGLAS",
+  q:"¿Qué significan las siglas PNR en el contexto de las funciones de la SES?",
+  opts:["Plan Nacional de Reconocimiento","Sistema de Registro de Pasajeros","Programa Nacional de Refugiados","Plan de Neutralización de Riesgos"],
+  correct:1,
+  exp:"PNR = Sistema de Registro de Pasajeros (Passenger Name Record). La SES dirige y coordina el tratamiento de estos datos."
+},
+{
+  id:94, topic:"SIGLAS",
+  q:"¿Qué significan las siglas CCPA en el contexto de la cooperación policial?",
+  opts:["Centro de Coordinación Policial Autonómica","Cooperación Policial y Aduanera","Comité de Coordinación Policial Antiterrorista","Centro de Control de Patrullas y Alertas"],
+  correct:1,
+  exp:"CCPA = Centros de Cooperación Policial y Aduanera. La DG de Coordinación y Estudios coordina los CCP y los CCPA."
+},
+{
+  id:95, topic:"SIGLAS",
+  q:"¿Qué organismo europeo se abrevia como CPT en las funciones de la SES?",
+  opts:["Comité de Prevención del Terrorismo","Comité Europeo para la Prevención de la Tortura y de las Penas o Tratos Inhumanos o Degradantes","Centro de Políticas de Terrorismo","Consejo de Prevención del Terrorismo"],
+  correct:1,
+  exp:"CPT = Comité Europeo para la Prevención de la Tortura y de las Penas o Tratos Inhumanos o Degradantes. La SES dirige las relaciones con él."
+},
+{
+  id:96, topic:"SIGLAS",
+  q:"¿Qué son las siglas NFPOC en el contexto de la SDG de Relaciones Internacionales, Inmigración y Extranjería?",
+  opts:["Núcleo de Frontera y Oficina de Coordinación","Punto Nacional de Contacto con FRONTEX","Nodo de Formación Policial y Operacional Conjunto","Núcleo de Fusión Policial Operativa Central"],
+  correct:1,
+  exp:"NFPOC = Punto Nacional de Contacto con FRONTEX (National Focal Point on FRONTEX). Lo gestiona la SDG de Relaciones Internacionales, Inmigración y Extranjería."
+},
+{
+  id:97, topic:"SIGLAS",
+  q:"¿Qué es el SNPIC?",
+  opts:["Sistema Nacional de Protección de Infraestructuras Críticas","Servicio Nacional de Policía e Inteligencia Criminal","Sistema Nacional de Prevención e Investigación Criminal","Servicio Nacional de Protección e Intervención Civil"],
+  correct:0,
+  exp:"SNPIC = Sistema Nacional de Protección de Infraestructuras Críticas. Su dirección corresponde a la SES."
+},
+{
+  id:98, topic:"SIGLAS",
+  q:"¿Cuál es la denominación completa del CNPIC?",
+  opts:["Centro Nacional de Protección de Infraestructuras Críticas","Comité Nacional de Policía e Investigación Criminal","Centro Nacional de Prevención e Inteligencia Criminal","Consejo Nacional de Policía e Infraestructuras Críticas"],
+  correct:0,
+  exp:"CNPIC = Centro Nacional de Protección de Infraestructuras Críticas. La DG de Coordinación y Estudios apoya al SES en su gestión."
+},
+{
+  id:99, topic:"SIGLAS",
+  q:"¿Qué son las siglas SIRDEE?",
+  opts:["Sistema de Información y Registro de Delincuentes en Europa","Sistema de Radiocomunicaciones Digital de Emergencia del Estado","Servicio de Inteligencia y Recursos para la Defensa del Estado Español","Sistema de Identificación y Reconocimiento de Delitos en el Espacio Europeo"],
+  correct:1,
+  exp:"SIRDEE = Sistema de Radiocomunicaciones Digital de Emergencia del Estado. La SDG de Sistemas de Información y Comunicaciones coordina e implanta este sistema."
+},
+{
+  id:100, topic:"SIGLAS",
+  q:"¿Qué significa la sigla CIAR?",
+  opts:["Comisión Interministerial de Asilo y Refugio","Centro de Investigación y Análisis de Riesgos","Comité Interagencial de Actuación y Refugio","Comisión Internacional de Asistencia y Retorno"],
+  correct:0,
+  exp:"CIAR = Comisión Interministerial de Asilo y Refugio. La DG de Protección Internacional preside y ejerce la secretaría."
+},
+{
+  id:101, topic:"SIGLAS",
+  q:"¿Qué son las siglas OCC?",
+  opts:["Oficina de Control de Ciberamenazas","Oficina de Coordinación de Ciberseguridad","Organismo de Control Criminal","Oficina Central de Coordinación"],
+  correct:1,
+  exp:"OCC = Oficina de Coordinación de Ciberseguridad. Integrada en la DG de Coordinación y Estudios."
+},
+{
+  id:102, topic:"SIGLAS",
+  q:"¿Cuál es la denominación completa de Eu-Lisa en el contexto de las bases de datos de la SES?",
+  opts:["Agencia Europea para la Gestión Operativa de Sistemas de TI a Gran Escala en el Espacio de Libertad, Seguridad y Justicia","Entidad Unificada de Licencias de Información y Seguridad en las Administraciones","Unión Europea de Licencias e Información de Seguridad en las Administraciones","Agencia de Enlace Europeo para la Lucha contra Infracciones y Actividades ilícitas"],
+  correct:0,
+  exp:"Eu-LISA es la Agencia Europea para la Gestión Operativa de Sistemas de TI a Gran Escala en el Espacio de Libertad, Seguridad y Justicia. Su implantación la coordina la SDG de Sistemas de Información y Comunicaciones."
+},
+{
+  id:103, topic:"INVERSA",
+  q:"¿Cuál de los siguientes órganos NO depende de la Secretaría de Estado de Seguridad?",
+  opts:["DG de Coordinación y Estudios","CITCO","DG de Relaciones Internacionales y Extranjería","DG de Tráfico"],
+  correct:3,
+  exp:"La DG de Tráfico (DGT) depende de la Subsecretaría del Interior, no de la SES. Los demás sí dependen de la SES."
+},
+{
+  id:104, topic:"INVERSA",
+  q:"¿Cuál de los siguientes órganos NO pertenece a la Subsecretaría del Interior?",
+  opts:["DG de Protección Civil y Emergencias","DG de Apoyo a Víctimas del Terrorismo","CITCO","DG de Tráfico"],
+  correct:2,
+  exp:"El CITCO depende de la SES, no de la Subsecretaría. Los demás sí dependen de la Subsecretaría."
+},
+{
+  id:105, topic:"INVERSA",
+  q:"¿Cuál de los siguientes organismos está adscrito a la SGIP (Secretaría General de Instituciones Penitenciarias)?",
+  opts:["Consejo Superior de la Guardia Civil","Centro Tecnológico de Seguridad (CETSE)","Trabajo Penitenciario y Formación para el Empleo","Comisión Interministerial de Asilo y Refugio (CIAR)"],
+  correct:2,
+  exp:"Trabajo Penitenciario y Formación para el Empleo se adscribe a la SGIP. El Consejo Superior de la GC es de la DGGC. El CETSE es de la SDG de Sistemas de Información y Comunicaciones."
+},
+{
+  id:106, topic:"INVERSA",
+  q:"¿Cuál de las siguientes funciones NO corresponde a la DG de Coordinación y Estudios?",
+  opts:["Desarrollar la Estadística Nacional de Criminalidad","Coordinar el CEPIC","Gestionar el patrimonio inmobiliario del MI","Actuar como Unidad Nacional ante CEPOL"],
+  correct:2,
+  exp:"La gestión del patrimonio inmobiliario corresponde a la SDG de Planificación y Gestión de Infraestructuras y Medios para la Seguridad. Las demás son funciones de la DG de Coordinación y Estudios."
+},
+{
+  id:107, topic:"INVERSA",
+  q:"¿Cuál de las siguientes SDG de la SGIP tiene competencias en materia de sanidad dentro de los centros penitenciarios?",
+  opts:["SDG de Análisis e Inspección","SDG de Recursos Humanos","SDG de Sanidad Penitenciaria","SDG de Planificación y Gestión Económica"],
+  correct:2,
+  exp:"La SDG de Sanidad Penitenciaria depende de la DG de Ejecución Penal y Reinserción Social y gestiona la sanidad penitenciaria."
+},
+{
+  id:108, topic:"INVERSA",
+  q:"¿Cuál de las siguientes afirmaciones sobre la DG de Protección Internacional es INCORRECTA?",
+  opts:["Preside la CIAR","Ejerce la secretaría de la CIAR","Gestiona las solicitudes de asilo en España","Tiene rango de Subsecretario su titular"],
+  correct:3,
+  exp:"La DG de Protección Internacional es una Dirección General ordinaria. El rango de Subsecretario lo tienen: Subsecretario del Interior, SGIP, DGP y DGGC."
+},
+{
+  id:109, topic:"INVERSA",
+  q:"¿Qué órgano NO figura entre los integrados en el Comité Ejecutivo de Coordinación?",
+  opts:["Gabinete del Ministro","DG de Relaciones Internacionales y Extranjería","Director General de Protección Civil","DG de Coordinación y Estudios (secretaría)"],
+  correct:2,
+  exp:"El Director General de Protección Civil no está en el Comité Ejecutivo de Coordinación. Sí están: SES (presidente), Subsecretario de Interior, DGP, DGGC, DAQ Policía y GC, SGIP, Gabinete Ministro, DG RRINT y DG Coord. y Estudios."
+},
+{
+  id:110, topic:"INVERSA",
+  q:"¿Cuál de los siguientes centros NO está bajo la DG de Coordinación y Estudios?",
+  opts:["CEPIC","ONDOD","CNDES","CENEM"],
+  correct:3,
+  exp:"El CENEM (Centro Nacional de Seguimiento y Coordinación de Emergencias) está bajo la DG de Protección Civil y Emergencias. El CEPIC, ONDOD y CNDES sí pertenecen a la DG de Coordinación y Estudios."
+},
+];
+
+// ===================== QUIZ ENGINE =====================
+let mode = 'exam';
+let questions = [];
+let current = 0;
+let answers = [];
+let errors = [];
+let errorCounts = {};
+let timerInterval;
+let seconds = 0;
+let answered = false;
+let failedIds = new Set();
+let reviewMode = false;
+
+function selectMode(m) {
+  mode = m;
+  document.getElementById('mode-exam').classList.toggle('selected', m === 'exam');
+  document.getElementById('mode-learn').classList.toggle('selected', m === 'learn');
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startTest() {
+  const numQ = parseInt(document.getElementById('num-q').value) || ALL_QUESTIONS.length;
+  let pool = shuffle([...ALL_QUESTIONS]);
+  questions = numQ > 0 && numQ < pool.length ? pool.slice(0, numQ) : pool;
+  current = 0; answers = []; errors = []; errorCounts = {}; seconds = 0; failedIds = new Set();
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  startTimer();
+  renderQuestion();
+}
+
+function startReview() {
+  if (failedIds.size === 0) { alert('¡Sin errores que repasar!'); return; }
+  questions = shuffle(ALL_QUESTIONS.filter(q => failedIds.has(q.id)));
+  current = 0; answers = []; seconds = 0; reviewMode = true;
+  document.getElementById('report').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  startTimer();
+  renderQuestion();
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    seconds++;
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    document.getElementById('s-time').textContent = m + ':' + s;
+  }, 1000);
+}
+
+function renderQuestion() {
+  if (current >= questions.length) { showReport(); return; }
+  answered = false;
+  const q = questions[current];
+  const ok = answers.filter(a => a.correct).length;
+  const err = answers.filter(a => !a.correct).length;
+  document.getElementById('s-ok').textContent = ok;
+  document.getElementById('s-err').textContent = err;
+  document.getElementById('s-prog').textContent = (current + 1) + '/' + questions.length;
+  document.getElementById('prog-bar').style.width = ((current / questions.length) * 100) + '%';
+  document.getElementById('q-num').textContent = 'Pregunta ' + (current + 1) + ' de ' + questions.length + ' · [' + q.topic + ']';
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-explanation').className = 'explanation';
+  document.getElementById('btn-next').style.display = 'none';
+
+  // Build shuffled options with original indices
+  const optIndices = [0, 1, 2, 3];
+  shuffle(optIndices);
+  const container = document.getElementById('q-options');
+  container.innerHTML = '';
+  optIndices.forEach(origIdx => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = q.opts[origIdx];
+    btn.onclick = () => selectAnswer(origIdx, q);
+    btn.dataset.origIdx = origIdx;
+    container.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosenIdx, q) {
+  if (answered) return;
+  answered = true;
+  const isCorrect = chosenIdx === q.correct;
+  answers.push({ q, chosen: chosenIdx, correct: isCorrect });
+  if (!isCorrect) {
+    failedIds.add(q.id);
+    errors.push({ q, chosen: chosenIdx });
+    errorCounts[q.topic] = (errorCounts[q.topic] || 0) + 1;
+  }
+
+  // Color buttons
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.disabled = true;
+    const idx = parseInt(btn.dataset.origIdx);
+    if (idx === q.correct) btn.classList.add('correct');
+    else if (idx === chosenIdx) btn.classList.add('wrong');
+  });
+
+  // Explanation
+  const expDiv = document.getElementById('q-explanation');
+  expDiv.innerHTML = '<strong>' + (isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto') + '</strong><br><br>' + q.exp +
+    '<br><br><strong>Respuesta correcta:</strong> ' + q.opts[q.correct];
+  if (mode === 'learn' || !isCorrect) {
+    expDiv.classList.add('show');
+  }
+  document.getElementById('btn-next').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  current++;
+  renderQuestion();
+}
+
+function showReport() {
+  clearInterval(timerInterval);
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('report').style.display = 'block';
+  const ok = answers.filter(a => a.correct).length;
+  const total = answers.length;
+  const pct = total > 0 ? Math.round((ok / total) * 100) : 0;
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  let nota = pct >= 90 ? '🏆 SOBRESALIENTE' : pct >= 70 ? '✅ APROBADO' : pct >= 50 ? '⚠️ INSUFICIENTE' : '❌ SUSPENSO';
+  document.getElementById('report-grid').innerHTML = `
+    <div class="report-card"><div class="big" style="color:${pct>=70?'#3fb950':'#f85149'}">${pct}%</div><div class="label">Porcentaje</div></div>
+    <div class="report-card"><div class="big" style="color:#3fb950">${ok}</div><div class="label">Aciertos</div></div>
+    <div class="report-card"><div class="big" style="color:#f85149">${total - ok}</div><div class="label">Errores</div></div>
+    <div class="report-card"><div class="big" style="color:var(--accent2)">${mins}m ${secs}s</div><div class="label">Tiempo</div></div>
+    <div class="report-card" style="grid-column:1/-1"><div class="big" style="font-size:1.2rem">${nota}</div><div class="label">Calificación</div></div>
+  `;
+  // Rankings
+  const sorted = Object.entries(errorCounts).sort((a, b) => b[1] - a[1]);
+  let rankHTML = sorted.length === 0 ? '<p style="color:var(--text2);padding:10px">Sin errores. ¡Perfecto!</p>' :
+    sorted.map(([t, n]) => `<div class="rank-item"><span>${t}</span><span style="color:#f85149;font-weight:bold">${n} error${n > 1 ? 'es' : ''}</span></div>`).join('');
+  document.getElementById('rank-topics').innerHTML = rankHTML;
+
+  // Error list
+  const errList = document.getElementById('error-list');
+  errList.innerHTML = errors.length === 0 ? '<li style="color:#3fb950;padding:10px">¡Sin errores!</li>' :
+    errors.map(e => `<li>
+      <div style="margin-bottom:4px"><strong>${e.q.q}</strong></div>
+      <div class="tag-wrong">Tu respuesta: ${e.q.opts[e.chosen]}</div>
+      <div class="tag-right">Correcta: ${e.q.opts[e.q.correct]}</div>
+      <div style="color:var(--text2);margin-top:4px;font-size:0.82rem">${e.q.exp}</div>
+    </li>`).join('');
+}
+</script>
+</body>
+</html>

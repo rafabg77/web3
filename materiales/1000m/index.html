@@ -1,0 +1,2180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centro de Mando · Plan de Pista 1.000 m · CNP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1F3D; --navy-light:#15294D; --navy-deep:#050d1c;
+  --gold:#D4AF37; --gold-bright:#F0CB5E;
+  --granate:#7A1F2B; --granate-light:#C0404F;
+  --ok:#3FBF6A; --ok-bg:rgba(63,191,106,.12);
+  --warn:#F0CB5E;
+  --bad:#E4586B; --bad-bg:rgba(228,88,107,.12);
+  --speed:#3FA7D6;
+  --cream:#F5F2EA;
+  --mono:'JetBrains Mono',monospace;
+  --disp:'Oswald',sans-serif;
+  --glass: rgba(255,255,255,.04);
+  --glass-strong: rgba(255,255,255,.075);
+  --edge: rgba(212,175,55,.35);
+  --edge-soft: rgba(212,175,55,.15);
+  --shadow-neon-gold: 0 0 15px rgba(240,203,94,0.4), 0 0 30px rgba(240,203,94,0.1);
+  --shadow-neon-granate: 0 0 15px rgba(192,64,79,0.4);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+html,body{margin:0;padding:0;}
+body{
+  background: #050d1c;
+  color:var(--cream); font-family:'Inter',sans-serif; line-height:1.5;
+  min-height:100vh; padding-bottom:70px; position:relative; overflow-x:hidden;
+}
+
+/* Dynamic Background Orbs */
+.bg-orb {
+  position: fixed; z-index: 0; border-radius: 50%; filter: blur(100px); pointer-events: none; opacity: 0.4;
+}
+.orb-1 { width: 600px; height: 600px; background: var(--granate); top: -200px; left: -200px; animation: float1 20s infinite alternate ease-in-out; }
+.orb-2 { width: 500px; height: 500px; background: var(--navy-light); bottom: -150px; right: -100px; animation: float2 25s infinite alternate ease-in-out; }
+.orb-3 { width: 400px; height: 400px; background: var(--gold); top: 40%; left: 60%; opacity: 0.05; animation: float1 30s infinite alternate-reverse ease-in-out; }
+
+@keyframes float1 { 0% { transform: translate(0,0); } 100% { transform: translate(100px, 80px); } }
+@keyframes float2 { 0% { transform: translate(0,0); } 100% { transform: translate(-80px, -60px); } }
+
+/* Tactical Grid */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(212,175,55,.03) 0, rgba(212,175,55,.03) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(0deg, rgba(212,175,55,.03) 0, rgba(212,175,55,.03) 1px, transparent 1px, transparent 60px);
+}
+
+h1,h2,h3,.disp{font-family:var(--disp);text-transform:uppercase;letter-spacing:.03em;}
+::selection{background:var(--gold);color:var(--navy-deep);}
+::-webkit-scrollbar{height:8px;width:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold), var(--granate));border-radius:20px;}
+a{color:inherit;}
+
+/* ===== TOAST NOTIFICATIONS ===== */
+#toastContainer {
+  position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px;
+}
+.toast {
+  background: rgba(11, 31, 61, 0.85); backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid var(--edge); border-left: 4px solid var(--gold);
+  padding: 12px 20px; border-radius: 8px; color: var(--cream); font-family: 'Inter'; font-size: 13px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 12px;
+  min-width: 280px; transform: translateX(120%); opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.4s;
+}
+.toast.show { transform: translateX(0); opacity: 1; }
+.toast.success { border-left-color: var(--ok); }
+.toast.error { border-left-color: var(--bad); }
+.toast.info { border-left-color: var(--speed); }
+.toast-icon { font-size: 18px; font-weight: bold; }
+.toast.success .toast-icon { color: var(--ok); }
+.toast.error .toast-icon { color: var(--bad); }
+.toast.info .toast-icon { color: var(--speed); }
+
+/* ===== OVERLAY: SALA DE BRIEFING ===== */
+#profileOverlay{
+  position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(ellipse 120% 70% at 50% -10%,rgba(122,31,43,.25),transparent 60%), linear-gradient(160deg,#040a18 0%,#0a1730 55%,#160a12 100%);
+  backdrop-filter: blur(10px);
+}
+.badge-shield{position:relative;z-index:1;margin-bottom:18px;filter:drop-shadow(0 0 18px rgba(212,175,55,.35));animation:pulseShield 3.2s ease-in-out infinite;}
+@keyframes pulseShield{0%,100%{filter:drop-shadow(0 0 12px rgba(212,175,55,.28));}50%{filter:drop-shadow(0 0 26px rgba(212,175,55,.55));}}
+.overlay-eyebrow{position:relative;z-index:1;font-family:var(--mono);font-size:11px;letter-spacing:.35em;color:var(--granate-light);text-align:center;margin-bottom:6px;}
+.overlay-title{position:relative;z-index:1;font-size:clamp(24px,5.5vw,42px);font-weight:700;color:var(--cream);letter-spacing:.06em;text-align:center;line-height:1.1;}
+.overlay-title span{color:var(--gold-bright);text-shadow:0 0 24px rgba(240,203,94,.4);}
+.overlay-sub{position:relative;z-index:1;font-size:11.5px;color:rgba(240,203,94,.55);font-family:var(--mono);letter-spacing:.18em;margin-top:10px;}
+
+.profile-cards{position:relative;z-index:1;display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:38px;}
+.profile-card{
+  width:190px;background:var(--glass);border:1px solid var(--edge);border-radius:16px;padding:30px 20px 24px;
+  cursor:pointer;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(16px) saturate(150%);
+  transition:transform .25s cubic-bezier(.22,1,.36,1), border-color .25s, box-shadow .25s;
+}
+.profile-card::before{content:"";position:absolute;top:-40%;left:-40%;width:180%;height:180%;background:conic-gradient(from 0deg,transparent 0 85%, rgba(240,203,94,.5) 100%);animation:spin 4s linear infinite;opacity:0;transition:opacity .3s;}
+.profile-card:hover::before{opacity:1;}
+.profile-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 50px rgba(0,0,0,.55);}
+.profile-card.rafa:hover{border-color:var(--speed);box-shadow:0 0 25px rgba(63,167,214,0.2);}
+.profile-card.emilio:hover{border-color:var(--granate-light);box-shadow:0 0 25px rgba(192,64,79,0.2);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.profile-avatar{position:relative;z-index:1;width:64px;height:64px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:26px;font-weight:700;color:#fff;}
+.profile-card.rafa .profile-avatar{background:radial-gradient(circle at 30% 30%,#3FA7D6,#0d3654);}
+.profile-card.emilio .profile-avatar{background:radial-gradient(circle at 30% 30%,#C0404F,#3e0f16);}
+.profile-name{position:relative;z-index:1;font-size:20px;font-weight:700;letter-spacing:.06em;color:var(--cream);}
+.profile-badge{position:relative;z-index:1;font-size:9.5px;font-family:var(--mono);letter-spacing:.16em;color:rgba(240,203,94,.5);margin-top:3px;}
+.profile-status{position:relative;z-index:1;font-size:10.5px;font-family:var(--disp);margin-top:12px;padding:4px 12px;border-radius:20px;display:inline-block;letter-spacing:.03em;}
+.status-has-data{background:var(--ok-bg);color:#7fe0a0;}
+.status-no-data{background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);}
+.overlay-note{position:relative;z-index:1;font-size:11px;color:rgba(255,255,255,.25);margin-top:30px;text-align:center;max-width:380px;line-height:1.6;}
+
+/* ===== HEADER / HUD ===== */
+header.hud{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(11,31,61,0.8) 0%,rgba(5,13,28,0.9) 100%);border-bottom:1px solid var(--edge);backdrop-filter:blur(12px);}
+header.hud::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(212,175,55,.04) 0,rgba(212,175,55,.04) 1px,transparent 1px,transparent 60px);pointer-events:none;}
+.profile-bar{position:relative;z-index:2;background:rgba(0,0,0,.32);border-bottom:1px solid var(--edge-soft);padding:9px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.profile-indicator{display:flex;align-items:center;gap:8px;font-family:var(--disp);font-size:12px;color:var(--gold-bright);letter-spacing:.08em;}
+.profile-dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 8px currentColor;}
+.profile-dot.rafa{background:var(--speed);color:var(--speed);}
+.profile-dot.emilio{background:var(--granate-light);color:var(--granate-light);}
+.autosave-ind{font-size:10.5px;color:rgba(240,203,94,.45);font-family:var(--mono);transition:color .3s;display:flex;align-items:center;gap:6px;}
+.btn-switch{font-family:var(--disp);font-size:10.5px;letter-spacing:.06em;padding:5px 12px;background:transparent;border:1px solid var(--edge);color:rgba(240,203,94,.7);border-radius:20px;cursor:pointer;transition:all .15s;}
+.btn-switch:hover{background:rgba(212,175,55,.14);border-color:var(--gold-bright);color:var(--gold-bright);}
+
+.hud-inner{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:26px 22px 22px;display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center;}
+@media(max-width:760px){.hud-inner{grid-template-columns:1fr;}}
+.mission-tag{display:inline-flex;align-items:center;gap:7px;background:var(--granate);color:var(--cream);font-family:var(--disp);font-size:11px;letter-spacing:.14em;padding:5px 11px;border-radius:20px;font-weight:600;box-shadow:var(--shadow-neon-granate);}
+.mission-tag::before{content:"●";color:var(--gold-bright);font-size:9px;animation:blink 1.6s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+header.hud h1{font-size:clamp(21px,4vw,31px);margin:12px 0 3px;font-weight:600;line-height:1.15;}
+.hud-sub{color:rgba(240,203,94,.85);font-size:12.5px;font-family:var(--mono);}
+.hud-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.stat-chip{background:var(--glass);border:1px solid var(--edge-soft);border-radius:10px;padding:10px 16px;min-width:118px;backdrop-filter:blur(10px);transition:transform .18s,border-color .18s, box-shadow .18s;}
+.stat-chip:hover{transform:translateY(-3px);border-color:var(--gold-bright);box-shadow:var(--shadow-neon-gold);}
+.stat-chip .label{font-size:9.5px;letter-spacing:.1em;color:var(--gold-bright);font-family:var(--disp);opacity:.85;}
+.stat-chip .value{font-family:var(--mono);font-weight:700;font-size:21px;color:var(--cream);margin-top:3px;line-height:1;}
+.stat-chip .value small{font-size:11px;font-weight:500;color:var(--gold-bright);}
+
+/* dial de progreso circular */
+.dial-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;justify-self:center;}
+.dial{position:relative;width:132px;height:132px;border-radius:50%;
+  background:conic-gradient(var(--gold-bright) calc(var(--pct,0)*1%), rgba(255,255,255,.08) 0);
+  display:flex;align-items:center;justify-content:center;transition:background 1s cubic-bezier(.22,1,.36,1);
+  filter:drop-shadow(0 0 20px rgba(240,203,94,.25));}
+.dial::before{content:"";position:absolute;inset:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#122548,#050c1c);border:1px solid var(--edge-soft);}
+.dial-center{position:relative;z-index:1;text-align:center;}
+.dial-pct{font-family:var(--mono);font-weight:800;font-size:26px;color:var(--gold-bright);line-height:1;}
+.dial-days{font-family:var(--disp);font-size:9px;letter-spacing:.08em;color:rgba(245,242,234,.55);margin-top:3px;}
+.dial-caption{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:rgba(240,203,94,.45);text-align:center;}
+
+.progress-wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 22px 18px;}
+.progress-track{position:relative;background:rgba(255,255,255,.06);border-radius:20px;height:10px;overflow:hidden;border:1px solid var(--edge-soft);}
+.progress-fill{position:relative;height:100%;background:linear-gradient(90deg,var(--granate) 0%,var(--gold-bright) 100%);border-radius:20px;transition:width 1s cubic-bezier(.22,1,.36,1);box-shadow:0 0 12px rgba(240,203,94,.5);}
+.progress-fill::after{content:"🏃";position:absolute;right:-9px;top:50%;transform:translateY(-50%);font-size:14px;}
+
+/* ===== PANEL DEL ENTRENADOR ===== */
+.coach-panel{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 22px 24px;}
+.coach-card{
+  display:flex;gap:14px;align-items:flex-start;background:linear-gradient(135deg,rgba(21,41,77,.85),rgba(7,21,41,.92));
+  border:1px solid var(--edge); border-left:4px solid var(--gold-bright); border-radius:14px;padding:16px 18px;
+  box-shadow:0 12px 34px rgba(0,0,0,.4); backdrop-filter:blur(14px) saturate(150%);
+}
+.coach-avatar{flex:none;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 32% 28%,var(--gold-bright),var(--granate) 85%);
+  display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;color:var(--navy-deep);font-size:16px;
+  box-shadow:0 0 16px rgba(240,203,94,.5); animation:coachPulse 2.4s ease-in-out infinite;}
+@keyframes coachPulse{0%,100%{box-shadow:0 0 12px rgba(240,203,94,.4);}50%{box-shadow:0 0 22px rgba(240,203,94,.75);}}
+.coach-body{flex:1;min-width:0;}
+.coach-name{font-family:var(--disp);font-size:11px;letter-spacing:.12em;color:var(--gold-bright);margin-bottom:3px;}
+.coach-msg{font-size:13.5px;color:var(--cream);line-height:1.55;}
+.coach-msg strong{color:var(--gold-bright);}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 0;position:relative;z-index:1;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== WIZARD PASO 1 ===== */
+.config-card{
+  background:var(--glass);backdrop-filter:blur(18px) saturate(160%);border:1px solid var(--edge);border-radius:16px;
+  padding:24px 26px;margin-bottom:26px;border-top:3px solid var(--granate);box-shadow:0 10px 34px rgba(0,0,0,.35);
+  animation:fadeUp .5s ease both; position: relative;
+}
+.config-card::after { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); border-radius: 16px 16px 0 0; }
+.config-card h2{font-size:15px;color:var(--cream);margin:0 0 5px;font-weight:600;}
+.config-card .config-sub{font-size:12.5px;color:rgba(245,242,234,.6);margin:0 0 18px;}
+.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+.field label{display:block;font-size:11px;font-family:var(--disp);letter-spacing:.05em;color:var(--cream);margin-bottom:6px;font-weight:600;}
+.field input[type="date"] { width:100%;padding:9px 10px;border:1.5px solid var(--edge);border-radius:8px;font-family:var(--mono);font-size:14px;background:var(--glass-strong);color:var(--cream);transition:border-color .15s,box-shadow .15s; color-scheme: dark; }
+.field input[type="date"]:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.22);}
+.field .hint{font-size:10.5px;color:rgba(245,242,234,.4);margin-top:5px;}
+.config-actions{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+
+button.btn{font-family:var(--disp);font-size:12.5px;letter-spacing:.03em;padding:12px 24px;border-radius:24px;border:none;cursor:pointer;font-weight:600;transition:all .18s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;isolation:isolate;}
+button.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);background-size:220% 100%;background-position:150% 0;transition:background-position .5s;z-index:-1;}
+button.btn:hover::after{background-position:-50% 0;}
+button.btn:active{transform:scale(.96);}
+.btn-gen{background:linear-gradient(135deg,var(--granate-light),var(--granate) 60%,#4a0e18);color:var(--cream);box-shadow:0 6px 18px rgba(122,31,43,.4);}
+.btn-gen:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(122,31,43,.55);}
+.btn-save{background:linear-gradient(135deg,var(--navy-light),var(--navy-deep));color:var(--cream);box-shadow:0 6px 18px rgba(11,31,61,.4);}
+.btn-save:hover{transform:translateY(-2px);}
+.btn-load{background:var(--glass-strong);color:var(--cream);border:1.5px solid var(--edge);}
+.btn-load:hover{border-color:var(--gold-bright);transform:translateY(-2px);}
+.btn-reset{background:var(--glass-strong);color:var(--granate-light);border:1.5px solid var(--granate);}
+.btn-reset:hover{background:rgba(122,31,43,.16);transform:translateY(-2px);}
+
+.waiting{background:var(--glass);backdrop-filter:blur(18px);border:1px dashed var(--edge);border-radius:16px;padding:46px 24px;text-align:center;color:rgba(245,242,234,.6);font-size:14px;animation:fadeUp .5s ease both;}
+.waiting strong{color:var(--cream);display:block;font-family:var(--disp);font-size:17px;margin-bottom:8px;letter-spacing:.03em;}
+
+/* ===== ENTRADA DE TIEMPO (SPINNER) ===== */
+.time-input-enhanced{background:var(--glass-strong);border:2px solid var(--edge);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;transition:border-color .2s,box-shadow .2s;}
+.time-input-enhanced.focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18);}
+.time-display{background:linear-gradient(180deg,var(--navy) 0%,var(--navy-deep) 100%);color:var(--gold-bright);font-family:var(--mono);font-size:38px;font-weight:800;text-align:center;padding:14px;border-radius:10px;letter-spacing:2px;min-height:62px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 4px 12px rgba(0,0,0,.4);text-shadow:0 0 10px rgba(240,203,94,0.5);}
+.time-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.spinner-group{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.spinner-label{font-family:var(--disp);font-size:10px;color:rgba(245,242,234,.55);letter-spacing:.06em;text-transform:uppercase;}
+.spinner{display:flex;flex-direction:column;align-items:center;background:var(--glass-strong);border:2px solid var(--edge);border-radius:10px;overflow:hidden;}
+.spinner-btn{background:var(--navy);color:var(--cream);border:none;width:100%;height:32px;font-size:15px;font-weight:700;cursor:pointer;transition:background .12s;font-family:var(--disp);}
+.spinner-btn:hover{background:var(--navy-light);}
+.spinner-btn:active{background:var(--granate);transform:scale(.97);}
+.spinner-input{width:64px;height:46px;border:none;border-left:1px solid var(--edge);border-right:1px solid var(--edge);text-align:center;font-family:var(--mono);font-size:21px;font-weight:700;color:var(--cream);background:transparent;}
+.spinner-input:focus{outline:none;background:rgba(212,175,55,.15);}
+.spinner-input::-webkit-outer-spin-button,.spinner-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.spinner-input[type=number]{-moz-appearance:textfield;}
+.quicktime-group{display:flex;gap:7px;flex-wrap:wrap;}
+.btn-quicktime{font-family:var(--mono);font-size:11px;font-weight:700;background:rgba(63,167,214,.12);color:var(--speed);border:1.5px solid var(--speed);border-radius:20px;padding:5px 12px;cursor:pointer;transition:all .15s;}
+.btn-quicktime:hover{background:var(--speed);color:#fff;transform:translateY(-1px);box-shadow:0 0 10px rgba(63,167,214,0.4);}
+
+/* ===== RESUMEN / MEDALLERO ===== */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;animation:fadeUp .5s ease both;}
+.summary-tile{background:linear-gradient(135deg,rgba(21,41,77,.85),rgba(7,21,41,.9));border:1px solid var(--edge);border-radius:14px;padding:16px 14px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:transform .18s, box-shadow .18s; position: relative; overflow: hidden;}
+.summary-tile:hover{transform:translateY(-4px);box-shadow:var(--shadow-neon-gold);}
+.summary-tile .big{display:block;font-family:var(--mono);font-weight:800;font-size:22px;color:var(--gold-bright);text-shadow:0 0 14px rgba(240,203,94,.3);}
+.summary-tile .lbl{font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:rgba(245,242,234,.55);margin-top:4px;display:block;}
+
+.curve-badge{display:flex;align-items:flex-start;gap:10px;background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--edge);border-left:4px solid rgba(255,255,255,.3);border-radius:12px;padding:13px 16px;margin-bottom:22px;font-size:12.5px;line-height:1.5;color:var(--cream);}
+.curve-badge.curve-on{border-left-color:var(--ok);}
+.curve-badge.curve-off{border-left-color:var(--gold);}
+.curve-badge.anchor-on{border-left-color:var(--speed);}
+.curve-badge .curve-dot{width:9px;height:9px;border-radius:50%;margin-top:5px;flex:none;box-shadow:0 0 8px currentColor;}
+.curve-badge.curve-on .curve-dot{background:var(--ok);color:var(--ok);}
+.curve-badge.curve-off .curve-dot{background:var(--gold);color:var(--gold);}
+.curve-badge.anchor-on .curve-dot{background:var(--speed);color:var(--speed);}
+.curve-badge strong{font-family:var(--disp);letter-spacing:.02em;color:var(--gold-bright);}
+
+/* ===== BLOQUE DE FASE + TIMELINE DE MISIONES ===== */
+.fase-block{margin-bottom:38px;animation:fadeUp .5s ease both;}
+.fase-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.fase-num{flex:none;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--disp);font-size:20px;font-weight:700;color:var(--cream);
+  background:linear-gradient(135deg,var(--granate-light),var(--granate) 70%,#3e0f16);box-shadow:0 0 18px rgba(122,31,43,.5); border: 1px solid rgba(255,255,255,0.1);}
+.fase-head h2{font-size:15.5px;margin:0;color:var(--cream);}
+.fase-head .fase-desc{font-size:11.5px;color:rgba(245,242,234,.55);margin:2px 0 0;}
+.fase-progress-mini{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--gold-bright);white-space:nowrap;background:var(--glass);padding:4px 10px;border-radius:20px;border:1px solid var(--edge-soft);}
+
+.mission-rail{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
+
+/* 3D Tilt Card */
+.mcard{background:var(--glass);border:1px solid var(--edge);border-radius:14px;padding:15px 16px 14px;position:relative;overflow:hidden;
+  transition:transform .15s cubic-bezier(.22,1,.36,1),border-color .2s,box-shadow .2s;backdrop-filter:blur(12px);
+  transform-style:preserve-3d;will-change:transform;}
+.mcard:hover{border-color:var(--gold-bright);box-shadow:0 14px 40px rgba(0,0,0,.4), 0 0 20px rgba(240,203,94,0.1);}
+.mcard.mc-done{border-left:4px solid var(--ok);}
+.mcard.mc-done-fast{border-left:4px solid var(--ok);}
+.mcard.mc-done-slow{border-left:4px solid var(--granate-light);}
+.mcard.mc-skipped{border-left:4px solid rgba(255,255,255,.25);opacity:.65;}
+.mcard.mc-pending{border-left:4px solid var(--gold);}
+.mcard.mc-info{border-left:4px solid var(--speed);}
+
+/* Corner accents for tactical feel */
+.mcard::before, .mcard::after {
+  content: ''; position: absolute; width: 10px; height: 10px; border-color: var(--gold-bright); transition: all 0.3s; opacity: 0.5;
+}
+.mcard::before { top: 0; right: 0; border-top: 2px solid; border-right: 2px solid; border-radius: 0 14px 0 0; }
+.mcard::after { bottom: 0; left: 0; border-bottom: 2px solid; border-left: 2px solid; border-radius: 0 0 0 14px; }
+.mcard:hover::before, .mcard:hover::after { width: 16px; height: 16px; opacity: 1; }
+
+.mc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.mc-date{font-family:var(--mono);font-size:10.5px;color:rgba(240,203,94,.75);letter-spacing:.03em;transform: translateZ(20px);}
+.mc-title{font-family:var(--disp);font-size:13.5px;color:var(--cream);margin-top:3px;letter-spacing:.02em;transform: translateZ(30px);}
+.mc-desc{font-size:10.5px;color:rgba(245,242,234,.45);margin-top:1px;transform: translateZ(20px);}
+.mc-target{font-family:var(--mono);font-weight:800;font-size:22px;color:var(--gold-bright);margin-top:10px;line-height:1;text-shadow:0 0 10px rgba(240,203,94,0.3);transform: translateZ(40px);}
+.mc-target small{font-size:11px;color:rgba(245,242,234,.5);font-weight:500;}
+.mc-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;font-size:9.5px;font-family:var(--disp);letter-spacing:.03em;transform: translateZ(25px);}
+.int-tag{display:inline-block;font-size:9px;font-family:var(--disp);letter-spacing:.04em;padding:2px 6px;border-radius:20px;}
+.int-examen{background:rgba(63,167,214,.15);color:var(--speed);}
+.int-faster{background:rgba(63,167,214,.15);color:var(--speed);}
+.int-easier{background:var(--ok-bg);color:var(--ok);}
+.int-base{background:rgba(240,203,94,.14);color:var(--gold-bright);}
+.recalib-badge{display:inline-block;font-size:9px;font-family:var(--disp);letter-spacing:.03em;padding:2px 6px;border-radius:20px;}
+.recalib-up{background:var(--ok-bg);color:var(--ok);}
+.recalib-down{background:var(--bad-bg);color:var(--bad);}
+.score-chip{display:inline-block;font-size:9.5px;font-family:var(--mono);font-weight:700;padding:2px 6px;border-radius:6px;}
+.score-good{background:var(--ok-bg);color:var(--ok);}
+.score-mid{background:rgba(240,203,94,.16);color:var(--gold-bright);}
+.score-low{background:var(--bad-bg);color:var(--bad);}
+.mc-status{font-size:10px;font-family:var(--disp);padding:3px 9px;border-radius:20px;letter-spacing:.03em;display:inline-block;margin-top:8px;transform: translateZ(20px);}
+.status-pending{background:rgba(255,255,255,.08);color:rgba(245,242,234,.55);}
+.status-skipped{background:rgba(255,255,255,.08);color:rgba(245,242,234,.4);font-style:italic;}
+.status-done-fast{background:var(--ok-bg);color:var(--ok);}
+.status-done-slow{background:var(--bad-bg);color:var(--bad);}
+.status-info{background:rgba(63,167,214,.15);color:var(--speed);}
+.mc-input-row{display:flex;gap:6px;margin-top:10px;align-items:center;transform: translateZ(30px);}
+input.time-input{font-family:var(--mono);font-size:13px;width:100%;padding:7px 8px;border:1.5px solid var(--edge);border-radius:8px;text-align:center;background:var(--glass-strong);color:var(--cream);transition:all 0.2s;}
+input.time-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,175,55,.25);background:var(--navy);}
+.btn-skip{flex:none;font-family:var(--disp);font-size:9px;letter-spacing:.02em;padding:7px 9px;border-radius:8px;border:1px solid var(--edge);background:var(--glass-strong);color:rgba(245,242,234,.5);cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+.btn-skip:hover{border-color:var(--granate-light);color:var(--granate-light);}
+.btn-skip.active{background:var(--granate);color:#fff;border-color:var(--granate);}
+.mc-brief-toggle{width:100%;background:none;border:none;border-top:1px dashed var(--edge-soft);margin-top:11px;padding-top:9px;cursor:pointer;text-align:left;font-family:var(--disp);font-size:10px;color:var(--gold-bright);letter-spacing:.04em;display:flex;align-items:center;gap:6px;transform: translateZ(15px);}
+.mc-brief-toggle .arrow{transition:transform .2s;display:inline-block;}
+.mc-brief-toggle.open .arrow{transform:rotate(90deg);}
+.mc-brief-body{display:none;font-size:11px;color:rgba(245,242,234,.65);line-height:1.55;padding-top:8px;}
+.mc-brief-body.visible{display:block;animation:fadeUp .25s ease both;}
+.mc-brief-body ul{margin:4px 0 0;padding-left:15px;}
+.mc-brief-body li{margin-bottom:4px;}
+.mc-brief-body strong{color:var(--gold-bright);}
+
+/* ===== EVOLUTION CHART ===== */
+.evo-chart-container{position:relative;background:linear-gradient(160deg,rgba(11,31,61,0.6) 0%,rgba(5,13,28,0.8) 100%);border-radius:16px;padding:22px 22px 14px;margin:0 0 26px;box-shadow:0 10px 34px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);border:1px solid var(--edge);overflow:hidden;animation:fadeUp .55s ease both; backdrop-filter: blur(12px);}
+.evo-chart-container::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(90deg,rgba(212,175,55,.035) 0,rgba(212,175,55,.035) 1px,transparent 1px,transparent 46px),repeating-linear-gradient(0deg,rgba(212,175,55,.035) 0,rgba(212,175,55,.035) 1px,transparent 1px,transparent 46px),radial-gradient(circle at 80% 15%,rgba(212,175,55,.1),transparent 60%);}
+.evo-watermark{position:absolute;right:14px;bottom:6px;font-family:var(--disp);font-weight:700;font-size:clamp(28px,7vw,56px);letter-spacing:.08em;color:rgba(245,242,234,.035);pointer-events:none;z-index:0;white-space:nowrap;}
+.evo-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;position:relative;z-index:1;flex-wrap:wrap;}
+.evo-title{font-family:var(--disp);color:var(--gold-bright);font-size:13.5px;letter-spacing:.1em;text-transform:uppercase;}
+.evo-sub{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.4);}
+.evo-controls{display:flex;gap:8px;position:relative;z-index:1;}
+.evo-toggle{background:rgba(255,255,255,.05);border:1px solid var(--edge);color:var(--cream);font-family:var(--mono);font-size:10px;letter-spacing:.03em;border-radius:20px;padding:5px 12px;cursor:pointer;transition:all .18s;}
+.evo-toggle:hover{background:rgba(212,175,55,.15);border-color:var(--gold-bright);}
+.evo-toggle.active{background:var(--gold);color:var(--navy-deep);font-weight:700;border-color:var(--gold);box-shadow:0 0 10px rgba(212,175,55,0.4);}
+.evo-legend{display:flex;gap:16px;flex-wrap:wrap;position:relative;z-index:1;margin:2px 0 12px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.65);}
+.evo-legend span{display:inline-flex;align-items:center;gap:6px;}
+.evo-dot{width:9px;height:9px;border-radius:50%;display:inline-block;box-shadow:0 0 6px currentColor;}
+.evo-canvas-wrap{position:relative;z-index:1;height:300px;}
+.evo-canvas-wrap canvas{width:100% !important;height:100% !important;}
+.evo-empty{position:relative;z-index:1;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:26px 10px;}
+.evo-empty-icon{font-size:28px;animation:evoBounce 1.6s ease-in-out infinite;}
+@keyframes evoBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.evo-empty-title{font-family:var(--disp);color:var(--gold-bright);font-size:14px;letter-spacing:.03em;}
+.evo-empty-sub{color:rgba(255,255,255,.55);font-size:12px;max-width:340px;}
+
+/* Custom Chart Tooltip */
+#chartTooltip {
+  position: absolute; background: rgba(11, 31, 61, 0.95); backdrop-filter: blur(10px);
+  border: 1px solid var(--gold); border-radius: 8px; padding: 10px 14px;
+  pointer-events: none; opacity: 0; transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5); z-index: 1000; font-family: 'Inter', sans-serif;
+  min-width: 180px; transform: translateY(10px);
+}
+#chartTooltip.show { opacity: 1; transform: translateY(0); }
+.tt-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gold-bright); margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; }
+.tt-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--cream); margin-bottom: 3px; }
+.tt-label { display: flex; align-items: center; gap: 6px; }
+.tt-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+.tt-diff { font-size: 10px; font-family: 'JetBrains Mono', monospace; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); text-align: right; }
+
+.intensity-legend{background:var(--glass);border:1px solid var(--edge);border-radius:12px;padding:13px 16px;margin-bottom:22px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;backdrop-filter:blur(12px);}
+.intensity-legend .leg-title{font-family:var(--disp);font-size:11px;color:var(--gold-bright);letter-spacing:.05em;margin-right:4px;}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(245,242,234,.6);}
+
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:32px 0 12px;border-top:1px dashed var(--edge-soft);padding-top:22px;}
+footer.notes{max-width:1080px;margin:38px auto 0;padding:0 20px 40px;font-size:12.5px;color:rgba(245,242,234,.5);}
+footer.notes h3{font-family:var(--disp);font-size:13.5px;color:var(--gold-bright);letter-spacing:.05em;margin-bottom:10px;}
+footer.notes ul{padding-left:18px;margin-top:6px;}
+footer.notes li{margin-bottom:7px;}
+footer.notes strong{color:var(--cream);}
+
+@media(max-width:600px){
+  .mission-rail{grid-template-columns:1fr 1fr;}
+  .dial{width:104px;height:104px;}
+  .dial-pct{font-size:20px;}
+  .time-display{font-size:30px;}
+  .spinner-input{width:52px;height:40px;font-size:18px;}
+  .profile-cards{flex-direction:column;align-items:center;}
+  .profile-card{width:100%;max-width:280px;}
+}
+@media(max-width:420px){ .mission-rail{grid-template-columns:1fr;} }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+</head>
+<body>
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+
+<div id="toastContainer"></div>
+<div id="chartTooltip"></div>
+
+<!-- OVERLAY DE SELECCIÓN DE PERFIL -->
+<div id="profileOverlay">
+  <svg class="badge-shield" width="66" height="74" viewBox="0 0 70 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M35 2L3 13V40C3 57 19 70 35 76C51 70 67 57 67 40V13L35 2Z" fill="rgba(212,175,55,0.1)" stroke="#D4AF37" stroke-width="1.5"/>
+    <path d="M35 11L11 21V40C11 53 23 63 35 68C47 63 59 53 59 40V21L35 11Z" fill="rgba(212,175,55,0.07)" stroke="rgba(212,175,55,0.45)" stroke-width="1"/>
+    <text x="35" y="47" font-family="Georgia,serif" font-size="18" fill="#D4AF37" text-anchor="middle" font-weight="bold">CNP</text>
+  </svg>
+  <div class="overlay-eyebrow">CENTRO DE MANDO · SESIÓN SEGURA</div>
+  <div class="overlay-title">Plan de Pista · <span>1.000 m</span></div>
+  <div class="overlay-sub">CUERPO NACIONAL DE POLICÍA · ESCALA BÁSICA · 2026</div>
+
+  <div class="profile-cards">
+    <div class="profile-card rafa" onclick="selectProfile('Rafa')">
+      <div class="profile-avatar">R</div>
+      <div class="profile-name">RAFA</div>
+      <div class="profile-badge">OPOSITOR CNP</div>
+      <div class="profile-status" id="rafaStatus">Cargando...</div>
+    </div>
+    <div class="profile-card emilio" onclick="selectProfile('Emilio')">
+      <div class="profile-avatar">E</div>
+      <div class="profile-name">EMILIO</div>
+      <div class="profile-badge">OPOSITOR CNP</div>
+      <div class="profile-status" id="emilioStatus">Cargando...</div>
+    </div>
+  </div>
+
+  <div class="overlay-note">
+    Los datos de cada perfil se guardan automáticamente en la nube. Ves siempre la última versión de tus datos y de los de tu compañero, desde cualquier dispositivo. Selecciona tu nombre para entrar a tu plan.
+  </div>
+</div>
+
+<!-- HEADER / HUD -->
+<header class="hud" id="mainHeader" style="display:none;">
+  <div class="profile-bar">
+    <div class="profile-indicator">
+      <div class="profile-dot" id="headerDot"></div>
+      <span id="headerProfileName">—</span>
+      <span style="color:rgba(240,203,94,.25);">·</span>
+      <span style="font-size:9.5px;font-weight:400;letter-spacing:.05em;color:rgba(240,203,94,.4);">PLAN ACTIVO</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="autosave-ind" id="autosaveInd"><span style="width:8px;height:8px;background:var(--ok);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--ok);"></span> Guardado automático</span>
+      <button class="btn-switch" onclick="refreshActiveProfile()" title="Releer mis datos desde la nube">⟳ Actualizar</button>
+      <button class="btn-switch" onclick="switchProfile()">⇄ Cambiar perfil</button>
+    </div>
+  </div>
+  <div class="hud-inner">
+    <div>
+      <span class="mission-tag">CALLE 1 · MISIÓN EN CURSO</span>
+      <h1>Plan de 1.000 m — Escala Básica CNP</h1>
+      <div class="hud-sub">Miércoles: series en pista · Resto de la semana: rodajes · Adaptación automática a tu rendimiento real</div>
+      <div class="hud-stats" id="scoreboard"></div>
+    </div>
+    <div class="dial-wrap" id="progressWrap" style="display:none;">
+      <div class="dial" id="progressDial" style="--pct:0;">
+        <div class="dial-center">
+          <div class="dial-pct" id="progressLabelPct">0%</div>
+          <div class="dial-days" id="progressLabelRight">Examen</div>
+        </div>
+      </div>
+      <div class="dial-caption" id="progressLabelLeft">Inicio</div>
+    </div>
+  </div>
+</header>
+
+<div class="progress-wrap" id="linTrackWrap" style="display:none;">
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+</div>
+
+<!-- PANEL DEL ENTRENADOR -->
+<div class="coach-panel" id="coachPanelWrap" style="display:none;">
+  <div class="coach-card">
+    <div class="coach-avatar">🏅</div>
+    <div class="coach-body">
+      <div class="coach-name">TU ENTRENADOR</div>
+      <div class="coach-msg" id="coachMsg">Analizando tu progreso…</div>
+    </div>
+  </div>
+</div>
+
+<main id="mainContent" style="display:none;">
+
+  <div class="config-card">
+    <h2>Paso 1 · Configura tu plan</h2>
+    <p class="config-sub">El miércoles 1 de julio de 2026 es tu día de test: corre 1.000 m a tope en pista y mete el tiempo aquí. Todos los miércoles son de series — los rodajes los haces en los demás días de la semana a tu criterio. El plan se adapta automáticamente a cada tiempo real que registres.</p>
+    <div class="config-grid">
+      <div class="field">
+        <label>Fecha del test inicial</label>
+        <input type="date" id="startDate" value="2026-07-01">
+        <div class="hint">Miércoles 1 de julio de 2026 (fijo, es tu día 1).</div>
+      </div>
+      <div class="field">
+        <label>Fecha aproximada del examen físico</label>
+        <input type="date" id="examDate" value="2026-10-28">
+        <div class="hint">⚠️ Cámbiala en cuanto sepas la convocatoria exacta — el plan se recalcula entero.</div>
+      </div>
+      <div class="field">
+        <label>Resultado de tu test de 1.000 m</label>
+        <div class="time-input-enhanced" id="baselineTimeInput">
+          <div class="time-display" id="baselineTimeDisplay">3:21</div>
+          <div class="time-controls">
+            <div class="spinner-group">
+              <div class="spinner-label">Minutos</div>
+              <div class="spinner">
+                <button type="button" class="spinner-btn" onclick="adjustBaselineMin(1)">▲</button>
+                <input type="number" class="spinner-input" id="baselineMin" value="3" min="2" max="5" onchange="updateBaselineDisplay()">
+                <button type="button" class="spinner-btn" onclick="adjustBaselineMin(-1)">▼</button>
+              </div>
+            </div>
+            <div class="spinner-group">
+              <div class="spinner-label">Segundos</div>
+              <div class="spinner">
+                <button type="button" class="spinner-btn" onclick="adjustBaselineSec(1)">▲</button>
+                <input type="number" class="spinner-input" id="baselineSec" value="21" min="0" max="59" onchange="updateBaselineDisplay()">
+                <button type="button" class="spinner-btn" onclick="adjustBaselineSec(-1)">▼</button>
+              </div>
+            </div>
+          </div>
+          <div class="quicktime-group">
+            <button type="button" class="btn-quicktime" onclick="setBaselineQuick(310)">5:10</button>
+            <button type="button" class="btn-quicktime" onclick="setBaselineQuick(318)">5:18</button>
+            <button type="button" class="btn-quicktime" onclick="setBaselineQuick(330)">5:30</button>
+            <button type="button" class="btn-quicktime" onclick="setBaselineQuick(340)">5:40</button>
+          </div>
+        </div>
+        <div class="hint">Hazlo a tope, en pista si puedes. Ajusta con los spinners o usa un atajo rápido.</div>
+      </div>
+    </div>
+    <div class="config-actions">
+      <button class="btn btn-gen" id="btnGenerate">Generar plan con este tiempo</button>
+      <span class="gen-msg" id="genMsg"></span>
+    </div>
+  </div>
+
+  <div id="waitingMsg" class="waiting">
+    <strong>Esperando el resultado de tu test</strong>
+    Vuelve aquí el miércoles 1 de julio de 2026, corre 1.000 m a tope en pista, ajusta los spinners de arriba con tu tiempo y pulsa "Generar plan". A partir de ahí verás el calendario completo hasta el examen, con fechas reales y ritmos calculados para tu nivel, y consejos específicos para cada sesión.
+  </div>
+
+  <div id="summaryContainer"></div>
+
+  <div id="evoChartOuter" style="display:none;">
+    <div class="evo-chart-container" id="evoChartContainer">
+      <div class="evo-watermark">CNP PISTA</div>
+      <div class="evo-head">
+        <div>
+          <div class="evo-title">Evolución y proyección</div>
+          <div class="evo-sub">Tiempo equivalente 1.000 m · solo miércoles (sesión compartida Rafa/Emilio)</div>
+        </div>
+        <div class="evo-controls">
+          <button class="evo-toggle active" id="evoToggleAll" onclick="setEvoMode('all')">Todos los datos</button>
+          <button class="evo-toggle" id="evoToggleReg" onclick="setEvoMode('registered')">Solo registrados</button>
+        </div>
+      </div>
+      <div class="evo-legend" id="evoLegend"></div>
+      <div class="evo-canvas-wrap" id="evoCanvasWrap">
+        <canvas id="evolutionChart"></canvas>
+      </div>
+      <div class="evo-empty" id="evoEmpty" style="display:none;">
+        <div class="evo-empty-icon">📈</div>
+        <div class="evo-empty-title">Registra tus primeras sesiones para ver tu evolución</div>
+        <div class="evo-empty-sub">En cuanto anotes al menos 3 tiempos reales, aquí aparecerá tu curva de progreso y la proyección hacia el examen.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="intensityLegend" style="display:none;" class="intensity-legend">
+    <span class="leg-title">INTENSIDAD POR SESIÓN:</span>
+    <span class="leg-item"><span class="int-tag int-base">◎ Base</span> F1: series de iniciación para aprender a ir en ritmo real antes de cargar volumen.</span>
+    <span class="leg-item"><span class="int-tag int-easier">↓ Más suave</span> Series largas (1200 m): ligeramente por debajo del ritmo examen para sostener más tiempo.</span>
+    <span class="leg-item"><span class="int-tag int-examen">= Ritmo examen</span> Series de 1000 m: exactamente a tu ritmo objetivo de examen.</span>
+    <span class="leg-item"><span class="int-tag int-faster">↑ Más rápido</span> Series cortas (800/600/400/200 m): más rápido que el ritmo de examen para desarrollar velocidad.</span>
+  </div>
+
+  <div id="fasesContainer"></div>
+
+  <div class="controls" id="controlsBar" style="display:none;">
+    <button class="btn btn-save" id="btnSave">Exportar progreso (.json)</button>
+    <button class="btn btn-load" id="btnLoadTrigger">Importar progreso (.json)</button>
+    <input type="file" id="fileLoader" accept=".json">
+    <button class="btn btn-reset" id="btnReset">Borrar tiempos registrados</button>
+    <span class="save-msg" id="saveMsg"></span>
+  </div>
+
+</main>
+
+<footer class="notes" id="mainFooter" style="display:none;">
+  <h3>Notas prácticas</h3>
+  <ul>
+    <li><strong>Miércoles = pista siempre.</strong> Todos los miércoles son de series. Los rodajes los haces en martes, jueves o cuando puedas. Un rodaje suave de 30 minutos cualquier otro día multiplica los resultados.</li>
+    <li><strong>Emilio tiene sesiones extra (lunes y viernes):</strong> los lunes trabajamos velocidad (series cortas a ritmo rápido) y los viernes resistencia (series largas a ritmo controlado). Los miércoles son idénticos a Rafa.</li>
+    <li><strong>Fase 1 rediseñada:</strong> ya no es rodaje continuo. Los miércoles de Fase 1 son series cortas de iniciación al ritmo — así desde el primer día se trabaja con el cronómetro y se aprende a dosificar.</li>
+    <li><strong>Adaptación automática:</strong> cada vez que registras un tiempo real, el plan recalcula todos los objetivos siguientes. Si estás mejorando más de lo previsto, los tiempos objetivo bajan (más ambicioso). Si vas más justo, sube (más asequible).</li>
+    <li><strong>Ritmos ajustados por distancia:</strong> las series cortas se corren más rápido que el ritmo de examen. El plan calcula el ritmo específico para cada distancia.</li>
+    <li><strong>"Equiv. 1000 m":</strong> el ritmo equivalente en 1000 m te dice a qué nivel estás trabajando realmente. Sirve para comparar todas las sesiones en la misma unidad.</li>
+    <li><strong>La nota orientativa</strong> usa el baremo oficial de 1.000 m por tramos enteros (Hombres): 2'54" o menos = 10, hasta 3'49" o más = 0, en escalones de 1 punto cada ~5-6 segundos. Verifica siempre que coincide con el baremo de tu convocatoria concreta en el BOE, ya que puede variar (sexo, edad, escala, turno).</li>
+    <li><strong>Taper (últimas 2 semanas):</strong> no te esfuerces. Llegar descansado al examen vale tanto como el mejor entrenamiento.</li>
+    <li><strong>Guardado en la nube:</strong> los datos se guardan automáticamente en la nube al instante, así tú ves siempre los tuyos y los de tu compañero actualizados, desde cualquier dispositivo. Usa "Exportar progreso" para hacer además una copia de seguridad en .json.</li>
+  </ul>
+</footer>
+
+<script>
+/* ==================== SISTEMA DE NOTIFICACIONES (TOASTS) ==================== */
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  toast.innerHTML = `<span class="toast-icon">${icons[type]}</span><span>${message}</span>`;
+  
+  container.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 10);
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 3500);
+}
+
+/* ==================== EFECTOS DE INTERFAZ (TILT, MAGNETIC, RIPPLE) ==================== */
+function initInteractions() {
+  // Magnetic Buttons
+  document.querySelectorAll('.btn-gen, .btn-save, .btn-load, .btn-reset, .btn-switch, .evo-toggle, .btn-quicktime, .spinner-btn').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0, 0)';
+    });
+  });
+
+  // Ripple Effect
+  document.querySelectorAll('.btn, .btn-switch, .btn-quicktime').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      ripple.style.position = 'absolute';
+      ripple.style.borderRadius = '50%';
+      ripple.style.background = 'rgba(255,255,255,0.4)';
+      ripple.style.transform = 'scale(0)';
+      ripple.style.animation = 'ripple 0.6s linear';
+      ripple.style.pointerEvents = 'none';
+      ripple.style.left = (e.clientX - this.getBoundingClientRect().left) + 'px';
+      ripple.style.top = (e.clientY - this.getBoundingClientRect().top) + 'px';
+      ripple.style.width = ripple.style.height = Math.max(this.offsetWidth, this.offsetHeight) + 'px';
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+
+  // 3D Tilt on Cards
+  document.querySelectorAll('.mcard').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rx = ((y - cy) / cy) * -5; // tilt invertido
+      const ry = ((x - cx) / cx) * 5;
+      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(5px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+  });
+
+  // Scroll on Time Inputs
+  ['baselineMin', 'baselineSec'].forEach(id => {
+    document.getElementById(id).addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        adjustBaselineMin(id === 'baselineMin' ? 1 : 0);
+        adjustBaselineSec(id === 'baselineSec' ? 1 : 0);
+      } else {
+        adjustBaselineMin(id === 'baselineMin' ? -1 : 0);
+        adjustBaselineSec(id === 'baselineSec' ? -1 : 0);
+      }
+    });
+  });
+}
+
+// CSS for ripple
+const style = document.createElement('style');
+style.textContent = `@keyframes ripple { to { transform: scale(4); opacity: 0; } }`;
+document.head.appendChild(style);
+
+/* ==================== SISTEMA DE PERFILES (NUBE: FIREBASE) ==================== */
+var FIREBASE_DB_URL = "https://m-ae029-default-rtdb.europe-west1.firebasedatabase.app";
+
+var ACTIVE_PROFILE = null;
+
+function lsKey(p){ return 'cnp_pista_' + p.toLowerCase(); }
+
+function cloudPath(p){ return FIREBASE_DB_URL.replace(/\/$/,'') + '/cnp_pista/' + p.toLowerCase() + '.json'; }
+
+function cloudSave(profile, data){
+  return fetch(cloudPath(profile), {
+    method:'PUT',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(res){ return res.ok; }).catch(function(e){ console.error('Error guardando en la nube', e); return false; });
+}
+
+function cloudLoad(profile){
+  return fetch(cloudPath(profile) + '?_ts=' + Date.now(), {cache:'no-store'})
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .catch(function(e){ console.error('Error leyendo de la nube', e); return null; });
+}
+
+/* ---- FECHAS DE EQUIPO COMPARTIDAS ---- */
+var TEAM_CONFIG = {startDate:null, examDate:null};
+function teamCloudPath(){ return FIREBASE_DB_URL.replace(/\/$/,'') + '/cnp_pista/team.json'; }
+function teamSave(dates){
+  return fetch(teamCloudPath(), {
+    method:'PUT',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(dates)
+  }).catch(function(e){ console.error('Error guardando fechas de equipo', e); });
+}
+function teamLoad(){
+  return fetch(teamCloudPath() + '?_ts=' + Date.now(), {cache:'no-store'})
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .catch(function(e){ console.error('Error leyendo fechas de equipo', e); return null; });
+}
+function applyTeamDates(team){
+  if(team && team.startDate && team.examDate){
+    CONFIG.startDate = team.startDate;
+    CONFIG.examDate = team.examDate;
+    TEAM_CONFIG = {startDate:team.startDate, examDate:team.examDate};
+    return true;
+  } else if(CONFIG.startDate && CONFIG.examDate){
+    TEAM_CONFIG = {startDate:CONFIG.startDate, examDate:CONFIG.examDate};
+    teamSave(TEAM_CONFIG);
+  }
+  return false;
+}
+
+function saveToLS(){
+  if(!ACTIVE_PROFILE) return;
+  var payload = {CONFIG:CONFIG, actuals:actuals, skipped:skipped, savedAt:new Date().toISOString()};
+  try{ localStorage.setItem(lsKey(ACTIVE_PROFILE), JSON.stringify(payload)); }catch(e){}
+  var el = document.getElementById('autosaveInd');
+  if(el){ el.innerHTML = '<span style="width:8px;height:8px;background:var(--gold-bright);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--gold-bright);animation:blink 1s infinite;"></span> Guardando...'; }
+  cloudSave(ACTIVE_PROFILE, payload).then(function(ok){
+    if(!el) return;
+    if(ok){
+      el.innerHTML = '<span style="width:8px;height:8px;background:var(--ok);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--ok);"></span> Guardado ' + new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+      clearTimeout(window._saveTimer);
+      window._saveTimer = setTimeout(function(){ el.style.opacity='0.7'; }, 3000);
+    } else {
+      el.innerHTML = '<span style="width:8px;height:8px;background:var(--bad);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--bad);"></span> Sin conexión (local)';
+      showToast('Sin conexión a la nube. Guardado local.', 'error');
+    }
+  });
+}
+
+function loadFromLS(p){
+  try{ var r = localStorage.getItem(lsKey(p)); return r ? JSON.parse(r) : null; }
+  catch(e){ return null; }
+}
+
+function hasDataObj(d){
+  return d && d.CONFIG && (d.CONFIG.startDate || d.CONFIG.baselineTime);
+}
+
+function updateOverlayStatus(){
+  ['Rafa','Emilio'].forEach(function(p){
+    var el = document.getElementById(p.toLowerCase()+'Status');
+    if(el){ el.textContent = 'Cargando...'; el.className = 'profile-status status-no-data'; }
+  });
+  ['Rafa','Emilio'].forEach(function(p){
+    var el = document.getElementById(p.toLowerCase()+'Status');
+    if(!el) return;
+    cloudLoad(p).then(function(d){
+      if(!d) d = loadFromLS(p);
+      if(hasDataObj(d)){
+        var txt = d.CONFIG && d.CONFIG.baselineTime ? 'Test: '+secToTime(d.CONFIG.baselineTime) : 'Datos guardados ✓';
+        el.textContent = txt;
+        el.className = 'profile-status status-has-data';
+      } else {
+        el.textContent = 'Sin datos aún';
+        el.className = 'profile-status status-no-data';
+      }
+    });
+  });
+}
+
+function selectProfile(profile){
+  ACTIVE_PROFILE = profile;
+  var statusEl = document.getElementById(profile.toLowerCase()+'Status');
+  if(statusEl) statusEl.textContent = 'Cargando datos...';
+
+  Promise.all([cloudLoad(profile), teamLoad()]).then(function(results){
+    var saved = results[0], team = results[1];
+    var offline = false;
+    if(!saved){ saved = loadFromLS(profile); offline = !!saved; }
+
+    if(saved){
+      CONFIG = saved.CONFIG || {startDate:null,examDate:null,baselineTime:null};
+      actuals = saved.actuals || {};
+      skipped = saved.skipped || {};
+      try{ localStorage.setItem(lsKey(profile), JSON.stringify(saved)); }catch(e){}
+    } else {
+      CONFIG = {startDate:null,examDate:null,baselineTime:null};
+      actuals = {};
+      skipped = {};
+    }
+    applyTeamDates(team);
+    if(CONFIG.startDate) document.getElementById('startDate').value = CONFIG.startDate;
+    if(CONFIG.examDate) document.getElementById('examDate').value = CONFIG.examDate;
+    if(CONFIG.baselineTime) setBaselineFromSeconds(CONFIG.baselineTime);
+    PLAN = (CONFIG.startDate && CONFIG.examDate && CONFIG.baselineTime) ? buildPlan(ACTIVE_PROFILE) : null;
+
+    document.getElementById('profileOverlay').style.display = 'none';
+    document.getElementById('mainHeader').style.display = 'block';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('mainFooter').style.display = 'block';
+    document.getElementById('coachPanelWrap').style.display = 'block';
+
+    var dot = document.getElementById('headerDot');
+    dot.className = 'profile-dot ' + profile.toLowerCase();
+    document.getElementById('headerProfileName').textContent = profile.toUpperCase();
+
+    var el = document.getElementById('autosaveInd');
+    if(el){
+      el.innerHTML = '<span style="width:8px;height:8px;background:var(--ok);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--ok);"></span> ' + (offline ? 'Datos locales cargados' : 'Datos actualizados de la nube');
+    }
+    
+    if(offline) showToast('Sin conexión: cargando copia local', 'error');
+    else showToast(`Bienvenido, ${profile}. Datos sincronizados.`, 'success');
+
+    renderAll();
+    setTimeout(initInteractions, 500); // Initialize interactions after DOM is populated
+  });
+}
+
+function refreshActiveProfile(){
+  if(!ACTIVE_PROFILE) return;
+  var el = document.getElementById('autosaveInd');
+  if(el){ el.innerHTML = '<span style="width:8px;height:8px;background:var(--gold-bright);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--gold-bright);animation:blink 1s infinite;"></span> Actualizando...'; }
+  Promise.all([cloudLoad(ACTIVE_PROFILE), teamLoad()]).then(function(results){
+    var saved = results[0], team = results[1];
+    if(!saved){
+      if(el){ el.innerHTML = '<span style="width:8px;height:8px;background:var(--bad);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--bad);"></span> Sin conexión a la nube'; }
+      showToast('Sin conexión a la nube', 'error');
+      return;
+    }
+    CONFIG = saved.CONFIG || CONFIG;
+    actuals = saved.actuals || actuals;
+    skipped = saved.skipped || skipped;
+    try{ localStorage.setItem(lsKey(ACTIVE_PROFILE), JSON.stringify(saved)); }catch(e){}
+    applyTeamDates(team);
+    if(CONFIG.startDate) document.getElementById('startDate').value = CONFIG.startDate;
+    if(CONFIG.examDate) document.getElementById('examDate').value = CONFIG.examDate;
+    if(CONFIG.baselineTime) setBaselineFromSeconds(CONFIG.baselineTime);
+    PLAN = (CONFIG.startDate && CONFIG.examDate && CONFIG.baselineTime) ? buildPlan(ACTIVE_PROFILE) : null;
+    renderAll();
+    if(el){
+      el.innerHTML = '<span style="width:8px;height:8px;background:var(--ok);border-radius:50%;display:inline-block;box-shadow:0 0 6px var(--ok);"></span> Actualizado ' + new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+    }
+    showToast('Datos actualizados desde la nube', 'success');
+  });
+}
+
+function switchProfile(){
+  document.getElementById('profileOverlay').style.display = 'flex';
+  document.getElementById('mainHeader').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('mainFooter').style.display = 'none';
+  ACTIVE_PROFILE = null; PLAN = null;
+  CONFIG = {startDate:null,examDate:null,baselineTime:null};
+  actuals = {}; skipped = {};
+  updateOverlayStatus();
+}
+
+/* ==================== CONFIG / ESTADO ==================== */
+var CONFIG = {startDate:null,examDate:null,baselineTime:null};
+var actuals = {};
+var skipped = {};
+var PLAN = null;
+
+/* ==================== UTILIDADES DE TIEMPO ==================== */
+function parseTime(str){
+  if(!str) return null;
+  str = str.trim().replace(',','.');
+  if(str==='') return null;
+  if(str.indexOf(':')>-1){
+    var parts=str.split(':'), mm=parseFloat(parts[0]), ss=parseFloat(parts[1]);
+    if(isNaN(mm)||isNaN(ss)) return null;
+    return mm*60+ss;
+  }
+  var v=parseFloat(str); return isNaN(v)?null:v;
+}
+function secToTime(sec){
+  if(sec===null||sec===undefined||isNaN(sec)) return '—';
+  var totalDeci=Math.round(sec*10);
+  var m=Math.floor(totalDeci/600);
+  var s=(totalDeci-m*600)/10;
+  var sStr=s<10?'0'+s.toFixed(1):s.toFixed(1);
+  return m+':'+sStr.replace('.0','');
+}
+function paceToTime(sec){
+  var total=Math.round(sec);
+  var m=Math.floor(total/60), s=total-m*60;
+  return m+':'+(s<10?'0':'')+s;
+}
+function fmtDate(d){
+  var dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  var meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return dias[d.getDay()]+' '+d.getDate()+' '+meses[d.getMonth()];
+}
+function addDays(date,days){ var d=new Date(date); d.setDate(d.getDate()+days); return d; }
+
+
+/* ==================== BAREMO ==================== */
+var baremoTramos=[
+  {max:174,p:10},{max:180,p:9},{max:186,p:8},{max:192,p:7},{max:198,p:6},
+  {max:204,p:5},{max:210,p:4},{max:216,p:3},{max:222,p:2},{max:228,p:1}
+];
+function scoreFromTime(t){
+  var rt=Math.ceil(t);
+  for(var i=0;i<baremoTramos.length;i++){
+    if(rt<=baremoTramos[i].max) return baremoTramos[i].p;
+  }
+  return 0;
+}
+function scoreClass(s){ return s>=7?'score-good':s>=5?'score-mid':'score-low'; }
+
+/* ==================== RITMO POR DISTANCIA ==================== */
+function distPaceMultiplier(dist){
+  if(dist>=1200) return 1.02;
+  if(dist>=1000) return 1.00;
+  if(dist>=800)  return 0.96;
+  if(dist>=600)  return 0.92;
+  if(dist>=400)  return 0.87;
+  return 0.82;
+}
+
+/* ---- PERFIL PERSONAL DE VELOCIDAD ---- */
+var CURVE_MIN_POINTS = 4;
+var CURVE_MIN_DISTINCT = 3;
+
+function fitCriticalVelocity(points){
+  var distinct = {};
+  points.forEach(function(p){ distinct[p.dist] = true; });
+  var distinctCount = Object.keys(distinct).length;
+  if(points.length < CURVE_MIN_POINTS || distinctCount < CURVE_MIN_DISTINCT) return null;
+
+  var n = points.length, sumT = 0, sumD = 0;
+  points.forEach(function(p){ sumT += p.time; sumD += p.dist; });
+  var meanT = sumT/n, meanD = sumD/n;
+  var num = 0, den = 0;
+  points.forEach(function(p){
+    num += (p.time-meanT)*(p.dist-meanD);
+    den += (p.time-meanT)*(p.time-meanT);
+  });
+  if(den === 0) return null;
+  var CS = num/den;
+  var Dp = meanD - CS*meanT;
+  if(!isFinite(CS) || CS <= 1.5 || CS >= 8) return null;
+  var testDists = [100,200,300,400,600,800,1000,1200];
+  for(var i=0;i<testDists.length;i++){
+    var t = (testDists[i]-Dp)/CS;
+    if(!isFinite(t) || t<=0) return null;
+  }
+  return {CS:CS, Dp:Dp, n:n, distinctCount:distinctCount};
+}
+
+function personalMultiplier(dist, curve){
+  var t1000 = (1000-curve.Dp)/curve.CS;
+  var tD = (dist-curve.Dp)/curve.CS;
+  var pace1000 = t1000;
+  var paceD = tD*1000/dist;
+  return paceD/pace1000;
+}
+
+function resolveDistMultiplier(dist){
+  if(PLAN && PLAN.personalCurve) return personalMultiplier(dist, PLAN.personalCurve);
+  return distPaceMultiplier(dist);
+}
+
+var FRIDAY_EASE = 1.06;
+
+function resolveSessionMultiplier(w){
+  var mult;
+  if(w.fase1mult !== undefined){
+    mult = w.fase1mult;
+  } else {
+    mult = resolveDistMultiplier(w.dist);
+    if(w.extraMult !== undefined){
+      var generic = distPaceMultiplier(w.dist);
+      var bias = w.extraMult / generic;
+      mult = mult * bias;
+    }
+  }
+  var isEmilioNow = (PLAN && PLAN.isEmilio !== undefined) ? PLAN.isEmilio : false;
+  if(w.day === 'Viernes' && isEmilioNow && !w.deload){
+    mult = mult * FRIDAY_EASE;
+  }
+  return mult;
+}
+
+function intensityLabel(w,isFase1){
+  if(isFase1) return '<span class="int-tag int-base">◎ Base</span>';
+  if(w.deload) return '<span class="int-tag int-easier">↓ Descarga</span>';
+  var m=resolveDistMultiplier(w.dist);
+  if(m>1.005) return '<span class="int-tag int-easier">↓ Más suave</span>';
+  if(m<0.995) return '<span class="int-tag int-faster">↑ Más rápido</span>';
+  return '<span class="int-tag int-examen">= Ritmo examen</span>';
+}
+
+/* ==================== PLANTILLAS BASE (MIÉRCOLES) ==================== */
+var TEMPLATE_FASE1=[
+  {dist:400,reps:4,recov:"3'",titulo:"4×400 m",desc:"Recuperación 3'",fase1mult:0.97},
+  {dist:400,reps:5,recov:"2:30",titulo:"5×400 m",desc:"Recuperación 2:30",fase1mult:0.97},
+  {dist:600,reps:3,recov:"3'",titulo:"3×600 m",desc:"Recuperación 3'",fase1mult:0.98},
+  {dist:600,reps:4,recov:"3'",titulo:"4×600 m",desc:"Recuperación 3'",fase1mult:0.98},
+];
+var TEMPLATE_FASE2=[
+  {dist:1200,reps:2,recov:"4'",titulo:"2×1200 m",desc:"Recuperación 4'"},
+  {dist:1200,reps:2,recov:"3:30",titulo:"2×1200 m",desc:"Recuperación 3:30"},
+  {dist:1000,reps:2,recov:"3:30",titulo:"2×1000 m",desc:"Recuperación 3:30"},
+  {dist:1000,reps:3,recov:"3'",titulo:"3×1000 m",desc:"Recuperación 3'"},
+  {dist:1200,reps:2,recov:"3'",extra:"+ 1×800 m suave",titulo:"2×1200 m",desc:"Recuperación 3' + 1×800 m suave"},
+  {dist:1000,reps:3,recov:"2:30",titulo:"3×1000 m",desc:"Recuperación 2:30"},
+];
+var TEMPLATE_FASE3_CORE=[
+  {dist:800,reps:3,recov:"3'",titulo:"3×800 m",desc:"Recuperación 3'"},
+  {dist:600,reps:4,recov:"2:30",titulo:"4×600 m",desc:"Recuperación 2:30"},
+  {dist:600,reps:4,recov:"2:15",titulo:"4×600 m",desc:"Recuperación 2:15"},
+  {dist:400,reps:5,recov:"2'",titulo:"5×400 m",desc:"Recuperación 2'"},
+  {dist:400,reps:5,recov:"1:45",titulo:"5×400 m",desc:"Recuperación 1:45"},
+  {dist:200,reps:6,recov:"1:15",titulo:"6×200 m",desc:"Recuperación 1:15"},
+];
+var FASE3_SIM={dist:1000,reps:2,recov:"4'",extra:"— Simulación a ritmo objetivo",titulo:"2×1000 m",desc:"Recuperación 4' — Simulación a ritmo objetivo"};
+
+var TEMPLATE_DELOAD_WED = {dist:800, reps:2, recov:"4'", titulo:"2×800 m — semana de descarga", desc:"Recuperación 4' · carga reducida a propósito", fase1mult:1.04, deload:true};
+var EXTRA_DELOAD_LUNES = {dist:200, reps:3, recov:"2'", titulo:"3×200 m suaves", desc:"Descarga — activación ligera", mult:1.04, deload:true};
+var EXTRA_DELOAD_VIERNES = {dist:600, reps:2, recov:"3'", titulo:"2×600 m suaves", desc:"Descarga — resistencia ligera", mult:1.06, deload:true};
+
+function selectFromTemplate(tpl,len){
+  var out=[];
+  if(len<=0) return out;
+  if(len<=tpl.length){ for(var i=0;i<len;i++) out.push(Object.assign({}, tpl[i])); }
+  else {
+    for(var i=0;i<tpl.length;i++) out.push(Object.assign({}, tpl[i]));
+    var ts=Math.max(0,tpl.length-2), idx=ts;
+    while(out.length<len){ out.push(Object.assign({}, tpl[idx])); idx++; if(idx>=tpl.length) idx=ts; }
+  }
+  return out;
+}
+
+/* ==================== PLANTILLAS EXTRA PARA EMILIO ==================== */
+var EXTRA_LUNES = {
+  1: [
+    {dist:200, reps:6, recov:"1'30", titulo:"6×200 m", desc:"Recuperación 1:30", mult:0.85},
+    {dist:200, reps:8, recov:"1'15", titulo:"8×200 m", desc:"Recuperación 1:15", mult:0.85},
+    {dist:300, reps:5, recov:"1'30", titulo:"5×300 m", desc:"Recuperación 1:30", mult:0.88},
+    {dist:300, reps:6, recov:"1'15", titulo:"6×300 m", desc:"Recuperación 1:15", mult:0.88}
+  ],
+  2: [
+    {dist:400, reps:5, recov:"2'", titulo:"5×400 m", desc:"Recuperación 2'", mult:0.90},
+    {dist:400, reps:6, recov:"1'45", titulo:"6×400 m", desc:"Recuperación 1:45", mult:0.90},
+    {dist:300, reps:6, recov:"1'30", titulo:"6×300 m", desc:"Recuperación 1:30", mult:0.85},
+    {dist:300, reps:7, recov:"1'15", titulo:"7×300 m", desc:"Recuperación 1'15", mult:0.85}
+  ],
+  3: [
+    {dist:300, reps:6, recov:"1'15", titulo:"6×300 m", desc:"Recuperación 1'15", mult:0.82},
+    {dist:300, reps:8, recov:"1'", titulo:"8×300 m", desc:"Recuperación 1'", mult:0.82},
+    {dist:200, reps:8, recov:"1'", titulo:"8×200 m", desc:"Recuperación 1'", mult:0.78},
+    {dist:200, reps:10, recov:"1'", titulo:"10×200 m", desc:"Recuperación 1'", mult:0.78}
+  ],
+  4: [
+    {dist:100, reps:4, recov:"1'", titulo:"4×100 m suaves", desc:"Activación", mult:0.70},
+    {dist:100, reps:3, recov:"1'", titulo:"3×100 m suaves", desc:"Activación", mult:0.70}
+  ]
+};
+var EXTRA_VIERNES = {
+  1: [
+    {dist:800, reps:2, recov:"3'", titulo:"2×800 m", desc:"Recuperación 3'", mult:1.02},
+    {dist:800, reps:3, recov:"2'30", titulo:"3×800 m", desc:"Recuperación 2:30", mult:1.02},
+    {dist:1000, reps:2, recov:"3'", titulo:"2×1000 m", desc:"Recuperación 3'", mult:1.00},
+    {dist:1000, reps:2, recov:"2'30", titulo:"2×1000 m", desc:"Recuperación 2:30", mult:1.00}
+  ],
+  2: [
+    {dist:1200, reps:2, recov:"3'30", titulo:"2×1200 m", desc:"Recuperación 3:30", mult:1.04},
+    {dist:1200, reps:2, recov:"3'", titulo:"2×1200 m", desc:"Recuperación 3'", mult:1.04},
+    {dist:1000, reps:3, recov:"3'", titulo:"3×1000 m", desc:"Recuperación 3'", mult:1.00},
+    {dist:1000, reps:3, recov:"2'30", titulo:"3×1000 m", desc:"Recuperación 2:30", mult:1.00}
+  ],
+  3: [
+    {dist:800, reps:3, recov:"2'30", titulo:"3×800 m", desc:"Recuperación 2:30", mult:0.98},
+    {dist:800, reps:4, recov:"2'", titulo:"4×800 m", desc:"Recuperación 2'", mult:0.98},
+    {dist:1000, reps:2, recov:"3'", titulo:"2×1000 m", desc:"Recuperación 3'", mult:1.00},
+    {dist:1000, reps:2, recov:"2'30", titulo:"2×1000 m", desc:"Recuperación 2:30", mult:1.00}
+  ],
+  4: [
+    {dist:200, reps:2, recov:"2'", titulo:"2×200 m suaves", desc:"Activación", mult:0.70},
+    {dist:200, reps:2, recov:"2'", titulo:"2×200 m suaves", desc:"Activación", mult:0.70}
+  ]
+};
+
+function overflowIndex(i, len){
+  // Misma lógica que selectFromTemplate: una vez agotadas las plantillas,
+  // sigue avanzando desde length-2 en vez de reiniciar en 0. Así Lunes/Viernes
+  // progresan igual que Miércoles en vez de volver a la sesión más floja.
+  if(i < len) return i;
+  var ts = Math.max(0, len - 2);
+  var span = len - ts;
+  return ts + ((i - len) % span);
+}
+
+function getExtraTemplate(day, fase, weekInFase, avoidDist){
+  var arr = day === 'Lunes' ? EXTRA_LUNES[fase] : EXTRA_VIERNES[fase];
+  if(!arr || !arr.length) return null;
+  var idx = overflowIndex(weekInFase, arr.length);
+  var pick = arr[idx];
+  // Evita que el Viernes repita la misma distancia "grande" que el Miércoles
+  // de esa misma semana (p.ej. 2 series de 1200 m con solo un día de por medio).
+  if(day === 'Viernes' && avoidDist !== undefined && avoidDist !== null && arr.length > 1){
+    var tries = 0;
+    while(pick.dist === avoidDist && tries < arr.length){
+      idx = (idx + 1) % arr.length;
+      pick = arr[idx];
+      tries++;
+    }
+  }
+  return pick;
+}
+
+/* ==================== CONSEJOS ==================== */
+function getTips(week){
+  var fase = week.fase, dist = week.dist || null, day = week.day || 'Miércoles';
+  if(week.deload){
+    return {titulo:"💡 Consejos · Semana de descarga", items:[
+      "<strong>Es intencionado:</strong> menos volumen y ritmo más suave a propósito, no es que vayas peor.",
+      "<strong>Objetivo:</strong> asimilar la carga acumulada antes de entrar en la fase más exigente.",
+      "<strong>No la compenses:</strong> no añadas series ni aprietes el ritmo por tu cuenta esta semana.",
+      "<strong>Duerme e hidrátate igual que en una semana normal.</strong>",
+      "<strong>"+day+":</strong> "+(day==='Lunes'?'activación ligera':day==='Viernes'?'resistencia suave':'sesión de descarga')
+    ]};
+  }
+  if(fase === 1){
+    return {titulo:"💡 Consejos · Fase 1 (iniciación)", items:[
+      "<strong>Objetivo:</strong> aprender a dosificar el ritmo con el cronómetro. No esforzarse al límite.",
+      "<strong>Calentamiento:</strong> 10' trote suave + 4-5 progresivos de 80 m.",
+      "<strong>Salida de pie:</strong> igual que en el examen.",
+      "<strong>Recuperación activa:</strong> camina o trota muy suave entre series.",
+      "<strong>Rodaje complementario:</strong> un rodaje suave de 30-40' otro día de la semana.",
+      "<strong>"+day+":</strong> "+(day==='Lunes'?'velocidad pura con series cortas':day==='Viernes'?'resistencia con series más largas':'sesión principal de la semana')
+    ]};
+  }
+  if(fase === 4){
+    return {titulo:"💡 Consejos · Taper — llegar fresco", items:[
+      "<strong>No busques marca:</strong> el objetivo es activar sin fatiga.",
+      "<strong>Duerme e hidrátate bien:</strong> clave en estas dos semanas.",
+      "<strong>"+day+":</strong> "+(day==='Lunes'?'activación muy suave':day==='Viernes'?'último estímulo antes del examen':'simulación controlada')
+    ]};
+  }
+  if(fase === 2){
+    if(dist >= 1200) return {titulo:"💡 Consejos · Series largas (1200 m)", items:[
+      "<strong>Ritmo suave a propósito:</strong> 2% más lento que el ritmo de examen. No aprietes.",
+      "<strong>Respiración rítmica:</strong> 3 pasos inspiración, 2 espiración.",
+      "<strong>Postura relajada:</strong> hombros bajos, brazos a 90°.",
+      "<strong>Respeta la recuperación:</strong> no llegues demasiado fresco.",
+      "<strong>"+day+":</strong> "+(day==='Lunes'?'trabajo de velocidad con 400m':day==='Viernes'?'resistencia específica':'sesión principal')
+    ]};
+    return {titulo:"💡 Consejos · Series de 1000 m (ritmo examen)", items:[
+      "<strong>Ritmo real de examen:</strong> estas series son las más específicas.",
+      "<strong>Salida controlada:</strong> no quemes en los primeros 200 m.",
+      "<strong>Último 200 m:</strong> donde se decide el tiempo.",
+      "<strong>Mental:</strong> el examen son 1000 m una sola vez; aquí los haces 2-3 veces.",
+      "<strong>"+day+":</strong> "+(day==='Lunes'?'velocidad con 400m':day==='Viernes'?'resistencia con 800-1200m':'sesión principal')
+    ]};
+  }
+  if(fase === 3){
+    if(dist <= 200) return {titulo:"💡 Consejos · Series de 200 m (velocidad pura)", items:[
+      "<strong>Máxima velocidad:</strong> estas series deben doler desde el metro 50.",
+      "<strong>Técnica:</strong> rodillas arriba, brazos potentes, inclinación leve.",
+      "<strong>Recuperación generosa:</strong> no escatimes el descanso.",
+      "<strong>No hagas más repeticiones de las indicadas.</strong>",
+      "<strong>"+day+":</strong> sesión de velocidad"
+    ]};
+    if(dist <= 400) return {titulo:"💡 Consejos · Series de 400 m", items:[
+      "<strong>Un 13% más rápido que el ritmo de examen:</strong> trabajo de velocidad.",
+      "<strong>Distribución:</strong> primeros 100 m controlados, últimos 100 m a tope.",
+      "<strong>Recuperación activa:</strong> camina o trota suave.",
+      "<strong>Hidratación:</strong> ten agua a pie de pista.",
+      "<strong>"+day+":</strong> "+(day==='Lunes'?'velocidad pura':day==='Viernes'?'resistencia-velocidad':'sesión principal')
+    ]};
+    if(dist <= 600) return {titulo:"💡 Consejos · Series de 600 m", items:[
+      "<strong>Zona de VO2max:</strong> exigente pero sostenible.",
+      "<strong>Marca de referencia:</strong> no te desvíes más de 3-4 seg por repetición.",
+      "<strong>Últimos 200 m:</strong> mantén cadencia.",
+      "<strong>Calentamiento:</strong> 12' trote + progresivos.",
+      "<strong>"+day+":</strong> sesión de calidad"
+    ]};
+    return {titulo:"💡 Consejos · Series de 800 m", items:[
+      "<strong>Distancia puente:</strong> nexo entre resistencia y velocidad.",
+      "<strong>Salida de pie:</strong> arranca fuerte 50 m, luego asiente.",
+      "<strong>Ritmo por vuelta:</strong> primera vuelta manejable, segunda confirmación.",
+      "<strong>Recuperación de 3':</strong> suficiente para no llegar muerto, no fresco.",
+      "<strong>"+day+":</strong> sesión de transición"
+    ]};
+  }
+  return {titulo:"💡 Consejos", items:["Ejecuta la sesión planificada. Registra tu tiempo al terminar."]};
+}
+
+/* ==================== RE-ANCLAJE DEL TEST INICIAL ==================== */
+var ANCHOR_MIN_F1_SESSIONS = 3;
+var ANCHOR_DIFF_THRESHOLD = 0.04;
+var ANCHOR_WEIGHT_PER_SESSION = 0.15;
+var ANCHOR_MAX_WEIGHT = 0.6;
+
+function estimateBaselineFromFase1(allSessions, actualsObj){
+  var f1w = allSessions.filter(function(s){
+    return s.day === 'Miércoles' && s.fase1mult !== undefined && !s.deload &&
+      actualsObj[s.key] !== undefined && actualsObj[s.key] !== null;
+  });
+  if(f1w.length < 2) return null;
+  var sum = 0;
+  f1w.forEach(function(s){
+    var pace = actualsObj[s.key] / (s.dist/1000);
+    sum += pace / s.fase1mult;
+  });
+  return {value: sum/f1w.length, n: f1w.length};
+}
+
+/* ==================== BUILD PLAN ==================== */
+function buildPlan(profile){
+  var start = new Date(CONFIG.startDate+'T00:00:00');
+  var exam = new Date(CONFIG.examDate+'T00:00:00');
+  var baseline = CONFIG.baselineTime;
+  var isEmilio = (profile === 'Emilio');
+
+  var wedDates = [];
+  var d = addDays(start, 7);
+  while(d <= exam){ wedDates.push(new Date(d)); d = addDays(d, 7); }
+  var N = wedDates.length;
+  if(N < 1) return {error:"La fecha del examen es anterior o igual a la fecha del test. Revisa las fechas."};
+
+  var taperLen = N <= 2 ? N : N <= 4 ? 1 : 2;
+  var remaining = N - taperLen;
+  function allocate(rem){
+    if(rem <= 0) return {p1:0,p2:0,p3:0};
+    if(rem === 1) return {p1:0,p2:0,p3:1};
+    if(rem === 2) return {p1:0,p2:1,p3:1};
+    if(rem === 3) return {p1:1,p2:1,p3:1};
+    if(rem === 4) return {p1:1,p2:2,p3:1};
+    if(rem === 5) return {p1:1,p2:2,p3:2};
+    var P3_MAX = 6;
+    var a = Math.max(2, Math.round(rem*0.32));
+    var b = Math.max(2, Math.round(rem*0.40));
+    var c = Math.min(P3_MAX, Math.max(2, rem-a-b));
+    var leftover = rem-a-b-c;
+    if(leftover > 0) b += leftover;
+    var total = a+b+c, g=0;
+    while(total > rem && g<200){
+      if(b>2) b--; else if(a>2) a--; else if(c>2) c--; else break;
+      total = a+b+c; g++;
+    }
+    while(total < rem){ b++; total++; }
+    return {p1:a,p2:b,p3:c};
+  }
+  var alloc = allocate(remaining);
+
+  var f1 = selectFromTemplate(TEMPLATE_FASE1, alloc.p1);
+  var f2 = selectFromTemplate(TEMPLATE_FASE2, alloc.p2);
+  var f3 = alloc.p3 <= 0 ? [] : alloc.p3 === 1 ? [FASE3_SIM] : selectFromTemplate(TEMPLATE_FASE3_CORE, alloc.p3-1).concat([FASE3_SIM]);
+
+  var deloadWeekIdx = alloc.p2 >= 4 ? Math.floor(alloc.p2/2) : -1;
+  if(deloadWeekIdx >= 0 && deloadWeekIdx < f2.length){
+    f2[deloadWeekIdx] = Object.assign({}, TEMPLATE_DELOAD_WED);
+  }
+
+  var wedSessions = f1.concat(f2).concat(f3);
+  var taperWeeks = N - (f1.length + f2.length + f3.length);
+  for(var i=0; i<taperWeeks; i++){
+    var descT = i === 0 && taperWeeks === 2 ? 'Simulación controlada: 1×1000 m + 4×150 m sueltos' : 'Activación: 4–6×80–100 m progresivos';
+    var titT = i === 0 && taperWeeks === 2 ? '1×1000 m controlado + 4×150 m' : 'Progresivos 80-100 m';
+    wedSessions.push({dist:0, reps:0, recov:'', titulo:titT, desc:descT, fase:4, taper:true});
+  }
+  while(wedSessions.length < N){
+    wedSessions.push({dist:0, reps:0, recov:'', titulo:'Activación', desc:'Suave', fase:4, taper:true});
+  }
+
+  var allSessions = [];
+  var wedIdx = 0;
+  var totalSessions = 0;
+  var recalcCounter = 0;
+
+  if(!isEmilio){
+    for(var i=0; i<N; i++){
+      var w = wedSessions[i];
+      var date = wedDates[i];
+      var fase = i < alloc.p1 ? 1 : i < alloc.p1 + alloc.p2 ? 2 : i < alloc.p1 + alloc.p2 + alloc.p3 ? 3 : 4;
+      w.fase = fase;
+      w.date = date;
+      w.day = 'Miércoles';
+      w.key = 'w'+i;
+      w.recalc = !w.taper && !w.deload;
+      if(w.dist !== undefined && w.dist !== 0){
+        w.raceIdx = w.recalc ? recalcCounter++ : null;
+        w.plannedBasePaceOriginal = null;
+        w.adjustedBasePace = null;
+      } else {
+        w.raceIdx = null;
+        w.plannedBasePaceOriginal = null;
+        w.adjustedBasePace = null;
+      }
+      allSessions.push(w);
+      totalSessions++;
+    }
+  } else {
+    var firstMonday = addDays(start, 7 - start.getDay() + 1);
+    if(firstMonday < start) firstMonday = addDays(firstMonday, 7);
+    var currentDate = new Date(firstMonday);
+    var weekCounter = 0;
+    while(currentDate <= exam){
+      var fase = weekCounter < alloc.p1 ? 1 : weekCounter < alloc.p1 + alloc.p2 ? 2 : weekCounter < alloc.p1 + alloc.p2 + alloc.p3 ? 3 : 4;
+      var days = [1,3,5];
+      var weekWedDist = null;
+      for(var di=0; di<days.length; di++){
+        var dayOffset = days[di] - currentDate.getDay();
+        var sessionDate = addDays(currentDate, dayOffset);
+        if(sessionDate < start) continue;
+        if(sessionDate > exam) break;
+        var dayName = '';
+        if(days[di] === 1) dayName = 'Lunes';
+        else if(days[di] === 3) dayName = 'Miércoles';
+        else dayName = 'Viernes';
+
+        var session = null;
+        if(dayName === 'Miércoles'){
+          var wedTemplate = wedSessions[wedIdx];
+          if(!wedTemplate) break;
+          session = Object.assign({}, wedTemplate);
+          session.fase = fase;
+          session.day = 'Miércoles';
+          session.date = sessionDate;
+          session.key = 'w'+totalSessions;
+          session.recalc = !session.taper && !session.deload;
+          if(session.dist !== undefined && session.dist !== 0){
+            session.raceIdx = session.recalc ? recalcCounter++ : null;
+            session.plannedBasePaceOriginal = null;
+            session.adjustedBasePace = null;
+          } else {
+            session.raceIdx = null;
+            session.plannedBasePaceOriginal = null;
+            session.adjustedBasePace = null;
+          }
+          wedIdx++;
+          weekWedDist = session.dist;
+        } else {
+          var weekInFase = weekCounter - (fase===1?0: fase===2?alloc.p1: fase===3?alloc.p1+alloc.p2: alloc.p1+alloc.p2+alloc.p3);
+          var isDeloadWeek = (fase === 2 && weekInFase === deloadWeekIdx);
+          var extra = isDeloadWeek ?
+            (dayName === 'Lunes' ? EXTRA_DELOAD_LUNES : EXTRA_DELOAD_VIERNES) :
+            getExtraTemplate(dayName, fase, weekInFase, weekWedDist);
+          if(!extra) continue;
+          var sessRecalc = !extra.deload;
+          session = {
+            dist: extra.dist,
+            reps: extra.reps,
+            recov: extra.recov,
+            titulo: extra.titulo,
+            desc: extra.desc,
+            fase: fase,
+            day: dayName,
+            date: sessionDate,
+            key: 'w'+totalSessions,
+            recalc: sessRecalc,
+            raceIdx: sessRecalc ? recalcCounter++ : null,
+            plannedBasePaceOriginal: null,
+            adjustedBasePace: null,
+            extraMult: extra.mult,
+            deload: !!extra.deload,
+            taper: false
+          };
+        }
+        if(session){
+          allSessions.push(session);
+          totalSessions++;
+        }
+      }
+      currentDate = addDays(currentDate, 7);
+      weekCounter++;
+      if(weekCounter >= N) break;
+    }
+  }
+
+  // Re-anclaje
+  var testBaseline = baseline;
+  var f1Estimate = estimateBaselineFromFase1(allSessions, actuals);
+  var anchorRecalibrated = false;
+  if(f1Estimate && f1Estimate.n >= ANCHOR_MIN_F1_SESSIONS){
+    var diffRatio = (testBaseline - f1Estimate.value) / testBaseline;
+    if(Math.abs(diffRatio) > ANCHOR_DIFF_THRESHOLD){
+      var wF1 = Math.min(ANCHOR_MAX_WEIGHT, ANCHOR_WEIGHT_PER_SESSION * f1Estimate.n);
+      baseline = testBaseline * (1 - wF1) + f1Estimate.value * wF1;
+      anchorRecalibrated = true;
+    }
+  }
+
+  // Perfil personal
+  var curvePoints = allSessions.filter(function(s){
+    return s.dist && s.dist > 0 && s.extraMult === undefined &&
+      s.fase1mult === undefined && !s.deload &&
+      actuals[s.key] !== undefined && actuals[s.key] !== null;
+  }).map(function(s){ return {dist:s.dist, time:actuals[s.key]}; });
+  var personalCurve = fitCriticalVelocity(curvePoints);
+  var curveDistinct = {};
+  curvePoints.forEach(function(p){ curveDistinct[p.dist]=true; });
+
+  // Sesiones recalc
+  var recalcSessions = allSessions.filter(function(s){ return s.recalc && s.raceIdx !== null; });
+  var M = recalcSessions.length;
+  if(M === 0) {
+    return {error: "No hay sesiones de entrenamiento programadas."};
+  }
+  var weeksEffective = N - taperLen;
+  var freqBonus = isEmilio ? 0.03 : 0;
+  var impFactor = Math.min(0.15, weeksEffective * 0.006 + freqBonus);
+  var targetPaceOriginal = baseline * (1 - impFactor);
+
+  // Asignar plannedBasePaceOriginal (sin ajuste)
+  for(var idx=0; idx<M; idx++){
+    var frac = M > 1 ? idx / (M - 1) : 1;
+    recalcSessions[idx].plannedBasePaceOriginal = baseline + (targetPaceOriginal - baseline) * frac;
+  }
+
+  // Calcular adjustedBasePace para cada sesión usando solo sesiones anteriores
+  for(var idx2=0; idx2<M; idx2++){
+    var w = recalcSessions[idx2];
+    if(idx2 === 0){
+      w.adjustedBasePace = w.plannedBasePaceOriginal;
+      continue;
+    }
+    var devs = [];
+    for(var i=0; i<idx2; i++){
+      var pw = recalcSessions[i];
+      if(actuals[pw.key] !== undefined && actuals[pw.key] !== null){
+        var mult = resolveSessionMultiplier(pw);
+        var plannedTime = pw.plannedBasePaceOriginal * mult * (pw.dist/1000);
+        if(plannedTime > 0){
+          devs.push((plannedTime - actuals[pw.key]) / plannedTime);
+        }
+      }
+    }
+    if(!devs.length){
+      w.adjustedBasePace = w.plannedBasePaceOriginal;
+      continue;
+    }
+    var recent = devs.slice(-3);
+    var weightsByLen = {1:[1], 2:[0.35,0.65], 3:[0.15,0.30,0.55]};
+    var weights = weightsByLen[recent.length];
+    var avgDev = 0;
+    for(var wi=0; wi<recent.length; wi++){ avgDev += recent[wi] * weights[wi]; }
+    var amp = Math.max(-0.08, Math.min(0.08, avgDev));
+    w.adjustedBasePace = w.plannedBasePaceOriginal * (1 - amp);
+  }
+
+  // goalAdjust global (solo para mostrar en marcador)
+  var allDevs = [];
+  recalcSessions.forEach(function(ws){
+    if(actuals[ws.key] !== undefined && actuals[ws.key] !== null){
+      var mult = resolveSessionMultiplier(ws);
+      var plannedTime = ws.plannedBasePaceOriginal * mult * (ws.dist/1000);
+      if(plannedTime > 0) allDevs.push((plannedTime - actuals[ws.key]) / plannedTime);
+    }
+  });
+  var goalAdjust = 0;
+  if(allDevs.length){
+    var avgAll = allDevs.reduce(function(a,b){ return a+b; }, 0) / allDevs.length;
+    goalAdjust = Math.max(-0.07, Math.min(0.07, avgAll));
+  }
+
+  var plan = {
+    weeks: allSessions,
+    baseline: testBaseline,
+    anchorBaseline: baseline,
+    anchorRecalibrated: anchorRecalibrated,
+    f1Estimate: f1Estimate,
+    targetPace: targetPaceOriginal * (1 - goalAdjust),
+    targetPaceOriginal: targetPaceOriginal,
+    goalAdjust: goalAdjust,
+    M: M,
+    improvementFactor: impFactor,
+    N: N,
+    p1: alloc.p1,
+    p2: alloc.p2,
+    p3: alloc.p3,
+    taperLen: taperLen,
+    isEmilio: isEmilio,
+    personalCurve: personalCurve,
+    curvePointsCount: curvePoints.length,
+    curveDistinctCount: Object.keys(curveDistinct).length
+  };
+  return plan;
+}
+
+/* ==================== RENDER ==================== */
+var faseInfo = {
+  1:{nombre:"Base en pista", desc:"Miércoles de series de iniciación — rodajes el resto de la semana."},
+  2:{nombre:"Resistencia específica", desc:"Series largas (1000–1200 m): motor para sostener el ritmo de examen."},
+  3:{nombre:"Ritmo de examen", desc:"Series cortas a ritmo superior al examen → velocidad. Cierra con simulación."},
+  4:{nombre:"Taper + simulacro", desc:"Activación, llegar fresco al examen. Sin esfuerzos largos."}
+};
+
+function updateProgressBar(){
+  var wrap = document.getElementById('progressWrap');
+  var linWrap = document.getElementById('linTrackWrap');
+  if(!wrap) return;
+  if(!CONFIG.startDate || !CONFIG.examDate){ wrap.style.display='none'; if(linWrap) linWrap.style.display='none'; return; }
+  var start = new Date(CONFIG.startDate+'T00:00:00').getTime();
+  var exam = new Date(CONFIG.examDate+'T00:00:00').getTime();
+  var now = Date.now();
+  var pct = exam>start ? Math.max(0, Math.min(100, ((now-start)/(exam-start))*100)) : 0;
+  wrap.style.display = 'flex';
+  if(linWrap){
+    linWrap.style.display = 'block';
+    document.getElementById('progressFill').style.width = pct.toFixed(1)+'%';
+  }
+  var dial = document.getElementById('progressDial');
+  if(dial) dial.style.setProperty('--pct', pct.toFixed(1));
+  document.getElementById('progressLabelPct').textContent = Math.round(pct)+'%';
+  var daysLeft = Math.max(0, Math.ceil((exam-now)/86400000));
+  document.getElementById('progressLabelRight').textContent = daysLeft+' días';
+  document.getElementById('progressLabelLeft').textContent = 'Inicio';
+}
+
+/* ==================== PANEL DEL ENTRENADOR ==================== */
+function renderCoach(){
+  var wrap = document.getElementById('coachPanelWrap');
+  var msgEl = document.getElementById('coachMsg');
+  if(!wrap || !msgEl) return;
+  if(!PLAN || PLAN.error){
+    wrap.style.display = 'block';
+    msgEl.innerHTML = 'Todavía no tengo datos tuyos. En cuanto generes el plan con tu tiempo del test, empiezo a seguir tu progreso semana a semana y te iré avisando de cómo vas.';
+    return;
+  }
+  wrap.style.display = 'block';
+  var tr = calcTrend();
+  var rw = PLAN.weeks.filter(function(w){ return w.recalc && w.raceIdx !== null; });
+  var logged = Object.values(actuals).filter(function(v){ return v!==null && v!==undefined; }).length;
+  var next = null;
+  for(var i=0; i<rw.length; i++){
+    if(skipped[rw[i].key]) continue;
+    if(actuals[rw[i].key] === undefined || actuals[rw[i].key] === null){ next = rw[i]; break; }
+  }
+  var msg;
+  if(logged === 0){
+    msg = 'Todo listo, <strong>'+ACTIVE_PROFILE+'</strong>. Tu plan ya está generado. En cuanto corras tu primera serie de miércoles, mete el tiempo y empezaré a ajustar el plan a tu nivel real.';
+  } else if(tr.trend === 'fast'){
+    msg = '<strong>Vas por delante del plan</strong> — un '+(tr.avgDelta*100).toFixed(1)+'% mejor de lo previsto en tus últimas series. He endurecido los objetivos que quedan para seguir exigiéndote lo justo. Sigue así.';
+  } else if(tr.trend === 'slow'){
+    msg = 'Vas algo más justo de lo previsto (un '+(Math.abs(tr.avgDelta)*100).toFixed(1)+'% por debajo). No pasa nada: he suavizado los próximos objetivos para que el plan siga siendo realista. Lo importante es la constancia, no un mal día.';
+  } else {
+    msg = 'Vas <strong>en línea con el plan</strong>, '+ACTIVE_PROFILE+'. '+logged+' de '+rw.length+' series de miércoles registradas. Sigue así de constante.';
+  }
+  if(next){
+    var bp = next.adjustedBasePace !== null ? next.adjustedBasePace : next.plannedBasePaceOriginal;
+    var mult = resolveSessionMultiplier(next);
+    var rt = bp * mult * (next.dist/1000);
+    msg += ' Tu próxima sesión clave: <strong>'+fmtDate(next.date)+'</strong>, objetivo '+secToTime(rt)+' en '+next.dist+' m.';
+  }
+  msgEl.innerHTML = msg;
+}
+
+function renderScoreboard(){
+  var sb = document.getElementById('scoreboard');
+  updateProgressBar();
+  if(!PLAN || PLAN.error){
+    sb.innerHTML = '<div class="stat-chip"><div class="label">ESTADO</div><div class="value" style="font-size:14px;">Esperando test del 1 de julio</div></div>';
+    return;
+  }
+  var rw = PLAN.weeks.filter(function(w){ return w.recalc && w.raceIdx !== null; });
+  var next = null;
+  for(var i=0; i<rw.length; i++){
+    if(skipped[rw[i].key]) continue;
+    if(actuals[rw[i].key] === undefined || actuals[rw[i].key] === null){ next = rw[i]; break; }
+  }
+  var nextHtml = 'Plan completo';
+  if(next){
+    var bp = next.adjustedBasePace !== null ? next.adjustedBasePace : next.plannedBasePaceOriginal;
+    var mult = resolveSessionMultiplier(next);
+    var sp = bp * mult;
+    var rt = sp * (next.dist/1000);
+    nextHtml = fmtDate(next.date)+': '+secToTime(rt)+'<small>/'+next.dist+'m</small>';
+  }
+  var logged = Object.values(actuals).filter(function(v){ return v!==null && v!==undefined; }).length;
+  var tr = calcTrend(), trendHtml = '';
+  if(tr.trend === 'fast'){
+    trendHtml = '<div class="stat-chip"><div class="label">TENDENCIA</div><div class="value" style="color:var(--ok);font-size:22px;">↑</div><div style="font-size:9.5px;color:var(--ok);margin-top:2px;">+'+(tr.avgDelta*100).toFixed(1)+'% sobre el plan</div></div>';
+  } else if(tr.trend === 'slow'){
+    trendHtml = '<div class="stat-chip"><div class="label">TENDENCIA</div><div class="value" style="color:var(--bad);font-size:22px;">↓</div><div style="font-size:9.5px;color:var(--bad);margin-top:2px;">-'+(Math.abs(tr.avgDelta)*100).toFixed(1)+'% bajo el plan</div></div>';
+  } else if(logged > 0){
+    trendHtml = '<div class="stat-chip"><div class="label">TENDENCIA</div><div class="value" style="color:var(--gold);font-size:22px;">→</div><div style="font-size:9.5px;color:rgba(245,242,234,.5);margin-top:2px;">En línea con el plan</div></div>';
+  }
+  sb.innerHTML =
+    '<div class="stat-chip"><div class="label">TEST 1 JULIO</div><div class="value">'+paceToTime(PLAN.baseline)+'<small>/km</small></div></div>'+
+    '<div class="stat-chip"><div class="label">OBJETIVO FINAL</div><div class="value">'+paceToTime(PLAN.targetPace)+'<small>/km</small></div>'+
+      (Math.abs(PLAN.goalAdjust||0) > 0.005 ?
+        '<div style="font-size:9.5px;margin-top:3px;color:'+(PLAN.goalAdjust>0?'var(--ok)':'var(--gold-bright)')+';">'+
+          (PLAN.goalAdjust>0?'↑ endurecido':'↓ suavizado')+' ('+(PLAN.goalAdjust>0?'+':'')+(PLAN.goalAdjust*100).toFixed(1)+'%)'+
+        '</div>' : '')+
+    '</div>'+
+    '<div class="stat-chip"><div class="label">PRÓXIMA SESIÓN</div><div class="value" style="font-size:15px;">'+nextHtml+'</div></div>'+
+    '<div class="stat-chip"><div class="label">SESIONES REGISTRADAS</div><div class="value">'+logged+'<small>/'+rw.length+'</small></div></div>'+
+    trendHtml;
+}
+
+function calcTrend(){
+  if(!PLAN) return {count:0, avgDelta:0, trend:'ontrack'};
+  var rw = PLAN.weeks.filter(function(w){ return w.recalc && w.raceIdx !== null; });
+  var deltas = [];
+  rw.forEach(function(w){
+    if(actuals[w.key] !== undefined && actuals[w.key] !== null){
+      var mult = resolveSessionMultiplier(w);
+      var pt = w.plannedBasePaceOriginal * mult * (w.dist/1000);
+      deltas.push((pt - actuals[w.key]) / pt);
+    }
+  });
+  if(!deltas.length) return {count:0, avgDelta:0, trend:'ontrack'};
+  var avg = deltas.reduce(function(a,b){ return a+b; },0) / deltas.length;
+  return {count: deltas.length, avgDelta: avg, trend: avg>0.025?'fast': avg<-0.025?'slow':'ontrack'};
+}
+
+function renderSummary(){
+  var c = document.getElementById('summaryContainer');
+  if(!PLAN || PLAN.error){ c.innerHTML=''; return; }
+  var fs = scoreFromTime(PLAN.targetPace);
+  c.innerHTML = '<div class="summary-grid">'+
+    '<div class="summary-tile"><span class="big">'+PLAN.N+'</span><span class="lbl">semanas hasta el examen</span></div>'+
+    '<div class="summary-tile"><span class="big">'+(PLAN.improvementFactor*100).toFixed(1)+'%</span><span class="lbl">mejora sobre tu test</span></div>'+
+    '<div class="summary-tile"><span class="big">'+fs+'/10</span><span class="lbl">nota orientativa objetivo</span></div>'+
+    '<div class="summary-tile"><span class="big">'+PLAN.p1+'·'+PLAN.p2+'·'+PLAN.p3+'·'+PLAN.taperLen+'</span><span class="lbl">semanas por fase</span></div>'+
+    (PLAN.isEmilio ? '<div class="summary-tile"><span class="big">3 ses/sem</span><span class="lbl">Lun·Mié·Vie — Emilio</span></div>' : '')+
+    '</div>'+
+    renderAnchorBadge()+
+    renderCurveBadge();
+}
+
+function renderAnchorBadge(){
+  if(!PLAN.anchorRecalibrated) return '';
+  var fe = PLAN.f1Estimate;
+  return '<div class="curve-badge anchor-on">'+
+    '<span class="curve-dot"></span>'+
+    '<span><strong>Ancla de partida ajustada con tus series de F1</strong> — tu test dio '+paceToTime(PLAN.baseline)+'/km, pero tus '+fe.n+
+    ' series de miércoles de Fase 1 ya corridas apuntan a '+paceToTime(fe.value)+'/km de nivel real. '+
+    'Como la diferencia es relevante, los objetivos de todo el plan usan una media ponderada ('+paceToTime(PLAN.anchorBaseline)+'/km) en vez del test en crudo — '+
+    'el test original se sigue mostrando arriba tal cual, esto solo afina el cálculo interno. Se irá refinando según registres más series de F1.</span>'+
+    '</div>';
+}
+
+function renderCurveBadge(){
+  var pc = PLAN.personalCurve;
+  if(pc){
+    var csKmh = (pc.CS*3.6).toFixed(2);
+    return '<div class="curve-badge curve-on">'+
+      '<span class="curve-dot"></span>'+
+      '<span><strong>Perfil personal activo</strong> — calculado con '+pc.n+' series reales en '+pc.distinctCount+' distancias distintas. '+
+      'Velocidad crítica estimada: '+csKmh+' km/h. La proporción 200/400/800/1000 m ya no usa la tabla genérica, usa tu propia curva.</span>'+
+      '</div>';
+  }
+  var have = PLAN.curvePointsCount, haveD = PLAN.curveDistinctCount;
+  var needP = Math.max(0, CURVE_MIN_POINTS-have), needD = Math.max(0, CURVE_MIN_DISTINCT-haveD);
+  var faltan = [];
+  if(needD>0) faltan.push(haveD+'/'+CURVE_MIN_DISTINCT+' distancias distintas');
+  if(needP>0) faltan.push(have+'/'+CURVE_MIN_POINTS+' series registradas');
+  return '<div class="curve-badge curve-off">'+
+    '<span class="curve-dot"></span>'+
+    '<span><strong>Perfil genérico (temporal)</strong> — de momento usa la misma proporción para todos. '+
+    'Se activará solo cuando registres tiempos reales de al menos '+CURVE_MIN_DISTINCT+' distancias distintas de Miércoles ('+faltan.join(' · ')+').</span>'+
+    '</div>';
+}
+
+function renderFases(){
+  var container = document.getElementById('fasesContainer');
+  container.innerHTML = '';
+  if(!PLAN || PLAN.error) return;
+  [1,2,3,4].forEach(function(faseNum){
+    var fw = PLAN.weeks.filter(function(w){ return w.fase === faseNum; });
+    if(!fw.length) return;
+    var info = faseInfo[faseNum];
+    var doneCount = fw.filter(function(w){ return (actuals[w.key]!==undefined&&actuals[w.key]!==null) || skipped[w.key]; }).length;
+    var block = document.createElement('div'); block.className = 'fase-block';
+    var stc = faseNum !== 4;
+    block.innerHTML =
+      '<div class="fase-head"><div class="fase-num">F'+faseNum+'</div>'+
+      '<div><h2>'+info.nombre+' · '+fw.length+' misión'+(fw.length>1?'es':'')+'</h2><p class="fase-desc">'+info.desc+'</p></div>'+
+      '<div class="fase-progress-mini">'+doneCount+'/'+fw.length+'</div></div>'+
+      '<div class="mission-rail"></div>';
+    container.appendChild(block);
+    var rail = block.querySelector('.mission-rail');
+    fw.forEach(function(w){
+      var card = document.createElement('div'); card.className = 'mcard';
+      var iF1 = (w.fase === 1 && w.day === 'Miércoles');
+      var isSk = !!skipped[w.key];
+      var ha = actuals[w.key]!==undefined && actuals[w.key]!==null;
+      var bodyHtml = '';
+      var statusHtml = '';
+      var stateClass = 'mc-pending';
+
+      if(w.recalc && w.raceIdx !== null){
+        var bp = w.adjustedBasePace !== null ? w.adjustedBasePace : w.plannedBasePaceOriginal;
+        var mult = resolveSessionMultiplier(w);
+        var sp = bp * mult;
+        var rt = sp * (w.dist/1000);
+        var sc = scoreFromTime(bp);
+        var orig_sp = w.plannedBasePaceOriginal * mult;
+        var orig_rt = orig_sp * (w.dist/1000);
+        var rb = '';
+        if(ha){
+          var diffReal = actuals[w.key] - orig_rt;
+          if(Math.abs(diffReal) > 0.3){
+            rb = diffReal < 0 ?
+              '<span class="recalib-badge recalib-up">▲ Mejor</span>' :
+              '<span class="recalib-badge recalib-down">▼ Peor</span>';
+          }
+        }
+        var lbl = intensityLabel(w.dist, iF1);
+        if(w.extraMult !== undefined){
+          lbl = w.extraMult < 1 ? '<span class="int-tag int-faster">↑ Velocidad</span>' : w.extraMult > 1 ? '<span class="int-tag int-easier">↓ Resistencia</span>' : '<span class="int-tag int-examen">= Ritmo</span>';
+        }
+        if(isSk){
+          statusHtml = '<span class="mc-status status-skipped">— No realizada</span>';
+          stateClass = 'mc-skipped';
+        } else if(ha){
+          var rsp = actuals[w.key]/(w.dist/1000);
+          var psp2 = bp * mult;
+          if(rsp < psp2*0.995){ statusHtml = '<span class="mc-status status-done-fast">✓ Mejor que el plan</span>'; stateClass='mc-done-fast'; }
+          else if(rsp > psp2*1.05){ statusHtml = '<span class="mc-status status-done-slow">✓ Por encima objetivo</span>'; stateClass='mc-done-slow'; }
+          else { statusHtml = '<span class="mc-status status-info">✓ En el plan</span>'; stateClass='mc-done'; }
+        } else {
+          statusHtml = '<span class="mc-status status-pending">Pendiente</span>';
+          stateClass = 'mc-pending';
+        }
+        bodyHtml =
+          '<div class="mc-target">'+secToTime(rt)+' <small>/'+w.dist+'m</small></div>'+
+          '<div class="mc-meta">'+lbl+rb+'<span class="score-chip '+scoreClass(sc)+'">'+sc+'/10</span></div>'+
+          '<div style="font-size:10.5px;color:rgba(245,242,234,.5);margin-top:6px;">Ritmo sesión: '+paceToTime(sp)+'/km · Equiv. 1000 m: '+paceToTime(bp)+'/km</div>'+
+          '<div class="mc-input-row"><input type="text" class="time-input" placeholder="mm:ss" data-key="'+w.key+'" value="'+(ha?secToTime(actuals[w.key]):'')+'"'+(isSk?' disabled':'')+'>'+
+          '<button type="button" class="btn-skip'+(isSk?' active':'')+'" data-key="'+w.key+'">'+(isSk?'↺':'Saltar')+'</button></div>'+
+          statusHtml;
+      } else {
+        var regStatus = ha;
+        stateClass = regStatus ? 'mc-info' : 'mc-pending';
+        bodyHtml = '<div style="font-size:11.5px;color:rgba(245,242,234,.6);margin-top:4px;">'+w.desc+'</div>';
+        if(stc){
+          bodyHtml += '<div class="mc-input-row"><input type="text" class="time-input" placeholder="mm:ss" data-key="'+w.key+'" value="'+(regStatus?secToTime(actuals[w.key]):'')+'"></div>';
+        }
+        bodyHtml += (regStatus?'<span class="mc-status status-info">Registrado</span>':'<span class="mc-status status-pending">Informativo</span>');
+      }
+
+      var tips = getTips(w);
+      var tipId = 'tip-'+w.key;
+      card.className = 'mcard '+stateClass;
+      card.innerHTML =
+        '<div class="mc-top"><div><div class="mc-date">'+fmtDate(w.date)+'</div><div class="mc-title">'+w.titulo+'</div>'+(w.recalc&&w.raceIdx!==null?'<div class="mc-desc">'+w.desc+'</div>':'')+'</div></div>'+
+        bodyHtml+
+        '<button class="mc-brief-toggle" onclick="toggleTip(\''+tipId+'\',this)"><span class="arrow">▶</span> '+tips.titulo+'</button>'+
+        '<div class="mc-brief-body" id="'+tipId+'"><ul>'+tips.items.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul></div>';
+      rail.appendChild(card);
+    });
+  });
+
+  container.querySelectorAll('.time-input').forEach(function(inp){
+    inp.addEventListener('change', function(e){
+      var key = e.target.dataset.key;
+      var val = parseTime(e.target.value);
+      actuals[key] = val;
+      if(val !== null) delete skipped[key];
+      saveToLS();
+      if(PLAN && !PLAN.error) PLAN = buildPlan(ACTIVE_PROFILE);
+      renderAll();
+      showToast(val !== null ? 'Tiempo registrado y plan recalculado' : 'Tiempo eliminado', 'success');
+    });
+  });
+
+  container.querySelectorAll('.btn-skip').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      var key = btn.dataset.key;
+      if(skipped[key]){
+        delete skipped[key];
+      } else {
+        skipped[key] = true;
+        delete actuals[key];
+      }
+      saveToLS();
+      if(PLAN && !PLAN.error) PLAN = buildPlan(ACTIVE_PROFILE);
+      renderAll();
+      showToast(skipped[key] ? 'Sesión marcada como no realizada' : 'Sesión restaurada', 'info');
+    });
+  });
+  
+  initInteractions();
+}
+
+function toggleTip(id,btn){
+  var body = document.getElementById(id);
+  if(!body) return;
+  var vis = body.classList.contains('visible');
+  body.classList.toggle('visible', !vis);
+  btn.classList.toggle('open', !vis);
+}
+
+function renderAll(){
+  renderScoreboard(); renderSummary(); renderFases(); renderEvolutionChart(); renderCoach();
+  var hp = PLAN && !PLAN.error;
+  document.getElementById('waitingMsg').style.display = hp ? 'none' : 'block';
+  document.getElementById('controlsBar').style.display = hp ? 'flex' : 'none';
+  document.getElementById('intensityLegend').style.display = hp ? 'flex' : 'none';
+}
+
+/* ==================== GRÁFICA DE EVOLUCIÓN ==================== */
+var evoChart = null;
+var evoMode = 'all';
+
+function setEvoMode(mode){
+  evoMode = mode;
+  document.getElementById('evoToggleAll').classList.toggle('active', mode==='all');
+  document.getElementById('evoToggleReg').classList.toggle('active', mode==='registered');
+  renderEvolutionChart();
+}
+
+function evoLinRegression(points){
+  var n = points.length;
+  if(n < 2) return null;
+  var sx=0, sy=0, sxy=0, sxx=0;
+  points.forEach(function(p){ sx+=p.x; sy+=p.y; sxy+=p.x*p.y; sxx+=p.x*p.x; });
+  var denom = (n*sxx - sx*sx);
+  if(denom === 0) return null;
+  var slope = (n*sxy - sx*sy) / denom;
+  var intercept = (sy - slope*sx) / n;
+  return {slope:slope, intercept:intercept};
+}
+
+function actualBasePace(w){
+  if(actuals[w.key]===undefined || actuals[w.key]===null) return null;
+  var pace = actuals[w.key] / (w.dist/1000);
+  return pace / resolveSessionMultiplier(w);
+}
+
+// Plugin for Glow Effect on Chart Lines
+const glowPlugin = {
+  id: 'glow',
+  beforeDatasetDraw(chart, args) {
+    const { ctx } = chart;
+    const dataset = args.meta.dataset;
+    if (dataset.type === 'line') {
+      ctx.save();
+      ctx.shadowColor = dataset.options.borderColor;
+      ctx.shadowBlur = 12;
+    }
+  },
+  afterDatasetDraw(chart, args) {
+    chart.ctx.restore();
+  }
+};
+
+function renderEvolutionChart(){
+  var outer = document.getElementById('evoChartOuter');
+  if(!PLAN || PLAN.error){ outer.style.display='none'; if(evoChart){evoChart.destroy();evoChart=null;} return; }
+  outer.style.display='block';
+
+  var sessions = PLAN.weeks.filter(function(w){
+    return w.recalc && w.raceIdx !== null && w.dist && w.day === 'Miércoles';
+  }).slice().sort(function(a,b){ return a.date - b.date; });
+
+  var registeredCount = sessions.filter(function(w){ return actualBasePace(w) !== null; }).length;
+
+  var wrap = document.getElementById('evoCanvasWrap');
+  var emptyEl = document.getElementById('evoEmpty');
+  var legendEl = document.getElementById('evoLegend');
+
+  if(registeredCount < 3){
+    wrap.style.display = 'none';
+    emptyEl.style.display = 'flex';
+    legendEl.innerHTML = '';
+    if(evoChart){ evoChart.destroy(); evoChart = null; }
+    return;
+  }
+  wrap.style.display = 'block';
+  emptyEl.style.display = 'none';
+
+  var visSessions = evoMode === 'registered' ?
+    sessions.filter(function(w){ return actualBasePace(w) !== null; }) :
+    sessions;
+
+  var labels = visSessions.map(function(w){ return fmtDate(w.date); });
+  var plannedData = visSessions.map(function(w){ return w.adjustedBasePace !== null ? w.adjustedBasePace : w.plannedBasePaceOriginal; });
+  var realData = visSessions.map(function(w){ return actualBasePace(w); });
+  var meta = visSessions.map(function(w){
+    return {
+      dateStr: fmtDate(w.date),
+      titulo: w.titulo,
+      dist: w.dist,
+      reps: w.reps,
+      skipped: !!skipped[w.key]
+    };
+  });
+
+  var realPointsAll = sessions.filter(function(w){ return actualBasePace(w) !== null; })
+    .map(function(w){ return {x: w.date.getTime(), y: actualBasePace(w)}; });
+  var reg = evoLinRegression(realPointsAll);
+
+  var examDate = new Date(CONFIG.examDate+'T00:00:00');
+  var examLabel = fmtDate(examDate);
+  var chartLabels = labels.slice();
+  var trendData = new Array(chartLabels.length).fill(null);
+  var showTrend = false;
+  var examTargetVal = PLAN.targetPace;
+
+  if(reg){
+    showTrend = true;
+    if(chartLabels[chartLabels.length-1] !== examLabel){
+      chartLabels = chartLabels.concat([examLabel]);
+      plannedData = plannedData.concat([examTargetVal]);
+      realData = realData.concat([null]);
+      meta = meta.concat([{dateStr:examLabel, titulo:'Examen', dist:1000, reps:1, skipped:false}]);
+      trendData = trendData.concat([null]);
+    }
+    var firstRealIdx = -1;
+    for(var i=0;i<visSessions.length;i++){
+      if(actualBasePace(visSessions[i]) !== null){ firstRealIdx = i; break; }
+    }
+    if(firstRealIdx === -1) firstRealIdx = 0;
+    for(var i2=firstRealIdx; i2<chartLabels.length; i2++){
+      var d = (i2 < visSessions.length) ? visSessions[i2].date : examDate;
+      trendData[i2] = reg.slope * d.getTime() + reg.intercept;
+    }
+  }
+
+  legendEl.innerHTML =
+    '<span><span class="evo-dot" style="color:var(--gold-bright);background:var(--gold-bright);"></span>Real (equiv. 1000 m)</span>'+
+    '<span><span class="evo-dot" style="color:var(--granate-light);background:var(--granate-light);"></span>Objetivo (equiv. 1000 m)</span>'+
+    (showTrend ? '<span><span class="evo-dot" style="color:var(--cream);background:var(--cream);"></span>Proyección</span>' : '')+
+    '<span><span class="evo-dot" style="color:#7fd396;background:#7fd396;"></span>Examen: '+secToTime(examTargetVal)+'</span>'+
+    '<span style="opacity:0.55;">↓ Cuanto más abajo, más rápido</span>';
+
+  var ctx = document.getElementById('evolutionChart').getContext('2d');
+  var gradient = ctx.createLinearGradient(0,0,0,320);
+  gradient.addColorStop(0, 'rgba(240,203,94,0.4)');
+  gradient.addColorStop(1, 'rgba(240,203,94,0.0)');
+
+  var examIdx = chartLabels.indexOf(examLabel);
+
+  var config = {
+    type:'line',
+    data:{
+      labels: chartLabels,
+      datasets:[
+        {
+          label:'Real (equiv. 1000 m)',
+          data: realData,
+          borderColor: '#F0CB5E',
+          backgroundColor: gradient,
+          fill: true,
+          tension:0.35,
+          spanGaps:true,
+          pointRadius:5,
+          pointHoverRadius:8,
+          pointBackgroundColor:'#F0CB5E',
+          pointBorderColor:'rgba(255,255,255,0.9)',
+          pointBorderWidth:1.5,
+          pointHoverBorderWidth:2,
+          borderWidth:3,
+          order:1
+        },
+        {
+          label:'Objetivo (equiv. 1000 m)',
+          data: plannedData,
+          borderColor:'#C0404F',
+          backgroundColor:'rgba(192,64,79,0.08)',
+          fill:false,
+          borderDash:[6,4],
+          tension:0.35,
+          pointRadius:3,
+          pointHoverRadius:6,
+          pointBackgroundColor:'#C0404F',
+          borderWidth:2,
+          order:2
+        },
+        {
+          label:'Proyección',
+          data: trendData,
+          borderColor:'rgba(245,242,234,0.85)',
+          backgroundColor:'transparent',
+          fill:false,
+          borderDash:[2,3],
+          tension:0,
+          pointRadius:0,
+          pointHoverRadius:0,
+          borderWidth:2,
+          spanGaps:true,
+          order:3,
+          hidden: !showTrend
+        }
+      ]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      animation:{ duration:1200, easing:'easeOutQuart' },
+      interaction:{ mode:'index', intersect:false },
+      scales:{
+        x:{
+          ticks:{ color:'rgba(255,255,255,0.7)', font:{family:'JetBrains Mono', size:10}, maxRotation:0, autoSkip:true },
+          grid:{ color:'rgba(255,255,255,0.05)', drawBorder: false }
+        },
+        y:{
+          reverse:false,
+          title:{ display:true, text:'Tiempo equivalente 1000 m (mm:ss) — menos es más rápido', color:'rgba(255,255,255,0.55)', font:{family:'Inter', size:10.5} },
+          ticks:{
+            color:'rgba(255,255,255,0.7)', font:{family:'JetBrains Mono', size:10},
+            callback:function(v){ return secToTime(v); }
+          },
+          grid:{ color:'rgba(255,255,255,0.05)', drawBorder: false }
+        }
+      },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          enabled: false,
+          external: function(context) {
+            var tooltip = context.tooltip;
+            var el = document.getElementById('chartTooltip');
+            if (tooltip.opacity === 0) { el.classList.remove('show'); return; }
+            
+            var idx = tooltip.dataPoints[0].dataIndex;
+            var m = meta[idx];
+            var r = realData[idx], p = plannedData[idx];
+            
+            var html = '<div class="tt-title">' + (m.dateStr + ' · ' + m.titulo + (m.reps>1?(' ('+m.reps+'×'+m.dist+'m)'):'')) + '</div>';
+            if (r !== null && r !== undefined) html += '<div class="tt-row"><span class="tt-label"><span class="evo-dot" style="color:#F0CB5E;background:#F0CB5E;"></span>Real</span><span class="tt-val">'+secToTime(r)+'</span></div>';
+            if (p !== null && p !== undefined) html += '<div class="tt-row"><span class="tt-label"><span class="evo-dot" style="color:#C0404F;background:#C0404F;"></span>Objetivo</span><span class="tt-val">'+secToTime(p)+'</span></div>';
+            
+            if(r!==null && r!==undefined && p!==null && p!==undefined){
+              var diff = r - p;
+              var sign = diff <= 0 ? '▼ ' : '▲ ';
+              var color = diff <= 0 ? 'var(--ok)' : 'var(--bad)';
+              html += '<div class="tt-diff" style="color:'+color+';">'+sign+'Diferencia: '+(diff>=0?'+':'')+diff.toFixed(1)+'s ('+(diff<=0?'más rápido':'más lento')+')</div>';
+            }
+            
+            el.innerHTML = html;
+            var pos = context.chart.canvas.getBoundingClientRect();
+            el.style.left = (pos.left + tooltip.caretX + 15) + 'px';
+            el.style.top = (pos.top + tooltip.caretY - 10) + 'px';
+            el.classList.add('show');
+          }
+        },
+        annotation: examIdx>-1 ? {
+          annotations:{
+            examLine:{
+              type:'line', xMin:examIdx, xMax:examIdx,
+              borderColor:'rgba(127,211,150,0.7)', borderWidth:2, borderDash:[4,4],
+              label:{
+                display:true, content:'Examen · '+secToTime(examTargetVal),
+                position:'start', color:'#7fd396', font:{family:'JetBrains Mono', size:10, weight:'bold'},
+                backgroundColor:'rgba(11,31,61,0.9)', borderColor: 'rgba(127,211,150,0.5)', borderWidth: 1, borderRadius: 4, padding: 4
+              }
+            }
+          }
+        } : {}
+      }
+    },
+    plugins: [glowPlugin]
+  };
+
+  if(evoChart){ evoChart.destroy(); }
+  evoChart = new Chart(ctx, config);
+}
+
+/* ==================== ENTRADA DE TIEMPO BASE (SPINNER) ==================== */
+function updateBaselineDisplay(){
+  var mEl = document.getElementById('baselineMin'), sEl = document.getElementById('baselineSec');
+  var m = parseInt(mEl.value) || 3;
+  var s = parseInt(sEl.value) || 0;
+  m = Math.max(2, Math.min(5, m)); s = Math.max(0, Math.min(59, s));
+  mEl.value = m; sEl.value = s;
+  document.getElementById('baselineTimeDisplay').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+}
+function adjustBaselineMin(delta){
+  var el = document.getElementById('baselineMin');
+  var val = (parseInt(el.value) || 3) + delta;
+  val = Math.max(2, Math.min(5, val));
+  el.value = val;
+  updateBaselineDisplay();
+}
+function adjustBaselineSec(delta){
+  var el = document.getElementById('baselineSec');
+  var val = (parseInt(el.value) || 0) + delta;
+  if(val < 0) val = 59;
+  if(val > 59) val = 0;
+  el.value = val;
+  updateBaselineDisplay();
+}
+function setBaselineQuick(seconds){
+  document.getElementById('baselineMin').value = Math.floor(seconds/60);
+  document.getElementById('baselineSec').value = seconds%60;
+  updateBaselineDisplay();
+}
+function setBaselineFromSeconds(sec){
+  if(sec===null || sec===undefined || isNaN(sec)) return;
+  document.getElementById('baselineMin').value = Math.floor(sec/60);
+  document.getElementById('baselineSec').value = Math.round(sec%60);
+  updateBaselineDisplay();
+}
+function getBaselineSeconds(){
+  var m = parseInt(document.getElementById('baselineMin').value) || 0;
+  var s = parseInt(document.getElementById('baselineSec').value) || 0;
+  return m*60+s;
+}
+
+/* ==================== EVENTOS ==================== */
+document.getElementById('btnGenerate').addEventListener('click', function(){
+  var sv = document.getElementById('startDate').value;
+  var ev = document.getElementById('examDate').value;
+  var bv = getBaselineSeconds();
+  var msg = document.getElementById('genMsg');
+  if(!bv || bv < 60){ showToast('Ajusta el tiempo de tu test con los spinners antes de generar el plan.', 'error'); return; }
+  if(!sv || !ev){ showToast('Faltan fechas. Revisa la configuración.', 'error'); return; }
+  CONFIG = {startDate:sv, examDate:ev, baselineTime:bv};
+  TEAM_CONFIG = {startDate:sv, examDate:ev};
+  teamSave(TEAM_CONFIG);
+  PLAN = buildPlan(ACTIVE_PROFILE);
+  if(PLAN.error){ showToast(PLAN.error, 'error'); renderAll(); return; }
+  showToast('Plan generado y sincronizado en la nube ✓', 'success');
+  saveToLS();
+  renderAll();
+});
+
+document.getElementById('btnSave').addEventListener('click', function(){
+  var data = JSON.stringify({CONFIG:CONFIG, actuals:actuals, skipped:skipped}, null, 2);
+  var blob = new Blob([data], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'progreso_pista_'+(ACTIVE_PROFILE||'perfil').toLowerCase()+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  showToast('Progreso exportado correctamente', 'success');
+});
+
+document.getElementById('btnLoadTrigger').addEventListener('click', function(){ document.getElementById('fileLoader').click(); });
+document.getElementById('fileLoader').addEventListener('change', function(e){
+  var file = e.target.files[0]; if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    try{
+      var p = JSON.parse(ev.target.result);
+      CONFIG = p.CONFIG || CONFIG;
+      actuals = p.actuals || {};
+      skipped = p.skipped || {};
+      if(CONFIG.startDate) document.getElementById('startDate').value = CONFIG.startDate;
+      if(CONFIG.examDate) document.getElementById('examDate').value = CONFIG.examDate;
+      if(CONFIG.baselineTime) setBaselineFromSeconds(CONFIG.baselineTime);
+      PLAN = (CONFIG.startDate && CONFIG.examDate && CONFIG.baselineTime) ? buildPlan(ACTIVE_PROFILE) : null;
+      saveToLS(); renderAll();
+      showToast('Progreso importado correctamente', 'success');
+    } catch(err){ showToast('Archivo no válido. Asegúrate de subir el JSON correcto.', 'error'); }
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById('btnReset').addEventListener('click', function(){
+  if(confirm('¿Borrar todos los tiempos registrados y las sesiones marcadas como "no realizada" de '+(ACTIVE_PROFILE||'este perfil')+'? Esta acción no se puede deshacer.')){
+    actuals = {};
+    skipped = {};
+    saveToLS();
+    renderAll();
+    showToast('Tiempos borrados. Plan reiniciado a la base.', 'info');
+  }
+});
+
+/* ==================== INICIO ==================== */
+updateBaselineDisplay();
+updateOverlayStatus();
+// Init interactions for elements present at load (like profile cards)
+initInteractions();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oposición CNP – Tema 7 | MacLaren's Study Bar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Permanent+Marker&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   PALETA MacLaren's PUB — oscuro, sucio, neón, años 2000
+   ============================================================ */
+:root {
+  --neon:       #FFD700;
+  --neon-glow:  #FFA500;
+  --pub-dark:   #0D0A07;
+  --wood-deep:  #1A0E05;
+  --wood-mid:   #2C1608;
+  --wood-light: #6B3A1F;
+  --amber:      #C8730A;
+  --cream:      #F0DFC0;
+  --green-ok:   #39D353;
+  --red-fail:   #FF4444;
+  --blue-info:  #5B9BD5;
+  --chalk:      #E8E0D4;
+  --sticker-y:  #F9E84B;
+  --sticker-b:  #4B9CF9;
+  --tape:       rgba(255,220,100,0.25);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ---- FONDO: tablero de madera con veta ---- */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--pub-dark);
+  background-image:
+    repeating-linear-gradient(
+      93deg,
+      transparent 0px, transparent 18px,
+      rgba(255,255,255,.012) 18px, rgba(255,255,255,.012) 19px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px, transparent 40px,
+      rgba(0,0,0,.3) 40px, rgba(0,0,0,.3) 41px
+    ),
+    radial-gradient(ellipse 120% 60% at 50% 0%, #2c1608 0%, #0d0a07 70%);
+  color: var(--chalk);
+  min-height: 100vh;
+}
+
+/* ============================================================
+   HEADER — cartel de neón del bar
+   ============================================================ */
+header {
+  position: relative;
+  background: linear-gradient(180deg, #000 0%, #0f0800 60%, #1a0e05 100%);
+  border-bottom: 4px solid #3a2000;
+  padding: 0 0 18px;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Tubo de neón decorativo superior */
+header::before {
+  content: '';
+  display: block;
+  height: 6px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--neon) 15%, #fff 20%, var(--neon) 25%,
+    var(--neon-glow) 50%,
+    var(--neon) 75%, #fff 80%, var(--neon) 85%,
+    transparent 100%
+  );
+  box-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon-glow);
+  margin-bottom: 18px;
+}
+
+/* Letrero del bar */
+.bar-sign {
+  display: inline-block;
+  position: relative;
+  margin: 0 auto 6px;
+}
+
+.bar-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 9vw, 76px);
+  letter-spacing: 6px;
+  color: var(--neon);
+  text-shadow:
+    0 0 8px #fff,
+    0 0 20px var(--neon),
+    0 0 50px var(--neon-glow),
+    0 0 80px var(--amber);
+  line-height: 1;
+  animation: flicker 8s infinite;
+}
+
+@keyframes flicker {
+  0%,100%  { opacity: 1; }
+  92%      { opacity: 1; }
+  93%      { opacity: .7; }
+  94%      { opacity: 1; }
+  96%      { opacity: .85; }
+  97%      { opacity: 1; }
+}
+
+.bar-subtitle {
+  font-family: 'Special Elite', serif;
+  font-size: clamp(12px, 2.5vw, 17px);
+  color: var(--amber);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* Post-it clavado en el cartel */
+.postit-header {
+  display: inline-block;
+  background: var(--sticker-y);
+  color: #1a1a00;
+  font-family: 'Permanent Marker', cursive;
+  font-size: clamp(13px, 2.8vw, 19px);
+  padding: 10px 20px 12px;
+  margin: 6px auto 10px;
+  transform: rotate(-1.5deg);
+  box-shadow: 3px 3px 0 rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.15);
+  position: relative;
+}
+.postit-header::before {
+  content: '';
+  position: absolute;
+  top: -10px; left: 50%; transform: translateX(-50%);
+  width: 40px; height: 14px;
+  background: rgba(255,220,100,.55);
+  border-radius: 2px;
+}
+
+.beer-row { font-size: 26px; letter-spacing: 8px; opacity: .75; margin-top: 4px; }
+
+/* ============================================================
+   BARRA DE CONTROLES — encimera de barra
+   ============================================================ */
+.controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 20px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px,
+      transparent 1px, transparent 6px
+    ),
+    linear-gradient(180deg, #1c1000 0%, #120900 100%);
+  border-bottom: 3px solid #3a2000;
+  box-shadow: inset 0 -4px 12px rgba(0,0,0,.6);
+}
+
+.btn {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 2px;
+  padding: 9px 22px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s;
+  position: relative;
+  top: 0;
+}
+.btn:active { top: 2px; }
+
+.btn-neon {
+  background: var(--neon);
+  color: #1a0e00;
+  box-shadow: 0 0 10px var(--neon-glow), 0 4px 0 #8a6400;
+}
+.btn-neon:hover { background: #fff5a0; box-shadow: 0 0 20px var(--neon), 0 4px 0 #8a6400; }
+
+.btn-chalk {
+  background: transparent;
+  color: var(--chalk);
+  border: 2px solid rgba(255,255,255,.25);
+  box-shadow: 0 3px 0 rgba(0,0,0,.5);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+}
+.btn-chalk:hover { border-color: var(--amber); color: var(--amber); }
+
+.music-btn {
+  background: rgba(255,215,0,.1);
+  border: 2px solid rgba(255,215,0,.4);
+  color: var(--neon);
+  border-radius: 50%;
+  width: 42px; height: 42px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.music-btn:hover { background: rgba(255,215,0,.25); box-shadow: 0 0 12px var(--neon); }
+
+#progress-text {
+  font-family: 'Special Elite', serif;
+  color: var(--amber);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   SCOREBOARD — pizarra de puntos del pub
+   ============================================================ */
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background: #0a0600;
+  border-bottom: 3px solid #2a1500;
+  padding: 0;
+  overflow: hidden;
+}
+
+.score-card {
+  flex: 1;
+  max-width: 140px;
+  padding: 12px 8px 10px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,.07);
+  position: relative;
+}
+.score-card:last-child { border-right: none; }
+
+/* efecto pizarra en cada score */
+.score-card::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(255,255,255,.05);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.score-label {
+  font-family: 'Special Elite', serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(232,224,212,.5);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.score-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  line-height: 1;
+  color: var(--chalk);
+}
+.score-val.green { color: var(--green-ok); text-shadow: 0 0 10px rgba(57,211,83,.4); }
+.score-val.red   { color: var(--red-fail); text-shadow: 0 0 10px rgba(255,68,68,.4); }
+.score-val.neon  { color: var(--neon); text-shadow: 0 0 12px var(--neon-glow); }
+
+/* ============================================================
+   BARRA DE PROGRESO — cerveza llenándose
+   ============================================================ */
+.progress-wrap {
+  height: 8px;
+  background: #050300;
+  border-bottom: 2px solid #2a1500;
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber) 0%, var(--neon) 100%);
+  box-shadow: 0 0 8px var(--neon-glow);
+  transition: width .5s cubic-bezier(.22,1,.36,1);
+}
+
+/* ============================================================
+   ÁREA PRINCIPAL
+   ============================================================ */
+main {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 28px 16px 80px;
+}
+
+/* ============================================================
+   SERVILLETA con la pregunta — inspirada en The Playbook
+   ============================================================ */
+.question-card {
+  position: relative;
+  background: #f5edd8;
+  color: #1a0e05;
+  border-radius: 3px;
+  padding: 32px 30px 26px;
+  margin-bottom: 20px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.15),
+    4px 4px 0 rgba(0,0,0,.3),
+    8px 8px 0 rgba(0,0,0,.15),
+    0 20px 60px rgba(0,0,0,.7);
+  /* textura servilleta */
+  background-image:
+    repeating-linear-gradient(
+      0deg, rgba(0,0,0,.04) 0px, rgba(0,0,0,.04) 1px, transparent 1px, transparent 24px
+    ),
+    repeating-linear-gradient(
+      90deg, rgba(0,0,0,.025) 0px, rgba(0,0,0,.025) 1px, transparent 1px, transparent 24px
+    );
+}
+
+/* Cinta adhesiva en la esquina */
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: -8px; left: 30px;
+  width: 80px; height: 22px;
+  background: var(--tape);
+  border: 1px solid rgba(255,200,50,.3);
+  transform: rotate(-1deg);
+  border-radius: 2px;
+}
+.question-card::after {
+  content: '';
+  position: absolute;
+  top: -6px; right: 50px;
+  width: 60px; height: 20px;
+  background: rgba(180,220,255,.2);
+  border: 1px solid rgba(180,220,255,.3);
+  transform: rotate(1.5deg);
+  border-radius: 2px;
+}
+
+.q-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Sello de categoría estilo estampilla */
+.q-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  background: var(--wood-mid);
+  color: var(--neon);
+  padding: 4px 14px;
+  border-radius: 2px;
+  border: 2px solid var(--amber);
+  box-shadow: 1px 1px 0 rgba(0,0,0,.4);
+}
+
+.q-cat {
+  font-family: 'Special Elite', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--wood-light);
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+.q-text {
+  font-family: 'Special Elite', serif;
+  font-size: clamp(15px, 2.6vw, 19px);
+  line-height: 1.6;
+  color: #1a0e05;
+  margin-bottom: 22px;
+}
+
+/* ============================================================
+   OPCIONES — como servilletas de bar con garabatos
+   ============================================================ */
+.options { display: flex; flex-direction: column; gap: 9px; }
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255,255,255,.55);
+  border: 2px solid rgba(100,60,20,.2);
+  border-radius: 3px;
+  padding: 13px 15px;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #1a0e05;
+  position: relative;
+  box-shadow: 2px 2px 0 rgba(0,0,0,.1);
+}
+
+.option:hover:not(.answered) {
+  background: #fffbe8;
+  border-color: var(--amber);
+  transform: translateX(4px) translateY(-1px);
+  box-shadow: 4px 4px 0 rgba(100,60,0,.2);
+}
+
+.option-letter {
+  min-width: 30px; height: 30px;
+  background: var(--wood-mid);
+  color: var(--neon);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--amber);
+  transition: all .15s;
+}
+
+.option:hover:not(.answered) .option-letter {
+  background: var(--amber);
+  color: #fff;
+}
+
+.option.answered { cursor: default; }
+.option.correct {
+  background: #d4f5dc !important;
+  border-color: var(--green-ok) !important;
+  color: #0a2e12;
+  box-shadow: 3px 3px 0 rgba(57,211,83,.25) !important;
+}
+.option.correct .option-letter { background: var(--green-ok); color: #fff; border-color: transparent; }
+.option.wrong {
+  background: #ffe0e0 !important;
+  border-color: var(--red-fail) !important;
+  color: #600;
+  opacity: .75;
+  text-decoration: line-through;
+}
+.option.wrong .option-letter { background: var(--red-fail); color: #fff; border-color: transparent; }
+.option.reveal {
+  background: #e8f5eb !important;
+  border-color: rgba(57,211,83,.6) !important;
+  box-shadow: 3px 3px 0 rgba(57,211,83,.15) !important;
+}
+
+/* ============================================================
+   FEEDBACK — post-it de respuesta
+   ============================================================ */
+.feedback {
+  display: none;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 3px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  position: relative;
+}
+.feedback.show { display: block; }
+
+.feedback.ok {
+  background: #e6ffe6;
+  border: 2px solid var(--green-ok);
+  color: #0a3a10;
+  box-shadow: 3px 3px 0 rgba(57,211,83,.2);
+}
+.feedback.ok::before {
+  content: 'LEGEN... wait for it...';
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--green-ok);
+  margin-bottom: 6px;
+}
+
+.feedback.fail {
+  background: #fff0f0;
+  border: 2px solid var(--red-fail);
+  color: #4a0000;
+  box-shadow: 3px 3px 0 rgba(255,68,68,.15);
+}
+.feedback.fail::before {
+  content: 'Suit DOWN. 📚';
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--red-fail);
+  margin-bottom: 6px;
+}
+
+/* ============================================================
+   BOTÓN SIGUIENTE — estilo sello de bar
+   ============================================================ */
+.btn-next {
+  display: none;
+  margin: 20px auto 0;
+  padding: 14px 40px;
+  background: var(--wood-deep);
+  color: var(--neon);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 4px;
+  border: 3px solid var(--amber);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 0 14px rgba(200,115,10,.3), 4px 4px 0 rgba(0,0,0,.5);
+  position: relative;
+  top: 0;
+}
+.btn-next:hover {
+  background: var(--wood-mid);
+  box-shadow: 0 0 24px var(--neon-glow), 4px 4px 0 rgba(0,0,0,.5);
+  color: #fff;
+}
+.btn-next:active { top: 3px; }
+.btn-next.show { display: block; }
+
+/* ============================================================
+   EXPLOSIVE LEGENDARY — overlay animado al acertar
+   ============================================================ */
+.legendary-flash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+}
+.legendary-flash.fire {
+  animation: legendflash .9s forwards;
+}
+@keyframes legendflash {
+  0%   { opacity: 0; transform: scale(.4); }
+  25%  { opacity: 1; transform: scale(1.1); }
+  60%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.2); }
+}
+.legendary-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 14vw, 120px);
+  letter-spacing: 6px;
+  color: var(--neon);
+  text-shadow:
+    0 0 20px #fff,
+    0 0 50px var(--neon),
+    0 0 100px var(--neon-glow),
+    0 0 160px var(--amber);
+  text-align: center;
+}
+
+/* ============================================================
+   PANTALLA FINAL — cartel de cierre del bar
+   ============================================================ */
+#final-screen {
+  display: none;
+  text-align: center;
+  padding: 40px 20px 60px;
+}
+#final-screen.show { display: block; }
+
+.final-card {
+  background: #f5edd8;
+  background-image:
+    repeating-linear-gradient(
+      0deg, rgba(0,0,0,.04) 0px, rgba(0,0,0,.04) 1px, transparent 1px, transparent 24px
+    );
+  border-radius: 4px;
+  max-width: 560px;
+  margin: 0 auto 28px;
+  padding: 40px 36px;
+  color: #1a0e05;
+  box-shadow: 8px 8px 0 rgba(0,0,0,.4), 0 30px 80px rgba(0,0,0,.6);
+  position: relative;
+}
+
+/* Sello "LEGENDARY" rotado en la tarjeta final */
+.final-stamp {
+  position: absolute;
+  top: 20px; right: 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 3px;
+  color: rgba(200,115,10,.4);
+  border: 4px solid rgba(200,115,10,.4);
+  padding: 4px 10px;
+  transform: rotate(12deg);
+  border-radius: 2px;
+}
+
+.final-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 8vw, 58px);
+  letter-spacing: 4px;
+  color: var(--wood-mid);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.final-pct-wrap {
+  margin: 16px 0;
+}
+
+.final-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 20vw, 130px);
+  color: var(--wood-mid);
+  line-height: 1;
+  text-shadow: 4px 4px 0 rgba(0,0,0,.1);
+}
+
+.final-subtitle {
+  font-family: 'Special Elite', serif;
+  font-size: 16px;
+  color: var(--wood-light);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.final-grade {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--wood-mid);
+  margin: 10px 0 24px;
+}
+
+/* Cita final estilo post-it */
+.quote-box {
+  background: var(--sticker-y);
+  border-radius: 2px;
+  padding: 18px 22px 20px;
+  max-width: 480px;
+  margin: 0 auto 28px;
+  box-shadow: 3px 3px 0 rgba(0,0,0,.3);
+  transform: rotate(-.8deg);
+  position: relative;
+}
+.quote-box::before {
+  content: '';
+  position: absolute;
+  top: -10px; left: 50%; transform: translateX(-50%);
+  width: 50px; height: 14px;
+  background: var(--tape);
+  border-radius: 2px;
+}
+.quote-box blockquote {
+  font-family: 'Permanent Marker', cursive;
+  font-size: clamp(14px, 3vw, 18px);
+  color: #1a1a00;
+  line-height: 1.5;
+  font-style: normal;
+}
+.quote-author {
+  font-family: 'Special Elite', serif;
+  font-size: 13px;
+  color: #4a3a00;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ============================================================
+   DECORACIONES LATERALES — chalk board doodles
+   ============================================================ */
+.doodle-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0;
+  background: rgba(0,0,0,.3);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  flex-wrap: wrap;
+}
+
+.chalk-badge {
+  font-family: 'Special Elite', serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: rgba(232,224,212,.5);
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid rgba(232,224,212,.15);
+  border-radius: 2px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 520px) {
+  .question-card { padding: 24px 16px 20px; }
+  .option { padding: 11px 12px; font-size: 13px; }
+  .score-card { padding: 10px 6px 8px; }
+  .score-val { font-size: 28px; }
+  .final-card { padding: 28px 20px; }
+}
+
+/* Racha especial */
+.streak-fire { animation: streakpulse 1s infinite; }
+@keyframes streakpulse {
+  0%,100% { text-shadow: 0 0 8px var(--neon-glow); }
+  50%      { text-shadow: 0 0 20px var(--neon), 0 0 40px var(--amber); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- FLASH LEGENDARY -->
+<div class="legendary-flash" id="legendary-flash">
+  <div class="legendary-text">LEGENDARY!</div>
+</div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header>
+  <div class="bar-sign">
+    <div class="bar-name">MacLaren's</div>
+  </div>
+  <div class="bar-subtitle">Study Bar · CNP Escala Básica</div>
+  <div class="postit-header">
+    📋 TEMA 7: Organigrama del Ministerio del Interior
+  </div>
+  <div class="beer-row">🍺 🏛️ 👮 🏛️ 🍺</div>
+</header>
+
+<!-- DOODLEBAR -->
+<div class="doodle-bar">
+  <span class="chalk-badge">🎩 Suit Up</span>
+  <span class="chalk-badge">☂️ Yellow Umbrella</span>
+  <span class="chalk-badge">📖 The Playbook</span>
+  <span class="chalk-badge">🎸 The Farhampton Inn</span>
+  <span class="chalk-badge">🍺 Round 2030</span>
+</div>
+
+<!-- ============================================================
+     CONTROLES
+     ============================================================ -->
+<div class="controls-bar">
+  <button class="btn btn-neon" onclick="restartQuiz()">🔄 REINICIAR</button>
+  <button class="btn btn-chalk" onclick="shuffleAndRestart()">🔀 ALEATORIZAR</button>
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Activar/desactivar música">🎵</button>
+  <span id="progress-text">Pregunta 1 / 55</span>
+</div>
+
+<!-- ============================================================
+     SCOREBOARD
+     ============================================================ -->
+<div class="scoreboard">
+  <div class="score-card">
+    <div class="score-label">✅ Aciertos</div>
+    <div class="score-val green" id="sc-ok">0</div>
+  </div>
+  <div class="score-card">
+    <div class="score-label">❌ Fallos</div>
+    <div class="score-val red" id="sc-fail">0</div>
+  </div>
+  <div class="score-card">
+    <div class="score-label">📊 % Éxito</div>
+    <div class="score-val neon" id="sc-pct">—</div>
+  </div>
+  <div class="score-card">
+    <div class="score-label">🔥 Racha</div>
+    <div class="score-val" id="sc-streak">0</div>
+  </div>
+</div>
+
+<!-- BARRA PROGRESO -->
+<div class="progress-wrap">
+  <div class="progress-fill" id="prog-bar" style="width:0%"></div>
+</div>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<main>
+  <div id="quiz-area">
+    <div class="question-card" id="q-card">
+      <div class="q-meta">
+        <span class="q-num" id="q-num-badge">P. 1</span>
+        <span class="q-cat" id="q-cat">—</span>
+      </div>
+      <div class="q-text" id="q-text">Cargando pregunta…</div>
+      <div class="options" id="options-container"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">SIGUIENTE PREGUNTA →</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA FINAL -->
+  <div id="final-screen">
+    <div class="final-card">
+      <div class="final-stamp" id="final-stamp">LEGEN-DARY</div>
+      <div class="final-title" id="final-title">¡Have you met Ted?</div>
+      <div class="final-pct-wrap">
+        <div class="final-big" id="final-pct"></div>
+      </div>
+      <div class="final-subtitle" id="final-subtitle"></div>
+      <div class="final-grade" id="final-grade"></div>
+    </div>
+
+    <div class="quote-box">
+      <blockquote id="final-quote"></blockquote>
+    </div>
+
+    <button class="btn btn-neon" style="font-size:20px;padding:14px 40px;letter-spacing:3px;" onclick="restartQuiz()">
+      🔄 VOLVER A INTENTARLO
+    </button>
+  </div>
+</main>
+
+<script>
+// ======================================================
+//  BANCO DE PREGUNTAS – TEMA 7 CNP (organigrama examinable)
+// ======================================================
+const BANK = [
+  // --- MINISTERIO / GABINETE / OFICINA COMUNICACIÓN ---
+  {
+    cat: "Ministerio del Interior",
+    q: "¿Qué rango tiene el Director del Gabinete del Ministro del Interior?",
+    a: ["Rango de Director General (DG)", "Rango de Subsecretario", "Rango de Subdirector General (SDG)", "Rango de Secretario de Estado"],
+    ok: 0,
+    exp: "El Gabinete del Ministro está dirigido por 1 Director con rango de DG, y cuenta con un máximo de 5 asesores con rango de SDG."
+  },
+  {
+    cat: "Ministerio del Interior",
+    q: "¿Cuántos asesores como máximo puede tener el Gabinete del Ministro del Interior?",
+    a: ["3 asesores con rango de SDG", "5 asesores con rango de SDG", "3 asesores con rango de DG", "5 asesores con rango de DG"],
+    ok: 1,
+    exp: "El Gabinete del Ministro se compone de 1 Director (rango DG) y un máximo de 5 asesores con rango de SDG."
+  },
+  {
+    cat: "Ministerio del Interior",
+    q: "La Oficina de Comunicación del Ministerio del Interior, ¿de quién depende directamente y qué rango tiene?",
+    a: ["Depende del SES; rango de SDG", "Depende directamente del Ministro; rango de SDG", "Depende del Subsecretario; rango de DG", "Depende directamente del Ministro; rango de DG"],
+    ok: 1,
+    exp: "La Oficina de Comunicación depende directamente del Ministro y tiene rango de SDG."
+  },
+
+  // --- SECRETARÍA DE ESTADO DE SEGURIDAD ---
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Quién preside el Comité Especializado contra el Terrorismo?",
+    a: ["El Director General de la Policía", "El titular de la Secretaría de Estado de Seguridad (SES)", "El Director del CITCO", "El Subsecretario del Interior"],
+    ok: 1,
+    exp: "La SES preside el Comité Especializado contra el Terrorismo, que se reúne cada 2 meses, siendo el CITCO su secretario."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Con qué frecuencia se reúne el Comité Especializado contra el Terrorismo?",
+    a: ["Mensualmente", "Cada 2 meses", "Trimestralmente", "Semestralmente"],
+    ok: 1,
+    exp: "El Comité Especializado contra el Terrorismo se reúne cada 2 meses. Lo preside la SES y ejerce la secretaría el CITCO."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Quién ejerce la Secretaría del Comité Especializado contra el Terrorismo?",
+    a: ["La DG de Coordinación y Estudios", "El CITCO", "La SES", "La Inspección de Personal y Servicios de Seguridad"],
+    ok: 1,
+    exp: "El CITCO (Centro de Inteligencia contra el Terrorismo y el Crimen Organizado) ejerce la secretaría del Comité Especializado contra el Terrorismo."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Quién preside el Comité Ejecutivo de Coordinación de la SES?",
+    a: ["El Ministro del Interior", "El titular de la SES", "El Subsecretario del Interior", "El Director General de la Policía"],
+    ok: 1,
+    exp: "El Comité Ejecutivo de Coordinación está bajo la dirección del MI, pero lo preside el titular de la SES."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Qué órgano ejerce la Secretaría del Comité Ejecutivo de Coordinación de la SES?",
+    a: ["El CITCO", "La DG de Coordinación y Estudios", "La Inspección de Personal y Servicios de Seguridad", "El Gabinete de la SES"],
+    ok: 1,
+    exp: "La Dirección General de Coordinación y Estudios ejerce la secretaría del Comité Ejecutivo de Coordinación de la SES."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Cuántos asesores como máximo tiene el Gabinete de la SES?",
+    a: ["5 asesores con rango de SDG", "3 asesores con rango de SDG", "5 asesores con rango de DG", "3 asesores con rango de DG"],
+    ok: 1,
+    exp: "El Gabinete de la SES se compone de 1 Director y hasta 3 asesores, todos con rango de SDG."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Qué función ejerce el Gabinete de la SES en materia de trata de seres humanos?",
+    a: ["Coordina la ONIP", "Ejerce de Relatoría Nacional contra la Trata de Seres Humanos", "Dirige la UNECI", "Actúa como punto de contacto ORA"],
+    ok: 1,
+    exp: "El Gabinete de la SES ejerce de Relatoría Nacional contra la Trata de Seres Humanos y coordina las dos Subdirecciones Generales de la SES."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Qué órgano dirige el Centro Tecnológico de Seguridad (CETSE)?",
+    a: ["La SDG de Planificación y Gestión de Infraestructuras y Medios para la Seguridad", "La SDG de Sistemas de Información y Comunicaciones para la Seguridad", "El CITCO", "La DG de Coordinación y Estudios"],
+    ok: 1,
+    exp: "La SDG de Sistemas de Información y Comunicaciones para la Seguridad dirige el CETSE."
+  },
+
+  // --- CITCO ---
+  {
+    cat: "CITCO",
+    q: "¿Qué rango orgánico tiene el CITCO (Centro de Inteligencia contra el Terrorismo y el Crimen Organizado)?",
+    a: ["Rango de Dirección General", "Rango de Subdirección General (SDG)", "Rango de Secretaría de Estado", "Rango de Subsecretaría"],
+    ok: 1,
+    exp: "El CITCO tiene rango de Subdirección General (SDG), dependiendo de la Secretaría de Estado de Seguridad."
+  },
+  {
+    cat: "CITCO",
+    q: "¿Qué unidad del CITCO actúa como Unidad de Información sobre Pasajeros (PIU) nacional?",
+    a: ["TEPOL", "ONIP (Oficina Nacional de Información sobre Pasajeros)", "UNECI", "ORA"],
+    ok: 1,
+    exp: "La ONIP (Oficina Nacional de Información sobre Pasajeros), integrada en el CITCO, actúa como PIU nacional (Passenger Information Unit)."
+  },
+  {
+    cat: "CITCO",
+    q: "¿Qué unidad del CITCO se encarga de la Retirada de Contenidos Ilícitos en Internet?",
+    a: ["ONIP", "TEPOL", "UNECI (Unidad Nacional de Retirada de Contenidos Ilícitos en Internet)", "ORA"],
+    ok: 2,
+    exp: "La UNECI (Unidad Nacional de Retirada de Contenidos Ilícitos en Internet) está integrada dentro del CITCO."
+  },
+  {
+    cat: "CITCO",
+    q: "¿Cómo se denomina la unidad de Policía Judicial para Delitos de Terrorismo integrada en el CITCO?",
+    a: ["ONIP", "UNECI", "ORA", "TEPOL"],
+    ok: 3,
+    exp: "TEPOL es la Unidad de Policía Judicial para Delitos de Terrorismo, integrada en el CITCO."
+  },
+  {
+    cat: "CITCO",
+    q: "El CITCO actúa como Punto Nacional de Contacto en Localización y Recuperación de Activos. ¿Cómo se denomina esta oficina?",
+    a: ["ONIP", "TEPOL", "CETSE", "ORA"],
+    ok: 3,
+    exp: "El ORA (Oficina de Recuperación de Activos) es el Punto Nacional de Contacto en Localización y Recuperación de Activos, alojado en el CITCO."
+  },
+
+  // --- DG COORDINACIÓN Y ESTUDIOS ---
+  {
+    cat: "DG Coordinación y Estudios",
+    q: "¿A través de qué oficina apoya la DG de Coordinación y Estudios al SES en materia de ciberseguridad?",
+    a: ["CETSE", "CSIRT-MIRPJ", "OCC (Oficina de Coordinación de Ciberseguridad)", "CNPIC"],
+    ok: 2,
+    exp: "A través de la OCC (Oficina de Coordinación de Ciberseguridad), la DG de Coordinación y Estudios apoya al SES en ciberseguridad y actúa como punto de contacto nacional."
+  },
+  {
+    cat: "DG Coordinación y Estudios",
+    q: "¿Cómo se denomina el sistema informático de la DG de Coordinación y Estudios para la gestión de Violencia de Género?",
+    a: ["VioGén", "CEPIC", "ONVIOSEX", "ONDOD"],
+    ok: 0,
+    exp: "El Sistema VioGén (Violencia de Género) es gestionado por el Servicio Central de Violencia de Género, dentro de la DG de Coordinación y Estudios."
+  },
+  {
+    cat: "DG Coordinación y Estudios",
+    q: "¿Qué órgano de la DG de Coordinación y Estudios centraliza la información operativa de las Fuerzas y Cuerpos de Seguridad?",
+    a: ["ONDOD", "VioGén", "CEPIC (Centro de Coordinación y Planificación de la Información de Seguridad Ciudadana)", "CNDES"],
+    ok: 2,
+    exp: "El CEPIC (Centro de Coordinación y Planificación de la Información de Seguridad Ciudadana) centraliza la información operativa generada por las FCS."
+  },
+  {
+    cat: "DG Coordinación y Estudios",
+    q: "La Oficina Nacional contra las Violencias Sexuales (ONVIOSEX), ¿en qué área está integrada?",
+    a: ["En el área de Delitos de Odio", "En el área de Violencia de Género", "Directamente en la DG de Coordinación y Estudios", "En el CITCO"],
+    ok: 1,
+    exp: "ONVIOSEX está integrada en el Área de Violencia de Género de la DG de Coordinación y Estudios."
+  },
+  {
+    cat: "DG Coordinación y Estudios",
+    q: "¿Qué organismo actúa como Unidad Nacional ante CEPOL (Formación Policial Europea)?",
+    a: ["El CITCO", "La DG de Coordinación y Estudios", "La SDG de Planificación de Infraestructuras", "La Inspección de Personal"],
+    ok: 1,
+    exp: "La DG de Coordinación y Estudios actúa como Unidad Nacional ante CEPOL en materia de Formación Policial Europea."
+  },
+
+  // --- ONGADH ---
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Qué norma creó la Oficina Nacional de Garantías de los Derechos Humanos (ONGADH)?",
+    a: ["LO 4/2015 de Seguridad Ciudadana", "ISES 1/2022", "RD 952/2018", "LO 2/1986 de FCSE"],
+    ok: 1,
+    exp: "La ONGADH fue creada por la Instrucción de la Secretaría de Estado de Seguridad 1/2022 (ISES 1/2022)."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "Con qué periodicidad mínima deben actualizarse los expedientes activos de la ONGADH?",
+    a: ["Cada 3 meses", "Cada 6 meses", "Anualmente", "Mensualmente"],
+    ok: 1,
+    exp: "Los expedientes activos de la ONGADH deben actualizarse al menos cada 6 meses."
+  },
+  {
+    cat: "Secretaría de Estado de Seguridad (SES)",
+    q: "¿Cuál es la función de la ONGADH respecto a Frontex?",
+    a: ["Gestiona la participación española en Frontex", "Actúa como punto de contacto nacional para el mecanismo de denuncias de Frontex", "Coordina el NCC-Eurosur", "Gestiona el NFPOC"],
+    ok: 1,
+    exp: "La ONGADH actúa como punto de contacto nacional para el mecanismo de denuncias de Frontex."
+  },
+
+  // --- DGP Y DGGC ---
+  {
+    cat: "DGP / DGGC",
+    q: "¿Qué rango tiene el titular de la Dirección General de la Policía (DGP)?",
+    a: ["Rango de Secretario de Estado", "Rango de Subsecretario", "Rango de Director General", "Rango de Subdirector General"],
+    ok: 1,
+    exp: "El titular de la DGP tiene rango de Subsecretario, al igual que el titular de la DGGC."
+  },
+  {
+    cat: "DGP / DGGC",
+    q: "¿De quién depende el mando directo de la Guardia Civil según el organigrama del MI?",
+    a: ["Directamente del Ministro del Interior", "Del titular de la DGGC, bajo dependencia del SES", "Del Subsecretario del Interior", "De la Secretaría General de Instituciones Penitenciarias"],
+    ok: 1,
+    exp: "El mando directo de la Guardia Civil corresponde al titular de la DGGC, bajo dependencia de la Secretaría de Estado de Seguridad (SES)."
+  },
+  {
+    cat: "DGP / DGGC",
+    q: "¿Qué órganos están adscritos a la Dirección General de la Guardia Civil?",
+    a: ["El Consejo Superior y el Consejo de la Guardia Civil", "El CITCO y el CEPIC", "La Inspección de Personal y la ONGADH", "El CETSE y la OCC"],
+    ok: 0,
+    exp: "Están adscritos a la DGGC el Consejo Superior de la Guardia Civil y el Consejo de la Guardia Civil."
+  },
+  {
+    cat: "DGP / DGGC",
+    q: "¿Cuáles son los mandos que dependen directamente del titular de la DGGC?",
+    a: ["Mando de Operaciones, Mando de Fronteras y Policía Marítima, Mando de Personal, Mando de Apoyo y la Dirección Adjunta Operativa", "Mando de Operaciones, Mando de Seguridad Ciudadana, Mando de Personal y Mando de Apoyo", "Dirección Adjunta Operativa, Mando de FCSE y Mando de Coordinación", "Mando de Fronteras, CITCO, CETSE y Mando de Personal"],
+    ok: 0,
+    exp: "Dependen directamente del titular de la DGGC: la Dirección Adjunta Operativa, Mando de Operaciones, Mando de Fronteras y Policía Marítima, Mando de Personal y Mando de Apoyo."
+  },
+
+  // --- SGIP ---
+  {
+    cat: "Secretaría General de Instituciones Penitenciarias",
+    q: "¿Qué rango tiene el titular de la Secretaría General de Instituciones Penitenciarias?",
+    a: ["Rango de Director General", "Rango de Subsecretario", "Rango de Secretario de Estado", "Rango de Subdirector General"],
+    ok: 1,
+    exp: "El titular de la Secretaría General de Instituciones Penitenciarias tiene rango de Subsecretario."
+  },
+  {
+    cat: "Secretaría General de Instituciones Penitenciarias",
+    q: "¿Qué organismo gestiona las infraestructuras penitenciarias y de seguridad del Estado, siendo una sociedad estatal?",
+    a: ["CEPOL", "SIEPSE (Sociedad de Infraestructuras y Equipamientos Penitenciarios y de la Seguridad del Estado)", "CETSE", "EUROSUR"],
+    ok: 1,
+    exp: "SIEPSE (SME, S.A.) es la Sociedad de Infraestructuras y Equipamientos Penitenciarios y de la Seguridad del Estado, con quien la SGIP mantiene relaciones."
+  },
+  {
+    cat: "Secretaría General de Instituciones Penitenciarias",
+    q: "¿Qué órgano se adscribe a la Secretaría General de Instituciones Penitenciarias y además lo preside?",
+    a: ["La DG de Ejecución Penal y Reinserción Social", "Trabajo Penitenciario y Formación para el Empleo", "La SDG de Recursos Humanos", "La SDG de Análisis e Inspección"],
+    ok: 1,
+    exp: "La SGIP se adscribe y preside el organismo Trabajo Penitenciario y Formación para el Empleo."
+  },
+
+  // --- SUBSECRETARÍA ---
+  {
+    cat: "Subsecretaría del Interior",
+    q: "¿Qué órganos preside el Subsecretario del Interior?",
+    a: ["El Comité Ejecutivo de Coordinación, la CMAD y la Comisión de Retribuciones", "La CMAD, la Comisión de Retribuciones y el CSSI", "El CITCO, la CIAR y la CMAD", "La CIPAE, el CSSI y el Comité Especializado contra el Terrorismo"],
+    ok: 1,
+    exp: "El Subsecretario preside la CMAD (Comisión Ministerial de Administración Digital), la Comisión de Retribuciones y el Comité Superior de Seguridad de la Información (CSSI)."
+  },
+  {
+    cat: "Subsecretaría del Interior",
+    q: "¿Quién ejerce la vicepresidencia del Comité Superior de Seguridad de la Información (CSSI)?",
+    a: ["La DG de Política Interior", "La Secretaría General Técnica", "El Gabinete del Subsecretario", "La Oficina Presupuestaria"],
+    ok: 1,
+    exp: "La Secretaría General Técnica ejerce la vicepresidencia del CSSI, cuya presidencia corresponde al Subsecretario."
+  },
+  {
+    cat: "Subsecretaría del Interior",
+    q: "¿Quién preside el Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible?",
+    a: ["El Director General de Tráfico", "El Ministro del Interior", "El Subsecretario del Interior", "El Secretario de Estado de Seguridad"],
+    ok: 1,
+    exp: "El Ministro del Interior preside el Consejo Superior de Tráfico, Seguridad Vial y Movilidad Sostenible, ejerciendo la secretaría la DGT."
+  },
+  {
+    cat: "Subsecretaría del Interior",
+    q: "¿Qué dirección general gestiona el Registro Nacional de Víctimas de Accidentes de Tráfico?",
+    a: ["DG de Política Interior", "DG de Protección Civil y Emergencias", "DG de Tráfico (DGT)", "DG de Apoyo a Víctimas del Terrorismo"],
+    ok: 2,
+    exp: "La DGT gestiona el Registro Nacional de Víctimas de Accidentes, además de los CGT y el Centro de Tratamiento de Denuncias Automatizadas (CTDA)."
+  },
+  {
+    cat: "Subsecretaría del Interior",
+    q: "¿Qué dirección general preside y ejerce la secretaría de la Comisión Interministerial de Asilo y Refugio (CIAR)?",
+    a: ["DG de Política Interior", "DG de Relaciones Internacionales y Extranjería", "DG de Protección Internacional", "DG de Coordinación y Estudios"],
+    ok: 2,
+    exp: "La DG de Protección Internacional preside y ejerce la secretaría de la CIAR (Comisión Interministerial de Asilo y Refugio)."
+  },
+  {
+    cat: "Subsecretaría del Interior",
+    q: "¿Qué organismo actúa como Centro de Coordinación Operativo en Emergencias de Interés Nacional?",
+    a: ["CENEM", "RAN", "CNDES", "La DG de Protección Civil y Emergencias"],
+    ok: 3,
+    exp: "La DG de Protección Civil y Emergencias actúa como Centro de Coordinación Operativo en Emergencias de Interés Nacional y como punto de contacto con el Mecanismo Europeo de Protección Civil."
+  },
+  {
+    cat: "Subsecretaría del Interior",
+    q: "¿Qué sigla corresponde al Centro Nacional de Seguimiento y Coordinación de Emergencias, dependiente de la DG de Protección Civil?",
+    a: ["CNDES", "CENEM", "CEPIC", "CNPIC"],
+    ok: 1,
+    exp: "CENEM es el Centro Nacional de Seguimiento y Coordinación de Emergencias, organizado y mantenido por la DG de Protección Civil y Emergencias."
+  },
+  {
+    cat: "Subsecretaría del Interior",
+    q: "La Secretaría General Técnica de la Subsecretaría preside la CIPAE. ¿A qué corresponde esta sigla?",
+    a: ["Comisión Interministerial de Protección de Activos del Estado", "Comisión Interministerial de Protección de Archivos y Expedientes", "Comisión Interministerial de Políticas de Administración Electrónica", "Comisión Interministerial de Presidencia y Asuntos del Estado"],
+    ok: 2,
+    exp: "La Secretaría General Técnica preside la CIPAE (Comisión Interministerial de Políticas de Administración Electrónica)."
+  },
+
+  // --- DG RELACIONES INTERNACIONALES Y EXTRANJERÍA ---
+  {
+    cat: "DG Relaciones Internacionales y Extranjería",
+    q: "¿Qué SDG de la DG de Relaciones Internacionales gestiona el Punto Nacional de Contacto (NFPOC) y el NCC-Eurosur?",
+    a: ["SDG de Cooperación Policial Internacional", "SDG de Asuntos Europeos", "SDG de Relaciones Internacionales, Inmigración y Extranjería", "SDG de Sistemas de Información y Comunicaciones"],
+    ok: 2,
+    exp: "La SDG de Relaciones Internacionales, Inmigración y Extranjería coordina relaciones con FRONTEX y gestiona el NFPOC y el NCC (Centro Nacional de Coordinación de Eurosur)."
+  },
+  {
+    cat: "DG Relaciones Internacionales y Extranjería",
+    q: "¿Qué SDG se encarga del seguimiento de las actuaciones de la UE en el Espacio de Libertad, Seguridad y Justicia?",
+    a: ["SDG de Cooperación Policial Internacional", "SDG de Relaciones Internacionales, Inmigración y Extranjería", "SDG de Asuntos Europeos", "SDG de Planificación y Gestión de Infraestructuras"],
+    ok: 2,
+    exp: "La SDG de Asuntos Europeos realiza el seguimiento de las actuaciones de la UE que afectan al MI en el Espacio de Libertad, Seguridad y Justicia."
+  },
+
+  // --- COMITÉ EJECUTIVO DE COORDINACIÓN ---
+  {
+    cat: "Comité Ejecutivo de Coordinación",
+    q: "¿Qué miembros integran el Comité Ejecutivo de Coordinación de la SES?",
+    a: [
+      "SES (presidente), Subsecretario de Interior, DGP, DGGC, DAQ de la Policía y GC, SGIP, Gabinete del Ministro, DG de Relaciones Internacionales y Extranjería, DG de Coordinación y Estudios (secretaría)",
+      "SES (presidente), DGP, DGGC, CITCO, SGIP, Gabinete del Ministro, DG de Política Interior, DG de Coordinación y Estudios (secretaría)",
+      "Ministro (presidente), SES, Subsecretario, DGP, DGGC, CITCO, DG de Coordinación y Estudios (secretaría)",
+      "SES (presidente), Subsecretario de Interior, DGP, DGGC, DAQ de la Policía y GC, SGIP, Gabinete del Ministro, DG de Política Interior, ONGADH (secretaría)"
+    ],
+    ok: 0,
+    exp: "El Comité Ejecutivo de Coordinación lo integran: SES (pres.), Subsecretario, DGP, DGGC, DAQ de la Policía y de la GC, SGIP, Gabinete del Ministro, DG de Relaciones Internacionales y Extranjería; y la DG de Coordinación y Estudios ejerce la secretaría."
+  },
+
+  // --- SIGLAS Y ORGANISMOS CLAVE ---
+  {
+    cat: "Siglas y organismos",
+    q: "¿Cuáles son las organizaciones internacionales de cooperación policial que coordina la SES?",
+    a: ["EUROPOL, INTERPOL, SIRENE, SIS y CCPA", "EUROPOL, INTERPOL, FRONTEX, SIRENE y OLAF", "EUROPOL, INTERPOL, CEPOL, SIS y CCPA", "EUROPOL, INTERPOL, FRONTEX, CCPA y ORA"],
+    ok: 0,
+    exp: "La SES dirige y coordina la cooperación policial internacional especialmente con EUROPOL, INTERPOL, SIRENE, SIS y CCPA (Centros de Cooperación Policial y Aduanera)."
+  },
+  {
+    cat: "Siglas y organismos",
+    q: "¿Qué sigla identifica al Sistema Nacional de Protección de Infraestructuras Críticas, cuya dirección corresponde a la SES?",
+    a: ["CNPIC", "CETSE", "SNPIC", "OCC"],
+    ok: 2,
+    exp: "SNPIC es el Sistema Nacional de Protección de Infraestructuras Críticas, cuya dirección es competencia de la SES."
+  },
+  {
+    cat: "Siglas y organismos",
+    q: "¿Qué organismo es el punto de contacto nacional ante el Mecanismo Europeo de Protección Civil?",
+    a: ["La DG de Protección Internacional", "La DG de Coordinación y Estudios", "La DG de Protección Civil y Emergencias", "La SES"],
+    ok: 2,
+    exp: "La DG de Protección Civil y Emergencias actúa como punto de contacto nacional con el Mecanismo Europeo de Protección Civil."
+  },
+  {
+    cat: "Siglas y organismos",
+    q: "¿Qué sigla corresponde al Centro Tecnológico de Seguridad, dirigido por la SDG de Sistemas de Información y Comunicaciones?",
+    a: ["CNDES", "CETSE", "CEPIC", "CSIRT"],
+    ok: 1,
+    exp: "CETSE es el Centro Tecnológico de Seguridad, dirigido por la SDG de Sistemas de Información y Comunicaciones para la Seguridad."
+  },
+  {
+    cat: "Siglas y organismos",
+    q: "¿Qué sigla corresponde al centro que gestiona la oficina de desaparecidos del Ministerio del Interior?",
+    a: ["ONDOD", "CENEM", "CNDES", "CEPIC"],
+    ok: 2,
+    exp: "CNDES es el Centro Nacional de Desaparecidos, cuya dirección corresponde a la DG de Coordinación y Estudios."
+  },
+  {
+    cat: "Siglas y organismos",
+    q: "¿Cómo se denomina la Oficina Nacional de Delitos de Odio?",
+    a: ["CENEM", "ONVIOSEX", "OCC", "ONDOD"],
+    ok: 3,
+    exp: "ONDOD (Oficina Nacional de Delitos de Odio) es dirigida por la DG de Coordinación y Estudios, junto al CNDES."
+  },
+  {
+    cat: "Siglas y organismos",
+    q: "¿Qué unidad del Ministerio del Interior apoya cibernéticamente a la Policía Judicial?",
+    a: ["OCC", "CSIRT-MIRPJ", "CETSE", "UNECI"],
+    ok: 1,
+    exp: "El CSIRT-MIRPJ (dentro de la OCC) ofrece apoyo cibernético a la Policía Judicial del Ministerio del Interior."
+  },
+  {
+    cat: "Siglas y organismos",
+    q: "¿Cuál es la sigla del sistema de coordinación de información de seguridad ciudadana que sirve de información operativa de las FCS?",
+    a: ["VioGén", "CENEM", "CEPIC", "SNPIC"],
+    ok: 2,
+    exp: "CEPIC (Centro de Coordinación y Planificación de la Información de Seguridad Ciudadana) centraliza la información operativa de las FCS."
+  },
+
+  // --- DEPENDENCIAS JERÁRQUICAS GENERALES ---
+  {
+    cat: "Dependencias jerárquicas",
+    q: "¿De qué órgano dependen jerárquicamente la DGP y la DGGC?",
+    a: ["Del Ministro del Interior directamente", "De la Secretaría de Estado de Seguridad (SES)", "De la Subsecretaría del Interior", "De la Secretaría General de Instituciones Penitenciarias"],
+    ok: 1,
+    exp: "Tanto la DGP como la DGGC dependen de la SES para el ejercicio del mando directo de sus respectivos cuerpos."
+  },
+  {
+    cat: "Dependencias jerárquicas",
+    q: "¿De qué órgano dependen la DG de Tráfico, la DG de Política Interior y la DG de Protección Civil?",
+    a: ["De la Secretaría de Estado de Seguridad", "De la Subsecretaría del Interior", "Directamente del Ministro del Interior", "De la Secretaría General de Instituciones Penitenciarias"],
+    ok: 1,
+    exp: "La DGT, la DG de Política Interior, la DG de Protección Internacional, la DG de Protección Civil y la DG de Apoyo a Víctimas del Terrorismo dependen de la Subsecretaría del Interior."
+  },
+  {
+    cat: "Dependencias jerárquicas",
+    q: "¿Qué órgano tiene el mando superior y la dirección y coordinación de las FCSE según el organigrama del MI?",
+    a: ["La Secretaría de Estado de Seguridad", "El Ministro del Interior", "El Subsecretario del Interior", "La Dirección General de Coordinación y Estudios"],
+    ok: 1,
+    exp: "El mando superior y la dirección y coordinación de las FCSE es función del Ministerio del Interior (Ministro), siendo la SES quien lo ejerce de forma operativa."
+  },
+  {
+    cat: "Dependencias jerárquicas",
+    q: "¿Qué órgano dirige el Sistema Nacional de Protección de Infraestructuras Críticas (SNPIC) y la política de ciberseguridad del MI?",
+    a: ["La DG de Coordinación y Estudios", "La Secretaría de Estado de Seguridad (SES)", "El CITCO", "La Subsecretaría del Interior"],
+    ok: 1,
+    exp: "La SES dirige el SNPIC y la dirección y coordinación de las políticas de ciberseguridad del Ministerio del Interior."
+  },
+  {
+    cat: "Dependencias jerárquicas",
+    q: "¿Qué norma encomienda a la SES la dirección del Sistema de Registro de Pasajeros (PNR)?",
+    a: ["La SES dirige el PNR por delegación del Ministro", "La SES dirige las actuaciones sobre precursores de drogas, explosivos y datos PNR", "La DG de Relaciones Internacionales gestiona el PNR", "El CITCO gestiona exclusivamente el PNR"],
+    ok: 1,
+    exp: "Entre las funciones de la SES está la dirección y coordinación de las actuaciones relacionadas con precursores de drogas, explosivos y el tratamiento de los datos del Sistema de Registro de Pasajeros (PNR)."
+  },
+  {
+    cat: "Dependencias jerárquicas",
+    q: "¿Qué dirección general dirige la participación española en la Guardia Europea de Fronteras y Costas (Frontex)?",
+    a: ["La DGP (Dirección General de la Policía)", "La SES, a través de la DG de Relaciones Internacionales y Extranjería", "La DGGC (Guardia Civil)", "La SDG de Cooperación Policial Internacional"],
+    ok: 1,
+    exp: "La SES dirige la gestión integrada de fronteras y el mando de la participación española en Frontex, a través de la DG de Relaciones Internacionales y Extranjería."
+  },
+];
+
+// ============================================================
+const LETTERS = ['A','B','C','D'];
+const HIMYM_QUOTES = [
+  { q: "New is always better.", who: "Barney Stinson" },
+  { q: "When I get sad, I stop being sad and be awesome instead.", who: "Barney Stinson" },
+  { q: "It's going to be legen... wait for it... DARY!", who: "Barney Stinson" },
+  { q: "Sometimes we search for one thing but discover another.", who: "Ted Mosby" },
+  { q: "That's the thing about pain. It demands to be felt.", who: "Ted Mosby" },
+  { q: "Every great love starts with a great story.", who: "Ted Mosby" },
+  { q: "Nothing good ever happens after 2 a.m.", who: "Ted Mosby" },
+  { q: "Suit up!", who: "Barney Stinson" },
+  { q: "I'm not that sad. I'm just the right amount of sad.", who: "Marshall Eriksen" },
+];
+
+let questions = [], idx = 0, ok = 0, fail = 0, streak = 0, answered = false, musicOn = false;
+let audioCtx = null, musicNode = null;
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - .5); }
+
+function init() {
+  questions = shuffle(BANK);
+  idx = 0; ok = 0; fail = 0; streak = 0;
+  document.getElementById('final-screen').classList.remove('show');
+  document.getElementById('quiz-area').style.display = 'block';
+  updateScores();
+  loadQuestion();
+}
+
+function restartQuiz() { init(); }
+function shuffleAndRestart() { init(); }
+
+function loadQuestion() {
+  answered = false;
+  const q = questions[idx];
+  document.getElementById('q-num-badge').textContent = `P. ${idx+1}`;
+  document.getElementById('q-cat').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('progress-text').textContent = `Pregunta ${idx+1} / ${questions.length}`;
+  document.getElementById('prog-bar').style.width = `${(idx/questions.length)*100}%`;
+
+  const idxMap = shuffle([0,1,2,3]);
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  idxMap.forEach((origIdx, pos) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.innerHTML = `<span class="option-letter">${LETTERS[pos]}</span><span>${q.a[origIdx]}</span>`;
+    div.addEventListener('click', () => answer(div, origIdx === q.ok, q));
+    container.appendChild(div);
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+  const bn = document.getElementById('btn-next');
+  bn.className = 'btn-next';
+  updateScores();
+}
+
+function fireLegendary() {
+  const el = document.getElementById('legendary-flash');
+  el.classList.remove('fire');
+  void el.offsetWidth; // reflow
+  el.classList.add('fire');
+}
+
+function answer(el, isOk, q) {
+  if (answered) return;
+  answered = true;
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.classList.add('answered'));
+
+  const fb = document.getElementById('feedback');
+  if (isOk) {
+    el.classList.add('correct');
+    ok++; streak++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = `<strong>...DARY!</strong> ${q.exp}`;
+    if (streak >= 3) fireLegendary();
+  } else {
+    el.classList.add('wrong');
+    fail++; streak = 0;
+    document.querySelectorAll('.option').forEach((o) => {
+      if (o.querySelector('span:last-child').textContent === q.a[q.ok]) {
+        o.classList.add('reveal');
+      }
+    });
+    fb.className = 'feedback fail show';
+    fb.innerHTML = `<strong>Incorrecto.</strong> ${q.exp}`;
+  }
+  updateScores();
+  document.getElementById('btn-next').className = 'btn-next show';
+}
+
+function nextQuestion() {
+  idx++;
+  if (idx >= questions.length) { showFinal(); return; }
+  loadQuestion();
+}
+
+function updateScores() {
+  document.getElementById('sc-ok').textContent = ok;
+  document.getElementById('sc-fail').textContent = fail;
+  const sc = document.getElementById('sc-streak');
+  sc.textContent = streak;
+  sc.className = streak >= 3 ? 'score-val neon streak-fire' : 'score-val neon';
+  const total = ok + fail;
+  document.getElementById('sc-pct').textContent = total ? Math.round(ok/total*100)+'%' : '—';
+}
+
+function showFinal() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const fs = document.getElementById('final-screen');
+  fs.classList.add('show');
+  const total = ok + fail;
+  const pct = Math.round(ok/total*100);
+  document.getElementById('final-pct').textContent = pct + '%';
+  let title, sub, grade, stamp;
+  if (pct >= 90) {
+    title = '¡LEGENDARY! 🎉';
+    sub = 'Barney estaría orgulloso de ti. Absolutamente LEGEN-DARY.';
+    grade = '🏆 Sobresaliente — ¡A por la plaza!';
+    stamp = 'LEGENDARY';
+  } else if (pct >= 70) {
+    title = '¡Bien hecho! 🍺';
+    sub = 'Marshall y Lily te invitan a una ronda en MacLaren\'s.';
+    grade = '✅ Notable — Repasa los fallos y vuelta a intentarlo.';
+    stamp = 'SUIT UP';
+  } else if (pct >= 50) {
+    title = 'How I met your... organigrama 😅';
+    sub = 'Vas por buen camino, Ted. Pero necesitas más noches de estudio.';
+    grade = '⚠️ Aprobado justo — Refuerza los puntos débiles.';
+    stamp = 'WAIT FOR IT';
+  } else {
+    title = 'Suit DOWN 😬';
+    sub = 'Hasta Barney estudia el reglamento antes de aplicarlo. ¡A las páginas!';
+    grade = '❌ Insuficiente — No te rindas, vuelve al tema.';
+    stamp = 'HAVE YOU MET TED?';
+  }
+  document.getElementById('final-title').textContent = title;
+  document.getElementById('final-subtitle').textContent = sub;
+  document.getElementById('final-grade').textContent = grade + ` (${ok}/${total} correctas)`;
+  document.getElementById('final-stamp').textContent = stamp;
+  const qt = HIMYM_QUOTES[Math.floor(Math.random()*HIMYM_QUOTES.length)];
+  document.getElementById('final-quote').innerHTML = `"${qt.q}"<div class="quote-author">— ${qt.who}</div>`;
+  if (pct >= 90) fireLegendary();
+}
+
+// ===== MÚSICA WEB AUDIO =====
+function startMusic() {
+  if (audioCtx) { audioCtx.close(); }
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const master = audioCtx.createGain();
+  master.gain.value = 0.18;
+  master.connect(audioCtx.destination);
+  musicNode = master;
+
+  const BPM = 100, beat = 60/BPM;
+  const chords = [
+    [261.6,329.6,392],[293.7,370,440],[220,261.6,329.6],[246.9,311.1,392],
+    [261.6,329.6,392],[349.2,440,523.3],[220,277.2,329.6],[246.9,311.1,392]
+  ];
+
+  let t = audioCtx.currentTime + 0.1;
+  function scheduleLoop() {
+    chords.forEach(chord => {
+      chord.forEach(freq => {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        g.gain.setValueAtTime(0.001, t);
+        g.gain.linearRampToValueAtTime(0.4, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, t + beat * 1.8);
+        osc.connect(g); g.connect(master);
+        osc.start(t); osc.stop(t + beat * 2);
+      });
+      t += beat * 2;
+    });
+    const bassNotes = [130.8,146.8,110,123.5,130.8,174.6,110,123.5];
+    let bt = audioCtx.currentTime + 0.1;
+    bassNotes.forEach(freq => {
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(0.001, bt);
+      g.gain.linearRampToValueAtTime(0.6, bt + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, bt + beat * 1.9);
+      osc.connect(g); g.connect(master);
+      osc.start(bt); osc.stop(bt + beat * 2);
+      bt += beat * 2;
+    });
+  }
+  scheduleLoop();
+  const totalDur = beat * 2 * chords.length;
+  setInterval(scheduleLoop, totalDur * 1000);
+}
+
+function toggleMusic() {
+  const btn = document.getElementById('musicBtn');
+  if (!musicOn) {
+    startMusic();
+    musicOn = true;
+    btn.textContent = '🔊';
+    btn.title = 'Silenciar música';
+  } else {
+    if (audioCtx) { audioCtx.close(); audioCtx = null; }
+    musicOn = false;
+    btn.textContent = '🎵';
+    btn.title = 'Activar música';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
