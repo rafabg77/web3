@@ -18,8 +18,8 @@ const path = require('path');
 const https = require('https');
 
 const GITHUB_USER = 'rafabg77';
-const PORTAL_REPO = 'Web';
-const JSON_PATH = path.join(__dirname, '..', 'data', 'temario.json');
+const PORTAL_REPO = 'web3';
+const JSON_PATH = path.join(__dirname, '..', '..', '..', 'data', 'temario.json');
 
 // Nombres de repos que NO quieres que se indexen aunque tengan Pages activado
 // (por ejemplo una web personal aparte). Añade aquí el nombre exacto del repo.
