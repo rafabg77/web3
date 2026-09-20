@@ -722,6 +722,13 @@
       "url": "https://rafabg77.github.io/TRATADOS-T4-2026/",
       "fecha": "2026-06-09",
       "activo": true
+    },
+    {
+      "titulo": "Repaso Ultima Semana (sin clasificar)",
+      "tipo": "otro",
+      "url": "https://rafabg77.github.io/repaso-ultima-semana/",
+      "fecha": "2026-09-20",
+      "activo": true
     }
   ]
 }
