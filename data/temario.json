@@ -729,6 +729,13 @@
       "url": "https://rafabg77.github.io/repaso-ultima-semana/",
       "fecha": "2026-09-20",
       "activo": true
+    },
+    {
+      "titulo": "PRESCRIPCIONES (sin clasificar)",
+      "tipo": "otro",
+      "url": "https://rafabg77.github.io/PRESCRIPCIONES/",
+      "fecha": "2026-09-25",
+      "activo": true
     }
   ]
 }
