@@ -736,6 +736,13 @@
       "url": "https://rafabg77.github.io/PRESCRIPCIONES/",
       "fecha": "2026-09-25",
       "activo": true
+    },
+    {
+      "titulo": "Dependencias DGP (sin clasificar)",
+      "tipo": "otro",
+      "url": "https://rafabg77.github.io/Dependencias-DGP/",
+      "fecha": "2026-09-25",
+      "activo": true
     }
   ]
 }
