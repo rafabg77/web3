@@ -743,6 +743,13 @@
       "url": "https://rafabg77.github.io/Dependencias-DGP/",
       "fecha": "2026-09-25",
       "activo": true
+    },
+    {
+      "titulo": "Articulos Constitucion (sin clasificar)",
+      "tipo": "otro",
+      "url": "https://rafabg77.github.io/articulos-constitucion/",
+      "fecha": "2026-09-25",
+      "activo": true
     }
   ]
 }
